@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<wxsmith>
+	<object class="wxFrame" name="FlareGDEFrame">
+		<object class="wxMenuBar" variable="MenuBar1" member="no">
+			<object class="wxMenu" variable="Menu1" member="no">
+				<label>&amp;File</label>
+				<object class="wxMenuItem" name="idMenuNew" variable="MenuItem3" member="no">
+					<label>New Mod</label>
+					<accel>Alt-N</accel>
+					<help>Create new mod</help>
+				</object>
+				<object class="wxMenuItem" name="idMenuOpen" variable="MenuItem4" member="no">
+					<label>Open Mod</label>
+					<accel>Alt-O</accel>
+					<help>Open existing mod</help>
+				</object>
+				<object class="wxMenuItem" name="idMenuQuit" variable="MenuItem1" member="no">
+					<label>Quit</label>
+					<accel>Alt-F4</accel>
+					<help>Quit the application</help>
+					<handler function="OnQuit" entry="EVT_MENU" />
+				</object>
+			</object>
+			<object class="wxMenu" variable="Menu4" member="no">
+				<label>&amp;Creatures</label>
+				<object class="wxMenuItem" name="idMenuNPC" variable="MenuItem7" member="no">
+					<label>Add NPC</label>
+					<help>Add new NPC</help>
+				</object>
+				<object class="wxMenuItem" name="idMenuEnemy" variable="MenuItem8" member="no">
+					<label>Add Enemy</label>
+					<help>Add new Enemy</help>
+				</object>
+			</object>
+			<object class="wxMenu" variable="Menu5" member="no">
+				<label>&amp;Menus</label>
+				<object class="wxMenu" name="ID_MENUITEM1" variable="MenuItem9" member="no">
+					<label>&amp;InGame</label>
+					<object class="wxMenuItem" name="idMenuInventory" variable="MenuItem10" member="no">
+						<label>Inventory</label>
+						<help>Edit Inventory Menu Layout</help>
+					</object>
+					<object class="wxMenuItem" name="idMenuCharacter" variable="MenuItem11" member="no">
+						<label>Character</label>
+						<help>Edit Character Menu Layout</help>
+					</object>
+					<object class="wxMenuItem" name="idMenuPowers" variable="MenuItem12" member="no">
+						<label>Powers</label>
+						<help>Edit Powers Menu Layout</help>
+					</object>
+					<object class="wxMenuItem" name="idMenuLog" variable="MenuItem13" member="no">
+						<label>Log</label>
+						<help>Edit Log Menu Layout</help>
+					</object>
+					<object class="wxMenuItem" name="idMenuXPBar" variable="MenuItem14" member="no">
+						<label>XP Bar</label>
+						<help>Edit XP Bar Layout</help>
+					</object>
+					<object class="wxMenuItem" name="idMenuManaBar" variable="MenuItem15" member="no">
+						<label>Mana Bar</label>
+						<help>Edit Mana Bar Layout</help>
+					</object>
+					<object class="wxMenuItem" name="idMenuHPBar" variable="MenuItem16" member="no">
+						<label>HP Bar</label>
+						<help>Edit HP Bar Layout</help>
+					</object>
+					<object class="wxMenuItem" name="idMenuEnemyBar" variable="MenuItem17" member="no">
+						<label>Enemy Bar</label>
+						<help>Edit Enemy Bar Layout</help>
+					</object>
+					<object class="wxMenuItem" name="idMenuMiniMap" variable="MenuItem18" member="no">
+						<label>MiniMap</label>
+						<help>Edit MiniMap Layout</help>
+					</object>
+				</object>
+				<object class="wxMenu" name="ID_MENUITEM2" variable="MenuItem19" member="no">
+					<label>&amp;Interface Menus</label>
+					<object class="wxMenuItem" name="idMenuLoadGame" variable="MenuItem21" member="yes">
+						<label>Load Game</label>
+						<help>Edit Load Game Menu Layout</help>
+					</object>
+					<object class="wxMenuItem" name="idMenuNewGame" variable="MenuItem22" member="yes">
+						<label>New Game</label>
+						<help>Edit New Game Menu Layout</help>
+					</object>
+					<object class="wxMenuItem" name="idMenuSettings" variable="MenuItem23" member="yes">
+						<label>Settings Menu</label>
+						<help>Edit Settings Menu Layout</help>
+					</object>
+				</object>
+			</object>
+			<object class="wxMenu" variable="Menu3" member="no">
+				<label>&amp;Stuff</label>
+				<object class="wxMenuItem" name="idMenuAddPower" variable="MenuItem5" member="no">
+					<label>Add Power</label>
+					<help>Add new Power</help>
+				</object>
+				<object class="wxMenuItem" name="idMenuAddItem" variable="MenuItem6" member="no">
+					<label>Add item</label>
+					<help>Add new Item</help>
+				</object>
+			</object>
+			<object class="wxMenu" variable="Menu6" member="no">
+				<label>&amp;Maps</label>
+				<object class="wxMenuItem" name="idMenuAddMap" variable="MenuItem24" member="no">
+					<label>Create map</label>
+					<help>Create new map in Tiled</help>
+				</object>
+				<object class="wxMenuItem" name="idMenuOpenMap" variable="MenuItem25" member="no">
+					<label>Open map</label>
+					<help>Open existing map in Tiled</help>
+				</object>
+			</object>
+			<object class="wxMenu" variable="Menu7" member="no">
+				<label>&amp;Story</label>
+				<object class="wxMenuItem" name="idMenuQuest" variable="MenuItem26" member="no">
+					<label>Add Quest</label>
+					<help>Add new Quest</help>
+				</object>
+			</object>
+			<object class="wxMenu" variable="Menu2" member="no">
+				<label>Help</label>
+				<object class="wxMenuItem" name="idMenuAbout" variable="MenuItem2" member="no">
+					<label>About</label>
+					<accel>F1</accel>
+					<help>Show info about this application</help>
+					<handler function="OnAbout" entry="EVT_MENU" />
+				</object>
+			</object>
+		</object>
+		<object class="wxStatusBar" name="ID_STATUSBAR1" variable="StatusBar1" member="yes">
+			<fields>1</fields>
+			<widths>-1</widths>
+			<styles>wxSB_NORMAL</styles>
+		</object>
+	</object>
+</wxsmith>
