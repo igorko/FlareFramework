@@ -13,10 +13,15 @@ FlareGDE is Copyright © 2012 Igor Paliychuk.
 LINKS
 =====
 
-Homepage  http://flarerpg.org
-Source    https://github.com/clintbellanger/flare-engine
-Forums    http://opengameart.org/forums/flare
-Email     clintbellanger@gmail.com
+Source          https://github.com/igorko/FlareGDE
+
+Email           mansonigor@gmail.com
+
+FLARE Homepage  http://flarerpg.org
+
+FLARE Source    https://github.com/clintbellanger/flare-engine
+
+FLARE Forums    http://opengameart.org/forums/flare
 
 DEPENDENCIES
 ============
