@@ -16,13 +16,17 @@
 #include <wx/menu.h>
 #include <wx/textctrl.h>
 #include <wx/listbox.h>
+#include <wx/spinctrl.h>
 #include <wx/panel.h>
+#include <wx/statbmp.h>
 #include <wx/button.h>
 #include <wx/dirdlg.h>
 #include <wx/frame.h>
 #include <wx/combobox.h>
 #include <wx/statusbr.h>
 //*)
+
+class ItemManager;
 
 class FlareGDEFrame: public wxFrame
 {
@@ -31,9 +35,13 @@ class FlareGDEFrame: public wxFrame
         FlareGDEFrame(wxWindow* parent,wxWindowID id = -1);
         virtual ~FlareGDEFrame();
 		wxString modPath;
+		wxString modName;
 		void EnableMenus();
 		void DisableMenus();
 		void ToDo();
+		void CloseAll();
+		bool newMod;
+		ItemManager * items;
 
     private:
 
@@ -65,6 +73,7 @@ class FlareGDEFrame: public wxFrame
         void OnMenuItemCloseModSelected(wxCommandEvent& event);
         void OnClose(wxCloseEvent& event);
         void OnButtonItemCLoseClick(wxCommandEvent& event);
+        void OnButtonItemClearClick(wxCommandEvent& event);
         //*)
 
         //(*Identifiers(FlareGDEFrame)
@@ -78,13 +87,56 @@ class FlareGDEFrame: public wxFrame
         static const long ID_STATICTEXT7;
         static const long ID_TEXTCTRL1;
         static const long ID_COMBOBOX1;
-        static const long ID_COMBOBOX2;
+        static const long ID_SPINCTRL1;
         static const long ID_COMBOBOX3;
-        static const long ID_TEXTCTRL2;
-        static const long ID_TEXTCTRL3;
-        static const long ID_TEXTCTRL4;
+        static const long ID_SPINCTRL10;
+        static const long ID_SPINCTRL9;
+        static const long ID_SPINCTRL11;
+        static const long ID_SPINCTRL12;
+        static const long ID_SPINCTRL13;
+        static const long ID_SPINCTRL14;
+        static const long ID_STATICTEXT8;
+        static const long ID_STATICBITMAP1;
+        static const long ID_BUTTON4;
+        static const long ID_STATICTEXT9;
+        static const long ID_STATICTEXT11;
+        static const long ID_STATICTEXT12;
+        static const long ID_STATICTEXT13;
+        static const long ID_STATICTEXT14;
+        static const long ID_STATICTEXT17;
+        static const long ID_STATICTEXT16;
+        static const long ID_SPINCTRL15;
+        static const long ID_SPINCTRL16;
+        static const long ID_COMBOBOX5;
+        static const long ID_BUTTON5;
+        static const long ID_TEXTCTRL7;
+        static const long ID_SPINCTRL2;
+        static const long ID_TEXTCTRL12;
+        static const long ID_TEXTCTRL11;
+        static const long ID_STATICTEXT10;
+        static const long ID_STATICTEXT15;
+        static const long ID_STATICTEXT18;
+        static const long ID_STATICTEXT19;
+        static const long ID_STATICTEXT20;
+        static const long ID_COMBOBOX4;
+        static const long ID_SPINCTRL5;
+        static const long ID_SPINCTRL6;
+        static const long ID_SPINCTRL7;
+        static const long ID_TEXTCTRL14;
+        static const long ID_SPINCTRL8;
+        static const long ID_STATICTEXT21;
+        static const long ID_STATICTEXT22;
+        static const long ID_STATICTEXT23;
+        static const long ID_STATICTEXT24;
+        static const long ID_STATICTEXT25;
         static const long ID_BUTTON1;
+        static const long ID_BUTTON7;
+        static const long ID_TEXTCTRL15;
+        static const long ID_BUTTON6;
+        static const long ID_SPINCTRL3;
+        static const long ID_SPINCTRL4;
         static const long ID_BUTTON2;
+        static const long ID_STATICBITMAP2;
         static const long ID_BUTTON3;
         static const long ID_PANEL1;
         static const long idMenuNew;
@@ -118,51 +170,94 @@ class FlareGDEFrame: public wxFrame
         //*)
 
         //(*Declarations(FlareGDEFrame)
+        wxSpinCtrl* SpinCtrlItemPower;
+        wxSpinCtrl* SpinCtrlItemAbsMin;
+        wxSpinCtrl* SpinCtrlItemRanDmgMin;
+        wxSpinCtrl* SpinCtrlItemRanDmgMax;
         wxListBox* ListBoxItems;
         wxStaticText* StaticTextItemQuality;
         wxDirDialog* ModDirDialog;
         wxMenuItem* MenuItemInventory;
+        wxSpinCtrl* SpinCtrlItemSell;
+        wxSpinCtrl* SpinCtrlItemLevel;
+        wxStaticText* StaticTextItemRan_ven;
+        wxSpinCtrl* SpinCtrlItemPrice;
         wxComboBox* ComboBoxItemQuality;
+        wxButton* ButtonItemIcon;
         wxMenuItem* MenuItemManaBar;
         wxStaticText* StaticTextItemMentDmg;
+        wxSpinCtrl* SpinCtrlItemMelDmgMin;
+        wxSpinCtrl* SpinCtrlItemAbsMax;
         wxMenuItem* MenuItemLoadGame;
+        wxButton* ButtonItemStepFX;
+        wxStaticText* StaticTextItemRequires;
+        wxStaticText* StaticTextItemClass;
+        wxStaticText* StaticTextItemAbs;
         wxMenuItem* MenuItemHPBar;
         wxMenuItem* MenuItemEnemy;
         wxPanel* PanelItems;
-        wxComboBox* ComboBoxItemLevel;
         wxMenuItem* MenuItemCloseMod;
+        wxStaticBitmap* StaticBitmap1;
+        wxStaticText* StaticTextItemRan_loot;
+        wxComboBox* ComboBoxItemSfx;
         wxMenuItem* MenuItemCreate;
-        wxTextCtrl* TextCtrlItemMelDmg;
-        wxTextCtrl* TextCtrlItemRanDmg;
+        wxStaticText* StaticTextitemBonus;
+        wxStaticBitmap* StaticBitmapItemIcon;
         wxButton* ButtonItemCLose;
+        wxSpinCtrl* SpinCtrlItemMentDmgMin;
         wxMenuItem* MenuItemItem;
         wxMenuItem* MenuItemOpen;
+        wxTextCtrl* TextCtrlitemBonus;
         wxButton* ButtonItemClear;
+        wxButton* ButtonitemGfx;
         wxStaticText* StaticTextItemLevel;
         wxMenuItem* MenuItemXPBar;
         wxButton* ButtonItemPush;
         wxTextCtrl* TextCtrlItemName;
         wxMenuItem* MenuItemQuest;
+        wxStaticText* StaticTextItemPrice;
+        wxStaticText* StaticTextItemPickup;
+        wxStaticText* StaticTextItemPowerMod;
+        wxStaticText* StaticTextItemIcon;
         wxMenuItem* MenuItemSaveMod;
+        wxStaticText* StaticTextItemStep;
+        wxSpinCtrl* SpinCtrlItemMelDmgMax;
         wxComboBox* ComboBoxItemType;
+        wxStaticText* StaticTextLootAnim;
+        wxSpinCtrl* SpinCtrlItemRan_loot;
         wxMenuItem* MenuItemEnemyBar;
         wxMenuItem* MenuItemCharacter;
+        wxTextCtrl* TextCtrlItemPowerDesc;
+        wxTextCtrl* TextCtrlItemClass;
+        wxStaticText* StaticTextItemQuan;
         wxMenuItem* MenuItemAddMap;
+        wxTextCtrl* TextCtrlItemPowerMod;
         wxStaticText* StaticTextItemMelDmg;
+        wxStaticText* StaticTextItemPowerDesc;
         wxMenuItem* MenuItemPowersMenu;
         wxMenu* MenuItemInterface;
-        wxTextCtrl* TextCtrlItemMentDmg;
+        wxStaticText* StaticTextItemGfx;
+        wxSpinCtrl* SpinCtrlItemMentDmgMax;
+        wxStaticText* StaticTextItemPower;
         wxMenuItem* MenuItemLog;
         wxStaticText* StaticTextItemType;
+        wxComboBox* ComboBoxitemRequires;
+        wxSpinCtrl* SpinCtrlItemMaxQuan;
         wxMenuItem* MenuItemSettings;
         wxMenuItem* MenuItemMiniMap;
         wxMenu* MenuItemInGame;
+        wxSpinCtrl* SpinCtrlItemRan_ven;
         wxMenuItem* MenuItemOpenMap;
+        wxTextCtrl* TextCtrlItemPickup;
         wxStatusBar* StatusBar;
+        wxStaticText* StaticTextItemPriceSell;
         wxMenuItem* MenuItemPower;
         wxMenuItem* MenuItemNewGame;
+        wxButton* ButtonItemLootAnim;
         wxMenuItem* MenuItemNPC;
+        wxSpinCtrl* SpinCtrlItemRequires;
         wxStaticText* StaticTextItemRanDmg;
+        wxStaticText* StaticTextItemSfx;
         wxStaticText* StaticTextItemName;
         //*)
 

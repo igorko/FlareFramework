@@ -18,9 +18,11 @@
  **************************************************************/
 
 #include "FlareGDEMain.h"
+#include "API/ItemManager.h"
 #include <wx/msgdlg.h>
 #include <wx/filename.h>
 #include <wx/textdlg.h>
+#include <wx/textfile.h>
 
 //(*InternalHeaders(FlareGDEFrame)
 #include <wx/intl.h>
@@ -64,13 +66,56 @@ const long FlareGDEFrame::ID_STATICTEXT6 = wxNewId();
 const long FlareGDEFrame::ID_STATICTEXT7 = wxNewId();
 const long FlareGDEFrame::ID_TEXTCTRL1 = wxNewId();
 const long FlareGDEFrame::ID_COMBOBOX1 = wxNewId();
-const long FlareGDEFrame::ID_COMBOBOX2 = wxNewId();
+const long FlareGDEFrame::ID_SPINCTRL1 = wxNewId();
 const long FlareGDEFrame::ID_COMBOBOX3 = wxNewId();
-const long FlareGDEFrame::ID_TEXTCTRL2 = wxNewId();
-const long FlareGDEFrame::ID_TEXTCTRL3 = wxNewId();
-const long FlareGDEFrame::ID_TEXTCTRL4 = wxNewId();
+const long FlareGDEFrame::ID_SPINCTRL10 = wxNewId();
+const long FlareGDEFrame::ID_SPINCTRL9 = wxNewId();
+const long FlareGDEFrame::ID_SPINCTRL11 = wxNewId();
+const long FlareGDEFrame::ID_SPINCTRL12 = wxNewId();
+const long FlareGDEFrame::ID_SPINCTRL13 = wxNewId();
+const long FlareGDEFrame::ID_SPINCTRL14 = wxNewId();
+const long FlareGDEFrame::ID_STATICTEXT8 = wxNewId();
+const long FlareGDEFrame::ID_STATICBITMAP1 = wxNewId();
+const long FlareGDEFrame::ID_BUTTON4 = wxNewId();
+const long FlareGDEFrame::ID_STATICTEXT9 = wxNewId();
+const long FlareGDEFrame::ID_STATICTEXT11 = wxNewId();
+const long FlareGDEFrame::ID_STATICTEXT12 = wxNewId();
+const long FlareGDEFrame::ID_STATICTEXT13 = wxNewId();
+const long FlareGDEFrame::ID_STATICTEXT14 = wxNewId();
+const long FlareGDEFrame::ID_STATICTEXT17 = wxNewId();
+const long FlareGDEFrame::ID_STATICTEXT16 = wxNewId();
+const long FlareGDEFrame::ID_SPINCTRL15 = wxNewId();
+const long FlareGDEFrame::ID_SPINCTRL16 = wxNewId();
+const long FlareGDEFrame::ID_COMBOBOX5 = wxNewId();
+const long FlareGDEFrame::ID_BUTTON5 = wxNewId();
+const long FlareGDEFrame::ID_TEXTCTRL7 = wxNewId();
+const long FlareGDEFrame::ID_SPINCTRL2 = wxNewId();
+const long FlareGDEFrame::ID_TEXTCTRL12 = wxNewId();
+const long FlareGDEFrame::ID_TEXTCTRL11 = wxNewId();
+const long FlareGDEFrame::ID_STATICTEXT10 = wxNewId();
+const long FlareGDEFrame::ID_STATICTEXT15 = wxNewId();
+const long FlareGDEFrame::ID_STATICTEXT18 = wxNewId();
+const long FlareGDEFrame::ID_STATICTEXT19 = wxNewId();
+const long FlareGDEFrame::ID_STATICTEXT20 = wxNewId();
+const long FlareGDEFrame::ID_COMBOBOX4 = wxNewId();
+const long FlareGDEFrame::ID_SPINCTRL5 = wxNewId();
+const long FlareGDEFrame::ID_SPINCTRL6 = wxNewId();
+const long FlareGDEFrame::ID_SPINCTRL7 = wxNewId();
+const long FlareGDEFrame::ID_TEXTCTRL14 = wxNewId();
+const long FlareGDEFrame::ID_SPINCTRL8 = wxNewId();
+const long FlareGDEFrame::ID_STATICTEXT21 = wxNewId();
+const long FlareGDEFrame::ID_STATICTEXT22 = wxNewId();
+const long FlareGDEFrame::ID_STATICTEXT23 = wxNewId();
+const long FlareGDEFrame::ID_STATICTEXT24 = wxNewId();
+const long FlareGDEFrame::ID_STATICTEXT25 = wxNewId();
 const long FlareGDEFrame::ID_BUTTON1 = wxNewId();
+const long FlareGDEFrame::ID_BUTTON7 = wxNewId();
+const long FlareGDEFrame::ID_TEXTCTRL15 = wxNewId();
+const long FlareGDEFrame::ID_BUTTON6 = wxNewId();
+const long FlareGDEFrame::ID_SPINCTRL3 = wxNewId();
+const long FlareGDEFrame::ID_SPINCTRL4 = wxNewId();
 const long FlareGDEFrame::ID_BUTTON2 = wxNewId();
+const long FlareGDEFrame::ID_STATICBITMAP2 = wxNewId();
 const long FlareGDEFrame::ID_BUTTON3 = wxNewId();
 const long FlareGDEFrame::ID_PANEL1 = wxNewId();
 const long FlareGDEFrame::idMenuNew = wxNewId();
@@ -111,16 +156,42 @@ END_EVENT_TABLE()
 FlareGDEFrame::FlareGDEFrame(wxWindow* parent,wxWindowID id)
 {
     //(*Initialize(FlareGDEFrame)
+    wxBoxSizer* BoxSizer4;
+    wxBoxSizer* BoxSizer6;
+    wxGridSizer* GridSizer4;
     wxMenu* MenuHelp;
+    wxBoxSizer* BoxSizer15;
     wxMenuItem* MenuItemAbout;
+    wxBoxSizer* BoxSizer5;
+    wxBoxSizer* BoxSizer10;
+    wxBoxSizer* BoxSizer7;
+    wxBoxSizer* BoxSizer8;
+    wxBoxSizer* BoxSizer13;
+    wxGridSizer* GridSizer10;
     wxMenuBar* MainMenuBar;
+    wxGridSizer* GridSizer13;
+    wxGridSizer* GridSizer11;
+    wxGridSizer* GridSizer5;
+    wxGridSizer* GridSizer7;
+    wxGridSizer* GridSizer8;
     wxGridSizer* GridSizerGlobal;
+    wxBoxSizer* BoxSizer2;
+    wxBoxSizer* BoxSizer11;
+    wxBoxSizer* BoxSizer16;
+    wxBoxSizer* BoxSizer12;
+    wxGridSizer* GridSizer9;
+    wxBoxSizer* BoxSizer14;
+    wxGridSizer* GridSizer6;
     wxMenuItem* MenuItemQuit;
     wxGridSizer* GridSizer1;
     wxMenu* MenuMaps;
     wxGridSizer* GridSizer3;
     wxMenu* MenuFile;
+    wxBoxSizer* BoxSizer1;
+    wxBoxSizer* BoxSizer9;
+    wxGridSizer* GridSizer12;
     wxMenu* MenuStory;
+    wxBoxSizer* BoxSizer3;
     wxGridSizer* GridSizer2;
     wxMenu* MenuMenus;
     wxMenu* MenuStuff;
@@ -131,7 +202,7 @@ FlareGDEFrame::FlareGDEFrame(wxWindow* parent,wxWindowID id)
     PanelItems = new wxPanel(this, ID_PANEL1, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL1"));
     PanelItems->Disable();
     PanelItems->Hide();
-    GridSizer1 = new wxGridSizer(4, 3, 0, 0);
+    GridSizer1 = new wxGridSizer(2, 6, 0, 0);
     ListBoxItems = new wxListBox(PanelItems, ID_LISTBOX1, wxDefaultPosition, wxDefaultSize, 0, 0, 0, wxDefaultValidator, _T("ID_LISTBOX1"));
     GridSizer1->Add(ListBoxItems, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     GridSizer3 = new wxGridSizer(7, 1, 5, 5);
@@ -155,26 +226,196 @@ FlareGDEFrame::FlareGDEFrame(wxWindow* parent,wxWindowID id)
     GridSizer2->Add(TextCtrlItemName, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     ComboBoxItemType = new wxComboBox(PanelItems, ID_COMBOBOX1, wxEmptyString, wxDefaultPosition, wxSize(110,21), 0, 0, 0, wxDefaultValidator, _T("ID_COMBOBOX1"));
     GridSizer2->Add(ComboBoxItemType, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-    ComboBoxItemLevel = new wxComboBox(PanelItems, ID_COMBOBOX2, wxEmptyString, wxDefaultPosition, wxSize(110,21), 0, 0, 0, wxDefaultValidator, _T("ID_COMBOBOX2"));
-    GridSizer2->Add(ComboBoxItemLevel, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    SpinCtrlItemLevel = new wxSpinCtrl(PanelItems, ID_SPINCTRL1, _T("0"), wxDefaultPosition, wxSize(110,21), 0, 0, 100, 0, _T("ID_SPINCTRL1"));
+    SpinCtrlItemLevel->SetValue(_T("0"));
+    GridSizer2->Add(SpinCtrlItemLevel, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     ComboBoxItemQuality = new wxComboBox(PanelItems, ID_COMBOBOX3, wxEmptyString, wxDefaultPosition, wxSize(110,21), 0, 0, 0, wxDefaultValidator, _T("ID_COMBOBOX3"));
     ComboBoxItemQuality->Append(_("low"));
     ComboBoxItemQuality->Append(_("high"));
     ComboBoxItemQuality->Append(_("epic"));
     GridSizer2->Add(ComboBoxItemQuality, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-    TextCtrlItemMelDmg = new wxTextCtrl(PanelItems, ID_TEXTCTRL2, wxEmptyString, wxDefaultPosition, wxSize(110,21), 0, wxDefaultValidator, _T("ID_TEXTCTRL2"));
-    GridSizer2->Add(TextCtrlItemMelDmg, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-    TextCtrlItemRanDmg = new wxTextCtrl(PanelItems, ID_TEXTCTRL3, wxEmptyString, wxDefaultPosition, wxSize(110,21), 0, wxDefaultValidator, _T("ID_TEXTCTRL3"));
-    GridSizer2->Add(TextCtrlItemRanDmg, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-    TextCtrlItemMentDmg = new wxTextCtrl(PanelItems, ID_TEXTCTRL4, wxEmptyString, wxDefaultPosition, wxSize(110,21), 0, wxDefaultValidator, _T("ID_TEXTCTRL4"));
-    GridSizer2->Add(TextCtrlItemMentDmg, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    BoxSizer12 = new wxBoxSizer(wxHORIZONTAL);
+    SpinCtrlItemMelDmgMin = new wxSpinCtrl(PanelItems, ID_SPINCTRL10, _T("0"), wxDefaultPosition, wxSize(50,21), 0, 0, 500, 0, _T("ID_SPINCTRL10"));
+    SpinCtrlItemMelDmgMin->SetValue(_T("0"));
+    BoxSizer12->Add(SpinCtrlItemMelDmgMin, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    SpinCtrlItemMelDmgMax = new wxSpinCtrl(PanelItems, ID_SPINCTRL9, _T("0"), wxDefaultPosition, wxSize(50,21), 0, 0, 500, 0, _T("ID_SPINCTRL9"));
+    SpinCtrlItemMelDmgMax->SetValue(_T("0"));
+    BoxSizer12->Add(SpinCtrlItemMelDmgMax, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    GridSizer2->Add(BoxSizer12, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    BoxSizer14 = new wxBoxSizer(wxHORIZONTAL);
+    SpinCtrlItemRanDmgMin = new wxSpinCtrl(PanelItems, ID_SPINCTRL11, _T("0"), wxDefaultPosition, wxSize(50,21), 0, 0, 500, 0, _T("ID_SPINCTRL11"));
+    SpinCtrlItemRanDmgMin->SetValue(_T("0"));
+    BoxSizer14->Add(SpinCtrlItemRanDmgMin, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    SpinCtrlItemRanDmgMax = new wxSpinCtrl(PanelItems, ID_SPINCTRL12, _T("0"), wxDefaultPosition, wxSize(50,21), 0, 0, 500, 0, _T("ID_SPINCTRL12"));
+    SpinCtrlItemRanDmgMax->SetValue(_T("0"));
+    BoxSizer14->Add(SpinCtrlItemRanDmgMax, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    GridSizer2->Add(BoxSizer14, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    BoxSizer15 = new wxBoxSizer(wxHORIZONTAL);
+    SpinCtrlItemMentDmgMin = new wxSpinCtrl(PanelItems, ID_SPINCTRL13, _T("0"), wxDefaultPosition, wxSize(50,21), 0, 0, 500, 0, _T("ID_SPINCTRL13"));
+    SpinCtrlItemMentDmgMin->SetValue(_T("0"));
+    BoxSizer15->Add(SpinCtrlItemMentDmgMin, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    SpinCtrlItemMentDmgMax = new wxSpinCtrl(PanelItems, ID_SPINCTRL14, _T("0"), wxDefaultPosition, wxSize(50,21), 0, 0, 500, 0, _T("ID_SPINCTRL14"));
+    SpinCtrlItemMentDmgMax->SetValue(_T("0"));
+    BoxSizer15->Add(SpinCtrlItemMentDmgMax, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    GridSizer2->Add(BoxSizer15, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     GridSizer1->Add(GridSizer2, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    GridSizer4 = new wxGridSizer(7, 1, 5, 5);
+    StaticTextItemIcon = new wxStaticText(PanelItems, ID_STATICTEXT8, _("Item Icon"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT8"));
+    GridSizer4->Add(StaticTextItemIcon, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    StaticBitmapItemIcon = new wxStaticBitmap(PanelItems, ID_STATICBITMAP1, wxNullBitmap, wxDefaultPosition, wxDefaultSize, wxSUNKEN_BORDER, _T("ID_STATICBITMAP1"));
+    GridSizer4->Add(StaticBitmapItemIcon, 1, wxALL|wxSHAPED|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    ButtonItemIcon = new wxButton(PanelItems, ID_BUTTON4, _("Assign Icon"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON4"));
+    GridSizer4->Add(ButtonItemIcon, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    GridSizer1->Add(GridSizer4, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    GridSizer5 = new wxGridSizer(7, 1, 5, 5);
+    StaticTextItemAbs = new wxStaticText(PanelItems, ID_STATICTEXT9, _("Absorbtion"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT9"));
+    GridSizer5->Add(StaticTextItemAbs, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    StaticTextItemSfx = new wxStaticText(PanelItems, ID_STATICTEXT11, _("ItemSFX"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT11"));
+    GridSizer5->Add(StaticTextItemSfx, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    StaticTextItemGfx = new wxStaticText(PanelItems, ID_STATICTEXT12, _("ItemGFX"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT12"));
+    GridSizer5->Add(StaticTextItemGfx, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    StaticTextitemBonus = new wxStaticText(PanelItems, ID_STATICTEXT13, _("Bonus"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT13"));
+    GridSizer5->Add(StaticTextitemBonus, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    StaticTextItemPower = new wxStaticText(PanelItems, ID_STATICTEXT14, _("Attached Power"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT14"));
+    GridSizer5->Add(StaticTextItemPower, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    StaticTextItemPowerDesc = new wxStaticText(PanelItems, ID_STATICTEXT17, _("Power Description"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT17"));
+    GridSizer5->Add(StaticTextItemPowerDesc, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    StaticTextItemPowerMod = new wxStaticText(PanelItems, ID_STATICTEXT16, _("Power Modificator"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT16"));
+    GridSizer5->Add(StaticTextItemPowerMod, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    GridSizer1->Add(GridSizer5, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    GridSizer6 = new wxGridSizer(7, 1, 5, 5);
+    BoxSizer16 = new wxBoxSizer(wxHORIZONTAL);
+    SpinCtrlItemAbsMin = new wxSpinCtrl(PanelItems, ID_SPINCTRL15, _T("0"), wxDefaultPosition, wxSize(50,21), 0, 0, 500, 0, _T("ID_SPINCTRL15"));
+    SpinCtrlItemAbsMin->SetValue(_T("0"));
+    BoxSizer16->Add(SpinCtrlItemAbsMin, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    SpinCtrlItemAbsMax = new wxSpinCtrl(PanelItems, ID_SPINCTRL16, _T("0"), wxDefaultPosition, wxSize(50,21), 0, 0, 500, 0, _T("ID_SPINCTRL16"));
+    SpinCtrlItemAbsMax->SetValue(_T("0"));
+    BoxSizer16->Add(SpinCtrlItemAbsMax, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    GridSizer6->Add(BoxSizer16, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    ComboBoxItemSfx = new wxComboBox(PanelItems, ID_COMBOBOX5, wxEmptyString, wxDefaultPosition, wxSize(110,21), 0, 0, 0, wxDefaultValidator, _T("ID_COMBOBOX5"));
+    ComboBoxItemSfx->Append(_("book"));
+    ComboBoxItemSfx->Append(_("cloth"));
+    ComboBoxItemSfx->Append(_("coins"));
+    ComboBoxItemSfx->Append(_("gem"));
+    ComboBoxItemSfx->Append(_("leather"));
+    ComboBoxItemSfx->Append(_("metal"));
+    ComboBoxItemSfx->Append(_("page"));
+    ComboBoxItemSfx->Append(_("maille"));
+    ComboBoxItemSfx->Append(_("object"));
+    ComboBoxItemSfx->Append(_("heavy"));
+    ComboBoxItemSfx->Append(_("wood"));
+    ComboBoxItemSfx->Append(_("potion"));
+    GridSizer6->Add(ComboBoxItemSfx, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    ButtonitemGfx = new wxButton(PanelItems, ID_BUTTON5, _("Assign GFX"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON5"));
+    GridSizer6->Add(ButtonitemGfx, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    TextCtrlitemBonus = new wxTextCtrl(PanelItems, ID_TEXTCTRL7, wxEmptyString, wxDefaultPosition, wxSize(110,21), 0, wxDefaultValidator, _T("ID_TEXTCTRL7"));
+    GridSizer6->Add(TextCtrlitemBonus, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    SpinCtrlItemPower = new wxSpinCtrl(PanelItems, ID_SPINCTRL2, _T("0"), wxDefaultPosition, wxDefaultSize, 0, 0, 500, 0, _T("ID_SPINCTRL2"));
+    SpinCtrlItemPower->SetValue(_T("0"));
+    GridSizer6->Add(SpinCtrlItemPower, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    TextCtrlItemPowerDesc = new wxTextCtrl(PanelItems, ID_TEXTCTRL12, wxEmptyString, wxDefaultPosition, wxSize(110,21), 0, wxDefaultValidator, _T("ID_TEXTCTRL12"));
+    GridSizer6->Add(TextCtrlItemPowerDesc, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    TextCtrlItemPowerMod = new wxTextCtrl(PanelItems, ID_TEXTCTRL11, wxEmptyString, wxDefaultPosition, wxSize(110,21), 0, wxDefaultValidator, _T("ID_TEXTCTRL11"));
+    GridSizer6->Add(TextCtrlItemPowerMod, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    GridSizer1->Add(GridSizer6, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    GridSizer9 = new wxGridSizer(7, 1, 5, 5);
+    StaticTextItemRequires = new wxStaticText(PanelItems, ID_STATICTEXT10, _("Item requires"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT10"));
+    GridSizer9->Add(StaticTextItemRequires, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    StaticTextItemPrice = new wxStaticText(PanelItems, ID_STATICTEXT15, _("Price"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT15"));
+    GridSizer9->Add(StaticTextItemPrice, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    StaticTextItemPriceSell = new wxStaticText(PanelItems, ID_STATICTEXT18, _("Sell Price"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT18"));
+    GridSizer9->Add(StaticTextItemPriceSell, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    StaticTextItemQuan = new wxStaticText(PanelItems, ID_STATICTEXT19, _("Max Quantity"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT19"));
+    GridSizer9->Add(StaticTextItemQuan, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    StaticTextItemPickup = new wxStaticText(PanelItems, ID_STATICTEXT20, _("Pickup Status"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT20"));
+    GridSizer9->Add(StaticTextItemPickup, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    BoxSizer5 = new wxBoxSizer(wxHORIZONTAL);
+    GridSizer9->Add(BoxSizer5, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    GridSizer1->Add(GridSizer9, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    GridSizer10 = new wxGridSizer(7, 1, 5, 5);
+    ComboBoxitemRequires = new wxComboBox(PanelItems, ID_COMBOBOX4, wxEmptyString, wxDefaultPosition, wxSize(110,21), 0, 0, 0, wxDefaultValidator, _T("ID_COMBOBOX4"));
+    ComboBoxitemRequires->Append(_("Physical"));
+    ComboBoxitemRequires->Append(_("Mental"));
+    ComboBoxitemRequires->Append(_("Offense"));
+    ComboBoxitemRequires->Append(_("Defense"));
+    GridSizer10->Add(ComboBoxitemRequires, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    SpinCtrlItemPrice = new wxSpinCtrl(PanelItems, ID_SPINCTRL5, _T("0"), wxDefaultPosition, wxDefaultSize, 0, 0, 20000, 0, _T("ID_SPINCTRL5"));
+    SpinCtrlItemPrice->SetValue(_T("0"));
+    GridSizer10->Add(SpinCtrlItemPrice, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    SpinCtrlItemSell = new wxSpinCtrl(PanelItems, ID_SPINCTRL6, _T("0"), wxDefaultPosition, wxDefaultSize, 0, 0, 20000, 0, _T("ID_SPINCTRL6"));
+    SpinCtrlItemSell->SetValue(_T("0"));
+    GridSizer10->Add(SpinCtrlItemSell, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    SpinCtrlItemMaxQuan = new wxSpinCtrl(PanelItems, ID_SPINCTRL7, _T("0"), wxDefaultPosition, wxDefaultSize, 0, 0, 500, 0, _T("ID_SPINCTRL7"));
+    SpinCtrlItemMaxQuan->SetValue(_T("0"));
+    GridSizer10->Add(SpinCtrlItemMaxQuan, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    TextCtrlItemPickup = new wxTextCtrl(PanelItems, ID_TEXTCTRL14, wxEmptyString, wxDefaultPosition, wxSize(110,21), 0, wxDefaultValidator, _T("ID_TEXTCTRL14"));
+    GridSizer10->Add(TextCtrlItemPickup, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    BoxSizer1 = new wxBoxSizer(wxHORIZONTAL);
+    GridSizer10->Add(BoxSizer1, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    GridSizer1->Add(GridSizer10, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    GridSizer7 = new wxGridSizer(7, 1, 0, 0);
+    SpinCtrlItemRequires = new wxSpinCtrl(PanelItems, ID_SPINCTRL8, _T("0"), wxDefaultPosition, wxDefaultSize, 0, 0, 100, 0, _T("ID_SPINCTRL8"));
+    SpinCtrlItemRequires->SetValue(_T("0"));
+    GridSizer7->Add(SpinCtrlItemRequires, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    BoxSizer2 = new wxBoxSizer(wxHORIZONTAL);
+    GridSizer7->Add(BoxSizer2, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    BoxSizer6 = new wxBoxSizer(wxHORIZONTAL);
+    GridSizer7->Add(BoxSizer6, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    BoxSizer4 = new wxBoxSizer(wxHORIZONTAL);
+    GridSizer7->Add(BoxSizer4, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    BoxSizer3 = new wxBoxSizer(wxHORIZONTAL);
+    GridSizer7->Add(BoxSizer3, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    BoxSizer7 = new wxBoxSizer(wxHORIZONTAL);
+    GridSizer7->Add(BoxSizer7, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    BoxSizer8 = new wxBoxSizer(wxHORIZONTAL);
+    GridSizer7->Add(BoxSizer8, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    GridSizer1->Add(GridSizer7, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    GridSizer8 = new wxGridSizer(7, 1, 5, 5);
+    StaticTextLootAnim = new wxStaticText(PanelItems, ID_STATICTEXT21, _("Loot Animation"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT21"));
+    GridSizer8->Add(StaticTextLootAnim, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    StaticTextItemClass = new wxStaticText(PanelItems, ID_STATICTEXT22, _("Class"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT22"));
+    GridSizer8->Add(StaticTextItemClass, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    StaticTextItemStep = new wxStaticText(PanelItems, ID_STATICTEXT23, _("StepFX"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT23"));
+    GridSizer8->Add(StaticTextItemStep, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    StaticTextItemRan_loot = new wxStaticText(PanelItems, ID_STATICTEXT24, _("Max Amount in Loot Stack"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT24"));
+    GridSizer8->Add(StaticTextItemRan_loot, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    StaticTextItemRan_ven = new wxStaticText(PanelItems, ID_STATICTEXT25, _("Max Amount in Vendor Stack"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT25"));
+    GridSizer8->Add(StaticTextItemRan_ven, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    BoxSizer9 = new wxBoxSizer(wxHORIZONTAL);
+    GridSizer8->Add(BoxSizer9, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     ButtonItemPush = new wxButton(PanelItems, ID_BUTTON1, _("Push"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON1"));
-    GridSizer1->Add(ButtonItemPush, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    GridSizer8->Add(ButtonItemPush, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    GridSizer1->Add(GridSizer8, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    GridSizer11 = new wxGridSizer(7, 1, 5, 5);
+    ButtonItemLootAnim = new wxButton(PanelItems, ID_BUTTON7, _("Assign Animation"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON7"));
+    GridSizer11->Add(ButtonItemLootAnim, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    TextCtrlItemClass = new wxTextCtrl(PanelItems, ID_TEXTCTRL15, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_TEXTCTRL15"));
+    GridSizer11->Add(TextCtrlItemClass, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    ButtonItemStepFX = new wxButton(PanelItems, ID_BUTTON6, _("Assign StepFX"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON6"));
+    GridSizer11->Add(ButtonItemStepFX, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    SpinCtrlItemRan_loot = new wxSpinCtrl(PanelItems, ID_SPINCTRL3, _T("0"), wxDefaultPosition, wxDefaultSize, 0, 0, 100, 0, _T("ID_SPINCTRL3"));
+    SpinCtrlItemRan_loot->SetValue(_T("0"));
+    GridSizer11->Add(SpinCtrlItemRan_loot, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    SpinCtrlItemRan_ven = new wxSpinCtrl(PanelItems, ID_SPINCTRL4, _T("0"), wxDefaultPosition, wxDefaultSize, 0, 0, 100, 0, _T("ID_SPINCTRL4"));
+    SpinCtrlItemRan_ven->SetValue(_T("0"));
+    GridSizer11->Add(SpinCtrlItemRan_ven, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    BoxSizer11 = new wxBoxSizer(wxHORIZONTAL);
+    GridSizer11->Add(BoxSizer11, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     ButtonItemClear = new wxButton(PanelItems, ID_BUTTON2, _("Clear"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON2"));
-    GridSizer1->Add(ButtonItemClear, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    GridSizer11->Add(ButtonItemClear, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    GridSizer1->Add(GridSizer11, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    GridSizer12 = new wxGridSizer(7, 1, 5, 5);
+    StaticBitmap1 = new wxStaticBitmap(PanelItems, ID_STATICBITMAP2, wxNullBitmap, wxDefaultPosition, wxDefaultSize, wxSUNKEN_BORDER, _T("ID_STATICBITMAP2"));
+    GridSizer12->Add(StaticBitmap1, 1, wxALL|wxSHAPED|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    GridSizer13 = new wxGridSizer(3, 1, 5, 5);
+    BoxSizer10 = new wxBoxSizer(wxHORIZONTAL);
+    GridSizer13->Add(BoxSizer10, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     ButtonItemCLose = new wxButton(PanelItems, ID_BUTTON3, _("Close"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON3"));
-    GridSizer1->Add(ButtonItemCLose, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    GridSizer13->Add(ButtonItemCLose, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    BoxSizer13 = new wxBoxSizer(wxHORIZONTAL);
+    GridSizer13->Add(BoxSizer13, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    GridSizer12->Add(GridSizer13, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    GridSizer1->Add(GridSizer12, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     PanelItems->SetSizer(GridSizer1);
     GridSizer1->Fit(PanelItems);
     GridSizer1->SetSizeHints(PanelItems);
@@ -277,6 +518,7 @@ FlareGDEFrame::FlareGDEFrame(wxWindow* parent,wxWindowID id)
     GridSizerGlobal->Fit(this);
     GridSizerGlobal->SetSizeHints(this);
     
+    Connect(ID_BUTTON2,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&FlareGDEFrame::OnButtonItemClearClick);
     Connect(ID_BUTTON3,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&FlareGDEFrame::OnButtonItemCLoseClick);
     Connect(idMenuNew,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&FlareGDEFrame::OnMenuItemCreateSelected);
     Connect(idMenuOpen,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&FlareGDEFrame::OnMenuItemOpenSelected);
@@ -327,20 +569,22 @@ void FlareGDEFrame::OnAbout(wxCommandEvent& event)
 
 void FlareGDEFrame::OnMenuItemCreateSelected(wxCommandEvent& event)
 {
+	newMod = true;
 	if (ModDirDialog->ShowModal() == wxID_OK){
 		modPath = ModDirDialog->GetPath();
-		wxString modName = wxGetTextFromUser (wxT("Enter mod name"), wxT("Enter mod name"), wxT("new_mod"), NULL, wxDefaultCoord, wxDefaultCoord, true);
-		if (wxFileName::Mkdir(modPath + "\\" + modName)) {
-			EnableMenus();
-			MenuItemCreate->Enable(false);
-			MenuItemOpen->Enable(false);
-			
-		}
+		modName = wxGetTextFromUser (wxT("Enter mod name"), wxT("Enter mod name"), wxT("new_mod"), NULL, wxDefaultCoord, wxDefaultCoord, true);
+		modPath = modPath + wxT("/") + modName;
+		if (!wxFileName::DirExists(modPath))
+			wxFileName::Mkdir(modPath);
+		EnableMenus();
+		MenuItemCreate->Enable(false);
+		MenuItemOpen->Enable(false);
 	}
 }
 
 void FlareGDEFrame::OnMenuItemOpenSelected(wxCommandEvent& event)
 {
+	newMod = false;
 	if (ModDirDialog->ShowModal() == wxID_OK){
 		modPath = ModDirDialog->GetPath();
 		EnableMenus();
@@ -367,10 +611,12 @@ void FlareGDEFrame::OnMenuItemCloseModSelected(wxCommandEvent& event)
 		{
 			return;
 		}
+	modName = "";
 	modPath = "";
 	DisableMenus();
 	MenuItemOpen->Enable(true);
 	MenuItemCreate->Enable(true);
+	CloseAll();
 }
 
 void FlareGDEFrame::EnableMenus()
@@ -413,6 +659,11 @@ void FlareGDEFrame::DisableMenus()
 	MenuItemPower->Enable(false);
 	MenuItemItem->Enable(false);
 	MenuItemQuest->Enable(false);
+}
+
+void FlareGDEFrame::CloseAll()
+{
+	ToDo();
 }
 
 void FlareGDEFrame::ToDo()
@@ -500,6 +751,19 @@ void FlareGDEFrame::OnMenuItemItemSelected(wxCommandEvent& event)
 {
 	PanelItems->Show(true);
 	PanelItems->Enable(true);
+	if (!wxFileName::DirExists(modPath + wxT("/") + "items"))
+		wxFileName::Mkdir(modPath + wxT("/") + "items");
+    wxString filename = modPath + wxT("/") + "items" + wxT("/") + wxT("items.txt");
+
+	wxTextFile itemsFile(filename);
+	if (!itemsFile.Exists())
+		itemsFile.Create();
+
+	std::string path = std::string(filename.mb_str());
+	items = new ItemManager(path);
+	for (unsigned i = 0;items->items.size();i++) {
+		//ListBoxItems->Append(items->items[i].name.c_str());
+	}
 }
 
 void FlareGDEFrame::OnMenuItemAddMapSelected(wxCommandEvent& event)
@@ -521,5 +785,42 @@ void FlareGDEFrame::OnButtonItemCLoseClick(wxCommandEvent& event)
 {
 	PanelItems->Enable(false);
 	PanelItems->Show(false);
+
+}
+
+void FlareGDEFrame::OnButtonItemClearClick(wxCommandEvent& event)
+{
+	TextCtrlItemName->Clear();
+	TextCtrlItemName->AppendText("ItemName");
+	TextCtrlItemClass->Clear();
+	TextCtrlitemBonus->Clear();
+	TextCtrlItemPickup->Clear();
+	TextCtrlItemPowerDesc->Clear();
+	TextCtrlItemPowerMod->Clear();
+
+	ComboBoxItemType->SetValue("");
+	ComboBoxitemRequires->SetValue("");
+	ComboBoxItemQuality->SetValue("");
+	ComboBoxItemSfx->SetValue("");
+
+	SpinCtrlItemLevel->SetValue(0);
+	SpinCtrlItemPrice->SetValue(0);
+	SpinCtrlItemSell->SetValue(0);
+	SpinCtrlItemAbsMax->SetValue(0);
+	SpinCtrlItemAbsMin->SetValue(0);
+	SpinCtrlItemLevel->SetValue(0);
+	SpinCtrlItemMaxQuan->SetValue(0);
+	SpinCtrlItemMelDmgMax->SetValue(0);
+	SpinCtrlItemMelDmgMin->SetValue(0);
+	SpinCtrlItemMentDmgMax->SetValue(0);
+	SpinCtrlItemMentDmgMin->SetValue(0);
+	SpinCtrlItemPower->SetValue(0);
+	SpinCtrlItemPrice->SetValue(0);
+	SpinCtrlItemRanDmgMax->SetValue(0);
+	SpinCtrlItemRanDmgMin->SetValue(0);
+	SpinCtrlItemRan_loot->SetValue(0);
+	SpinCtrlItemRan_ven->SetValue(0);
+	SpinCtrlItemRequires->SetValue(0);
+	SpinCtrlItemSell->SetValue(0);
 
 }

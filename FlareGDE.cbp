@@ -46,6 +46,14 @@
 		<Linker>
 			<Add option="-mthreads" />
 		</Linker>
+		<Unit filename="API\FileParser.cpp" />
+		<Unit filename="API\FileParser.h" />
+		<Unit filename="API\ItemManager.cpp" />
+		<Unit filename="API\ItemManager.h" />
+		<Unit filename="API\UtilsFileSystem.cpp" />
+		<Unit filename="API\UtilsFileSystem.h" />
+		<Unit filename="API\UtilsParsing.cpp" />
+		<Unit filename="API\UtilsParsing.h" />
 		<Unit filename="FlareGDEApp.cpp" />
 		<Unit filename="FlareGDEApp.h" />
 		<Unit filename="FlareGDEMain.cpp" />
