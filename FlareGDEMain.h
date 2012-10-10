@@ -74,6 +74,9 @@ class FlareGDEFrame: public wxFrame
         void OnClose(wxCloseEvent& event);
         void OnButtonItemCLoseClick(wxCommandEvent& event);
         void OnButtonItemClearClick(wxCommandEvent& event);
+        void OnListBoxItemsSelect(wxCommandEvent& event);
+        void OnButtonItemPushClick(wxCommandEvent& event);
+        void OnButtonItemAddClick(wxCommandEvent& event);
         //*)
 
         //(*Identifiers(FlareGDEFrame)
@@ -101,7 +104,6 @@ class FlareGDEFrame: public wxFrame
         static const long ID_STATICTEXT9;
         static const long ID_STATICTEXT11;
         static const long ID_STATICTEXT12;
-        static const long ID_STATICTEXT13;
         static const long ID_STATICTEXT14;
         static const long ID_STATICTEXT17;
         static const long ID_STATICTEXT16;
@@ -109,21 +111,23 @@ class FlareGDEFrame: public wxFrame
         static const long ID_SPINCTRL16;
         static const long ID_COMBOBOX5;
         static const long ID_BUTTON5;
-        static const long ID_TEXTCTRL7;
         static const long ID_SPINCTRL2;
         static const long ID_TEXTCTRL12;
-        static const long ID_TEXTCTRL11;
+        static const long ID_SPINCTRL18;
         static const long ID_STATICTEXT10;
+        static const long ID_STATICTEXT13;
         static const long ID_STATICTEXT15;
         static const long ID_STATICTEXT18;
         static const long ID_STATICTEXT19;
         static const long ID_STATICTEXT20;
         static const long ID_COMBOBOX4;
+        static const long ID_TEXTCTRL7;
         static const long ID_SPINCTRL5;
         static const long ID_SPINCTRL6;
         static const long ID_SPINCTRL7;
         static const long ID_TEXTCTRL14;
         static const long ID_SPINCTRL8;
+        static const long ID_SPINCTRL17;
         static const long ID_STATICTEXT21;
         static const long ID_STATICTEXT22;
         static const long ID_STATICTEXT23;
@@ -137,6 +141,7 @@ class FlareGDEFrame: public wxFrame
         static const long ID_SPINCTRL4;
         static const long ID_BUTTON2;
         static const long ID_STATICBITMAP2;
+        static const long ID_BUTTON8;
         static const long ID_BUTTON3;
         static const long ID_PANEL1;
         static const long idMenuNew;
@@ -201,6 +206,7 @@ class FlareGDEFrame: public wxFrame
         wxStaticText* StaticTextItemRan_loot;
         wxComboBox* ComboBoxItemSfx;
         wxMenuItem* MenuItemCreate;
+        wxButton* ButtonItemAdd;
         wxStaticText* StaticTextitemBonus;
         wxStaticBitmap* StaticBitmapItemIcon;
         wxButton* ButtonItemCLose;
@@ -231,7 +237,7 @@ class FlareGDEFrame: public wxFrame
         wxTextCtrl* TextCtrlItemClass;
         wxStaticText* StaticTextItemQuan;
         wxMenuItem* MenuItemAddMap;
-        wxTextCtrl* TextCtrlItemPowerMod;
+        wxSpinCtrl* SpinCtrlItemBonus;
         wxStaticText* StaticTextItemMelDmg;
         wxStaticText* StaticTextItemPowerDesc;
         wxMenuItem* MenuItemPowersMenu;
@@ -241,6 +247,7 @@ class FlareGDEFrame: public wxFrame
         wxStaticText* StaticTextItemPower;
         wxMenuItem* MenuItemLog;
         wxStaticText* StaticTextItemType;
+        wxSpinCtrl* SpinCtrlItemPowerMod;
         wxComboBox* ComboBoxitemRequires;
         wxSpinCtrl* SpinCtrlItemMaxQuan;
         wxMenuItem* MenuItemSettings;

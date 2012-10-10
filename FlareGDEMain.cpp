@@ -80,7 +80,6 @@ const long FlareGDEFrame::ID_BUTTON4 = wxNewId();
 const long FlareGDEFrame::ID_STATICTEXT9 = wxNewId();
 const long FlareGDEFrame::ID_STATICTEXT11 = wxNewId();
 const long FlareGDEFrame::ID_STATICTEXT12 = wxNewId();
-const long FlareGDEFrame::ID_STATICTEXT13 = wxNewId();
 const long FlareGDEFrame::ID_STATICTEXT14 = wxNewId();
 const long FlareGDEFrame::ID_STATICTEXT17 = wxNewId();
 const long FlareGDEFrame::ID_STATICTEXT16 = wxNewId();
@@ -88,21 +87,23 @@ const long FlareGDEFrame::ID_SPINCTRL15 = wxNewId();
 const long FlareGDEFrame::ID_SPINCTRL16 = wxNewId();
 const long FlareGDEFrame::ID_COMBOBOX5 = wxNewId();
 const long FlareGDEFrame::ID_BUTTON5 = wxNewId();
-const long FlareGDEFrame::ID_TEXTCTRL7 = wxNewId();
 const long FlareGDEFrame::ID_SPINCTRL2 = wxNewId();
 const long FlareGDEFrame::ID_TEXTCTRL12 = wxNewId();
-const long FlareGDEFrame::ID_TEXTCTRL11 = wxNewId();
+const long FlareGDEFrame::ID_SPINCTRL18 = wxNewId();
 const long FlareGDEFrame::ID_STATICTEXT10 = wxNewId();
+const long FlareGDEFrame::ID_STATICTEXT13 = wxNewId();
 const long FlareGDEFrame::ID_STATICTEXT15 = wxNewId();
 const long FlareGDEFrame::ID_STATICTEXT18 = wxNewId();
 const long FlareGDEFrame::ID_STATICTEXT19 = wxNewId();
 const long FlareGDEFrame::ID_STATICTEXT20 = wxNewId();
 const long FlareGDEFrame::ID_COMBOBOX4 = wxNewId();
+const long FlareGDEFrame::ID_TEXTCTRL7 = wxNewId();
 const long FlareGDEFrame::ID_SPINCTRL5 = wxNewId();
 const long FlareGDEFrame::ID_SPINCTRL6 = wxNewId();
 const long FlareGDEFrame::ID_SPINCTRL7 = wxNewId();
 const long FlareGDEFrame::ID_TEXTCTRL14 = wxNewId();
 const long FlareGDEFrame::ID_SPINCTRL8 = wxNewId();
+const long FlareGDEFrame::ID_SPINCTRL17 = wxNewId();
 const long FlareGDEFrame::ID_STATICTEXT21 = wxNewId();
 const long FlareGDEFrame::ID_STATICTEXT22 = wxNewId();
 const long FlareGDEFrame::ID_STATICTEXT23 = wxNewId();
@@ -116,6 +117,7 @@ const long FlareGDEFrame::ID_SPINCTRL3 = wxNewId();
 const long FlareGDEFrame::ID_SPINCTRL4 = wxNewId();
 const long FlareGDEFrame::ID_BUTTON2 = wxNewId();
 const long FlareGDEFrame::ID_STATICBITMAP2 = wxNewId();
+const long FlareGDEFrame::ID_BUTTON8 = wxNewId();
 const long FlareGDEFrame::ID_BUTTON3 = wxNewId();
 const long FlareGDEFrame::ID_PANEL1 = wxNewId();
 const long FlareGDEFrame::idMenuNew = wxNewId();
@@ -274,14 +276,14 @@ FlareGDEFrame::FlareGDEFrame(wxWindow* parent,wxWindowID id)
     GridSizer5->Add(StaticTextItemSfx, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     StaticTextItemGfx = new wxStaticText(PanelItems, ID_STATICTEXT12, _("ItemGFX"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT12"));
     GridSizer5->Add(StaticTextItemGfx, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-    StaticTextitemBonus = new wxStaticText(PanelItems, ID_STATICTEXT13, _("Bonus"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT13"));
-    GridSizer5->Add(StaticTextitemBonus, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     StaticTextItemPower = new wxStaticText(PanelItems, ID_STATICTEXT14, _("Attached Power"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT14"));
     GridSizer5->Add(StaticTextItemPower, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     StaticTextItemPowerDesc = new wxStaticText(PanelItems, ID_STATICTEXT17, _("Power Description"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT17"));
     GridSizer5->Add(StaticTextItemPowerDesc, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     StaticTextItemPowerMod = new wxStaticText(PanelItems, ID_STATICTEXT16, _("Power Modificator"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT16"));
     GridSizer5->Add(StaticTextItemPowerMod, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    BoxSizer1 = new wxBoxSizer(wxHORIZONTAL);
+    GridSizer5->Add(BoxSizer1, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     GridSizer1->Add(GridSizer5, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     GridSizer6 = new wxGridSizer(7, 1, 5, 5);
     BoxSizer16 = new wxBoxSizer(wxHORIZONTAL);
@@ -308,19 +310,22 @@ FlareGDEFrame::FlareGDEFrame(wxWindow* parent,wxWindowID id)
     GridSizer6->Add(ComboBoxItemSfx, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     ButtonitemGfx = new wxButton(PanelItems, ID_BUTTON5, _("Assign GFX"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON5"));
     GridSizer6->Add(ButtonitemGfx, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-    TextCtrlitemBonus = new wxTextCtrl(PanelItems, ID_TEXTCTRL7, wxEmptyString, wxDefaultPosition, wxSize(110,21), 0, wxDefaultValidator, _T("ID_TEXTCTRL7"));
-    GridSizer6->Add(TextCtrlitemBonus, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-    SpinCtrlItemPower = new wxSpinCtrl(PanelItems, ID_SPINCTRL2, _T("0"), wxDefaultPosition, wxDefaultSize, 0, 0, 500, 0, _T("ID_SPINCTRL2"));
+    SpinCtrlItemPower = new wxSpinCtrl(PanelItems, ID_SPINCTRL2, _T("0"), wxDefaultPosition, wxSize(110,-1), 0, 0, 500, 0, _T("ID_SPINCTRL2"));
     SpinCtrlItemPower->SetValue(_T("0"));
     GridSizer6->Add(SpinCtrlItemPower, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     TextCtrlItemPowerDesc = new wxTextCtrl(PanelItems, ID_TEXTCTRL12, wxEmptyString, wxDefaultPosition, wxSize(110,21), 0, wxDefaultValidator, _T("ID_TEXTCTRL12"));
     GridSizer6->Add(TextCtrlItemPowerDesc, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-    TextCtrlItemPowerMod = new wxTextCtrl(PanelItems, ID_TEXTCTRL11, wxEmptyString, wxDefaultPosition, wxSize(110,21), 0, wxDefaultValidator, _T("ID_TEXTCTRL11"));
-    GridSizer6->Add(TextCtrlItemPowerMod, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    SpinCtrlItemPowerMod = new wxSpinCtrl(PanelItems, ID_SPINCTRL18, _T("0"), wxDefaultPosition, wxSize(110,21), 0, 0, 100, 0, _T("ID_SPINCTRL18"));
+    SpinCtrlItemPowerMod->SetValue(_T("0"));
+    GridSizer6->Add(SpinCtrlItemPowerMod, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    BoxSizer5 = new wxBoxSizer(wxHORIZONTAL);
+    GridSizer6->Add(BoxSizer5, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     GridSizer1->Add(GridSizer6, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     GridSizer9 = new wxGridSizer(7, 1, 5, 5);
     StaticTextItemRequires = new wxStaticText(PanelItems, ID_STATICTEXT10, _("Item requires"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT10"));
     GridSizer9->Add(StaticTextItemRequires, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    StaticTextitemBonus = new wxStaticText(PanelItems, ID_STATICTEXT13, _("Bonus"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT13"));
+    GridSizer9->Add(StaticTextitemBonus, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     StaticTextItemPrice = new wxStaticText(PanelItems, ID_STATICTEXT15, _("Price"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT15"));
     GridSizer9->Add(StaticTextItemPrice, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     StaticTextItemPriceSell = new wxStaticText(PanelItems, ID_STATICTEXT18, _("Sell Price"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT18"));
@@ -329,8 +334,8 @@ FlareGDEFrame::FlareGDEFrame(wxWindow* parent,wxWindowID id)
     GridSizer9->Add(StaticTextItemQuan, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     StaticTextItemPickup = new wxStaticText(PanelItems, ID_STATICTEXT20, _("Pickup Status"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT20"));
     GridSizer9->Add(StaticTextItemPickup, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-    BoxSizer5 = new wxBoxSizer(wxHORIZONTAL);
-    GridSizer9->Add(BoxSizer5, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    BoxSizer13 = new wxBoxSizer(wxHORIZONTAL);
+    GridSizer9->Add(BoxSizer13, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     GridSizer1->Add(GridSizer9, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     GridSizer10 = new wxGridSizer(7, 1, 5, 5);
     ComboBoxitemRequires = new wxComboBox(PanelItems, ID_COMBOBOX4, wxEmptyString, wxDefaultPosition, wxSize(110,21), 0, 0, 0, wxDefaultValidator, _T("ID_COMBOBOX4"));
@@ -339,24 +344,29 @@ FlareGDEFrame::FlareGDEFrame(wxWindow* parent,wxWindowID id)
     ComboBoxitemRequires->Append(_("Offense"));
     ComboBoxitemRequires->Append(_("Defense"));
     GridSizer10->Add(ComboBoxitemRequires, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-    SpinCtrlItemPrice = new wxSpinCtrl(PanelItems, ID_SPINCTRL5, _T("0"), wxDefaultPosition, wxDefaultSize, 0, 0, 20000, 0, _T("ID_SPINCTRL5"));
+    TextCtrlitemBonus = new wxTextCtrl(PanelItems, ID_TEXTCTRL7, wxEmptyString, wxDefaultPosition, wxSize(110,21), 0, wxDefaultValidator, _T("ID_TEXTCTRL7"));
+    GridSizer10->Add(TextCtrlitemBonus, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    SpinCtrlItemPrice = new wxSpinCtrl(PanelItems, ID_SPINCTRL5, _T("0"), wxDefaultPosition, wxSize(110,21), 0, 0, 20000, 0, _T("ID_SPINCTRL5"));
     SpinCtrlItemPrice->SetValue(_T("0"));
     GridSizer10->Add(SpinCtrlItemPrice, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-    SpinCtrlItemSell = new wxSpinCtrl(PanelItems, ID_SPINCTRL6, _T("0"), wxDefaultPosition, wxDefaultSize, 0, 0, 20000, 0, _T("ID_SPINCTRL6"));
+    SpinCtrlItemSell = new wxSpinCtrl(PanelItems, ID_SPINCTRL6, _T("0"), wxDefaultPosition, wxSize(110,21), 0, 0, 20000, 0, _T("ID_SPINCTRL6"));
     SpinCtrlItemSell->SetValue(_T("0"));
     GridSizer10->Add(SpinCtrlItemSell, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-    SpinCtrlItemMaxQuan = new wxSpinCtrl(PanelItems, ID_SPINCTRL7, _T("0"), wxDefaultPosition, wxDefaultSize, 0, 0, 500, 0, _T("ID_SPINCTRL7"));
+    SpinCtrlItemMaxQuan = new wxSpinCtrl(PanelItems, ID_SPINCTRL7, _T("0"), wxDefaultPosition, wxSize(110,21), 0, 0, 500, 0, _T("ID_SPINCTRL7"));
     SpinCtrlItemMaxQuan->SetValue(_T("0"));
     GridSizer10->Add(SpinCtrlItemMaxQuan, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     TextCtrlItemPickup = new wxTextCtrl(PanelItems, ID_TEXTCTRL14, wxEmptyString, wxDefaultPosition, wxSize(110,21), 0, wxDefaultValidator, _T("ID_TEXTCTRL14"));
     GridSizer10->Add(TextCtrlItemPickup, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-    BoxSizer1 = new wxBoxSizer(wxHORIZONTAL);
-    GridSizer10->Add(BoxSizer1, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    BoxSizer8 = new wxBoxSizer(wxHORIZONTAL);
+    GridSizer10->Add(BoxSizer8, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     GridSizer1->Add(GridSizer10, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     GridSizer7 = new wxGridSizer(7, 1, 0, 0);
     SpinCtrlItemRequires = new wxSpinCtrl(PanelItems, ID_SPINCTRL8, _T("0"), wxDefaultPosition, wxDefaultSize, 0, 0, 100, 0, _T("ID_SPINCTRL8"));
     SpinCtrlItemRequires->SetValue(_T("0"));
     GridSizer7->Add(SpinCtrlItemRequires, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    SpinCtrlItemBonus = new wxSpinCtrl(PanelItems, ID_SPINCTRL17, _T("0"), wxDefaultPosition, wxDefaultSize, 0, 0, 100, 0, _T("ID_SPINCTRL17"));
+    SpinCtrlItemBonus->SetValue(_T("0"));
+    GridSizer7->Add(SpinCtrlItemBonus, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     BoxSizer2 = new wxBoxSizer(wxHORIZONTAL);
     GridSizer7->Add(BoxSizer2, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     BoxSizer6 = new wxBoxSizer(wxHORIZONTAL);
@@ -367,8 +377,6 @@ FlareGDEFrame::FlareGDEFrame(wxWindow* parent,wxWindowID id)
     GridSizer7->Add(BoxSizer3, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     BoxSizer7 = new wxBoxSizer(wxHORIZONTAL);
     GridSizer7->Add(BoxSizer7, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-    BoxSizer8 = new wxBoxSizer(wxHORIZONTAL);
-    GridSizer7->Add(BoxSizer8, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     GridSizer1->Add(GridSizer7, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     GridSizer8 = new wxGridSizer(7, 1, 5, 5);
     StaticTextLootAnim = new wxStaticText(PanelItems, ID_STATICTEXT21, _("Loot Animation"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT21"));
@@ -389,14 +397,14 @@ FlareGDEFrame::FlareGDEFrame(wxWindow* parent,wxWindowID id)
     GridSizer11 = new wxGridSizer(7, 1, 5, 5);
     ButtonItemLootAnim = new wxButton(PanelItems, ID_BUTTON7, _("Assign Animation"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON7"));
     GridSizer11->Add(ButtonItemLootAnim, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-    TextCtrlItemClass = new wxTextCtrl(PanelItems, ID_TEXTCTRL15, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_TEXTCTRL15"));
+    TextCtrlItemClass = new wxTextCtrl(PanelItems, ID_TEXTCTRL15, wxEmptyString, wxDefaultPosition, wxSize(110,21), 0, wxDefaultValidator, _T("ID_TEXTCTRL15"));
     GridSizer11->Add(TextCtrlItemClass, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     ButtonItemStepFX = new wxButton(PanelItems, ID_BUTTON6, _("Assign StepFX"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON6"));
     GridSizer11->Add(ButtonItemStepFX, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-    SpinCtrlItemRan_loot = new wxSpinCtrl(PanelItems, ID_SPINCTRL3, _T("0"), wxDefaultPosition, wxDefaultSize, 0, 0, 100, 0, _T("ID_SPINCTRL3"));
+    SpinCtrlItemRan_loot = new wxSpinCtrl(PanelItems, ID_SPINCTRL3, _T("0"), wxDefaultPosition, wxSize(110,21), 0, 0, 100, 0, _T("ID_SPINCTRL3"));
     SpinCtrlItemRan_loot->SetValue(_T("0"));
     GridSizer11->Add(SpinCtrlItemRan_loot, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-    SpinCtrlItemRan_ven = new wxSpinCtrl(PanelItems, ID_SPINCTRL4, _T("0"), wxDefaultPosition, wxDefaultSize, 0, 0, 100, 0, _T("ID_SPINCTRL4"));
+    SpinCtrlItemRan_ven = new wxSpinCtrl(PanelItems, ID_SPINCTRL4, _T("0"), wxDefaultPosition, wxSize(110,21), 0, 0, 100, 0, _T("ID_SPINCTRL4"));
     SpinCtrlItemRan_ven->SetValue(_T("0"));
     GridSizer11->Add(SpinCtrlItemRan_ven, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     BoxSizer11 = new wxBoxSizer(wxHORIZONTAL);
@@ -410,10 +418,10 @@ FlareGDEFrame::FlareGDEFrame(wxWindow* parent,wxWindowID id)
     GridSizer13 = new wxGridSizer(3, 1, 5, 5);
     BoxSizer10 = new wxBoxSizer(wxHORIZONTAL);
     GridSizer13->Add(BoxSizer10, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    ButtonItemAdd = new wxButton(PanelItems, ID_BUTTON8, _("Add empty item"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON8"));
+    GridSizer13->Add(ButtonItemAdd, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     ButtonItemCLose = new wxButton(PanelItems, ID_BUTTON3, _("Close"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON3"));
     GridSizer13->Add(ButtonItemCLose, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-    BoxSizer13 = new wxBoxSizer(wxHORIZONTAL);
-    GridSizer13->Add(BoxSizer13, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     GridSizer12->Add(GridSizer13, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     GridSizer1->Add(GridSizer12, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     PanelItems->SetSizer(GridSizer1);
@@ -518,7 +526,10 @@ FlareGDEFrame::FlareGDEFrame(wxWindow* parent,wxWindowID id)
     GridSizerGlobal->Fit(this);
     GridSizerGlobal->SetSizeHints(this);
     
+    Connect(ID_LISTBOX1,wxEVT_COMMAND_LISTBOX_SELECTED,(wxObjectEventFunction)&FlareGDEFrame::OnListBoxItemsSelect);
+    Connect(ID_BUTTON1,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&FlareGDEFrame::OnButtonItemPushClick);
     Connect(ID_BUTTON2,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&FlareGDEFrame::OnButtonItemClearClick);
+    Connect(ID_BUTTON8,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&FlareGDEFrame::OnButtonItemAddClick);
     Connect(ID_BUTTON3,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&FlareGDEFrame::OnButtonItemCLoseClick);
     Connect(idMenuNew,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&FlareGDEFrame::OnMenuItemCreateSelected);
     Connect(idMenuOpen,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&FlareGDEFrame::OnMenuItemOpenSelected);
@@ -595,6 +606,10 @@ void FlareGDEFrame::OnMenuItemOpenSelected(wxCommandEvent& event)
 
 void FlareGDEFrame::OnMenuItemSaveModSelected(wxCommandEvent& event)
 {
+	wxString filename = modPath + wxT("/") + "items" + wxT("/") + wxT("items.txt");
+	std::string path = std::string(filename.mb_str());
+	items->save(path);
+
 	ToDo();
 }
 
@@ -605,6 +620,9 @@ void FlareGDEFrame::OnMenuItemCloseModSelected(wxCommandEvent& event)
 	int answer = saveQuestion.ShowModal();
 	if (answer == wxID_YES)
 		{
+			wxString filename = modPath + wxT("/") + "items" + wxT("/") + wxT("items.txt");
+			std::string path = std::string(filename.mb_str());
+			items->save(path);
 			ToDo();
 		}
 	else if (answer == wxID_CANCEL)
@@ -663,6 +681,9 @@ void FlareGDEFrame::DisableMenus()
 
 void FlareGDEFrame::CloseAll()
 {
+	PanelItems->Enable(false);
+	PanelItems->Show(false);
+	delete items;
 	ToDo();
 }
 
@@ -761,9 +782,10 @@ void FlareGDEFrame::OnMenuItemItemSelected(wxCommandEvent& event)
 
 	std::string path = std::string(filename.mb_str());
 	items = new ItemManager(path);
-	for (unsigned i = 0;items->items.size();i++) {
-		//ListBoxItems->Append(items->items[i].name.c_str());
+	for (unsigned i = 1;i<items->items.size();i++) {
+		ListBoxItems->Append(items->items[i].name.c_str());
 	}
+
 }
 
 void FlareGDEFrame::OnMenuItemAddMapSelected(wxCommandEvent& event)
@@ -793,10 +815,11 @@ void FlareGDEFrame::OnButtonItemClearClick(wxCommandEvent& event)
 	TextCtrlItemName->Clear();
 	TextCtrlItemName->AppendText("ItemName");
 	TextCtrlItemClass->Clear();
+	TextCtrlItemClass->AppendText("unimlemented");
 	TextCtrlitemBonus->Clear();
+	TextCtrlitemBonus->AppendText("unimlemented");
 	TextCtrlItemPickup->Clear();
 	TextCtrlItemPowerDesc->Clear();
-	TextCtrlItemPowerMod->Clear();
 
 	ComboBoxItemType->SetValue("");
 	ComboBoxitemRequires->SetValue("");
@@ -804,23 +827,112 @@ void FlareGDEFrame::OnButtonItemClearClick(wxCommandEvent& event)
 	ComboBoxItemSfx->SetValue("");
 
 	SpinCtrlItemLevel->SetValue(0);
-	SpinCtrlItemPrice->SetValue(0);
+	SpinCtrlItemBonus->SetValue(0);
 	SpinCtrlItemSell->SetValue(0);
 	SpinCtrlItemAbsMax->SetValue(0);
 	SpinCtrlItemAbsMin->SetValue(0);
-	SpinCtrlItemLevel->SetValue(0);
 	SpinCtrlItemMaxQuan->SetValue(0);
 	SpinCtrlItemMelDmgMax->SetValue(0);
 	SpinCtrlItemMelDmgMin->SetValue(0);
 	SpinCtrlItemMentDmgMax->SetValue(0);
 	SpinCtrlItemMentDmgMin->SetValue(0);
 	SpinCtrlItemPower->SetValue(0);
+	SpinCtrlItemPowerMod->SetValue(0);
 	SpinCtrlItemPrice->SetValue(0);
 	SpinCtrlItemRanDmgMax->SetValue(0);
 	SpinCtrlItemRanDmgMin->SetValue(0);
 	SpinCtrlItemRan_loot->SetValue(0);
 	SpinCtrlItemRan_ven->SetValue(0);
 	SpinCtrlItemRequires->SetValue(0);
-	SpinCtrlItemSell->SetValue(0);
 
+}
+
+void FlareGDEFrame::OnListBoxItemsSelect(wxCommandEvent& event)
+{
+	int index = ListBoxItems->GetSelection() + 1;
+	wxString temp0(items->items[index].name.c_str(), wxConvUTF8);
+
+	TextCtrlItemName->Clear();
+	TextCtrlItemName->AppendText(temp0);
+	//wxString temp1(items->items[index].bonus_stat.c_str(), wxConvUTF8);
+	TextCtrlitemBonus->Clear();
+	TextCtrlitemBonus->AppendText("unimplemented");
+	wxString temp2(items->items[index].pickup_status.c_str(), wxConvUTF8);
+	TextCtrlItemPickup->Clear();
+	TextCtrlItemPickup->AppendText(temp2);
+	wxString temp3(items->items[index].power_desc.c_str(), wxConvUTF8);
+	TextCtrlItemPowerDesc->Clear();
+	TextCtrlItemPowerDesc->AppendText(temp3);
+
+	TextCtrlItemClass->Clear();
+	TextCtrlItemClass->AppendText("unimplemented");
+
+	wxString temp4(items->items[index].type.c_str(), wxConvUTF8);
+	ComboBoxItemType->SetValue(temp4);
+	ComboBoxitemRequires->SetSelection(items->items[index].req_stat);
+	ComboBoxItemQuality->SetSelection(items->items[index].quality);
+	ComboBoxItemSfx->SetSelection(items->items[index].sfx);
+
+	SpinCtrlItemLevel->SetValue(items->items[index].level);
+	//SpinCtrlItemBonus->SetValue(items->items[index].bonus_val);
+	SpinCtrlItemBonus->SetValue(0);
+	SpinCtrlItemPrice->SetValue(items->items[index].price);
+	SpinCtrlItemSell->SetValue(items->items[index].price_sell);
+	SpinCtrlItemAbsMax->SetValue(items->items[index].abs_max);
+	SpinCtrlItemAbsMin->SetValue(items->items[index].abs_min);
+	SpinCtrlItemMaxQuan->SetValue(items->items[index].max_quantity);
+	SpinCtrlItemMelDmgMax->SetValue(items->items[index].dmg_melee_max);
+	SpinCtrlItemMelDmgMin->SetValue(items->items[index].dmg_melee_min);
+	SpinCtrlItemMentDmgMax->SetValue(items->items[index].dmg_ment_max);
+	SpinCtrlItemMentDmgMin->SetValue(items->items[index].dmg_ment_min);
+	SpinCtrlItemPower->SetValue(items->items[index].power);
+	SpinCtrlItemPowerMod->SetValue(items->items[index].power_mod);
+	SpinCtrlItemRanDmgMax->SetValue(items->items[index].dmg_ranged_max);
+	SpinCtrlItemRanDmgMin->SetValue(items->items[index].dmg_ranged_min);
+	SpinCtrlItemRan_loot->SetValue(items->items[index].rand_loot);
+	SpinCtrlItemRan_ven->SetValue(items->items[index].rand_vendor);
+	SpinCtrlItemRequires->SetValue(items->items[index].req_val);
+}
+
+void FlareGDEFrame::OnButtonItemPushClick(wxCommandEvent& event)
+{
+	int index = ListBoxItems->GetSelection() + 1;
+	items->items[index].name = TextCtrlItemName->GetLineText(0);
+	//items->items[index].bonus_stat = TextCtrlitemBonus->GetLineText(0);
+	items->items[index].pickup_status = TextCtrlItemPickup->GetLineText(0);
+	items->items[index].power_desc = TextCtrlItemPowerDesc->GetLineText(0);
+
+	items->items[index].type = ComboBoxItemType->GetValue();
+
+	items->items[index].req_stat = ComboBoxitemRequires->GetSelection();
+	items->items[index].quality = ComboBoxItemQuality->GetSelection();
+	items->items[index].sfx = ComboBoxItemSfx->GetSelection();
+
+	items->items[index].level = SpinCtrlItemLevel->GetValue();
+	//items->items[index].bonus_val = SpinCtrlItemBonus->GetValue();
+	items->items[index].price = SpinCtrlItemPrice->GetValue();
+	items->items[index].price_sell = SpinCtrlItemSell->GetValue();
+	items->items[index].abs_max = SpinCtrlItemAbsMax->GetValue();
+	items->items[index].abs_min = SpinCtrlItemAbsMin->GetValue();
+	items->items[index].max_quantity = SpinCtrlItemMaxQuan->GetValue();
+	items->items[index].dmg_melee_max = SpinCtrlItemMelDmgMax->GetValue();
+	items->items[index].dmg_melee_min = SpinCtrlItemMelDmgMin->GetValue();
+	items->items[index].dmg_ment_max = SpinCtrlItemMentDmgMax->GetValue();
+	items->items[index].dmg_ment_min = SpinCtrlItemMentDmgMin->GetValue();
+	items->items[index].power = SpinCtrlItemPower->GetValue();
+	items->items[index].power_mod = SpinCtrlItemPowerMod->GetValue();
+	items->items[index].dmg_ranged_max = SpinCtrlItemRanDmgMax->GetValue();
+	items->items[index].dmg_ranged_min = SpinCtrlItemRanDmgMin->GetValue();
+	items->items[index].rand_loot = SpinCtrlItemRan_loot->GetValue();
+	items->items[index].rand_vendor = SpinCtrlItemRan_ven->GetValue();
+	items->items[index].req_val = SpinCtrlItemRequires->GetValue();
+
+	//Update ListBox
+	ListBoxItems->SetString(ListBoxItems->GetSelection(), items->items[index].name.c_str());
+}
+
+void FlareGDEFrame::OnButtonItemAddClick(wxCommandEvent& event)
+{
+	items->items.resize(items->items.size()+1);
+	ListBoxItems->Append("");
 }

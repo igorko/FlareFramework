@@ -28,6 +28,8 @@ FLARE.  If not, see http://www.gnu.org/licenses/
 #include <stdint.h>
 #include <vector>
 
+#include <wx/string.h>
+
 #define VENDOR_BUY 0
 #define VENDOR_SELL 1
 #define PLAYER_INV 2
@@ -162,6 +164,7 @@ private:
 public:
 	ItemManager(const std::string& filename);
 	~ItemManager();
+	void save(const std::string& filename);
 	std::string getItemType(std::string _type);
 
 	std::vector<Item> items;

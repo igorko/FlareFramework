@@ -15,6 +15,7 @@
 						<object class="sizeritem">
 							<object class="wxListBox" name="ID_LISTBOX1" variable="ListBoxItems" member="yes">
 								<default>-1</default>
+								<handler function="OnListBoxItemsSelect" entry="EVT_LISTBOX" />
 							</object>
 							<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 							<border>5</border>
@@ -284,14 +285,6 @@
 									<option>1</option>
 								</object>
 								<object class="sizeritem">
-									<object class="wxStaticText" name="ID_STATICTEXT13" variable="StaticTextitemBonus" member="yes">
-										<label>Bonus</label>
-									</object>
-									<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-									<border>5</border>
-									<option>1</option>
-								</object>
-								<object class="sizeritem">
 									<object class="wxStaticText" name="ID_STATICTEXT14" variable="StaticTextItemPower" member="yes">
 										<label>Attached Power</label>
 									</object>
@@ -311,6 +304,12 @@
 									<object class="wxStaticText" name="ID_STATICTEXT16" variable="StaticTextItemPowerMod" member="yes">
 										<label>Power Modificator</label>
 									</object>
+									<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+									<border>5</border>
+									<option>1</option>
+								</object>
+								<object class="sizeritem">
+									<object class="wxBoxSizer" variable="BoxSizer1" member="no" />
 									<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 									<border>5</border>
 									<option>1</option>
@@ -384,17 +383,10 @@
 									<option>1</option>
 								</object>
 								<object class="sizeritem">
-									<object class="wxTextCtrl" name="ID_TEXTCTRL7" variable="TextCtrlitemBonus" member="yes">
-										<size>110,21</size>
-									</object>
-									<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-									<border>5</border>
-									<option>1</option>
-								</object>
-								<object class="sizeritem">
 									<object class="wxSpinCtrl" name="ID_SPINCTRL2" variable="SpinCtrlItemPower" member="yes">
 										<value>0</value>
 										<max>500</max>
+										<size>110,-1</size>
 									</object>
 									<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 									<border>5</border>
@@ -409,9 +401,16 @@
 									<option>1</option>
 								</object>
 								<object class="sizeritem">
-									<object class="wxTextCtrl" name="ID_TEXTCTRL11" variable="TextCtrlItemPowerMod" member="yes">
+									<object class="wxSpinCtrl" name="ID_SPINCTRL18" variable="SpinCtrlItemPowerMod" member="yes">
+										<value>0</value>
 										<size>110,21</size>
 									</object>
+									<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+									<border>5</border>
+									<option>1</option>
+								</object>
+								<object class="sizeritem">
+									<object class="wxBoxSizer" variable="BoxSizer5" member="no" />
 									<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 									<border>5</border>
 									<option>1</option>
@@ -430,6 +429,14 @@
 								<object class="sizeritem">
 									<object class="wxStaticText" name="ID_STATICTEXT10" variable="StaticTextItemRequires" member="yes">
 										<label>Item requires</label>
+									</object>
+									<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+									<border>5</border>
+									<option>1</option>
+								</object>
+								<object class="sizeritem">
+									<object class="wxStaticText" name="ID_STATICTEXT13" variable="StaticTextitemBonus" member="yes">
+										<label>Bonus</label>
 									</object>
 									<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 									<border>5</border>
@@ -468,7 +475,7 @@
 									<option>1</option>
 								</object>
 								<object class="sizeritem">
-									<object class="wxBoxSizer" variable="BoxSizer5" member="no" />
+									<object class="wxBoxSizer" variable="BoxSizer13" member="no" />
 									<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 									<border>5</border>
 									<option>1</option>
@@ -499,9 +506,18 @@
 									<option>1</option>
 								</object>
 								<object class="sizeritem">
+									<object class="wxTextCtrl" name="ID_TEXTCTRL7" variable="TextCtrlitemBonus" member="yes">
+										<size>110,21</size>
+									</object>
+									<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+									<border>5</border>
+									<option>1</option>
+								</object>
+								<object class="sizeritem">
 									<object class="wxSpinCtrl" name="ID_SPINCTRL5" variable="SpinCtrlItemPrice" member="yes">
 										<value>0</value>
 										<max>20000</max>
+										<size>110,21</size>
 									</object>
 									<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 									<border>5</border>
@@ -511,6 +527,7 @@
 									<object class="wxSpinCtrl" name="ID_SPINCTRL6" variable="SpinCtrlItemSell" member="yes">
 										<value>0</value>
 										<max>20000</max>
+										<size>110,21</size>
 									</object>
 									<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 									<border>5</border>
@@ -520,6 +537,7 @@
 									<object class="wxSpinCtrl" name="ID_SPINCTRL7" variable="SpinCtrlItemMaxQuan" member="yes">
 										<value>0</value>
 										<max>500</max>
+										<size>110,21</size>
 									</object>
 									<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 									<border>5</border>
@@ -534,7 +552,7 @@
 									<option>1</option>
 								</object>
 								<object class="sizeritem">
-									<object class="wxBoxSizer" variable="BoxSizer1" member="no" />
+									<object class="wxBoxSizer" variable="BoxSizer8" member="no" />
 									<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 									<border>5</border>
 									<option>1</option>
@@ -550,6 +568,14 @@
 								<rows>7</rows>
 								<object class="sizeritem">
 									<object class="wxSpinCtrl" name="ID_SPINCTRL8" variable="SpinCtrlItemRequires" member="yes">
+										<value>0</value>
+									</object>
+									<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+									<border>5</border>
+									<option>1</option>
+								</object>
+								<object class="sizeritem">
+									<object class="wxSpinCtrl" name="ID_SPINCTRL17" variable="SpinCtrlItemBonus" member="yes">
 										<value>0</value>
 									</object>
 									<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
@@ -582,12 +608,6 @@
 								</object>
 								<object class="sizeritem">
 									<object class="wxBoxSizer" variable="BoxSizer7" member="no" />
-									<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-									<border>5</border>
-									<option>1</option>
-								</object>
-								<object class="sizeritem">
-									<object class="wxBoxSizer" variable="BoxSizer8" member="no" />
 									<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 									<border>5</border>
 									<option>1</option>
@@ -652,6 +672,7 @@
 								<object class="sizeritem">
 									<object class="wxButton" name="ID_BUTTON1" variable="ButtonItemPush" member="yes">
 										<label>Push</label>
+										<handler function="OnButtonItemPushClick" entry="EVT_BUTTON" />
 									</object>
 									<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 									<border>5</border>
@@ -677,7 +698,9 @@
 									<option>1</option>
 								</object>
 								<object class="sizeritem">
-									<object class="wxTextCtrl" name="ID_TEXTCTRL15" variable="TextCtrlItemClass" member="yes" />
+									<object class="wxTextCtrl" name="ID_TEXTCTRL15" variable="TextCtrlItemClass" member="yes">
+										<size>110,21</size>
+									</object>
 									<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 									<border>5</border>
 									<option>1</option>
@@ -693,6 +716,7 @@
 								<object class="sizeritem">
 									<object class="wxSpinCtrl" name="ID_SPINCTRL3" variable="SpinCtrlItemRan_loot" member="yes">
 										<value>0</value>
+										<size>110,21</size>
 									</object>
 									<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 									<border>5</border>
@@ -701,6 +725,7 @@
 								<object class="sizeritem">
 									<object class="wxSpinCtrl" name="ID_SPINCTRL4" variable="SpinCtrlItemRan_ven" member="yes">
 										<value>0</value>
+										<size>110,21</size>
 									</object>
 									<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 									<border>5</border>
@@ -753,16 +778,19 @@
 											<option>1</option>
 										</object>
 										<object class="sizeritem">
-											<object class="wxButton" name="ID_BUTTON3" variable="ButtonItemCLose" member="yes">
-												<label>Close</label>
-												<handler function="OnButtonItemCLoseClick" entry="EVT_BUTTON" />
+											<object class="wxButton" name="ID_BUTTON8" variable="ButtonItemAdd" member="yes">
+												<label>Add empty item</label>
+												<handler function="OnButtonItemAddClick" entry="EVT_BUTTON" />
 											</object>
 											<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 											<border>5</border>
 											<option>1</option>
 										</object>
 										<object class="sizeritem">
-											<object class="wxBoxSizer" variable="BoxSizer13" member="no" />
+											<object class="wxButton" name="ID_BUTTON3" variable="ButtonItemCLose" member="yes">
+												<label>Close</label>
+												<handler function="OnButtonItemCLoseClick" entry="EVT_BUTTON" />
+											</object>
 											<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 											<border>5</border>
 											<option>1</option>

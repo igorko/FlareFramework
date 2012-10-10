@@ -31,6 +31,8 @@ FLARE.  If not, see http://www.gnu.org/licenses/
 #include <cstring>
 #include <climits>
 
+#include <wx/textfile.h>
+
 using namespace std;
 
 
@@ -38,6 +40,8 @@ ItemManager::ItemManager(const std::string& filename) {
 	items = vector<Item>();
 
 	load(filename);
+	if (!items.empty()) shrinkItems();
+	else items.resize(1);
 }
 
 /**
@@ -209,6 +213,112 @@ void ItemManager::load(const string& filename) {
 
 	}
 	infile.close();
+}
+
+/**
+ * Save a specific items file
+ *
+ * @param filename The full path and name of the file to save
+ */
+void ItemManager::save(const string& filename) {
+
+	ofstream outfile;
+
+	outfile.open(filename.c_str(), ios::out);
+
+	if (outfile.is_open()) {
+
+		for (unsigned i = 1;i<items.size();i++) {
+
+			if (items[i].name == "") continue;
+
+			outfile << "[item]" << "\n";
+
+			outfile << "id=" << i << "\n";
+
+			outfile << "name=" << items[i].name << "\n";
+
+			outfile << "item_type=" << items[i].type << "\n";
+
+			outfile << "level=" << items[i].level << "\n";
+
+			if (items[i].req_stat == REQUIRES_PHYS && items[i].req_val > 0)
+				outfile << "req=p," << items[i].req_val << "\n";
+			else if (items[i].req_stat == REQUIRES_MENT && items[i].req_val > 0)
+				outfile << "req=m," << items[i].req_val << "\n";
+			else if (items[i].req_stat == REQUIRES_OFF && items[i].req_val > 0)
+				outfile << "req=o," << items[i].req_val << "\n";
+			else if (items[i].req_stat == REQUIRES_DEF && items[i].req_val > 0)
+				outfile << "req=d," << items[i].req_val << "\n";
+
+			if (items[i].dmg_melee_min > 0 || items[i].dmg_melee_max > 0)
+				outfile << "dmg_melee=" << items[i].dmg_melee_min << "," << items[i].dmg_melee_max << "\n";
+
+			if (items[i].dmg_ranged_min > 0 || items[i].dmg_ranged_max > 0)
+				outfile << "dmg_ranged=" << items[i].dmg_ranged_min << "," << items[i].dmg_ranged_max << "\n";
+
+			if (items[i].dmg_ment_min > 0 || items[i].dmg_ment_max > 0)
+				outfile << "dmg_ment=" << items[i].dmg_ment_min << "," << items[i].dmg_ment_max << "\n";
+
+			if (items[i].abs_min > 0 || items[i].abs_max > 0)
+				outfile << "abs=" << items[i].abs_min << "," << items[i].abs_max << "\n";
+
+			if (items[i].quality >= 0)
+				outfile << "quality=" << items[i].quality << "\n";
+
+			if (items[i].icon_small >= 0)
+				outfile << "icon=" << items[i].icon_small << "\n";
+
+			if (items[i].sfx >= 0)
+				outfile << "sfx=" << items[i].sfx << "\n";
+
+			if (items[i].gfx != "")
+				outfile << "gfx=" << items[i].gfx << "\n";
+
+			if (items[i].loot_animation != "")
+				outfile << "loot_animation=" << items[i].loot_animation << "\n";
+
+			if (items[i].power > 0)
+				outfile << "power=" << items[i].power << "\n";
+
+			if (items[i].power_desc != "")
+				outfile << "power_desc=" << items[i].power_desc << "\n";
+
+			if (items[i].power_mod > 0)
+				outfile << "power_mod=" << items[i].power_mod << "\n";
+
+			if (items[i].price > 0)
+				outfile << "price=" << items[i].price << "\n";
+
+			if (items[i].price_sell > 0)
+			outfile << "price_sell=" << items[i].price_sell << "\n";
+
+			if (items[i].max_quantity > 1)
+				outfile << "max_quantity=" << items[i].max_quantity << "\n";
+
+			if (items[i].rand_vendor > 1)
+				outfile << "rand_vendor=" << items[i].rand_vendor << "\n";
+
+			if (items[i].rand_loot > 1)
+				outfile << "rand_loot=" << items[i].rand_loot << "\n";
+
+			//outfile << "class=" << items[i].classname << "\n";
+
+			//outfile << "bonus=" << items[i].bonus_stat << "\n";
+
+			if (items[i].pickup_status != "")
+				outfile << "pickup_status=" << items[i].pickup_status << "\n";
+
+			if (items[i].stepfx != "")
+				outfile << "stepfx=" << items[i].stepfx << "\n";
+
+			outfile << endl;
+		}
+
+		if (outfile.bad()) fprintf(stderr, "Unable to save the file. No write access or disk is full!\n");
+		outfile.close();
+	}
+
 }
 
 void ItemManager::loadTypes(const string& filename) {
