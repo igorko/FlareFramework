@@ -2,6 +2,7 @@
 <wxsmith>
 	<object class="wxFrame" name="FlareGDEFrame">
 		<title>FlareGDE</title>
+		<pos>5,5</pos>
 		<id_arg>0</id_arg>
 		<object class="wxGridSizer" variable="GridSizerGlobal" member="no">
 			<cols>1</cols>
@@ -508,6 +509,7 @@
 								<object class="sizeritem">
 									<object class="wxTextCtrl" name="ID_TEXTCTRL7" variable="TextCtrlitemBonus" member="yes">
 										<size>110,21</size>
+										<tooltip>Comma separated list of bonus stats</tooltip>
 									</object>
 									<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 									<border>5</border>
@@ -569,14 +571,16 @@
 								<object class="sizeritem">
 									<object class="wxSpinCtrl" name="ID_SPINCTRL8" variable="SpinCtrlItemRequires" member="yes">
 										<value>0</value>
+										<size>110,21</size>
 									</object>
 									<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 									<border>5</border>
 									<option>1</option>
 								</object>
 								<object class="sizeritem">
-									<object class="wxSpinCtrl" name="ID_SPINCTRL17" variable="SpinCtrlItemBonus" member="yes">
-										<value>0</value>
+									<object class="wxTextCtrl" name="ID_TEXTCTRL2" variable="TextCtrlItemBonusVal" member="yes">
+										<size>110,21</size>
+										<tooltip>Comma separated list of bonus values</tooltip>
 									</object>
 									<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 									<border>5</border>
@@ -634,6 +638,7 @@
 								<object class="sizeritem">
 									<object class="wxStaticText" name="ID_STATICTEXT22" variable="StaticTextItemClass" member="yes">
 										<label>Class</label>
+										<tooltip>Comma separated list of classes</tooltip>
 									</object>
 									<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 									<border>5</border>

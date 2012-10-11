@@ -127,7 +127,7 @@ class FlareGDEFrame: public wxFrame
         static const long ID_SPINCTRL7;
         static const long ID_TEXTCTRL14;
         static const long ID_SPINCTRL8;
-        static const long ID_SPINCTRL17;
+        static const long ID_TEXTCTRL2;
         static const long ID_STATICTEXT21;
         static const long ID_STATICTEXT22;
         static const long ID_STATICTEXT23;
@@ -195,6 +195,7 @@ class FlareGDEFrame: public wxFrame
         wxSpinCtrl* SpinCtrlItemAbsMax;
         wxMenuItem* MenuItemLoadGame;
         wxButton* ButtonItemStepFX;
+        wxTextCtrl* TextCtrlItemBonusVal;
         wxStaticText* StaticTextItemRequires;
         wxStaticText* StaticTextItemClass;
         wxStaticText* StaticTextItemAbs;
@@ -237,7 +238,6 @@ class FlareGDEFrame: public wxFrame
         wxTextCtrl* TextCtrlItemClass;
         wxStaticText* StaticTextItemQuan;
         wxMenuItem* MenuItemAddMap;
-        wxSpinCtrl* SpinCtrlItemBonus;
         wxStaticText* StaticTextItemMelDmg;
         wxStaticText* StaticTextItemPowerDesc;
         wxMenuItem* MenuItemPowersMenu;

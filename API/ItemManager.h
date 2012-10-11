@@ -107,6 +107,8 @@ public:
 	int rand_vendor;      // max amount appearing in a vendor stack
 	std::string pickup_status; // when this item is picked up, set a campaign state (usually for quest items)
 	std::string stepfx;        // sound effect played when walking (armors only)
+	
+	std::vector<std::string> classname;// not present in Flare items, it's internal variable
 
 	int getSellPrice();
 

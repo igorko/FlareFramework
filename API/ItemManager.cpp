@@ -194,19 +194,7 @@ void ItemManager::load(const string& filename) {
 		else if (infile.key == "class") {
 			string classname = infile.nextValue();
 			while (classname != "") {
-				unsigned pos; // find the position where this classname is stored:
-				for (pos = 0; pos < item_class_names.size(); pos++) {
-					if (item_class_names[pos] == classname)
-						break;
-				}
-				// if it was not found, add it to the end.
-				// pos is already the correct index.
-				if (pos == item_class_names.size()) {
-					item_class_names.push_back(classname);
-					item_class_items.push_back(vector<unsigned int>());
-				}
-				// add item id to the item list of that class:
-				item_class_items[pos].push_back(id);
+				items[id].classname.push_back(classname);
 				classname = infile.nextValue();
 			}
 		}
@@ -302,9 +290,24 @@ void ItemManager::save(const string& filename) {
 			if (items[i].rand_loot > 1)
 				outfile << "rand_loot=" << items[i].rand_loot << "\n";
 
-			//outfile << "class=" << items[i].classname << "\n";
+			if (items[i].classname.size() > 0) {
+				outfile << "class=";
+				for (unsigned k = 0;k<items[i].classname.size()-1;k++) {
+					outfile << items[i].classname[k] << ",";
+				}
+				outfile << items[i].classname.back();
+				outfile << "\n";
+			}
 
-			//outfile << "bonus=" << items[i].bonus_stat << "\n";
+			if (items[i].bonus_stat.size() != items[i].bonus_val.size()) {
+				if (items[i].bonus_stat.size() > items[i].bonus_val.size())
+					items[i].bonus_val.resize(items[i].bonus_stat.size());
+				else
+					items[i].bonus_stat.resize(items[i].bonus_val.size());
+			}
+			for (unsigned k = 0;k<items[i].bonus_stat.size();k++) {
+				outfile << "bonus=" << items[i].bonus_stat[k] << "," << items[i].bonus_val[k] << "\n";
+			}
 
 			if (items[i].pickup_status != "")
 				outfile << "pickup_status=" << items[i].pickup_status << "\n";

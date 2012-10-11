@@ -19,6 +19,7 @@
 
 #include "FlareGDEMain.h"
 #include "API/ItemManager.h"
+#include "API/UtilsParsing.h"
 #include <wx/msgdlg.h>
 #include <wx/filename.h>
 #include <wx/textdlg.h>
@@ -103,7 +104,7 @@ const long FlareGDEFrame::ID_SPINCTRL6 = wxNewId();
 const long FlareGDEFrame::ID_SPINCTRL7 = wxNewId();
 const long FlareGDEFrame::ID_TEXTCTRL14 = wxNewId();
 const long FlareGDEFrame::ID_SPINCTRL8 = wxNewId();
-const long FlareGDEFrame::ID_SPINCTRL17 = wxNewId();
+const long FlareGDEFrame::ID_TEXTCTRL2 = wxNewId();
 const long FlareGDEFrame::ID_STATICTEXT21 = wxNewId();
 const long FlareGDEFrame::ID_STATICTEXT22 = wxNewId();
 const long FlareGDEFrame::ID_STATICTEXT23 = wxNewId();
@@ -200,6 +201,7 @@ FlareGDEFrame::FlareGDEFrame(wxWindow* parent,wxWindowID id)
     wxMenu* MenuCreatures;
     
     Create(parent, wxID_ANY, _("FlareGDE"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_FRAME_STYLE, _T("wxID_ANY"));
+    Move(wxPoint(5,5));
     GridSizerGlobal = new wxGridSizer(0, 1, 0, 0);
     PanelItems = new wxPanel(this, ID_PANEL1, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL1"));
     PanelItems->Disable();
@@ -345,6 +347,7 @@ FlareGDEFrame::FlareGDEFrame(wxWindow* parent,wxWindowID id)
     ComboBoxitemRequires->Append(_("Defense"));
     GridSizer10->Add(ComboBoxitemRequires, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     TextCtrlitemBonus = new wxTextCtrl(PanelItems, ID_TEXTCTRL7, wxEmptyString, wxDefaultPosition, wxSize(110,21), 0, wxDefaultValidator, _T("ID_TEXTCTRL7"));
+    TextCtrlitemBonus->SetToolTip(_("Comma separated list of bonus stats"));
     GridSizer10->Add(TextCtrlitemBonus, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     SpinCtrlItemPrice = new wxSpinCtrl(PanelItems, ID_SPINCTRL5, _T("0"), wxDefaultPosition, wxSize(110,21), 0, 0, 20000, 0, _T("ID_SPINCTRL5"));
     SpinCtrlItemPrice->SetValue(_T("0"));
@@ -361,12 +364,12 @@ FlareGDEFrame::FlareGDEFrame(wxWindow* parent,wxWindowID id)
     GridSizer10->Add(BoxSizer8, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     GridSizer1->Add(GridSizer10, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     GridSizer7 = new wxGridSizer(7, 1, 0, 0);
-    SpinCtrlItemRequires = new wxSpinCtrl(PanelItems, ID_SPINCTRL8, _T("0"), wxDefaultPosition, wxDefaultSize, 0, 0, 100, 0, _T("ID_SPINCTRL8"));
+    SpinCtrlItemRequires = new wxSpinCtrl(PanelItems, ID_SPINCTRL8, _T("0"), wxDefaultPosition, wxSize(110,21), 0, 0, 100, 0, _T("ID_SPINCTRL8"));
     SpinCtrlItemRequires->SetValue(_T("0"));
     GridSizer7->Add(SpinCtrlItemRequires, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-    SpinCtrlItemBonus = new wxSpinCtrl(PanelItems, ID_SPINCTRL17, _T("0"), wxDefaultPosition, wxDefaultSize, 0, 0, 100, 0, _T("ID_SPINCTRL17"));
-    SpinCtrlItemBonus->SetValue(_T("0"));
-    GridSizer7->Add(SpinCtrlItemBonus, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    TextCtrlItemBonusVal = new wxTextCtrl(PanelItems, ID_TEXTCTRL2, wxEmptyString, wxDefaultPosition, wxSize(110,21), 0, wxDefaultValidator, _T("ID_TEXTCTRL2"));
+    TextCtrlItemBonusVal->SetToolTip(_("Comma separated list of bonus values"));
+    GridSizer7->Add(TextCtrlItemBonusVal, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     BoxSizer2 = new wxBoxSizer(wxHORIZONTAL);
     GridSizer7->Add(BoxSizer2, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     BoxSizer6 = new wxBoxSizer(wxHORIZONTAL);
@@ -382,6 +385,7 @@ FlareGDEFrame::FlareGDEFrame(wxWindow* parent,wxWindowID id)
     StaticTextLootAnim = new wxStaticText(PanelItems, ID_STATICTEXT21, _("Loot Animation"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT21"));
     GridSizer8->Add(StaticTextLootAnim, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     StaticTextItemClass = new wxStaticText(PanelItems, ID_STATICTEXT22, _("Class"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT22"));
+    StaticTextItemClass->SetToolTip(_("Comma separated list of classes"));
     GridSizer8->Add(StaticTextItemClass, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     StaticTextItemStep = new wxStaticText(PanelItems, ID_STATICTEXT23, _("StepFX"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT23"));
     GridSizer8->Add(StaticTextItemStep, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
@@ -684,6 +688,7 @@ void FlareGDEFrame::CloseAll()
 	PanelItems->Enable(false);
 	PanelItems->Show(false);
 	delete items;
+	ListBoxItems->Clear();
 	ToDo();
 }
 
@@ -815,9 +820,8 @@ void FlareGDEFrame::OnButtonItemClearClick(wxCommandEvent& event)
 	TextCtrlItemName->Clear();
 	TextCtrlItemName->AppendText("ItemName");
 	TextCtrlItemClass->Clear();
-	TextCtrlItemClass->AppendText("unimlemented");
 	TextCtrlitemBonus->Clear();
-	TextCtrlitemBonus->AppendText("unimlemented");
+	TextCtrlItemBonusVal->Clear();
 	TextCtrlItemPickup->Clear();
 	TextCtrlItemPowerDesc->Clear();
 
@@ -827,7 +831,6 @@ void FlareGDEFrame::OnButtonItemClearClick(wxCommandEvent& event)
 	ComboBoxItemSfx->SetValue("");
 
 	SpinCtrlItemLevel->SetValue(0);
-	SpinCtrlItemBonus->SetValue(0);
 	SpinCtrlItemSell->SetValue(0);
 	SpinCtrlItemAbsMax->SetValue(0);
 	SpinCtrlItemAbsMin->SetValue(0);
@@ -851,31 +854,57 @@ void FlareGDEFrame::OnListBoxItemsSelect(wxCommandEvent& event)
 {
 	int index = ListBoxItems->GetSelection() + 1;
 	wxString temp0(items->items[index].name.c_str(), wxConvUTF8);
-
 	TextCtrlItemName->Clear();
 	TextCtrlItemName->AppendText(temp0);
-	//wxString temp1(items->items[index].bonus_stat.c_str(), wxConvUTF8);
-	TextCtrlitemBonus->Clear();
-	TextCtrlitemBonus->AppendText("unimplemented");
+
 	wxString temp2(items->items[index].pickup_status.c_str(), wxConvUTF8);
 	TextCtrlItemPickup->Clear();
 	TextCtrlItemPickup->AppendText(temp2);
+
 	wxString temp3(items->items[index].power_desc.c_str(), wxConvUTF8);
 	TextCtrlItemPowerDesc->Clear();
 	TextCtrlItemPowerDesc->AppendText(temp3);
 
 	TextCtrlItemClass->Clear();
-	TextCtrlItemClass->AppendText("unimplemented");
+	if (items->items[index].classname.size() > 0) {
+		for (unsigned i = 0;i<items->items[index].classname.size()-1;i++) {
+		wxString temp4(items->items[index].classname[i].c_str(), wxConvUTF8);
+			TextCtrlItemClass->AppendText(temp4);
+			TextCtrlItemClass->AppendText(",");
+		}
+		wxString temp4(items->items[index].classname.back().c_str(), wxConvUTF8);
+		TextCtrlItemClass->AppendText(temp4);
+	}
 
-	wxString temp4(items->items[index].type.c_str(), wxConvUTF8);
-	ComboBoxItemType->SetValue(temp4);
+	TextCtrlitemBonus->Clear();
+	if (items->items[index].bonus_stat.size() > 0) {
+		for (unsigned i = 0;i<items->items[index].bonus_stat.size()-1;i++) {
+		wxString temp5(items->items[index].bonus_stat[i].c_str(), wxConvUTF8);
+			TextCtrlitemBonus->AppendText(temp5);
+			TextCtrlitemBonus->AppendText(",");
+		}
+		wxString temp5(items->items[index].bonus_stat.back().c_str(), wxConvUTF8);
+		TextCtrlitemBonus->AppendText(temp5);
+	}
+
+	TextCtrlItemBonusVal->Clear();
+	if (items->items[index].bonus_val.size() > 0) {
+		for (unsigned i = 0;i<items->items[index].bonus_val.size()-1;i++) {
+		wxString temp6(wxString::Format(wxT("%i"),items->items[index].bonus_val[i]), wxConvUTF8);
+			TextCtrlItemBonusVal->AppendText(temp6);
+			TextCtrlItemBonusVal->AppendText(",");
+		}
+		wxString temp6(wxString::Format(wxT("%i"),items->items[index].bonus_val.back()), wxConvUTF8);
+		TextCtrlItemBonusVal->AppendText(temp6);
+	}
+
+	wxString temp7(items->items[index].type.c_str(), wxConvUTF8);
+	ComboBoxItemType->SetValue(temp7);
 	ComboBoxitemRequires->SetSelection(items->items[index].req_stat);
 	ComboBoxItemQuality->SetSelection(items->items[index].quality);
 	ComboBoxItemSfx->SetSelection(items->items[index].sfx);
 
 	SpinCtrlItemLevel->SetValue(items->items[index].level);
-	//SpinCtrlItemBonus->SetValue(items->items[index].bonus_val);
-	SpinCtrlItemBonus->SetValue(0);
 	SpinCtrlItemPrice->SetValue(items->items[index].price);
 	SpinCtrlItemSell->SetValue(items->items[index].price_sell);
 	SpinCtrlItemAbsMax->SetValue(items->items[index].abs_max);
@@ -898,9 +927,35 @@ void FlareGDEFrame::OnButtonItemPushClick(wxCommandEvent& event)
 {
 	int index = ListBoxItems->GetSelection() + 1;
 	items->items[index].name = TextCtrlItemName->GetLineText(0);
-	//items->items[index].bonus_stat = TextCtrlitemBonus->GetLineText(0);
 	items->items[index].pickup_status = TextCtrlItemPickup->GetLineText(0);
 	items->items[index].power_desc = TextCtrlItemPowerDesc->GetLineText(0);
+
+	std::string classlist = std::string(TextCtrlItemClass->GetLineText(0).mb_str());
+	classlist = classlist + ',';
+	std::string classname = eatFirstString(classlist, ',');
+	items->items[index].classname.clear();
+	while (classname != "") {
+		items->items[index].classname.push_back(classname);
+		classname = eatFirstString(classlist, ',');
+	}
+
+	std::string bonus_stat_list = std::string(TextCtrlitemBonus->GetLineText(0).mb_str());
+	bonus_stat_list = bonus_stat_list + ',';
+	std::string bonus_stat = eatFirstString(bonus_stat_list, ',');
+	items->items[index].bonus_stat.clear();
+	while (bonus_stat != "") {
+		items->items[index].bonus_stat.push_back(bonus_stat);
+		bonus_stat = eatFirstString(bonus_stat_list, ',');
+	}
+
+	std::string bonus_val_list = std::string(TextCtrlItemBonusVal->GetLineText(0).mb_str());
+	bonus_val_list = bonus_val_list + ',';
+	std::string bonus_val = eatFirstString(bonus_val_list, ',');
+	items->items[index].bonus_val.clear();
+	while (bonus_val != "") {
+		items->items[index].bonus_val.push_back(toInt(bonus_val));
+		bonus_val = eatFirstString(bonus_val_list, ',');
+	}
 
 	items->items[index].type = ComboBoxItemType->GetValue();
 
@@ -909,7 +964,6 @@ void FlareGDEFrame::OnButtonItemPushClick(wxCommandEvent& event)
 	items->items[index].sfx = ComboBoxItemSfx->GetSelection();
 
 	items->items[index].level = SpinCtrlItemLevel->GetValue();
-	//items->items[index].bonus_val = SpinCtrlItemBonus->GetValue();
 	items->items[index].price = SpinCtrlItemPrice->GetValue();
 	items->items[index].price_sell = SpinCtrlItemSell->GetValue();
 	items->items[index].abs_max = SpinCtrlItemAbsMax->GetValue();
