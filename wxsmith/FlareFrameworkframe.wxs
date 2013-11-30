@@ -817,19 +817,31 @@
 				<label>Items</label>
 			</object>
 			<object class="notebookpage">
-				<object class="wxPanel" name="ID_PANEL2" variable="PanelPowers" member="yes" />
+				<object class="wxPanel" name="ID_PANEL2" variable="PanelPowers" member="yes">
+					<enabled>0</enabled>
+					<hidden>1</hidden>
+				</object>
 				<label>Powers</label>
 			</object>
 			<object class="notebookpage">
-				<object class="wxPanel" name="ID_PANEL3" variable="PanelNPCs" member="yes" />
+				<object class="wxPanel" name="ID_PANEL3" variable="PanelNPCs" member="yes">
+					<enabled>0</enabled>
+					<hidden>1</hidden>
+				</object>
 				<label>NPCs</label>
 			</object>
 			<object class="notebookpage">
-				<object class="wxPanel" name="ID_PANEL4" variable="PanelEnemies" member="yes" />
+				<object class="wxPanel" name="ID_PANEL4" variable="PanelEnemies" member="yes">
+					<enabled>0</enabled>
+					<hidden>1</hidden>
+				</object>
 				<label>Enemies</label>
 			</object>
 			<object class="notebookpage">
-				<object class="wxPanel" name="ID_PANEL5" variable="PanelQuests" member="yes" />
+				<object class="wxPanel" name="ID_PANEL5" variable="PanelQuests" member="yes">
+					<enabled>0</enabled>
+					<hidden>1</hidden>
+				</object>
 				<label>Quests</label>
 			</object>
 		</object>

@@ -437,9 +437,17 @@ FlareFrameworkFrame::FlareFrameworkFrame(wxWindow* parent,wxWindowID id)
     SetSizer(GridSizer1);
     Layout();
     PanelPowers = new wxPanel(TabbedPanel, ID_PANEL2, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL2"));
+    PanelPowers->Disable();
+    PanelPowers->Hide();
     PanelNPCs = new wxPanel(TabbedPanel, ID_PANEL3, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL3"));
+    PanelNPCs->Disable();
+    PanelNPCs->Hide();
     PanelEnemies = new wxPanel(TabbedPanel, ID_PANEL4, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL4"));
+    PanelEnemies->Disable();
+    PanelEnemies->Hide();
     PanelQuests = new wxPanel(TabbedPanel, ID_PANEL5, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL5"));
+    PanelQuests->Disable();
+    PanelQuests->Hide();
     TabbedPanel->AddPage(PanelItems, _("Items"), false);
     TabbedPanel->AddPage(PanelPowers, _("Powers"), false);
     TabbedPanel->AddPage(PanelNPCs, _("NPCs"), false);
