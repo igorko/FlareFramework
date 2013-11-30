@@ -17,7 +17,7 @@
  * FlareGDE.  If not, see http://www.gnu.org/licenses/
  **************************************************************/
 
-#include "FlareGDEMain.h"
+#include "FlareFrameworkMain.h"
 #include "API/ItemManager.h"
 #include "API/UtilsParsing.h"
 #include <wx/msgdlg.h>
@@ -890,11 +890,11 @@ void FlareGDEFrame::OnListBoxItemsSelect(wxCommandEvent& event)
 	TextCtrlItemBonusVal->Clear();
 	if (items->items[index].bonus_val.size() > 0) {
 		for (unsigned i = 0;i<items->items[index].bonus_val.size()-1;i++) {
-		wxString temp6(wxString::Format(wxT("%i"),items->items[index].bonus_val[i]), wxConvUTF8);
+		wxString temp6(wxString::Format(wxT("%i"),items->items[index].bonus_val[i]));
 			TextCtrlItemBonusVal->AppendText(temp6);
 			TextCtrlItemBonusVal->AppendText(",");
 		}
-		wxString temp6(wxString::Format(wxT("%i"),items->items[index].bonus_val.back()), wxConvUTF8);
+		wxString temp6(wxString::Format(wxT("%i"),items->items[index].bonus_val.back()));
 		TextCtrlItemBonusVal->AppendText(temp6);
 	}
 

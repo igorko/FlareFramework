@@ -17,10 +17,10 @@
  * FlareGDE.  If not, see http://www.gnu.org/licenses/
  **************************************************************/
 
-#include "FlareGDEApp.h"
+#include "FlareFrameworkApp.h"
 
 //(*AppHeaders
-#include "FlareGDEMain.h"
+#include "FlareFrameworkMain.h"
 #include <wx/image.h>
 //*)
 
@@ -34,7 +34,6 @@ bool FlareGDEApp::OnInit()
     if ( wxsOK )
     {
     FlareGDEFrame* Frame = new FlareGDEFrame(0);
-	Frame->SetIcon(wxICON(aaaa)); // To Set App Icon
     Frame->Show();
     SetTopWindow(Frame);
     }
