@@ -8,7 +8,7 @@ Its goal is to simplify writing game mods, which are implemented via configurati
 COPYRIGHT AND LICENSE
 =====================
 
-FlareGDE is Copyright © 2012 Igor Paliychuk.
+FlareFramework is Copyright © 2012 Igor Paliychuk.
 
 LINKS
 =====

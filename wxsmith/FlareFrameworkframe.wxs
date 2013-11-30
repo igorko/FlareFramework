@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <wxsmith>
-	<object class="wxFrame" name="FlareGDEFrame">
-		<title>FlareGDE</title>
+	<object class="wxFrame" name="FlareFrameworkFrame">
+		<title>FlareFramework</title>
 		<pos>5,5</pos>
 		<id_arg>0</id_arg>
 		<object class="wxGridSizer" variable="GridSizerGlobal" member="no">

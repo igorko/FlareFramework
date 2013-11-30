@@ -1,5 +1,5 @@
 /***************************************************************
- * Name:      FlareGDEMain.h
+ * Name:      FlareFrameworkMain.h
  * Purpose:   Defines Application Frame
  * Author:    Igor Paliychuk (mansonigor@gmail.com)
  * Created:   2012-10-06
@@ -7,10 +7,10 @@
  * License:
  **************************************************************/
 
-#ifndef FLAREGDEMAIN_H
-#define FLAREGDEMAIN_H
+#ifndef FLAREFrameworkMAIN_H
+#define FLAREFrameworkMAIN_H
 
-//(*Headers(FlareGDEFrame)
+//(*Headers(FlareFrameworkFrame)
 #include <wx/sizer.h>
 #include <wx/stattext.h>
 #include <wx/menu.h>
@@ -28,12 +28,12 @@
 
 class ItemManager;
 
-class FlareGDEFrame: public wxFrame
+class FlareFrameworkFrame: public wxFrame
 {
     public:
 
-        FlareGDEFrame(wxWindow* parent,wxWindowID id = -1);
-        virtual ~FlareGDEFrame();
+        FlareFrameworkFrame(wxWindow* parent,wxWindowID id = -1);
+        virtual ~FlareFrameworkFrame();
 		wxString modPath;
 		wxString modName;
 		void EnableMenus();
@@ -45,7 +45,7 @@ class FlareGDEFrame: public wxFrame
 
     private:
 
-        //(*Handlers(FlareGDEFrame)
+        //(*Handlers(FlareFrameworkFrame)
         void OnQuit(wxCommandEvent& event);
         void OnAbout(wxCommandEvent& event);
         void OnMenuItemCreateSelected(wxCommandEvent& event);
@@ -79,7 +79,7 @@ class FlareGDEFrame: public wxFrame
         void OnButtonItemAddClick(wxCommandEvent& event);
         //*)
 
-        //(*Identifiers(FlareGDEFrame)
+        //(*Identifiers(FlareFrameworkFrame)
         static const long ID_LISTBOX1;
         static const long ID_STATICTEXT1;
         static const long ID_STATICTEXT2;
@@ -174,7 +174,7 @@ class FlareGDEFrame: public wxFrame
         static const long ID_STATUSBAR1;
         //*)
 
-        //(*Declarations(FlareGDEFrame)
+        //(*Declarations(FlareFrameworkFrame)
         wxSpinCtrl* SpinCtrlItemPower;
         wxSpinCtrl* SpinCtrlItemAbsMin;
         wxSpinCtrl* SpinCtrlItemRanDmgMin;
@@ -271,4 +271,4 @@ class FlareGDEFrame: public wxFrame
         DECLARE_EVENT_TABLE()
 };
 
-#endif // FLAREGDEMAIN_H
+#endif // FLAREFrameworkMAIN_H

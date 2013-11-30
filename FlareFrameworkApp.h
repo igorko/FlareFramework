@@ -1,5 +1,5 @@
 /***************************************************************
- * Name:      FlareGDEApp.h
+ * Name:      FlareFrameworkApp.h
  * Purpose:   Defines Application Class
  * Author:    Igor Paliychuk (mansonigor@gmail.com)
  * Created:   2012-10-06
@@ -7,15 +7,15 @@
  * License:
  **************************************************************/
 
-#ifndef FLAREGDEAPP_H
-#define FLAREGDEAPP_H
+#ifndef FLAREFrameworkAPP_H
+#define FLAREFrameworkAPP_H
 
 #include <wx/app.h>
 
-class FlareGDEApp : public wxApp
+class FlareFrameworkApp : public wxApp
 {
     public:
         virtual bool OnInit();
 };
 
-#endif // FLAREGDEAPP_H
+#endif // FLAREFrameworkAPP_H

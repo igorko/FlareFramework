@@ -1,20 +1,20 @@
 /***************************************************************
- * Name:      FlareGDEMain.cpp
+ * Name:      FlareFrameworkMain.cpp
  * Purpose:   Code for Application Frame
  * Author:    Igor Paliychuk (mansonigor@gmail.com)
  * Created:   2012-10-06
  * Copyright: Igor Paliychuk ()
  * License:
- * FlareGDE is free software: you can redistribute it and/or modify it under the terms
+ * FlareFramework is free software: you can redistribute it and/or modify it under the terms
  * of the GNU General Public License as published by the Free Software Foundation,
  * either version 3 of the License, or (at your option) any later version.
  *
- * FlareGDE is distributed in the hope that it will be useful, but WITHOUT ANY
+ * FlareFramework is distributed in the hope that it will be useful, but WITHOUT ANY
  * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
  * PARTICULAR PURPOSE.  See the GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License along with
- * FlareGDE.  If not, see http://www.gnu.org/licenses/
+ * FlareFramework.  If not, see http://www.gnu.org/licenses/
  **************************************************************/
 
 #include "FlareFrameworkMain.h"
@@ -25,7 +25,7 @@
 #include <wx/textdlg.h>
 #include <wx/textfile.h>
 
-//(*InternalHeaders(FlareGDEFrame)
+//(*InternalHeaders(FlareFrameworkFrame)
 #include <wx/intl.h>
 #include <wx/string.h>
 //*)
@@ -56,109 +56,109 @@ wxString wxbuildinfo(wxbuildinfoformat format)
     return wxbuild;
 }
 
-//(*IdInit(FlareGDEFrame)
-const long FlareGDEFrame::ID_LISTBOX1 = wxNewId();
-const long FlareGDEFrame::ID_STATICTEXT1 = wxNewId();
-const long FlareGDEFrame::ID_STATICTEXT2 = wxNewId();
-const long FlareGDEFrame::ID_STATICTEXT3 = wxNewId();
-const long FlareGDEFrame::ID_STATICTEXT4 = wxNewId();
-const long FlareGDEFrame::ID_STATICTEXT5 = wxNewId();
-const long FlareGDEFrame::ID_STATICTEXT6 = wxNewId();
-const long FlareGDEFrame::ID_STATICTEXT7 = wxNewId();
-const long FlareGDEFrame::ID_TEXTCTRL1 = wxNewId();
-const long FlareGDEFrame::ID_COMBOBOX1 = wxNewId();
-const long FlareGDEFrame::ID_SPINCTRL1 = wxNewId();
-const long FlareGDEFrame::ID_COMBOBOX3 = wxNewId();
-const long FlareGDEFrame::ID_SPINCTRL10 = wxNewId();
-const long FlareGDEFrame::ID_SPINCTRL9 = wxNewId();
-const long FlareGDEFrame::ID_SPINCTRL11 = wxNewId();
-const long FlareGDEFrame::ID_SPINCTRL12 = wxNewId();
-const long FlareGDEFrame::ID_SPINCTRL13 = wxNewId();
-const long FlareGDEFrame::ID_SPINCTRL14 = wxNewId();
-const long FlareGDEFrame::ID_STATICTEXT8 = wxNewId();
-const long FlareGDEFrame::ID_STATICBITMAP1 = wxNewId();
-const long FlareGDEFrame::ID_BUTTON4 = wxNewId();
-const long FlareGDEFrame::ID_STATICTEXT9 = wxNewId();
-const long FlareGDEFrame::ID_STATICTEXT11 = wxNewId();
-const long FlareGDEFrame::ID_STATICTEXT12 = wxNewId();
-const long FlareGDEFrame::ID_STATICTEXT14 = wxNewId();
-const long FlareGDEFrame::ID_STATICTEXT17 = wxNewId();
-const long FlareGDEFrame::ID_STATICTEXT16 = wxNewId();
-const long FlareGDEFrame::ID_SPINCTRL15 = wxNewId();
-const long FlareGDEFrame::ID_SPINCTRL16 = wxNewId();
-const long FlareGDEFrame::ID_COMBOBOX5 = wxNewId();
-const long FlareGDEFrame::ID_BUTTON5 = wxNewId();
-const long FlareGDEFrame::ID_SPINCTRL2 = wxNewId();
-const long FlareGDEFrame::ID_TEXTCTRL12 = wxNewId();
-const long FlareGDEFrame::ID_SPINCTRL18 = wxNewId();
-const long FlareGDEFrame::ID_STATICTEXT10 = wxNewId();
-const long FlareGDEFrame::ID_STATICTEXT13 = wxNewId();
-const long FlareGDEFrame::ID_STATICTEXT15 = wxNewId();
-const long FlareGDEFrame::ID_STATICTEXT18 = wxNewId();
-const long FlareGDEFrame::ID_STATICTEXT19 = wxNewId();
-const long FlareGDEFrame::ID_STATICTEXT20 = wxNewId();
-const long FlareGDEFrame::ID_COMBOBOX4 = wxNewId();
-const long FlareGDEFrame::ID_TEXTCTRL7 = wxNewId();
-const long FlareGDEFrame::ID_SPINCTRL5 = wxNewId();
-const long FlareGDEFrame::ID_SPINCTRL6 = wxNewId();
-const long FlareGDEFrame::ID_SPINCTRL7 = wxNewId();
-const long FlareGDEFrame::ID_TEXTCTRL14 = wxNewId();
-const long FlareGDEFrame::ID_SPINCTRL8 = wxNewId();
-const long FlareGDEFrame::ID_TEXTCTRL2 = wxNewId();
-const long FlareGDEFrame::ID_STATICTEXT21 = wxNewId();
-const long FlareGDEFrame::ID_STATICTEXT22 = wxNewId();
-const long FlareGDEFrame::ID_STATICTEXT23 = wxNewId();
-const long FlareGDEFrame::ID_STATICTEXT24 = wxNewId();
-const long FlareGDEFrame::ID_STATICTEXT25 = wxNewId();
-const long FlareGDEFrame::ID_BUTTON1 = wxNewId();
-const long FlareGDEFrame::ID_BUTTON7 = wxNewId();
-const long FlareGDEFrame::ID_TEXTCTRL15 = wxNewId();
-const long FlareGDEFrame::ID_BUTTON6 = wxNewId();
-const long FlareGDEFrame::ID_SPINCTRL3 = wxNewId();
-const long FlareGDEFrame::ID_SPINCTRL4 = wxNewId();
-const long FlareGDEFrame::ID_BUTTON2 = wxNewId();
-const long FlareGDEFrame::ID_STATICBITMAP2 = wxNewId();
-const long FlareGDEFrame::ID_BUTTON8 = wxNewId();
-const long FlareGDEFrame::ID_BUTTON3 = wxNewId();
-const long FlareGDEFrame::ID_PANEL1 = wxNewId();
-const long FlareGDEFrame::idMenuNew = wxNewId();
-const long FlareGDEFrame::idMenuOpen = wxNewId();
-const long FlareGDEFrame::idMenuSave = wxNewId();
-const long FlareGDEFrame::idMenuClose = wxNewId();
-const long FlareGDEFrame::idMenuQuit = wxNewId();
-const long FlareGDEFrame::idMenuNPC = wxNewId();
-const long FlareGDEFrame::idMenuEnemy = wxNewId();
-const long FlareGDEFrame::idMenuInventory = wxNewId();
-const long FlareGDEFrame::idMenuCharacter = wxNewId();
-const long FlareGDEFrame::idMenuPowers = wxNewId();
-const long FlareGDEFrame::idMenuLog = wxNewId();
-const long FlareGDEFrame::idMenuXPBar = wxNewId();
-const long FlareGDEFrame::idMenuManaBar = wxNewId();
-const long FlareGDEFrame::idMenuHPBar = wxNewId();
-const long FlareGDEFrame::idMenuEnemyBar = wxNewId();
-const long FlareGDEFrame::idMenuMiniMap = wxNewId();
-const long FlareGDEFrame::ID_MENUITEM1 = wxNewId();
-const long FlareGDEFrame::idMenuLoadGame = wxNewId();
-const long FlareGDEFrame::idMenuNewGame = wxNewId();
-const long FlareGDEFrame::idMenuSettings = wxNewId();
-const long FlareGDEFrame::ID_MENUITEM2 = wxNewId();
-const long FlareGDEFrame::idMenuAddPower = wxNewId();
-const long FlareGDEFrame::idMenuAddItem = wxNewId();
-const long FlareGDEFrame::idMenuAddMap = wxNewId();
-const long FlareGDEFrame::idMenuOpenMap = wxNewId();
-const long FlareGDEFrame::idMenuQuest = wxNewId();
-const long FlareGDEFrame::idMenuAbout = wxNewId();
-const long FlareGDEFrame::ID_STATUSBAR1 = wxNewId();
+//(*IdInit(FlareFrameworkFrame)
+const long FlareFrameworkFrame::ID_LISTBOX1 = wxNewId();
+const long FlareFrameworkFrame::ID_STATICTEXT1 = wxNewId();
+const long FlareFrameworkFrame::ID_STATICTEXT2 = wxNewId();
+const long FlareFrameworkFrame::ID_STATICTEXT3 = wxNewId();
+const long FlareFrameworkFrame::ID_STATICTEXT4 = wxNewId();
+const long FlareFrameworkFrame::ID_STATICTEXT5 = wxNewId();
+const long FlareFrameworkFrame::ID_STATICTEXT6 = wxNewId();
+const long FlareFrameworkFrame::ID_STATICTEXT7 = wxNewId();
+const long FlareFrameworkFrame::ID_TEXTCTRL1 = wxNewId();
+const long FlareFrameworkFrame::ID_COMBOBOX1 = wxNewId();
+const long FlareFrameworkFrame::ID_SPINCTRL1 = wxNewId();
+const long FlareFrameworkFrame::ID_COMBOBOX3 = wxNewId();
+const long FlareFrameworkFrame::ID_SPINCTRL10 = wxNewId();
+const long FlareFrameworkFrame::ID_SPINCTRL9 = wxNewId();
+const long FlareFrameworkFrame::ID_SPINCTRL11 = wxNewId();
+const long FlareFrameworkFrame::ID_SPINCTRL12 = wxNewId();
+const long FlareFrameworkFrame::ID_SPINCTRL13 = wxNewId();
+const long FlareFrameworkFrame::ID_SPINCTRL14 = wxNewId();
+const long FlareFrameworkFrame::ID_STATICTEXT8 = wxNewId();
+const long FlareFrameworkFrame::ID_STATICBITMAP1 = wxNewId();
+const long FlareFrameworkFrame::ID_BUTTON4 = wxNewId();
+const long FlareFrameworkFrame::ID_STATICTEXT9 = wxNewId();
+const long FlareFrameworkFrame::ID_STATICTEXT11 = wxNewId();
+const long FlareFrameworkFrame::ID_STATICTEXT12 = wxNewId();
+const long FlareFrameworkFrame::ID_STATICTEXT14 = wxNewId();
+const long FlareFrameworkFrame::ID_STATICTEXT17 = wxNewId();
+const long FlareFrameworkFrame::ID_STATICTEXT16 = wxNewId();
+const long FlareFrameworkFrame::ID_SPINCTRL15 = wxNewId();
+const long FlareFrameworkFrame::ID_SPINCTRL16 = wxNewId();
+const long FlareFrameworkFrame::ID_COMBOBOX5 = wxNewId();
+const long FlareFrameworkFrame::ID_BUTTON5 = wxNewId();
+const long FlareFrameworkFrame::ID_SPINCTRL2 = wxNewId();
+const long FlareFrameworkFrame::ID_TEXTCTRL12 = wxNewId();
+const long FlareFrameworkFrame::ID_SPINCTRL18 = wxNewId();
+const long FlareFrameworkFrame::ID_STATICTEXT10 = wxNewId();
+const long FlareFrameworkFrame::ID_STATICTEXT13 = wxNewId();
+const long FlareFrameworkFrame::ID_STATICTEXT15 = wxNewId();
+const long FlareFrameworkFrame::ID_STATICTEXT18 = wxNewId();
+const long FlareFrameworkFrame::ID_STATICTEXT19 = wxNewId();
+const long FlareFrameworkFrame::ID_STATICTEXT20 = wxNewId();
+const long FlareFrameworkFrame::ID_COMBOBOX4 = wxNewId();
+const long FlareFrameworkFrame::ID_TEXTCTRL7 = wxNewId();
+const long FlareFrameworkFrame::ID_SPINCTRL5 = wxNewId();
+const long FlareFrameworkFrame::ID_SPINCTRL6 = wxNewId();
+const long FlareFrameworkFrame::ID_SPINCTRL7 = wxNewId();
+const long FlareFrameworkFrame::ID_TEXTCTRL14 = wxNewId();
+const long FlareFrameworkFrame::ID_SPINCTRL8 = wxNewId();
+const long FlareFrameworkFrame::ID_TEXTCTRL2 = wxNewId();
+const long FlareFrameworkFrame::ID_STATICTEXT21 = wxNewId();
+const long FlareFrameworkFrame::ID_STATICTEXT22 = wxNewId();
+const long FlareFrameworkFrame::ID_STATICTEXT23 = wxNewId();
+const long FlareFrameworkFrame::ID_STATICTEXT24 = wxNewId();
+const long FlareFrameworkFrame::ID_STATICTEXT25 = wxNewId();
+const long FlareFrameworkFrame::ID_BUTTON1 = wxNewId();
+const long FlareFrameworkFrame::ID_BUTTON7 = wxNewId();
+const long FlareFrameworkFrame::ID_TEXTCTRL15 = wxNewId();
+const long FlareFrameworkFrame::ID_BUTTON6 = wxNewId();
+const long FlareFrameworkFrame::ID_SPINCTRL3 = wxNewId();
+const long FlareFrameworkFrame::ID_SPINCTRL4 = wxNewId();
+const long FlareFrameworkFrame::ID_BUTTON2 = wxNewId();
+const long FlareFrameworkFrame::ID_STATICBITMAP2 = wxNewId();
+const long FlareFrameworkFrame::ID_BUTTON8 = wxNewId();
+const long FlareFrameworkFrame::ID_BUTTON3 = wxNewId();
+const long FlareFrameworkFrame::ID_PANEL1 = wxNewId();
+const long FlareFrameworkFrame::idMenuNew = wxNewId();
+const long FlareFrameworkFrame::idMenuOpen = wxNewId();
+const long FlareFrameworkFrame::idMenuSave = wxNewId();
+const long FlareFrameworkFrame::idMenuClose = wxNewId();
+const long FlareFrameworkFrame::idMenuQuit = wxNewId();
+const long FlareFrameworkFrame::idMenuNPC = wxNewId();
+const long FlareFrameworkFrame::idMenuEnemy = wxNewId();
+const long FlareFrameworkFrame::idMenuInventory = wxNewId();
+const long FlareFrameworkFrame::idMenuCharacter = wxNewId();
+const long FlareFrameworkFrame::idMenuPowers = wxNewId();
+const long FlareFrameworkFrame::idMenuLog = wxNewId();
+const long FlareFrameworkFrame::idMenuXPBar = wxNewId();
+const long FlareFrameworkFrame::idMenuManaBar = wxNewId();
+const long FlareFrameworkFrame::idMenuHPBar = wxNewId();
+const long FlareFrameworkFrame::idMenuEnemyBar = wxNewId();
+const long FlareFrameworkFrame::idMenuMiniMap = wxNewId();
+const long FlareFrameworkFrame::ID_MENUITEM1 = wxNewId();
+const long FlareFrameworkFrame::idMenuLoadGame = wxNewId();
+const long FlareFrameworkFrame::idMenuNewGame = wxNewId();
+const long FlareFrameworkFrame::idMenuSettings = wxNewId();
+const long FlareFrameworkFrame::ID_MENUITEM2 = wxNewId();
+const long FlareFrameworkFrame::idMenuAddPower = wxNewId();
+const long FlareFrameworkFrame::idMenuAddItem = wxNewId();
+const long FlareFrameworkFrame::idMenuAddMap = wxNewId();
+const long FlareFrameworkFrame::idMenuOpenMap = wxNewId();
+const long FlareFrameworkFrame::idMenuQuest = wxNewId();
+const long FlareFrameworkFrame::idMenuAbout = wxNewId();
+const long FlareFrameworkFrame::ID_STATUSBAR1 = wxNewId();
 //*)
 
-BEGIN_EVENT_TABLE(FlareGDEFrame,wxFrame)
-    //(*EventTable(FlareGDEFrame)
+BEGIN_EVENT_TABLE(FlareFrameworkFrame,wxFrame)
+    //(*EventTable(FlareFrameworkFrame)
     //*)
 END_EVENT_TABLE()
 
-FlareGDEFrame::FlareGDEFrame(wxWindow* parent,wxWindowID id)
+FlareFrameworkFrame::FlareFrameworkFrame(wxWindow* parent,wxWindowID id)
 {
-    //(*Initialize(FlareGDEFrame)
+    //(*Initialize(FlareFrameworkFrame)
     wxBoxSizer* BoxSizer4;
     wxBoxSizer* BoxSizer6;
     wxGridSizer* GridSizer4;
@@ -199,8 +199,8 @@ FlareGDEFrame::FlareGDEFrame(wxWindow* parent,wxWindowID id)
     wxMenu* MenuMenus;
     wxMenu* MenuStuff;
     wxMenu* MenuCreatures;
-    
-    Create(parent, wxID_ANY, _("FlareGDE"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_FRAME_STYLE, _T("wxID_ANY"));
+
+    Create(parent, wxID_ANY, _("FlareFramework"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_FRAME_STYLE, _T("wxID_ANY"));
     Move(wxPoint(5,5));
     GridSizerGlobal = new wxGridSizer(0, 1, 0, 0);
     PanelItems = new wxPanel(this, ID_PANEL1, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL1"));
@@ -529,60 +529,60 @@ FlareGDEFrame::FlareGDEFrame(wxWindow* parent,wxWindowID id)
     ModDirDialog = new wxDirDialog(this, _("Select directory for mod creation"), wxEmptyString, wxDD_DEFAULT_STYLE, wxDefaultPosition, wxDefaultSize, _T("wxDirDialog"));
     GridSizerGlobal->Fit(this);
     GridSizerGlobal->SetSizeHints(this);
-    
-    Connect(ID_LISTBOX1,wxEVT_COMMAND_LISTBOX_SELECTED,(wxObjectEventFunction)&FlareGDEFrame::OnListBoxItemsSelect);
-    Connect(ID_BUTTON1,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&FlareGDEFrame::OnButtonItemPushClick);
-    Connect(ID_BUTTON2,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&FlareGDEFrame::OnButtonItemClearClick);
-    Connect(ID_BUTTON8,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&FlareGDEFrame::OnButtonItemAddClick);
-    Connect(ID_BUTTON3,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&FlareGDEFrame::OnButtonItemCLoseClick);
-    Connect(idMenuNew,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&FlareGDEFrame::OnMenuItemCreateSelected);
-    Connect(idMenuOpen,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&FlareGDEFrame::OnMenuItemOpenSelected);
-    Connect(idMenuSave,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&FlareGDEFrame::OnMenuItemSaveModSelected);
-    Connect(idMenuClose,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&FlareGDEFrame::OnMenuItemCloseModSelected);
-    Connect(idMenuQuit,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&FlareGDEFrame::OnQuit);
-    Connect(idMenuNPC,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&FlareGDEFrame::OnMenuItemNPCSelected);
-    Connect(idMenuEnemy,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&FlareGDEFrame::OnMenuItemEnemySelected);
-    Connect(idMenuInventory,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&FlareGDEFrame::OnMenuItemInventorySelected);
-    Connect(idMenuCharacter,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&FlareGDEFrame::OnMenuItemCharacterSelected);
-    Connect(idMenuPowers,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&FlareGDEFrame::OnMenuItemPowersMenuSelected);
-    Connect(idMenuLog,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&FlareGDEFrame::OnMenuItemLogSelected);
-    Connect(idMenuXPBar,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&FlareGDEFrame::OnMenuItemXPBarSelected);
-    Connect(idMenuManaBar,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&FlareGDEFrame::OnMenuItemManaBarSelected);
-    Connect(idMenuHPBar,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&FlareGDEFrame::OnMenuItemHPBarSelected);
-    Connect(idMenuEnemyBar,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&FlareGDEFrame::OnMenuItemEnemyBarSelected);
-    Connect(idMenuMiniMap,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&FlareGDEFrame::OnMenuItemMiniMapSelected);
-    Connect(idMenuLoadGame,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&FlareGDEFrame::OnMenuItemLoadGameSelected);
-    Connect(idMenuNewGame,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&FlareGDEFrame::OnMenuItemNewGameSelected);
-    Connect(idMenuSettings,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&FlareGDEFrame::OnMenuItemSettingsSelected);
-    Connect(idMenuAddPower,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&FlareGDEFrame::OnMenuItemPowerSelected);
-    Connect(idMenuAddItem,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&FlareGDEFrame::OnMenuItemItemSelected);
-    Connect(idMenuAddMap,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&FlareGDEFrame::OnMenuItemAddMapSelected);
-    Connect(idMenuOpenMap,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&FlareGDEFrame::OnMenuItemOpenMapSelected);
-    Connect(idMenuQuest,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&FlareGDEFrame::OnMenuItemQuestSelected);
-    Connect(idMenuAbout,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&FlareGDEFrame::OnAbout);
+
+    Connect(ID_LISTBOX1,wxEVT_COMMAND_LISTBOX_SELECTED,(wxObjectEventFunction)&FlareFrameworkFrame::OnListBoxItemsSelect);
+    Connect(ID_BUTTON1,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&FlareFrameworkFrame::OnButtonItemPushClick);
+    Connect(ID_BUTTON2,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&FlareFrameworkFrame::OnButtonItemClearClick);
+    Connect(ID_BUTTON8,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&FlareFrameworkFrame::OnButtonItemAddClick);
+    Connect(ID_BUTTON3,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&FlareFrameworkFrame::OnButtonItemCLoseClick);
+    Connect(idMenuNew,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&FlareFrameworkFrame::OnMenuItemCreateSelected);
+    Connect(idMenuOpen,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&FlareFrameworkFrame::OnMenuItemOpenSelected);
+    Connect(idMenuSave,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&FlareFrameworkFrame::OnMenuItemSaveModSelected);
+    Connect(idMenuClose,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&FlareFrameworkFrame::OnMenuItemCloseModSelected);
+    Connect(idMenuQuit,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&FlareFrameworkFrame::OnQuit);
+    Connect(idMenuNPC,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&FlareFrameworkFrame::OnMenuItemNPCSelected);
+    Connect(idMenuEnemy,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&FlareFrameworkFrame::OnMenuItemEnemySelected);
+    Connect(idMenuInventory,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&FlareFrameworkFrame::OnMenuItemInventorySelected);
+    Connect(idMenuCharacter,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&FlareFrameworkFrame::OnMenuItemCharacterSelected);
+    Connect(idMenuPowers,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&FlareFrameworkFrame::OnMenuItemPowersMenuSelected);
+    Connect(idMenuLog,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&FlareFrameworkFrame::OnMenuItemLogSelected);
+    Connect(idMenuXPBar,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&FlareFrameworkFrame::OnMenuItemXPBarSelected);
+    Connect(idMenuManaBar,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&FlareFrameworkFrame::OnMenuItemManaBarSelected);
+    Connect(idMenuHPBar,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&FlareFrameworkFrame::OnMenuItemHPBarSelected);
+    Connect(idMenuEnemyBar,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&FlareFrameworkFrame::OnMenuItemEnemyBarSelected);
+    Connect(idMenuMiniMap,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&FlareFrameworkFrame::OnMenuItemMiniMapSelected);
+    Connect(idMenuLoadGame,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&FlareFrameworkFrame::OnMenuItemLoadGameSelected);
+    Connect(idMenuNewGame,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&FlareFrameworkFrame::OnMenuItemNewGameSelected);
+    Connect(idMenuSettings,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&FlareFrameworkFrame::OnMenuItemSettingsSelected);
+    Connect(idMenuAddPower,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&FlareFrameworkFrame::OnMenuItemPowerSelected);
+    Connect(idMenuAddItem,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&FlareFrameworkFrame::OnMenuItemItemSelected);
+    Connect(idMenuAddMap,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&FlareFrameworkFrame::OnMenuItemAddMapSelected);
+    Connect(idMenuOpenMap,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&FlareFrameworkFrame::OnMenuItemOpenMapSelected);
+    Connect(idMenuQuest,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&FlareFrameworkFrame::OnMenuItemQuestSelected);
+    Connect(idMenuAbout,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&FlareFrameworkFrame::OnAbout);
     //*)
     
     modPath = "";
 }
 
-FlareGDEFrame::~FlareGDEFrame()
+FlareFrameworkFrame::~FlareFrameworkFrame()
 {
-    //(*Destroy(FlareGDEFrame)
+    //(*Destroy(FlareFrameworkFrame)
     //*)
 }
 
-void FlareGDEFrame::OnQuit(wxCommandEvent& event)
+void FlareFrameworkFrame::OnQuit(wxCommandEvent& event)
 {
     Close();
 }
 
-void FlareGDEFrame::OnAbout(wxCommandEvent& event)
+void FlareFrameworkFrame::OnAbout(wxCommandEvent& event)
 {
     wxString msg = "FLARE Game Development Environment v0.1";
-    wxMessageBox(msg, _("About FlareGDE"));
+    wxMessageBox(msg, _("About FlareFramework"));
 }
 
-void FlareGDEFrame::OnMenuItemCreateSelected(wxCommandEvent& event)
+void FlareFrameworkFrame::OnMenuItemCreateSelected(wxCommandEvent& event)
 {
 	newMod = true;
 	if (ModDirDialog->ShowModal() == wxID_OK){
@@ -597,7 +597,7 @@ void FlareGDEFrame::OnMenuItemCreateSelected(wxCommandEvent& event)
 	}
 }
 
-void FlareGDEFrame::OnMenuItemOpenSelected(wxCommandEvent& event)
+void FlareFrameworkFrame::OnMenuItemOpenSelected(wxCommandEvent& event)
 {
 	newMod = false;
 	if (ModDirDialog->ShowModal() == wxID_OK){
@@ -608,7 +608,7 @@ void FlareGDEFrame::OnMenuItemOpenSelected(wxCommandEvent& event)
 	}
 }
 
-void FlareGDEFrame::OnMenuItemSaveModSelected(wxCommandEvent& event)
+void FlareFrameworkFrame::OnMenuItemSaveModSelected(wxCommandEvent& event)
 {
 	wxString filename = modPath + wxT("/") + "items" + wxT("/") + wxT("items.txt");
 	std::string path = std::string(filename.mb_str());
@@ -617,7 +617,7 @@ void FlareGDEFrame::OnMenuItemSaveModSelected(wxCommandEvent& event)
 	ToDo();
 }
 
-void FlareGDEFrame::OnMenuItemCloseModSelected(wxCommandEvent& event)
+void FlareFrameworkFrame::OnMenuItemCloseModSelected(wxCommandEvent& event)
 {
 	if (modPath == "") return;
 	wxMessageDialog saveQuestion(this, wxT("Save mod before closing?"), wxT("Save mod"), wxYES_DEFAULT|wxYES_NO|wxCANCEL|wxICON_INFORMATION);
@@ -641,7 +641,7 @@ void FlareGDEFrame::OnMenuItemCloseModSelected(wxCommandEvent& event)
 	CloseAll();
 }
 
-void FlareGDEFrame::EnableMenus()
+void FlareFrameworkFrame::EnableMenus()
 {
 	MenuItemNPC->Enable(true);
 	MenuItemEnemy->Enable(true);
@@ -662,7 +662,7 @@ void FlareGDEFrame::EnableMenus()
 	MenuItemQuest->Enable(true);
 }
 
-void FlareGDEFrame::DisableMenus()
+void FlareFrameworkFrame::DisableMenus()
 {
 	MenuItemNPC->Enable(false);
 	MenuItemEnemy->Enable(false);
@@ -683,7 +683,7 @@ void FlareGDEFrame::DisableMenus()
 	MenuItemQuest->Enable(false);
 }
 
-void FlareGDEFrame::CloseAll()
+void FlareFrameworkFrame::CloseAll()
 {
 	PanelItems->Enable(false);
 	PanelItems->Show(false);
@@ -692,88 +692,88 @@ void FlareGDEFrame::CloseAll()
 	ToDo();
 }
 
-void FlareGDEFrame::ToDo()
+void FlareFrameworkFrame::ToDo()
 {
     wxString msg = "Not yet implemented";
     wxMessageBox(msg, _("TODO"));
 }
 
-void FlareGDEFrame::OnMenuItemNPCSelected(wxCommandEvent& event)
+void FlareFrameworkFrame::OnMenuItemNPCSelected(wxCommandEvent& event)
 {
 	ToDo();
 }
 
-void FlareGDEFrame::OnMenuItemEnemySelected(wxCommandEvent& event)
+void FlareFrameworkFrame::OnMenuItemEnemySelected(wxCommandEvent& event)
 {
 	ToDo();
 }
 
-void FlareGDEFrame::OnMenuItemInventorySelected(wxCommandEvent& event)
+void FlareFrameworkFrame::OnMenuItemInventorySelected(wxCommandEvent& event)
 {
 	ToDo();
 }
 
-void FlareGDEFrame::OnMenuItemCharacterSelected(wxCommandEvent& event)
+void FlareFrameworkFrame::OnMenuItemCharacterSelected(wxCommandEvent& event)
 {
 	ToDo();
 }
 
-void FlareGDEFrame::OnMenuItemPowersMenuSelected(wxCommandEvent& event)
+void FlareFrameworkFrame::OnMenuItemPowersMenuSelected(wxCommandEvent& event)
 {
 	ToDo();
 }
 
-void FlareGDEFrame::OnMenuItemLogSelected(wxCommandEvent& event)
+void FlareFrameworkFrame::OnMenuItemLogSelected(wxCommandEvent& event)
 {
 	ToDo();
 }
 
-void FlareGDEFrame::OnMenuItemXPBarSelected(wxCommandEvent& event)
+void FlareFrameworkFrame::OnMenuItemXPBarSelected(wxCommandEvent& event)
 {
 	ToDo();
 }
 
-void FlareGDEFrame::OnMenuItemManaBarSelected(wxCommandEvent& event)
+void FlareFrameworkFrame::OnMenuItemManaBarSelected(wxCommandEvent& event)
 {
 	ToDo();
 }
 
-void FlareGDEFrame::OnMenuItemHPBarSelected(wxCommandEvent& event)
+void FlareFrameworkFrame::OnMenuItemHPBarSelected(wxCommandEvent& event)
 {
 	ToDo();
 }
 
-void FlareGDEFrame::OnMenuItemEnemyBarSelected(wxCommandEvent& event)
+void FlareFrameworkFrame::OnMenuItemEnemyBarSelected(wxCommandEvent& event)
 {
 	ToDo();
 }
 
-void FlareGDEFrame::OnMenuItemMiniMapSelected(wxCommandEvent& event)
+void FlareFrameworkFrame::OnMenuItemMiniMapSelected(wxCommandEvent& event)
 {
 	ToDo();
 }
 
-void FlareGDEFrame::OnMenuItemLoadGameSelected(wxCommandEvent& event)
+void FlareFrameworkFrame::OnMenuItemLoadGameSelected(wxCommandEvent& event)
 {
 	ToDo();
 }
 
-void FlareGDEFrame::OnMenuItemNewGameSelected(wxCommandEvent& event)
+void FlareFrameworkFrame::OnMenuItemNewGameSelected(wxCommandEvent& event)
 {
 	ToDo();
 }
 
-void FlareGDEFrame::OnMenuItemSettingsSelected(wxCommandEvent& event)
+void FlareFrameworkFrame::OnMenuItemSettingsSelected(wxCommandEvent& event)
 {
 	ToDo();
 }
 
-void FlareGDEFrame::OnMenuItemPowerSelected(wxCommandEvent& event)
+void FlareFrameworkFrame::OnMenuItemPowerSelected(wxCommandEvent& event)
 {
 	ToDo();
 }
 
-void FlareGDEFrame::OnMenuItemItemSelected(wxCommandEvent& event)
+void FlareFrameworkFrame::OnMenuItemItemSelected(wxCommandEvent& event)
 {
 	PanelItems->Show(true);
 	PanelItems->Enable(true);
@@ -793,29 +793,29 @@ void FlareGDEFrame::OnMenuItemItemSelected(wxCommandEvent& event)
 
 }
 
-void FlareGDEFrame::OnMenuItemAddMapSelected(wxCommandEvent& event)
+void FlareFrameworkFrame::OnMenuItemAddMapSelected(wxCommandEvent& event)
 {
 	ToDo();
 }
 
-void FlareGDEFrame::OnMenuItemOpenMapSelected(wxCommandEvent& event)
+void FlareFrameworkFrame::OnMenuItemOpenMapSelected(wxCommandEvent& event)
 {
 	ToDo();
 }
 
-void FlareGDEFrame::OnMenuItemQuestSelected(wxCommandEvent& event)
+void FlareFrameworkFrame::OnMenuItemQuestSelected(wxCommandEvent& event)
 {
 	ToDo();
 }
 
-void FlareGDEFrame::OnButtonItemCLoseClick(wxCommandEvent& event)
+void FlareFrameworkFrame::OnButtonItemCLoseClick(wxCommandEvent& event)
 {
 	PanelItems->Enable(false);
 	PanelItems->Show(false);
 
 }
 
-void FlareGDEFrame::OnButtonItemClearClick(wxCommandEvent& event)
+void FlareFrameworkFrame::OnButtonItemClearClick(wxCommandEvent& event)
 {
 	TextCtrlItemName->Clear();
 	TextCtrlItemName->AppendText("ItemName");
@@ -850,7 +850,7 @@ void FlareGDEFrame::OnButtonItemClearClick(wxCommandEvent& event)
 
 }
 
-void FlareGDEFrame::OnListBoxItemsSelect(wxCommandEvent& event)
+void FlareFrameworkFrame::OnListBoxItemsSelect(wxCommandEvent& event)
 {
 	int index = ListBoxItems->GetSelection() + 1;
 	wxString temp0(items->items[index].name.c_str(), wxConvUTF8);
@@ -923,7 +923,7 @@ void FlareGDEFrame::OnListBoxItemsSelect(wxCommandEvent& event)
 	SpinCtrlItemRequires->SetValue(items->items[index].req_val);
 }
 
-void FlareGDEFrame::OnButtonItemPushClick(wxCommandEvent& event)
+void FlareFrameworkFrame::OnButtonItemPushClick(wxCommandEvent& event)
 {
 	int index = ListBoxItems->GetSelection() + 1;
 	items->items[index].name = TextCtrlItemName->GetLineText(0);
@@ -985,7 +985,7 @@ void FlareGDEFrame::OnButtonItemPushClick(wxCommandEvent& event)
 	ListBoxItems->SetString(ListBoxItems->GetSelection(), items->items[index].name.c_str());
 }
 
-void FlareGDEFrame::OnButtonItemAddClick(wxCommandEvent& event)
+void FlareFrameworkFrame::OnButtonItemAddClick(wxCommandEvent& event)
 {
 	items->items.resize(items->items.size()+1);
 	ListBoxItems->Append("");

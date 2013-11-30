@@ -7,7 +7,7 @@
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="Release">
-				<Option output="bin/Release/FlareGDE" prefix_auto="1" extension_auto="1" />
+				<Option output="bin/Release/FlareFramework" prefix_auto="1" extension_auto="1" />
 				<Option object_output="obj/Release/" />
 				<Option type="0" />
 				<Option compiler="gcc" />
@@ -66,9 +66,9 @@
 			<code_completion />
 			<debugger />
 			<wxsmith version="1">
-				<gui name="wxWidgets" src="FlareGDEApp.cpp" main="FlareGDEFrame" init_handlers="necessary" language="CPP" />
+				<gui name="wxWidgets" src="FlareFrameworkApp.cpp" main="FlareFrameworkFrame" init_handlers="necessary" language="CPP" />
 				<resources>
-					<wxFrame wxs="wxsmith/FlareGDEframe.wxs" src="FlareGDEMain.cpp" hdr="FlareGDEMain.h" fwddecl="0" i18n="1" name="FlareGDEFrame" language="CPP" />
+					<wxFrame wxs="wxsmith/FlareFrameworkframe.wxs" src="FlareFrameworkMain.cpp" hdr="FlareFrameworkMain.h" fwddecl="0" i18n="1" name="FlareFrameworkFrame" language="CPP" />
 				</resources>
 			</wxsmith>
 			<envvars />
