@@ -3,11 +3,13 @@
 	<object class="wxFrame" name="FlareFrameworkFrame">
 		<title>FlareFramework</title>
 		<pos>5,5</pos>
+		<size>920,434</size>
 		<id_arg>0</id_arg>
-		<object class="wxGridSizer" variable="GridSizerGlobal" member="no">
-			<cols>1</cols>
-			<object class="sizeritem">
+		<object class="wxNotebook" name="ID_NOTEBOOK1" variable="TabbedPanel" member="yes">
+			<pos>184,224</pos>
+			<object class="notebookpage">
 				<object class="wxPanel" name="ID_PANEL1" variable="PanelItems" member="yes">
+					<size>645,424</size>
 					<enabled>0</enabled>
 					<hidden>1</hidden>
 					<object class="wxGridSizer" variable="GridSizer1" member="no">
@@ -812,7 +814,23 @@
 						</object>
 					</object>
 				</object>
-				<flag>wxALIGN_LEFT|wxALIGN_TOP</flag>
+				<label>Items</label>
+			</object>
+			<object class="notebookpage">
+				<object class="wxPanel" name="ID_PANEL2" variable="PanelPowers" member="yes" />
+				<label>Powers</label>
+			</object>
+			<object class="notebookpage">
+				<object class="wxPanel" name="ID_PANEL3" variable="PanelNPCs" member="yes" />
+				<label>NPCs</label>
+			</object>
+			<object class="notebookpage">
+				<object class="wxPanel" name="ID_PANEL4" variable="PanelEnemies" member="yes" />
+				<label>Enemies</label>
+			</object>
+			<object class="notebookpage">
+				<object class="wxPanel" name="ID_PANEL5" variable="PanelQuests" member="yes" />
+				<label>Quests</label>
 			</object>
 		</object>
 		<object class="wxMenuBar" variable="MainMenuBar" member="no">

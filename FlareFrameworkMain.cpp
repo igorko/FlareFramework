@@ -121,6 +121,11 @@ const long FlareFrameworkFrame::ID_STATICBITMAP2 = wxNewId();
 const long FlareFrameworkFrame::ID_BUTTON8 = wxNewId();
 const long FlareFrameworkFrame::ID_BUTTON3 = wxNewId();
 const long FlareFrameworkFrame::ID_PANEL1 = wxNewId();
+const long FlareFrameworkFrame::ID_PANEL2 = wxNewId();
+const long FlareFrameworkFrame::ID_PANEL3 = wxNewId();
+const long FlareFrameworkFrame::ID_PANEL4 = wxNewId();
+const long FlareFrameworkFrame::ID_PANEL5 = wxNewId();
+const long FlareFrameworkFrame::ID_NOTEBOOK1 = wxNewId();
 const long FlareFrameworkFrame::idMenuNew = wxNewId();
 const long FlareFrameworkFrame::idMenuOpen = wxNewId();
 const long FlareFrameworkFrame::idMenuSave = wxNewId();
@@ -177,7 +182,6 @@ FlareFrameworkFrame::FlareFrameworkFrame(wxWindow* parent,wxWindowID id)
     wxGridSizer* GridSizer5;
     wxGridSizer* GridSizer7;
     wxGridSizer* GridSizer8;
-    wxGridSizer* GridSizerGlobal;
     wxBoxSizer* BoxSizer2;
     wxBoxSizer* BoxSizer11;
     wxBoxSizer* BoxSizer16;
@@ -201,9 +205,10 @@ FlareFrameworkFrame::FlareFrameworkFrame(wxWindow* parent,wxWindowID id)
     wxMenu* MenuCreatures;
 
     Create(parent, wxID_ANY, _("FlareFramework"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_FRAME_STYLE, _T("wxID_ANY"));
+    SetClientSize(wxSize(920,434));
     Move(wxPoint(5,5));
-    GridSizerGlobal = new wxGridSizer(0, 1, 0, 0);
-    PanelItems = new wxPanel(this, ID_PANEL1, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL1"));
+    TabbedPanel = new wxNotebook(this, ID_NOTEBOOK1, wxPoint(184,224), wxDefaultSize, 0, _T("ID_NOTEBOOK1"));
+    PanelItems = new wxPanel(TabbedPanel, ID_PANEL1, wxDefaultPosition, wxSize(645,424), wxTAB_TRAVERSAL, _T("ID_PANEL1"));
     PanelItems->Disable();
     PanelItems->Hide();
     GridSizer1 = new wxGridSizer(2, 6, 0, 0);
@@ -429,10 +434,17 @@ FlareFrameworkFrame::FlareFrameworkFrame(wxWindow* parent,wxWindowID id)
     GridSizer12->Add(GridSizer13, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     GridSizer1->Add(GridSizer12, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     PanelItems->SetSizer(GridSizer1);
-    GridSizer1->Fit(PanelItems);
-    GridSizer1->SetSizeHints(PanelItems);
-    GridSizerGlobal->Add(PanelItems, 0, wxALIGN_LEFT|wxALIGN_TOP, 0);
-    SetSizer(GridSizerGlobal);
+    SetSizer(GridSizer1);
+    Layout();
+    PanelPowers = new wxPanel(TabbedPanel, ID_PANEL2, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL2"));
+    PanelNPCs = new wxPanel(TabbedPanel, ID_PANEL3, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL3"));
+    PanelEnemies = new wxPanel(TabbedPanel, ID_PANEL4, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL4"));
+    PanelQuests = new wxPanel(TabbedPanel, ID_PANEL5, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL5"));
+    TabbedPanel->AddPage(PanelItems, _("Items"), false);
+    TabbedPanel->AddPage(PanelPowers, _("Powers"), false);
+    TabbedPanel->AddPage(PanelNPCs, _("NPCs"), false);
+    TabbedPanel->AddPage(PanelEnemies, _("Enemies"), false);
+    TabbedPanel->AddPage(PanelQuests, _("Quests"), false);
     MainMenuBar = new wxMenuBar();
     MenuFile = new wxMenu();
     MenuItemCreate = new wxMenuItem(MenuFile, idMenuNew, _("New Mod\tAlt-N"), _("Create new mod"), wxITEM_NORMAL);
@@ -527,8 +539,6 @@ FlareFrameworkFrame::FlareFrameworkFrame(wxWindow* parent,wxWindowID id)
     StatusBar->SetStatusStyles(1,__wxStatusBarStyles_1);
     SetStatusBar(StatusBar);
     ModDirDialog = new wxDirDialog(this, _("Select directory for mod creation"), wxEmptyString, wxDD_DEFAULT_STYLE, wxDefaultPosition, wxDefaultSize, _T("wxDirDialog"));
-    GridSizerGlobal->Fit(this);
-    GridSizerGlobal->SetSizeHints(this);
 
     Connect(ID_LISTBOX1,wxEVT_COMMAND_LISTBOX_SELECTED,(wxObjectEventFunction)&FlareFrameworkFrame::OnListBoxItemsSelect);
     Connect(ID_BUTTON1,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&FlareFrameworkFrame::OnButtonItemPushClick);

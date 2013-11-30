@@ -11,6 +11,7 @@
 #define FLAREFrameworkMAIN_H
 
 //(*Headers(FlareFrameworkFrame)
+#include <wx/notebook.h>
 #include <wx/sizer.h>
 #include <wx/stattext.h>
 #include <wx/menu.h>
@@ -144,6 +145,11 @@ class FlareFrameworkFrame: public wxFrame
         static const long ID_BUTTON8;
         static const long ID_BUTTON3;
         static const long ID_PANEL1;
+        static const long ID_PANEL2;
+        static const long ID_PANEL3;
+        static const long ID_PANEL4;
+        static const long ID_PANEL5;
+        static const long ID_NOTEBOOK1;
         static const long idMenuNew;
         static const long idMenuOpen;
         static const long idMenuSave;
@@ -177,6 +183,7 @@ class FlareFrameworkFrame: public wxFrame
         //(*Declarations(FlareFrameworkFrame)
         wxSpinCtrl* SpinCtrlItemPower;
         wxSpinCtrl* SpinCtrlItemAbsMin;
+        wxPanel* PanelQuests;
         wxSpinCtrl* SpinCtrlItemRanDmgMin;
         wxSpinCtrl* SpinCtrlItemRanDmgMax;
         wxListBox* ListBoxItems;
@@ -195,6 +202,8 @@ class FlareFrameworkFrame: public wxFrame
         wxSpinCtrl* SpinCtrlItemAbsMax;
         wxMenuItem* MenuItemLoadGame;
         wxButton* ButtonItemStepFX;
+        wxPanel* PanelPowers;
+        wxPanel* PanelNPCs;
         wxTextCtrl* TextCtrlItemBonusVal;
         wxStaticText* StaticTextItemRequires;
         wxStaticText* StaticTextItemClass;
@@ -211,6 +220,7 @@ class FlareFrameworkFrame: public wxFrame
         wxStaticText* StaticTextitemBonus;
         wxStaticBitmap* StaticBitmapItemIcon;
         wxButton* ButtonItemCLose;
+        wxPanel* PanelEnemies;
         wxSpinCtrl* SpinCtrlItemMentDmgMin;
         wxMenuItem* MenuItemItem;
         wxMenuItem* MenuItemOpen;
@@ -245,6 +255,7 @@ class FlareFrameworkFrame: public wxFrame
         wxStaticText* StaticTextItemGfx;
         wxSpinCtrl* SpinCtrlItemMentDmgMax;
         wxStaticText* StaticTextItemPower;
+        wxNotebook* TabbedPanel;
         wxMenuItem* MenuItemLog;
         wxStaticText* StaticTextItemType;
         wxSpinCtrl* SpinCtrlItemPowerMod;
