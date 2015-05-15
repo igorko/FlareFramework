@@ -17,30 +17,93 @@ FLARE.  If not, see http://www.gnu.org/licenses/
 
 #include "FileParser.h"
 #include "UtilsParsing.h"
+#include "UtilsFileSystem.h"
+//#include "SharedResources.h"
 
-
-using namespace std;
-	bool new_section;
-	std::string section;
-	std::string key;
-	std::string val;
+#include <stdarg.h>
 
 FileParser::FileParser()
-	: line("")
+	: current_index(0)
+	, line("")
+	, line_number(0)
+	, include_fp(NULL)
 	, new_section(false)
 	, section("")
 	, key("")
-	, val("")
-{}
+	, val("") {
+}
 
-bool FileParser::open(const string& filename) {
-	infile.open(filename.c_str(), ios::in);
-	return infile.is_open();
+bool FileParser::open(const std::string& _filename, bool locateFileName, const std::string &_errormessage) {
+	filenames.clear();
+    //if (locateFileName) {
+    //	filenames = mods->list(_filename);
+    //}
+    //else {
+		filenames.push_back(_filename);
+    //}
+	current_index = 0;
+	line_number = 0;
+	this->errormessage = _errormessage;
+
+	if (filenames.size() == 0 && !errormessage.empty()) {
+		logError("FileParser: %s: %s: No such file or directory!", _filename.c_str(), errormessage.c_str());
+		return false;
+	}
+
+	bool ret = false;
+
+	// Cycle through all filenames from the end, stopping when a file is to overwrite all further files.
+	for (unsigned i=filenames.size(); i>0; i--) {
+		infile.open(filenames[i-1].c_str(), std::ios::in);
+		ret = infile.is_open();
+
+		if (ret) {
+			// This will be the first file to be parsed. Seek to the start of the file and leave it open.
+			if (infile.good() && trim(getLine(infile)) != "APPEND") {
+				std::string test_line;
+
+				// get the first non-comment, non blank line
+				while (infile.good()) {
+					test_line = trim(getLine(infile));
+					if (test_line.length() == 0) continue;
+					else if (test_line.at(0) == '#') continue;
+					else break;
+				}
+
+				if (test_line != "APPEND") {
+					current_index = i-1;
+					infile.clear(); // reset flags
+					infile.seekg(0, std::ios::beg);
+					break;
+				}
+			}
+
+			// don't close the final file if it's the only one with an "APPEND" line
+			if (i > 1) {
+				infile.close();
+				infile.clear();
+			}
+		}
+		else {
+			if (!errormessage.empty())
+				logError("FileParser: %s: %s", errormessage.c_str(), filenames[i-1].c_str());
+			infile.clear();
+		}
+	}
+
+	return ret;
 }
 
 void FileParser::close() {
+	if (include_fp) {
+		include_fp->close();
+		delete include_fp;
+		include_fp = NULL;
+	}
+
 	if (infile.is_open())
 		infile.close();
+	infile.clear();
 }
 
 /**
@@ -51,34 +114,90 @@ void FileParser::close() {
  */
 bool FileParser::next() {
 
-	string starts_with;
+	std::string starts_with;
 	new_section = false;
 
-	while (infile.good()) {
+	while (current_index < filenames.size()) {
+		while (infile.good()) {
+			if (include_fp) {
+				if (include_fp->next()) {
+					new_section = include_fp->new_section;
+					section = include_fp->section;
+					key = include_fp->key;
+					val = include_fp->val;
+					return true;
+				}
+				else {
+					include_fp->close();
+					delete include_fp;
+					include_fp = NULL;
+					continue;
+				}
+			}
 
-		line = getLine(infile);
+			line = trim(getLine(infile));
+			line_number++;
 
-		// skip ahead if this line is empty
-		if (line.length() == 0) continue;
+			// skip ahead if this line is empty
+			if (line.length() == 0) continue;
 
-		starts_with = line.at(0);
+			starts_with = line.at(0);
 
-		// skip ahead if this line is a comment
-		if (starts_with == "#") continue;
+			// skip ahead if this line is a comment
+			if (starts_with == "#") continue;
 
-		// set new section if this line is a section declaration
-		if (starts_with == "[") {
-			new_section = true;
-			section = parse_section_title(line);
+			// set new section if this line is a section declaration
+			if (starts_with == "[") {
+				new_section = true;
+				section = parse_section_title(line);
 
-			// keep searching for a key-pair
-			continue;
+				// keep searching for a key-pair
+				continue;
+			}
+
+			// skip the string used to combine files
+			if (line == "APPEND") continue;
+
+			// read from a separate file
+			std::size_t first_space = line.find(' ');
+
+			if (first_space != std::string::npos) {
+				std::string directive = line.substr(0, first_space);
+
+				if (directive == "INCLUDE") {
+					std::string tmp = line.substr(first_space+1);
+
+					include_fp = new FileParser();
+					if (!include_fp || !include_fp->open(tmp)) {
+						delete include_fp;
+						include_fp = NULL;
+					}
+					continue;
+				}
+			}
+
+			// this is a keypair. Perform basic parsing and return
+			parse_key_pair(line, key, val);
+			return true;
 		}
 
-		// this is a keypair. Perform basic parsing and return
-		parse_key_pair(line, key, val);
-		return true;
+		infile.close();
+		infile.clear();
 
+		current_index++;
+		if (current_index == filenames.size()) return false;
+
+		line_number = 0;
+		const std::string current_filename = filenames[current_index];
+		infile.open(current_filename.c_str(), std::ios::in);
+		if (!infile.is_open()) {
+			if (!errormessage.empty())
+				logError("FileParser: %s: %s", errormessage.c_str(), current_filename.c_str());
+			infile.clear();
+			return false;
+		}
+		// a new file starts a new section
+		new_section = true;
 	}
 
 	// hit the end of file
@@ -88,7 +207,7 @@ bool FileParser::next() {
 /**
  * Get an unparsed, unfiltered line from the input file
  */
-string FileParser::getRawLine() {
+std::string FileParser::getRawLine() {
 	line = "";
 
 	if (infile.good()) {
@@ -97,17 +216,17 @@ string FileParser::getRawLine() {
 	return line;
 }
 
-string FileParser::nextValue() {
+std::string FileParser::nextValue() {
 	if (val == "") {
 		return ""; // not found
 	}
-	string s;
+	std::string s;
 	size_t seppos = val.find_first_of(',');
 	size_t alt_seppos = val.find_first_of(';');
-	if (alt_seppos != string::npos && alt_seppos < seppos)
-	    seppos = alt_seppos; // return the first ',' or ';'
+	if (alt_seppos != std::string::npos && alt_seppos < seppos)
+		seppos = alt_seppos; // return the first ',' or ';'
 
-	if (seppos == string::npos) {
+	if (seppos == std::string::npos) {
 		s = val;
 		val = "";
 	}
@@ -116,6 +235,23 @@ string FileParser::nextValue() {
 		val = val.substr(seppos+1);
 	}
 	return s;
+}
+
+void FileParser::error(const char* format, ...) {
+	char buffer[4096];
+	va_list args;
+
+	va_start(args, format);
+	vsprintf(buffer, format, args);
+	va_end(args);
+
+	std::stringstream ss;
+	ss << "[" << filenames[current_index] << ":" << line_number << "] " << buffer;
+	logError(ss.str().c_str());
+}
+
+void FileParser::incrementLineNum() {
+	line_number++;
 }
 
 FileParser::~FileParser() {

@@ -24,15 +24,22 @@ FLARE.  If not, see http://www.gnu.org/licenses/
 #ifndef UTILS_FILE_SYSTEM_H
 #define UTILS_FILE_SYSTEM_H
 
-#include <string>
-#include <vector>
+#include "CommonIncludes.h"
 
-bool dirExists(std::string path);
-void createDir(std::string path);
-bool fileExists(std::string filename);
-int getFileList(std::string dir, std::string ext, std::vector<std::string> &files);
-int getDirList(std::string dir, std::vector<std::string> &dirs);
+bool dirExists(const std::string &path);
+bool pathExists(const std::string &path);
+void createDir(const std::string &path);
+bool fileExists(const std::string &filename);
+int getFileList(const std::string &dir, const std::string &ext, std::vector<std::string> &files);
+int getDirList(const std::string &dir, std::vector<std::string> &dirs);
 
 
+bool isDirectory(const std::string &path);
+
+bool removeFile(const std::string &file);
+bool removeDir(const std::string &dir);
+bool removeDirRecursive(const std::string &dir);
+
+std::string path(const std::stringstream* ss);
 
 #endif
