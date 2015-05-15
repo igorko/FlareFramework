@@ -307,7 +307,7 @@ void EditorItemManager::save(const std::string& filename) {
 				outfile << "price=" << items[i].price << "\n";
 
 			if (items[i].price_sell > 0)
-			outfile << "price_sell=" << items[i].price_sell << "\n";
+			   outfile << "price_sell=" << items[i].price_sell << "\n";
 
 			if (items[i].max_quantity > 1)
 				outfile << "max_quantity=" << items[i].max_quantity << "\n";
