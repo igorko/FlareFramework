@@ -8,7 +8,7 @@ Its goal is to simplify writing game mods, which are implemented via configurati
 COPYRIGHT AND LICENSE
 =====================
 
-FlareFramework is Copyright © 2012 Igor Paliychuk.
+FlareFramework is Copyright © 2012-2015 Igor Paliychuk.
 
 LINKS
 =====
@@ -26,22 +26,5 @@ FLARE Forums    http://opengameart.org/forums/flare
 DEPENDENCIES
 ============
 
-To build FlareFramework you will need wxWidgets 2.8 and Code::Blocks IDE.
-To run FlareFramework you need wxWidgets 2.8 Runtime Libraries.
-
-BUILDING
-========
-
-To build FlareFramework, you will need to get wxWidgets first:
-
-http://www.wxwidgets.org/
-
-Under Windows you will need to build wxWidgets from source. See instructions at:
-
-http://wiki.wxwidgets.org/CodeBlocks_Setup_Guide
-
-Set MONOLITHIC to 0. It will save time and your nerves.
-
-To build FlareFramework, you will need to setup Code::Blocks to use wxWidgets libraries, you have built. See instructions at:
-
-http://wiki.codeblocks.org/index.php?title=WxWindowsQuickRef
+To build FlareFramework you will need Qt4 or Qt5. Application uses QtWidgets for GUI.
+For development you will also need QtCreator.
