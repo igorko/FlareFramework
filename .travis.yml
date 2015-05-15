@@ -1,0 +1,9 @@
+language: cpp
+compiler:
+ - gcc
+ - clang 
+before_install:
+ - sudo apt-get update -qq
+ - sudo apt-get install -qq libqt4-dev qt4-qmake cppcheck
+script: cd ui && qmake FlareFramework.pro && make
+after_script: cppcheck --verbose --enable=all --std=posix --std=c++11 --quiet `git ls-files src/\*.cpp`
