@@ -8,7 +8,7 @@ Its goal is to simplify writing game mods, which are implemented via configurati
 COPYRIGHT AND LICENSE
 =====================
 
-FlareFramework is Copyright © 2012 Igor Paliychuk.
+FlareFramework is Copyright Â© 2012 Igor Paliychuk.
 
 LINKS
 =====
@@ -40,7 +40,7 @@ Under Windows you will need to build wxWidgets from source. See instructions at:
 
 http://wiki.wxwidgets.org/CodeBlocks_Setup_Guide
 
-Set MONOLITHIC to 0. If will save time and your nerves.
+Set MONOLITHIC to 0. It will save time and your nerves.
 
 To build FlareFramework, you will need to setup Code::Blocks to use wxWidgets libraries, you have built. See instructions at:
 
