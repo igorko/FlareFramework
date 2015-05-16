@@ -25,7 +25,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::setMenusEnabled(bool state)
 {
-    auto actions = menuBar()->actions();
+    QList<QAction*> actions = menuBar()->actions();
     actions.at(1)->menu()->actions().at(0)->setEnabled(state);
     actions.at(1)->menu()->actions().at(1)->setEnabled(state);
 
