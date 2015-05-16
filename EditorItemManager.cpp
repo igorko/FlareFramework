@@ -24,7 +24,7 @@ FLARE.  If not, see http://www.gnu.org/licenses/
 
 
 EditorItemManager::EditorItemManager(const std::string& filename) {
-	items = vector<Item>();
+	items = std::vector<Item>();
 
 	load(filename);
 	if (!items.empty()) shrinkItems();
@@ -49,6 +49,7 @@ void EditorItemManager::load(const std::string& filename) {
 	int id = 0;
 	bool id_line = false;
 	while (infile.next()) {
+	/*
 		if (infile.key == "id") {
 			id_line = true;
 			id = toInt(infile.val);
@@ -187,7 +188,7 @@ void EditorItemManager::load(const std::string& filename) {
 				items[id].classname.push_back(classname);
 				classname = infile.nextValue();
 			}
-		}
+		}*/
 
 	}
 	infile.close();
@@ -243,7 +244,7 @@ void EditorItemManager::save(const std::string& filename) {
 	outfile.open(filename.c_str(), std::ios::out);
 
 	if (outfile.is_open()) {
-
+/*
 		for (unsigned i = 1;i<items.size();i++) {
 
 			if (items[i].name == "") continue;
@@ -257,7 +258,7 @@ void EditorItemManager::save(const std::string& filename) {
 			outfile << "item_type=" << items[i].type << "\n";
 
 			outfile << "level=" << items[i].level << "\n";
-/*
+
 			if (items[i].req_stat == REQUIRES_PHYS && items[i].req_val > 0)
 				outfile << "req=p," << items[i].req_val << "\n";
 			else if (items[i].req_stat == REQUIRES_MENT && items[i].req_val > 0)
@@ -266,7 +267,7 @@ void EditorItemManager::save(const std::string& filename) {
 				outfile << "req=o," << items[i].req_val << "\n";
 			else if (items[i].req_stat == REQUIRES_DEF && items[i].req_val > 0)
 				outfile << "req=d," << items[i].req_val << "\n";
-*/
+
 			if (items[i].dmg_melee_min > 0 || items[i].dmg_melee_max > 0)
 				outfile << "dmg_melee=" << items[i].dmg_melee_min << "," << items[i].dmg_melee_max << "\n";
 
@@ -345,7 +346,7 @@ void EditorItemManager::save(const std::string& filename) {
 
 			outfile << std::endl;
 		}
-
+*/
 		if (outfile.bad()) fprintf(stderr, "Unable to save the file. No write access or disk is full!\n");
 		outfile.close();
 	}
