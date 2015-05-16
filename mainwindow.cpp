@@ -103,7 +103,7 @@ void MainWindow::on_actionClose_Mod_triggered()
     //if (answer == wxID_YES)
     //{
         QString filename = modPath + "/" + "items" + "/" + "items.txt";
-        std::string path = filename.toAscii();
+        std::string path = filename.toAscii().constData();
         items->save(path);
         // ToDo
     //}
@@ -308,7 +308,7 @@ void MainWindow::on_actionQuit_triggered()
 void MainWindow::on_actionAbout_triggered()
 {
     QString msg = "FLARE Game Development Environment v0.1";
-    auto msgBox = new QMessageBox(this);
+    QMessageBox* msgBox = new QMessageBox(this);
     msgBox->setText(msg);
     msgBox->exec();
 }
