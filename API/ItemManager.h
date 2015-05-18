@@ -188,9 +188,9 @@ public:
 };
 
 class ItemManager {
-private:
-	void loadItems();
-	void loadTypes();
+protected:
+	void loadItems(const std::string& filename, bool locateFileName = true);
+	void loadTypes(const std::string& filename, bool locateFileName = true);
 	void loadSets();
 	void loadAll();
 	void parseBonus(BonusData& bdata, FileParser& infile);
