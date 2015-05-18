@@ -8,7 +8,7 @@
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::MainWindow)
+    ui(new Ui::MainWindow), items(NULL)
 {
     ui->setupUi(this);
 
@@ -104,7 +104,7 @@ void MainWindow::on_actionClose_Mod_triggered()
     //{
         QString filename = modPath + "/" + "items" + "/" + "items.txt";
         std::string path = filename.toAscii().constData();
-        items->save(path);
+        if (items != NULL) items->save(path);
         // ToDo
     //}
     //else if (answer == wxID_CANCEL)
@@ -275,21 +275,20 @@ void MainWindow::on_actionAdd_Item_triggered()
     ui->tabWidget->setTabEnabled(0, false);
     ui->tabWidget->setTabEnabled(1, true);
     ui->tabWidget->setCurrentIndex(1);
-    /*
-    if (!wxFileName::DirExists(modPath + wxT("/") + "items"))
-        wxFileName::Mkdir(modPath + wxT("/") + "items");
-    wxString filename = modPath + wxT("/") + "items" + wxT("/") + wxT("items.txt");
 
-    wxTextFile itemsFile(filename);
-    if (!itemsFile.Exists())
-        itemsFile.Create();
+    if (!QDir(modPath + "/" + "items").exists())
+        QDir().mkdir(modPath + "/" + "items");
+    QString filename = modPath + "/" + "items" + "/" + "items.txt";
 
-    std::string path = std::string(filename.mb_str());
-    items = new ItemManager(path);
-    for (unsigned i = 1;i<items->items.size();i++) {
-        ListBoxItems->Append(items->items[i].name.c_str());
-    }
-    */
+    QFile itemsFile(filename);
+    //if (!itemsFile.exists())
+    //    itemsFile.Create();
+
+    std::string path = filename.toAscii().constData();
+    items = new EditorItemManager(path);
+    //for (unsigned i = 1;i<items->items.size();i++) {
+    //    ListBoxItems->Append(items->items[i].name.c_str());
+    //}
 }
 
 void MainWindow::on_actionSave_Mod_triggered()

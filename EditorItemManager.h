@@ -30,8 +30,6 @@ public:
 	EditorItemManager(const std::string& filename);
 	~EditorItemManager();
 	
-	void load(const std::string& filename);
-	void loadTypes(const std::string& filename);
 	void shrinkItems();
 
 	void save(const std::string& filename);
