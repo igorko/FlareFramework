@@ -26,13 +26,17 @@ FLARE.  If not, see http://www.gnu.org/licenses/
 #include "CommonIncludes.h"
 #include "FileParser.h"
 #include "ItemManager.h"
-//#include "Settings.h"
-//#include "SharedResources.h"
-//#include "StatBlock.h"
-//#include "Stats.h"
+#ifndef EDITOR
+#include "Settings.h"
+#include "SharedResources.h"
+#include "StatBlock.h"
+#include "Stats.h"
+#endif
 #include "UtilsFileSystem.h"
 #include "UtilsParsing.h"
-//#include "WidgetLabel.h"
+#ifndef EDITOR
+#include "WidgetLabel.h"
+#endif
 
 #include <cassert>
 #include <climits>
@@ -65,7 +69,7 @@ static inline void shrinkVecToFit(std::vector<Ty_>& vec) {
 }
 
 ItemManager::ItemManager()
-/*
+#ifndef EDITOR
 	: color_normal(font->getColor("item_normal"))
 	, color_low(font->getColor("item_low"))
 	, color_high(font->getColor("item_high"))
@@ -73,7 +77,10 @@ ItemManager::ItemManager()
 	, color_bonus(font->getColor("item_bonus"))
 	, color_penalty(font->getColor("item_penalty"))
 	, color_requirements_not_met(font->getColor("requirements_not_met"))
-    , color_flavor(font->getColor("item_flavor"))*/ {
+	, color_flavor(font->getColor("item_flavor")) {
+#else
+{
+#endif
 	// NB: 20 is arbitrary picked number, but it looks like good start.
 	items.reserve(20);
 	item_sets.reserve(5);
@@ -151,12 +158,21 @@ void ItemManager::loadItems(const std::string& filename, bool locateFileName) {
 
 		assert(items.size() > std::size_t(id));
 
+#ifndef EDITOR
 		if (infile.key == "name")
 			// @ATTR name|string|Item name displayed on long and short tooltips.
-            items[id].name = infile.val;//msg->get(infile.val);
+			items[id].name = msg->get(infile.val);
 		else if (infile.key == "flavor")
 			// @ATTR flavor|string|A description of the item.
-            items[id].flavor = infile.val;//msg->get(infile.val);
+			items[id].flavor = msg->get(infile.val);
+#else
+		if (infile.key == "name")
+			// @ATTR name|string|Item name displayed on long and short tooltips.
+			items[id].name = infile.val;
+		else if (infile.key == "flavor")
+			// @ATTR flavor|string|A description of the item.
+			items[id].flavor = infile.val;
+#endif
 		else if (infile.key == "level")
 			// @ATTR level|integer|The item's level. Has no gameplay impact. (Deprecated?)
 			items[id].level = toInt(infile.val);
@@ -257,10 +273,12 @@ void ItemManager::loadItems(const std::string& filename, bool locateFileName) {
 			parseBonus(bdata, infile);
 			items[id].bonus.push_back(bdata);
 		}
-        //else if (infile.key == "soundfx") {
+#ifndef EDITOR
+		else if (infile.key == "soundfx") {
 			// @ATTR soundfx|string|Sound effect filename to play for the specific item.
-        //	items[id].sfx = snd->load(infile.val, "ItemManager");
-        //}
+			items[id].sfx = snd->load(infile.val, "ItemManager");
+		}
+#endif
 		else if (infile.key == "gfx")
 			// @ATTR gfx|string|Filename of an animation set to display when the item is equipped.
 			items[id].gfx = infile.val;
@@ -294,7 +312,11 @@ void ItemManager::loadItems(const std::string& filename, bool locateFileName) {
 		}
 		else if (infile.key == "power_desc")
 			// @ATTR power_desc|string|A string describing the additional power.
-            items[id].power_desc = infile.val;//msg->get(infile.val);
+#ifndef EDITOR
+			items[id].power_desc = msg->get(infile.val);
+#else
+			items[id].power_desc = infile.val;
+#endif
 		else if (infile.key == "price")
 			// @ATTR price|integer|The amount of currency the item costs, if set to 0 the item cannot be sold.
 			items[id].price = toInt(infile.val);
@@ -370,7 +392,11 @@ std::string ItemManager::getItemType(std::string _type) {
 
 void ItemManager::addUnknownItem(int id) {
 	ensureFitsId(items, id);
-    items[id].name = "";//msg->get("Unknown Item");
+#ifndef EDITOR
+	items[id].name = msg->get("Unknown Item");
+#else
+	items[id].name = "Unknown Item";
+#endif
 }
 
 void ItemManager::loadSets() {
@@ -405,7 +431,11 @@ void ItemManager::loadSets() {
 
 		if (infile.key == "name") {
 			// @ATTR name|string|Name of the item set.
-            item_sets[id].name = infile.val;//msg->get(infile.val);
+#ifndef EDITOR
+			item_sets[id].name = msg->get(infile.val);
+#else
+			item_sets[id].name = infile.val;
+#endif
 		}
 		else if (infile.key == "items") {
 			// @ATTR items|[item_id,...]|List of item id's that is part of the set.
@@ -424,10 +454,12 @@ void ItemManager::loadSets() {
 				item_id = infile.nextValue();
 			}
 		}
-        //else if (infile.key == "color") {
-            // @ATTR color|color|A specific of color for the set.
-        //	item_sets[id].color = toRGB(infile.val);
-        //}
+#ifndef EDITOR
+		else if (infile.key == "color") {
+			// @ATTR color|color|A specific of color for the set.
+			item_sets[id].color = toRGB(infile.val);
+		}
+#endif
 		else if (infile.key == "bonus") {
 			// @ATTR bonus|[requirements (integer), bonus stat (string), bonus (integer)]|Bonus to append to items in the set.
 			if (clear_bonus) {
@@ -455,19 +487,21 @@ void ItemManager::parseBonus(BonusData& bdata, FileParser& infile) {
 		return;
 	}
 
-    //for (unsigned i=0; i<STAT_COUNT; ++i) {
-    //	if (bonus_str == STAT_KEY[i]) {
-    //		bdata.stat_index = (STAT)i;
-    //		return;
-    //	}
-    //}
+#ifndef EDITOR
+	for (unsigned i=0; i<STAT_COUNT; ++i) {
+		if (bonus_str == STAT_KEY[i]) {
+			bdata.stat_index = (STAT)i;
+			return;
+		}
+	}
 
-    //for (unsigned i=0; i<ELEMENTS.size(); ++i) {
-    //	if (bonus_str == ELEMENTS[i].name + "_resist") {
-    //		bdata.resist_index = i;
-    //		return;
-    //	}
-    //}
+	for (unsigned i=0; i<ELEMENTS.size(); ++i) {
+		if (bonus_str == ELEMENTS[i].name + "_resist") {
+			bdata.resist_index = i;
+			return;
+		}
+	}
+#endif
 
 	if (bonus_str == "physical") {
 		bdata.base_index = 0;
@@ -488,7 +522,7 @@ void ItemManager::parseBonus(BonusData& bdata, FileParser& infile) {
 
 	infile.error("ItemManager: Unknown bonus type '%s'.", bonus_str.c_str());
 }
-/*
+#ifndef EDITOR
 void ItemManager::getBonusString(std::stringstream& ss, BonusData* bdata) {
 	if (bdata->value > 0)
 		ss << "+" << bdata->value;
@@ -552,11 +586,10 @@ TooltipData ItemManager::getShortTooltip(ItemStack stack) {
 
 	return tip;
 }
-*/
+
 /**
  * Create detailed tooltip showing all relevant item info
  */
-/*
 TooltipData ItemManager::getTooltip(ItemStack stack, StatBlock *stats, int context) {
 	TooltipData tip;
 	Color color = color_normal;
@@ -766,13 +799,14 @@ TooltipData ItemManager::getTooltip(ItemStack stack, StatBlock *stats, int conte
 
 	return tip;
 }
-*/
+#endif
 /**
  * Check requirements on an item
  */
 bool ItemManager::requirementsMet(const StatBlock *stats, int item) {
 	if (!stats) return false;
-/*
+
+#ifndef EDITOR
 	// base stats
 	for (unsigned i=0; i < items[item].req_stat.size(); ++i) {
 		if (items[item].req_stat[i] == REQUIRES_PHYS) {
@@ -797,7 +831,8 @@ bool ItemManager::requirementsMet(const StatBlock *stats, int item) {
 	if (items[item].requires_class != "" && items[item].requires_class != stats->character_class) {
 		return false;
 	}
-*/
+#endif
+
 	// otherwise there is no requirement, so it is usable.
 	return true;
 }
@@ -847,11 +882,13 @@ void ItemStack::clear() {
 
 int Item::getSellPrice() {
 	int new_price = 0;
+#ifndef EDITOR
 	if (price_sell != 0)
 		new_price = price_sell;
-    //else
-    //	new_price = static_cast<int>(price * VENDOR_RATIO);
+	else
+		new_price = static_cast<int>(price * VENDOR_RATIO);
 	if (new_price == 0) new_price = 1;
-
+#endif
 	return new_price;
 }
+

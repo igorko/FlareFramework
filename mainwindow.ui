@@ -604,6 +604,21 @@
         <string>Powers</string>
        </attribute>
       </widget>
+      <widget class="QWidget" name="Enemies">
+       <attribute name="title">
+        <string>Enemies</string>
+       </attribute>
+      </widget>
+      <widget class="QWidget" name="NPCs">
+       <attribute name="title">
+        <string>NPCs</string>
+       </attribute>
+      </widget>
+      <widget class="QWidget" name="Quests">
+       <attribute name="title">
+        <string>Quests</string>
+       </attribute>
+      </widget>
      </widget>
     </item>
    </layout>

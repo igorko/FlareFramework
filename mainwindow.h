@@ -4,6 +4,18 @@
 #include <QMainWindow>
 #include <QListWidgetItem>
 
+const int TAB_MAIN = 0;
+const int TAB_ITEMS = 1;
+const int TAB_POWERS = 2;
+const int TAB_ENEMIES = 3;
+const int TAB_NPCS = 4;
+const int TAB_QUESTS = 5;
+
+const int MENU_CREATURES = 1;
+const int MENU_MENUS = 2;
+const int MENU_STUFF = 3;
+const int MENU_STORY = 5;
+
 class EditorItemManager;
 
 namespace Ui {
@@ -48,6 +60,7 @@ private:
 
     QString modPath;
     QString modName;
+    void disableAllTabsExceptIndex(int index);
     void setMenusEnabled(bool state);
     void ToDo();
     void CloseAll();

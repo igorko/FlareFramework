@@ -27,8 +27,11 @@ FLARE.  If not, see http://www.gnu.org/licenses/
 
 #include "CommonIncludes.h"
 #include "FileParser.h"
+#ifndef EDITOR
+#include "TooltipData.h"
+#else
 #include "Utils.h"
-//#include "TooltipData.h"
+#endif
 
 #include <stdint.h>
 
@@ -108,7 +111,9 @@ public:
 	std::vector<int> req_val;          // 1-5 (used with req_stat)
 	std::string requires_class;
 	std::vector<BonusData> bonus;   // stat to increase/decrease e.g. hp, accuracy, speed
-    //SoundManager::SoundID sfx;        // the item sound when it hits the floor or inventory, etc
+#ifndef EDITOR
+	SoundManager::SoundID sfx;        // the item sound when it hits the floor or inventory, etc
+#endif
 	std::string gfx;           // the sprite layer shown when this item is equipped
 	std::vector<LootAnimation> loot_animation;// the flying loot animation for this item
 	int power;            // this item can be dragged to the action bar and used as a power
@@ -140,7 +145,9 @@ public:
 		, abs_min(0)
 		, abs_max(0)
 		, requires_class("")
-        //, sfx(0)
+#ifndef EDITOR
+		, sfx(0)
+#endif
 		, gfx("")
 		, power(0)
 		, power_desc("")
@@ -160,13 +167,17 @@ public:
 	std::string name;            // item set name displayed on long and short tool tips
 	std::vector<int> items;      // items, included into set
 	std::vector<Set_bonus> bonus;// vector with stats to increase/decrease
-    //Color color;
+#ifndef EDITOR
+	Color color;
+#endif
 
 	ItemSet()
 		: name("") {
-        //color.r = 255;
-        //color.g = 255;
-        //color.b = 255;
+#ifndef EDITOR
+		color.r = 255;
+		color.g = 255;
+		color.b = 255;
+#endif
 	}
 
 	~ItemSet() {
@@ -195,7 +206,8 @@ protected:
 	void loadAll();
 	void parseBonus(BonusData& bdata, FileParser& infile);
 	void getBonusString(std::stringstream& ss, BonusData* bdata);
-/*
+
+#ifndef EDITOR
 	Color color_normal;
 	Color color_low;
 	Color color_high;
@@ -204,13 +216,16 @@ protected:
 	Color color_penalty;
 	Color color_requirements_not_met;
 	Color color_flavor;
-*/
+#endif
+
 public:
 	ItemManager();
 	~ItemManager();
 	void playSound(int item, Point pos = Point(0,0));
-    //TooltipData getTooltip(ItemStack stack, StatBlock *stats, int context);
-    //TooltipData getShortTooltip(ItemStack item);
+#ifndef EDITOR
+	TooltipData getTooltip(ItemStack stack, StatBlock *stats, int context);
+	TooltipData getShortTooltip(ItemStack item);
+#endif
 	std::string getItemType(std::string _type);
 	void addUnknownItem(int id);
 	bool requirementsMet(const StatBlock *stats, int item);

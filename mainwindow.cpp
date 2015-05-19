@@ -13,8 +13,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
     setMenusEnabled(false);
-    ui->tabWidget->setTabEnabled(1, false);
-    ui->tabWidget->setTabEnabled(2, false);
+    disableAllTabsExceptIndex(0);
     modPath = "";
 }
 
@@ -23,30 +22,38 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::disableAllTabsExceptIndex(int index)
+{
+    for (int i = 0; i < ui->tabWidget->count(); i++)
+    {
+        ui->tabWidget->setTabEnabled(i, false);
+    }
+    if (index >= 0 && index < ui->tabWidget->count())
+    {
+        ui->tabWidget->setTabEnabled(index, true);
+        ui->tabWidget->setCurrentIndex(index);
+    }
+}
+
 void MainWindow::setMenusEnabled(bool state)
 {
     QList<QAction*> actions = menuBar()->actions();
-    actions.at(1)->menu()->actions().at(0)->setEnabled(state);
-    actions.at(1)->menu()->actions().at(1)->setEnabled(state);
+    actions.at(MENU_CREATURES)->menu()->actions().at(0)->setEnabled(state);
+    actions.at(MENU_CREATURES)->menu()->actions().at(1)->setEnabled(state);
 
-    actions.at(2)->menu()->actions().at(0)->menu()->actions().at(0)->setEnabled(state);
-    actions.at(2)->menu()->actions().at(0)->menu()->actions().at(1)->setEnabled(state);
-    actions.at(2)->menu()->actions().at(0)->menu()->actions().at(2)->setEnabled(state);
-    actions.at(2)->menu()->actions().at(0)->menu()->actions().at(3)->setEnabled(state);
-    actions.at(2)->menu()->actions().at(0)->menu()->actions().at(4)->setEnabled(state);
-    actions.at(2)->menu()->actions().at(0)->menu()->actions().at(5)->setEnabled(state);
-    actions.at(2)->menu()->actions().at(0)->menu()->actions().at(6)->setEnabled(state);
-    actions.at(2)->menu()->actions().at(0)->menu()->actions().at(7)->setEnabled(state);
-    actions.at(2)->menu()->actions().at(0)->menu()->actions().at(8)->setEnabled(state);
+    for (int i = 0; i < 9; i++)
+    {
+        actions.at(MENU_MENUS)->menu()->actions().at(0)->menu()->actions().at(i)->setEnabled(state);
+    }
 
-    actions.at(2)->menu()->actions().at(1)->menu()->actions().at(0)->setEnabled(state);
-    actions.at(2)->menu()->actions().at(1)->menu()->actions().at(1)->setEnabled(state);
-    actions.at(2)->menu()->actions().at(1)->menu()->actions().at(2)->setEnabled(state);
+    actions.at(MENU_MENUS)->menu()->actions().at(1)->menu()->actions().at(0)->setEnabled(state);
+    actions.at(MENU_MENUS)->menu()->actions().at(1)->menu()->actions().at(1)->setEnabled(state);
+    actions.at(MENU_MENUS)->menu()->actions().at(1)->menu()->actions().at(2)->setEnabled(state);
 
-    actions.at(3)->menu()->actions().at(0)->setEnabled(state);
-    actions.at(3)->menu()->actions().at(1)->setEnabled(state);
+    actions.at(MENU_STUFF)->menu()->actions().at(0)->setEnabled(state);
+    actions.at(MENU_STUFF)->menu()->actions().at(1)->setEnabled(state);
 
-    actions.at(5)->menu()->actions().at(0)->setEnabled(state);
+    actions.at(MENU_STORY)->menu()->actions().at(0)->setEnabled(state);
 }
 
 void MainWindow::on_addNewItem_clicked()
@@ -91,8 +98,7 @@ void MainWindow::on_clearBtn_clicked()
 
 void MainWindow::on_itemClose_clicked()
 {
-    ui->tabWidget->setCurrentIndex(0);
-    ui->tabWidget->setTabEnabled(1, false);
+    disableAllTabsExceptIndex(TAB_MAIN);
 }
 
 void MainWindow::on_actionClose_Mod_triggered()
@@ -124,8 +130,7 @@ void MainWindow::on_actionClose_Mod_triggered()
 
 void MainWindow::CloseAll()
 {
-    ui->tabWidget->setCurrentIndex(0);
-    ui->tabWidget->setTabEnabled(1, false);
+    disableAllTabsExceptIndex(TAB_MAIN);
     delete items;
     ui->itemsList->clear();
     //ToDo
@@ -272,9 +277,7 @@ void MainWindow::on_itemsList_itemClicked(QListWidgetItem *item)
 
 void MainWindow::on_actionAdd_Item_triggered()
 {
-    ui->tabWidget->setTabEnabled(0, false);
-    ui->tabWidget->setTabEnabled(1, true);
-    ui->tabWidget->setCurrentIndex(1);
+    disableAllTabsExceptIndex(TAB_ITEMS);
 
     if (!QDir(modPath + "/" + "items").exists())
         QDir().mkdir(modPath + "/" + "items");
