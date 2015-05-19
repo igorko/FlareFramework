@@ -24,12 +24,22 @@ void ItemsWidget::saveItems(const std::string &path)
 void ItemsWidget::loadItems(const std::string &path)
 {
     items = new EditorItemManager(path);
+    for (unsigned i = 1; i<items->items.size(); i++)
+    {
+        if (items->items[i].name != "")
+        {
+            QListWidgetItem* item = new QListWidgetItem(QString::fromAscii(items->items[i].name.data(), items->items[i].name.size()));
+            item->setData(Qt::UserRole, i);
+            ui->itemsList->addItem(item);
+
+        }
+    }
 }
 
 void ItemsWidget::on_addNewItem_clicked()
 {
 	items->items.resize(items->items.size() + 1);
-	//ui->itemsList->addItem("");
+    //ui->itemsList->addItem("");
 }
 
 void ItemsWidget::on_clearBtn_clicked()
@@ -42,89 +52,72 @@ void ItemsWidget::on_clearBtn_clicked()
 	ui->pickupStatus->clear();
 	ui->powerDesc->clear();
 
-	ui->itemTypeCB->clear();
+    // comboBoxes
+    ui->itemTypeCB->clear();
 	ui->requiresType->clear();
 	ui->itemQualityCB->clear();
 	ui->sfxCb->clear();
-	ui->itemLvlSpin->clear();
-	ui->sellPrice->clear();
-	ui->absorbMax->clear();
-	ui->absorbMin->clear();
 
-	ui->maxQuantity->clear();
-	ui->maxLootSpb->clear();
-	ui->maxVendorSpb->clear();
-	ui->meleeMin->clear();
-	ui->meleeMax->clear();
-	ui->mentalMin->clear();
-	ui->mentalMax->clear();
-	ui->power->clear();
-	ui->powerMod->clear();
-	ui->price->clear();
-	ui->rangMin->clear();
-	ui->rangMax->clear();
-	ui->requiresValue->clear();
+    // spinBoxes
+    ui->itemLvlSpin->setValue(0);
+    ui->price->setValue(0);
+    ui->sellPrice->setValue(0);
+    ui->absorbMax->setValue(0);
+    ui->absorbMin->setValue(0);
+    ui->maxQuantity->setValue(0);
+    ui->maxLootSpb->setValue(0);
+    ui->maxVendorSpb->setValue(0);
+    ui->meleeMin->setValue(0);
+    ui->meleeMax->setValue(0);
+    ui->mentalMin->setValue(0);
+    ui->mentalMax->setValue(0);
+    ui->power->setValue(0);
+    ui->powerMod->setValue(0);
+    ui->rangMin->setValue(0);
+    ui->rangMax->setValue(0);
+    ui->requiresValue->setValue(0);
 }
 
 void ItemsWidget::on_pushBtn_clicked()
 {
-	int index = 0;
-	/*
-	int index = ListBoxItems->GetSelection() + 1;
-	items->items[index].name = TextCtrlItemName->GetLineText(0);
-	items->items[index].pickup_status = TextCtrlItemPickup->GetLineText(0);
-	items->items[index].power_desc = TextCtrlItemPowerDesc->GetLineText(0);
+    int index = ui->itemsList->currentItem()->data(Qt::UserRole).toInt();
 
-	std::string classlist = std::string(TextCtrlItemClass->GetLineText(0).mb_str());
-	classlist = classlist + ',';
-	std::string classname = eatFirstString(classlist, ',');
-	items->items[index].classname.clear();
-	while (classname != "") {
-		items->items[index].classname.push_back(classname);
-		classname = eatFirstString(classlist, ',');
-	}
+    // TextEdits
+    items->items[index].name = ui->itemName->text().toAscii().constData();
+    items->items[index].pickup_status = ui->pickupStatus->text().toAscii().constData();
+    items->items[index].power_desc = ui->powerDesc->text().toAscii().constData();
 
-	std::string bonus_stat_list = std::string(TextCtrlitemBonus->GetLineText(0).mb_str());
-	bonus_stat_list = bonus_stat_list + ',';
-	std::string bonus_stat = eatFirstString(bonus_stat_list, ',');
-	items->items[index].bonus_stat.clear();
-	while (bonus_stat != "") {
-		items->items[index].bonus_stat.push_back(bonus_stat);
-		bonus_stat = eatFirstString(bonus_stat_list, ',');
-	}
+    // comboBoxes
+    items->items[index].type     = ui->itemTypeCB->currentIndex();
+    items->items[index].quality  = ui->itemQualityCB->currentIndex();
+    //items->items[index].sfx      = ui->sfxCb->currentIndex();
 
-	std::string bonus_val_list = std::string(TextCtrlItemBonusVal->GetLineText(0).mb_str());
-	bonus_val_list = bonus_val_list + ',';
-	std::string bonus_val = eatFirstString(bonus_val_list, ',');
-	items->items[index].bonus_val.clear();
-	while (bonus_val != "") {
-		items->items[index].bonus_val.push_back(toInt(bonus_val));
-		bonus_val = eatFirstString(bonus_val_list, ',');
-	}
-	items->items[index].type = ComboBoxItemType->GetValue();
+    // spinBoxes
+    items->items[index].level        = ui->itemLvlSpin->value();
+    items->items[index].price               = ui->price->value();
+    items->items[index].price_sell   = ui->sellPrice->value();
+    items->items[index].abs_max      = ui->absorbMax->value();
+    items->items[index].abs_min      = ui->absorbMin->value();
+    items->items[index].max_quantity = ui->maxQuantity->value();
 
-	items->items[index].req_stat = ComboBoxitemRequires->GetSelection();
-	items->items[index].quality = ComboBoxItemQuality->GetSelection();
-	items->items[index].sfx = ComboBoxItemSfx->GetSelection();
+    //ui->maxLootSpb->value();
+    //ui->maxVendorSpb->value();
 
-	items->items[index].level = SpinCtrlItemLevel->GetValue();
-	items->items[index].price = SpinCtrlItemPrice->GetValue();
-	items->items[index].price_sell = SpinCtrlItemSell->GetValue();
-	items->items[index].abs_max = SpinCtrlItemAbsMax->GetValue();
-	items->items[index].abs_min = SpinCtrlItemAbsMin->GetValue();
-	items->items[index].max_quantity = SpinCtrlItemMaxQuan->GetValue();
-	items->items[index].dmg_melee_max = SpinCtrlItemMelDmgMax->GetValue();
-	items->items[index].dmg_melee_min = SpinCtrlItemMelDmgMin->GetValue();
-	items->items[index].dmg_ment_max = SpinCtrlItemMentDmgMax->GetValue();
-	items->items[index].dmg_ment_min = SpinCtrlItemMentDmgMin->GetValue();
-	items->items[index].power = SpinCtrlItemPower->GetValue();
-	items->items[index].power_mod = SpinCtrlItemPowerMod->GetValue();
-	items->items[index].dmg_ranged_max = SpinCtrlItemRanDmgMax->GetValue();
-	items->items[index].dmg_ranged_min = SpinCtrlItemRanDmgMin->GetValue();
-	items->items[index].rand_loot = SpinCtrlItemRan_loot->GetValue();
-	items->items[index].rand_vendor = SpinCtrlItemRan_ven->GetValue();
-	items->items[index].req_val = SpinCtrlItemRequires->GetValue();
+    items->items[index].dmg_melee_min  = ui->meleeMin->value();
+    items->items[index].dmg_melee_max  = ui->meleeMax->value();
+    items->items[index].dmg_ment_max   = ui->mentalMin->value();
+    items->items[index].dmg_ment_max   = ui->mentalMax->value();
+    items->items[index].dmg_ranged_max = ui->rangMin->value();
+    items->items[index].dmg_ranged_min = ui->rangMax->value();
 
+    items->items[index].power               = ui->power->value();
+    //items->items[index].replace_power[0].y  = ui->powerMod->value();
+
+    // mixed (pair) controls
+    //items->items[index].req_stat[0]    = ui->requiresType->currentIndex();
+    //items->items[index].req_val[0]     = ui->requiresValue->value();
+
+    /*
 	//Update ListBox
 	ListBoxItems->SetString(ListBoxItems->GetSelection(), items->items[index].name.c_str());
 	*/
@@ -132,75 +125,40 @@ void ItemsWidget::on_pushBtn_clicked()
 
 void ItemsWidget::on_itemsList_itemClicked(QListWidgetItem *item)
 {
-	/*
-	int index = ListBoxItems->GetSelection() + 1;
-	wxString temp0(items->items[index].name.c_str(), wxConvUTF8);
-	TextCtrlItemName->Clear();
-	TextCtrlItemName->AppendText(temp0);
+    int index = item->data(Qt::UserRole).toInt();
 
-	wxString temp2(items->items[index].pickup_status.c_str(), wxConvUTF8);
-	TextCtrlItemPickup->Clear();
-	TextCtrlItemPickup->AppendText(temp2);
+    // TextEdits
+    ui->itemName->setText(QString::fromAscii(items->items[index].name.data(), items->items[index].name.size()));
+    ui->pickupStatus->setText(QString::fromAscii(items->items[index].pickup_status.data(), items->items[index].pickup_status.size()));
+    ui->powerDesc->setText(QString::fromAscii(items->items[index].power_desc.data(), items->items[index].power_desc.size()));
 
-	wxString temp3(items->items[index].power_desc.c_str(), wxConvUTF8);
-	TextCtrlItemPowerDesc->Clear();
-	TextCtrlItemPowerDesc->AppendText(temp3);
+    // comboBoxes
+    //ui->itemTypeCB->setCurrentIndex(items->items[index].type);
+    ui->itemQualityCB->setCurrentIndex(items->items[index].quality);
+    //ui->sfxCb->setCurrentIndex(items->items[index].sfx);
 
-	TextCtrlItemClass->Clear();
-	if (items->items[index].classname.size() > 0) {
-		for (unsigned i = 0;i<items->items[index].classname.size()-1;i++) {
-		wxString temp4(items->items[index].classname[i].c_str(), wxConvUTF8);
-			TextCtrlItemClass->AppendText(temp4);
-			TextCtrlItemClass->AppendText(",");
-		}
-		wxString temp4(items->items[index].classname.back().c_str(), wxConvUTF8);
-		TextCtrlItemClass->AppendText(temp4);
-	}
+    // spinBoxes
+    ui->itemLvlSpin->setValue(items->items[index].level);
+    ui->price->setValue(items->items[index].price);
+    ui->sellPrice->setValue(items->items[index].price_sell);
+    ui->absorbMax->setValue(items->items[index].abs_max);
+    ui->absorbMin->setValue(items->items[index].abs_min);
+    ui->maxQuantity->setValue(items->items[index].max_quantity);
 
-	TextCtrlitemBonus->Clear();
-	if (items->items[index].bonus_stat.size() > 0) {
-		for (unsigned i = 0;i<items->items[index].bonus_stat.size()-1;i++) {
-		wxString temp5(items->items[index].bonus_stat[i].c_str(), wxConvUTF8);
-			TextCtrlitemBonus->AppendText(temp5);
-			TextCtrlitemBonus->AppendText(",");
-		}
-		wxString temp5(items->items[index].bonus_stat.back().c_str(), wxConvUTF8);
-		TextCtrlitemBonus->AppendText(temp5);
-	}
+    //ui->maxLootSpb->value();
+    //ui->maxVendorSpb->value();
 
-	TextCtrlItemBonusVal->Clear();
-	if (items->items[index].bonus_val.size() > 0) {
-		for (unsigned i = 0;i<items->items[index].bonus_val.size()-1;i++) {
-		wxString temp6(wxString::Format(wxT("%i"),items->items[index].bonus_val[i]));
-			TextCtrlItemBonusVal->AppendText(temp6);
-			TextCtrlItemBonusVal->AppendText(",");
-		}
-		wxString temp6(wxString::Format(wxT("%i"),items->items[index].bonus_val.back()));
-		TextCtrlItemBonusVal->AppendText(temp6);
-	}
+    ui->meleeMin->setValue(items->items[index].dmg_melee_min);
+    ui->meleeMax->setValue(items->items[index].dmg_melee_max);
+    ui->mentalMin->setValue(items->items[index].dmg_ment_max);
+    ui->mentalMax->setValue(items->items[index].dmg_ment_max);
+    ui->rangMin->setValue(items->items[index].dmg_ranged_max);
+    ui->rangMax->setValue(items->items[index].dmg_ranged_min);
 
-	wxString temp7(items->items[index].type.c_str(), wxConvUTF8);
-	ComboBoxItemType->SetValue(temp7);
-	ComboBoxitemRequires->SetSelection(items->items[index].req_stat);
-	ComboBoxItemQuality->SetSelection(items->items[index].quality);
-	ComboBoxItemSfx->SetSelection(items->items[index].sfx);
+    ui->power->setValue(items->items[index].power);
+    //ui->powerMod->setValue(items->items[index].replace_power[0].y);
 
-	SpinCtrlItemLevel->SetValue(items->items[index].level);
-	SpinCtrlItemPrice->SetValue(items->items[index].price);
-	SpinCtrlItemSell->SetValue(items->items[index].price_sell);
-	SpinCtrlItemAbsMax->SetValue(items->items[index].abs_max);
-	SpinCtrlItemAbsMin->SetValue(items->items[index].abs_min);
-	SpinCtrlItemMaxQuan->SetValue(items->items[index].max_quantity);
-	SpinCtrlItemMelDmgMax->SetValue(items->items[index].dmg_melee_max);
-	SpinCtrlItemMelDmgMin->SetValue(items->items[index].dmg_melee_min);
-	SpinCtrlItemMentDmgMax->SetValue(items->items[index].dmg_ment_max);
-	SpinCtrlItemMentDmgMin->SetValue(items->items[index].dmg_ment_min);
-	SpinCtrlItemPower->SetValue(items->items[index].power);
-	SpinCtrlItemPowerMod->SetValue(items->items[index].power_mod);
-	SpinCtrlItemRanDmgMax->SetValue(items->items[index].dmg_ranged_max);
-	SpinCtrlItemRanDmgMin->SetValue(items->items[index].dmg_ranged_min);
-	SpinCtrlItemRan_loot->SetValue(items->items[index].rand_loot);
-	SpinCtrlItemRan_ven->SetValue(items->items[index].rand_vendor);
-	SpinCtrlItemRequires->SetValue(items->items[index].req_val);
-	*/
+    // mixed (pair) controls
+    //ui->requiresType->setCurrentIndex(items->items[index].req_stat[0]);
+    //ui->requiresValue->setValue(items->items[index].req_val[0]);
 }

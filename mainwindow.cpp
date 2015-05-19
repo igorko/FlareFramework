@@ -107,9 +107,6 @@ void MainWindow::on_actionAdd_Item_triggered()
 
     std::string path = filename.toAscii().constData();
     ui->Items->loadItems(path);
-    //for (unsigned i = 1;i<items->items.size();i++) {
-    //    ListBoxItems->Append(items->items[i].name.c_str());
-    //}
 }
 
 void MainWindow::on_actionSave_Mod_triggered()
