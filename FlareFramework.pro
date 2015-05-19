@@ -20,9 +20,12 @@ SOURCES += main.cpp\
         API/Utils.cpp \
         API/UtilsFileSystem.cpp \
         API/UtilsParsing.cpp \
+    itemswidget.cpp
 
-HEADERS  += mainwindow.h
+HEADERS  += mainwindow.h \
+    itemswidget.h
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    itemswidget.ui
 
 DEFINES  += EDITOR

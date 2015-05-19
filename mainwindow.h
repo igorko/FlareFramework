@@ -2,7 +2,6 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include <QListWidgetItem>
 
 const int TAB_MAIN = 0;
 const int TAB_ITEMS = 1;
@@ -15,8 +14,6 @@ const int MENU_CREATURES = 1;
 const int MENU_MENUS = 2;
 const int MENU_STUFF = 3;
 const int MENU_STORY = 5;
-
-class EditorItemManager;
 
 namespace Ui {
 class MainWindow;
@@ -31,17 +28,9 @@ public:
     ~MainWindow();
 
 private slots:
-    void on_addNewItem_clicked();
-
-    void on_clearBtn_clicked();
-
     void on_itemClose_clicked();
 
     void on_actionClose_Mod_triggered();
-
-    void on_pushBtn_clicked();
-
-    void on_itemsList_itemClicked(QListWidgetItem *item);
 
     void on_actionAdd_Item_triggered();
 
@@ -65,7 +54,6 @@ private:
     void ToDo();
     void CloseAll();
     bool newMod;
-    EditorItemManager * items;
 
 };
 
