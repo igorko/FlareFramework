@@ -41,6 +41,12 @@ void MainWindow::disableAllTabsExceptIndex(int index)
 void MainWindow::setMenusEnabled(bool state)
 {
     QList<QAction*> actions = menuBar()->actions();
+
+    actions.at(MENU_FILE)->menu()->actions().at(0)->setEnabled(!state);
+    actions.at(MENU_FILE)->menu()->actions().at(1)->setEnabled(!state);
+    actions.at(MENU_FILE)->menu()->actions().at(2)->setEnabled(state);
+    actions.at(MENU_FILE)->menu()->actions().at(3)->setEnabled(state);
+
     actions.at(MENU_CREATURES)->menu()->actions().at(0)->setEnabled(state);
     actions.at(MENU_CREATURES)->menu()->actions().at(1)->setEnabled(state);
 
@@ -62,26 +68,20 @@ void MainWindow::setMenusEnabled(bool state)
 void MainWindow::on_actionClose_Mod_triggered()
 {
     if (modPath == "") return;
-    //wxMessageDialog saveQuestion(this, wxT("Save mod before closing?"), wxT("Save mod"), wxYES_DEFAULT|wxYES_NO|wxCANCEL|wxICON_INFORMATION);
-    //int answer = saveQuestion.ShowModal();
-    //if (answer == wxID_YES)
-    //{
-        QString filename = modPath + QDir::separator() + "items" + QDir::separator() + "items.txt";
-        std::string path = filename.toAscii().constData();
-        ui->Items->saveItems(path);
-        // ToDo
-    //}
-    //else if (answer == wxID_CANCEL)
-    //{
-        return;
-    //}
-    modName = "";
+    if (ui->Items->itemsEdited)
+    {
+        QMessageBox::StandardButton reply = QMessageBox::question(this, "Save mod", "Save mod before closing?", QMessageBox::Yes|QMessageBox::No);
+
+        if (reply == QMessageBox::Yes)
+        {
+            QString filename = modPath + QDir::separator() + "items" + QDir::separator() + "items.txt";
+            std::string path = filename.toAscii().constData();
+            ui->Items->saveItems(path);
+            ui->Items->clearItemsList();
+        }
+    }
     modPath = "";
     setMenusEnabled(false);
-    /*
-    MenuItemOpen->Enable(true);
-    MenuItemCreate->Enable(true);
-    */
 
     CloseAll();
 }
@@ -89,7 +89,6 @@ void MainWindow::on_actionClose_Mod_triggered()
 void MainWindow::CloseAll()
 {
     disableAllTabsExceptIndex(TAB_MAIN);
-    //ui->itemsList->clear();
     //ToDo
 }
 
@@ -113,6 +112,7 @@ void MainWindow::on_actionSave_Mod_triggered()
 {
     QString filename = modPath + QDir::separator() + "items" + QDir::separator() + "items.txt";
     ui->Items->saveItems(filename.toAscii().constData());
+    ui->Items->clearItemsList();
     //ToDo
 
 }
@@ -138,22 +138,15 @@ void MainWindow::on_actionOpen_Mod_triggered()
     if (!path.isEmpty()){
         modPath = path;
         setMenusEnabled(true);
-        //MenuItemCreate->Enable(false);
-        //MenuItemOpen->Enable(false);
     }
 }
 
 void MainWindow::on_actionNew_Mod_triggered()
 {
     newMod = true;
-    /*if (ModDirDialog->ShowModal() == wxID_OK){
-        modPath = ModDirDialog->GetPath();
-        modName = wxGetTextFromUser (wxT("Enter mod name"), wxT("Enter mod name"), wxT("new_mod"), NULL, wxDefaultCoord, wxDefaultCoord, true);
-        modPath = modPath + wxT("/") + modName;
-        if (!wxFileName::DirExists(modPath))
-            wxFileName::Mkdir(modPath);
-        EnableMenus();
-        MenuItemCreate->Enable(false);
-        MenuItemOpen->Enable(false);
-    }*/
+    QString path = QFileDialog::getExistingDirectory(this, QObject::tr("Select mod folder"));
+    if (!path.isEmpty()){
+        modPath = path;
+        setMenusEnabled(true);
+    }
 }

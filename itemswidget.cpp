@@ -5,6 +5,7 @@
 
 ItemsWidget::ItemsWidget(QWidget *parent) :
     QWidget(parent),
+    itemsEdited(false),
     ui(new Ui::ItemsWidget),
     items(NULL)
 {
@@ -34,12 +35,25 @@ void ItemsWidget::loadItems(const std::string &path)
 
         }
     }
+    ui->pushBtn->setEnabled(false);
+}
+
+void ItemsWidget::clearItemsList()
+{
+    itemsEdited = false;
+    delete items;
+    items = NULL;
 }
 
 void ItemsWidget::on_addNewItem_clicked()
 {
 	items->items.resize(items->items.size() + 1);
-    //ui->itemsList->addItem("");
+    int index = items->items.size() - 1;
+    items->items[index].name = "newItem";
+
+    QListWidgetItem* item = new QListWidgetItem("newItem");
+    item->setData(Qt::UserRole, index);
+    ui->itemsList->addItem(item);
 }
 
 void ItemsWidget::on_clearBtn_clicked()
@@ -117,14 +131,16 @@ void ItemsWidget::on_pushBtn_clicked()
     //items->items[index].req_stat[0]    = ui->requiresType->currentIndex();
     //items->items[index].req_val[0]     = ui->requiresValue->value();
 
-    /*
-	//Update ListBox
-	ListBoxItems->SetString(ListBoxItems->GetSelection(), items->items[index].name.c_str());
-	*/
+
+    //Update ListBox
+    ui->itemsList->currentItem()->setData(Qt::DisplayRole, ui->itemName->text());
+
+    itemsEdited = true;
 }
 
 void ItemsWidget::on_itemsList_itemClicked(QListWidgetItem *item)
 {
+    ui->pushBtn->setEnabled(true);
     int index = item->data(Qt::UserRole).toInt();
 
     // TextEdits

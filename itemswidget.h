@@ -19,6 +19,10 @@ public:
     void saveItems(const std::string& path);
     void loadItems(const std::string& path);
 
+    void clearItemsList();
+
+    bool itemsEdited;
+
 signals:
 
 public slots:
@@ -33,7 +37,7 @@ public slots:
 private:
     Ui::ItemsWidget *ui;
 
-	EditorItemManager * items;
+    EditorItemManager * items;
 
 };
 
