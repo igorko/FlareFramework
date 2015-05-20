@@ -146,8 +146,9 @@ public:
 		, abs_min(0)
 		, abs_max(0)
 		, requires_class("")
+		, sfx("")
 #ifndef EDITOR
-		, sfx(0)
+		, sfx_id(0)
 #endif
 		, gfx("")
 		, power(0)
