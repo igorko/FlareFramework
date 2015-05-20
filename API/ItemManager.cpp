@@ -96,7 +96,7 @@ void ItemManager::loadAll() {
 	// load each items.txt file. Individual item IDs can be overwritten with mods.
 	this->loadItems("items/items.txt");
 	this->loadTypes("items/types.txt");
-	this->loadSets();
+	this->loadSets("items/sets.txt");
 
 	/*
 	 * Shrinks the items vector to the absolute needed size.
@@ -273,12 +273,13 @@ void ItemManager::loadItems(const std::string& filename, bool locateFileName) {
 			parseBonus(bdata, infile);
 			items[id].bonus.push_back(bdata);
 		}
-#ifndef EDITOR
 		else if (infile.key == "soundfx") {
 			// @ATTR soundfx|string|Sound effect filename to play for the specific item.
-			items[id].sfx = snd->load(infile.val, "ItemManager");
-		}
+			items[id].sfx = infile.val;
+#ifndef EDITOR
+			items[id].sfx_id = snd->load(items[id].sfx, "ItemManager");
 #endif
+		}
 		else if (infile.key == "gfx")
 			// @ATTR gfx|string|Filename of an animation set to display when the item is equipped.
 			items[id].gfx = infile.val;
@@ -399,11 +400,16 @@ void ItemManager::addUnknownItem(int id) {
 #endif
 }
 
-void ItemManager::loadSets() {
+/**
+ * Load a specific item sets file
+ *
+ * @param filename The (full) path and name of the file to load
+ */
+void ItemManager::loadSets(const std::string& filename, bool locateFileName) {
 	FileParser infile;
 
 	// @CLASS ItemManager: Sets|Definition of a item sets, items/sets.txt...
-	if (!infile.open("items/sets.txt"))
+	if (!infile.open(filename, locateFileName))
 		return;
 
 	bool clear_bonus = true;
@@ -551,7 +557,7 @@ void ItemManager::getBonusString(std::stringstream& ss, BonusData* bdata) {
 }
 
 void ItemManager::playSound(int item, Point pos) {
-	snd->play(items[item].sfx, GLOBAL_VIRTUAL_CHANNEL, pos, false);
+	snd->play(items[item].sfx_id, GLOBAL_VIRTUAL_CHANNEL, pos, false);
 }
 
 TooltipData ItemManager::getShortTooltip(ItemStack stack) {

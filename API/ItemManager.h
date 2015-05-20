@@ -111,8 +111,9 @@ public:
 	std::vector<int> req_val;          // 1-5 (used with req_stat)
 	std::string requires_class;
 	std::vector<BonusData> bonus;   // stat to increase/decrease e.g. hp, accuracy, speed
+	std::string sfx;           // the item sound when it hits the floor or inventory, etc
 #ifndef EDITOR
-	SoundManager::SoundID sfx;        // the item sound when it hits the floor or inventory, etc
+	SoundManager::SoundID sfx_id;
 #endif
 	std::string gfx;           // the sprite layer shown when this item is equipped
 	std::vector<LootAnimation> loot_animation;// the flying loot animation for this item
@@ -202,7 +203,7 @@ class ItemManager {
 protected:
 	void loadItems(const std::string& filename, bool locateFileName = true);
 	void loadTypes(const std::string& filename, bool locateFileName = true);
-	void loadSets();
+	void loadSets(const std::string& filename, bool locateFileName = true);
 	void loadAll();
 	void parseBonus(BonusData& bdata, FileParser& infile);
 	void getBonusString(std::stringstream& ss, BonusData* bdata);
