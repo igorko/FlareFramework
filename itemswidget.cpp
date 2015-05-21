@@ -51,6 +51,7 @@ void ItemsWidget::loadItems(const std::string &path)
 
 void ItemsWidget::clearItemsList()
 {
+    ui->itemsList->clear();
     itemsEdited = false;
     delete items;
     items = NULL;
