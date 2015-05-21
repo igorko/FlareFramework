@@ -35,18 +35,67 @@ FileParser::FileParser()
 	, val("") {
 }
 
+#ifdef EDITOR
+#include "mainwindow.h"
+
+QString MainWindow::modPath = "";
+
+std::vector<std::string> listAllFiles(const std::string& path, bool full_paths = true);
+
+std::vector<std::string> listAllFiles(const std::string &path, bool full_paths) {
+    std::vector<std::string> ret;
+    std::string test_path;
+
+    std::string modFolder = MainWindow::modPath.toAscii().constData();;
+
+    test_path = modFolder + "/" + path;
+
+    if (pathExists(test_path)) {
+        if (isDirectory(test_path)) {
+            getFileList(test_path, "txt", ret);
+        }
+        else {
+            ret.push_back(test_path);
+        }
+    }
+
+    // we don't need to check for duplicates if there are no paths
+    if (ret.empty()) return ret;
+
+    if (!full_paths) {
+        // reduce the each file path down to be relative to mods/
+        for (unsigned i=0; i<ret.size(); ++i) {
+            ret[i] = ret[i].substr(ret[i].rfind(path), ret[i].length());
+        }
+
+        // remove duplicates
+        for (unsigned i = 0; i < ret.size(); ++i) {
+            for (unsigned j = 0; j < i; ++j) {
+                if (ret[i] == ret[j]) {
+                    ret.erase(ret.begin()+j);
+                    break;
+                }
+            }
+        }
+    }
+
+    return ret;
+}
+
 bool FileParser::open(const std::string& _filename, bool locateFileName, const std::string &_errormessage) {
 	filenames.clear();
-#ifndef EDITOR
+	if (locateFileName) {
+		filenames = listAllFiles(_filename);
+#else
+bool FileParser::open(const std::string& _filename, bool locateFileName, const std::string &_errormessage) {
+	filenames.clear();
 	if (locateFileName) {
 		filenames = mods->list(_filename);
+#endif
 	}
 	else {
 		filenames.push_back(_filename);
 	}
-#else
-	filenames.push_back(_filename);
-#endif
 	current_index = 0;
 	line_number = 0;
 	this->errormessage = _errormessage;

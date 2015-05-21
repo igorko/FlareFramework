@@ -27,6 +27,8 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
+    
+    static QString modPath;
 
 private slots:
     void on_itemClose_clicked();
@@ -48,7 +50,6 @@ private slots:
 private:
     Ui::MainWindow *ui;
 
-    QString modPath;
     void disableAllTabsExceptIndex(int index);
     void setMenusEnabled(bool state);
     void ToDo();

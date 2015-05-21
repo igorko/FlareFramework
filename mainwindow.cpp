@@ -77,11 +77,11 @@ void MainWindow::on_actionClose_Mod_triggered()
             QString filename = modPath + QDir::separator() + "items" + QDir::separator() + "items.txt";
             std::string path = filename.toAscii().constData();
             ui->Items->saveItems(path);
-            ui->Items->clearItemsList();
         }
     }
     modPath = "";
     setMenusEnabled(false);
+    ui->Items->clearItemsList();
 
     CloseAll();
 }
@@ -111,7 +111,6 @@ void MainWindow::on_actionSave_Mod_triggered()
 {
     QString filename = modPath + QDir::separator() + "items" + QDir::separator() + "items.txt";
     ui->Items->saveItems(filename.toAscii().constData());
-    ui->Items->clearItemsList();
     //ToDo
 
 }
