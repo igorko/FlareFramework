@@ -29,7 +29,9 @@ FLARE.  If not, see http://www.gnu.org/licenses/
 #include <string>
 #include <vector>
 
-//#include <SDL.h>
-//#include "DeviceList.h"
+#ifndef EDITOR
+#include <SDL.h>
+#include "DeviceList.h"
+#endif
 
 #endif

@@ -78,15 +78,15 @@ ItemManager::ItemManager()
 	, color_penalty(font->getColor("item_penalty"))
 	, color_requirements_not_met(font->getColor("requirements_not_met"))
 	, color_flavor(font->getColor("item_flavor")) {
-#else
-{
-#endif
 	// NB: 20 is arbitrary picked number, but it looks like good start.
 	items.reserve(20);
 	item_sets.reserve(5);
 
 	loadAll();
 }
+#else
+{}
+#endif
 
 /**
  * Load all items files in all mods

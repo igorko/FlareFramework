@@ -27,7 +27,9 @@ FLARE.  If not, see http://www.gnu.org/licenses/
 #ifndef UTILS_H
 #define UTILS_H
 
-//#include <SDL.h>
+#ifndef EDITOR
+#include <SDL.h>
+#endif
 #include <stdint.h>
 #include <string>
 
@@ -50,17 +52,19 @@ class Rect {
 public:
 	int x, y, w, h;
 	Rect() : x(0), y(0), w(0), h(0) {}
-    //Rect(SDL_Rect _r) : x(_r.x), y(_r.y), w(_r.w), h(_r.h) {}
-    //operator SDL_Rect() {
-    //	SDL_Rect r;
-    //	r.x = x;
-    //	r.y = y;
-    //	r.w = w;
-    //	r.h = h;
-    //	return r;
-    //}
+#ifndef EDITOR
+	Rect(SDL_Rect _r) : x(_r.x), y(_r.y), w(_r.w), h(_r.h) {}
+	operator SDL_Rect() {
+		SDL_Rect r;
+		r.x = x;
+		r.y = y;
+		r.w = w;
+		r.h = h;
+		return r;
+	}
+#endif
 };
-/*
+#ifndef EDITOR
 class Color {
 public:
     Uint8 r, g, b, a;
@@ -82,7 +86,7 @@ public:
 		return !((*this) == other);
 	}
 };
-*/
+#endif
 typedef enum {
 	ALIGN_TOPLEFT = 0,
 	ALIGN_TOP = 1,

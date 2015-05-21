@@ -18,11 +18,15 @@ You should have received a copy of the GNU General Public License along with
 FLARE.  If not, see http://www.gnu.org/licenses/
 */
 
-//#include "Settings.h"
-//#include "SharedResources.h"
+#ifndef EDITOR
+#include "Settings.h"
+#include "SharedResources.h"
+#endif
 #include "Utils.h"
 #include "UtilsFileSystem.h"
-//#include "UtilsMath.h"
+#ifndef EDITOR
+#include "UtilsMath.h"
+#endif
 
 #include <cmath>
 #include <stdarg.h>
@@ -33,7 +37,7 @@ Point floor(FPoint fp) {
 	result.y = int(fp.y);
 	return result;
 }
-/*
+#ifndef EDITOR
 FPoint screen_to_map(int x, int y, float camx, float camy) {
 	FPoint r;
 	if (TILESET_ORIENTATION == TILESET_ISOMETRIC) {
@@ -49,12 +53,11 @@ FPoint screen_to_map(int x, int y, float camx, float camy) {
 	}
 	return r;
 }
-*/
+
 /**
  * Returns a point (in map units) of a given (x,y) tupel on the screen
  * when the camera is at a given position.
  */
-/*
 Point map_to_screen(float x, float y, float camx, float camy) {
 	Point r;
 
@@ -83,7 +86,7 @@ Point center_tile(Point p) {
 		p.y += TILE_H_HALF;
 	return p;
 }
-*/
+#endif
 FPoint collision_to_map(Point p) {
 	FPoint ret;
 	ret.x = p.x + 0.5f;
@@ -165,17 +168,20 @@ int calcDirection(const FPoint &src, const FPoint &dst) {
 }
 
 int calcDirection(float x0, float y0, float x1, float y1) {
-    //float theta = calcTheta(x0, y0, x1, y1);
-    //float val = theta / (M_PI/4);
-    //int dir = int(((val < 0) ? ceil(val-0.5) : floor(val+0.5)) + 4);
-    //dir = (dir + 1) % 8;
-    //if (dir >= 0 && dir < 8)
-    //	return dir;
-    //else
-    //	return 0;
-    return 0;
+#ifndef EDITOR
+	float theta = calcTheta(x0, y0, x1, y1);
+	float val = theta / (M_PI/4);
+	int dir = int(((val < 0) ? ceil(val-0.5) : floor(val+0.5)) + 4);
+	dir = (dir + 1) % 8;
+	if (dir >= 0 && dir < 8)
+		return dir;
+	else
+		return 0;
+#else
+	return 0;
+#endif
 }
-/*
+#ifndef EDITOR
 // convert cartesian to polar theta where (x1,x2) is the origin
 float calcTheta(float x1, float y1, float x2, float y2) {
 	// calculate base angle
@@ -245,7 +251,7 @@ void alignToScreenEdge(ALIGNMENT alignment, Rect *r) {
 		// do nothing
 	}
 }
-*/
+#endif
 /**
  * Given a floating Point pos, the decimal is rounded to the nearest multiple of 1/(2^4)
  * 1/(2^4) was chosen because it's a "nice" floating point number, removing 99% of rounding errors
@@ -262,25 +268,29 @@ void alignFPoint(FPoint *pos) {
  * These functions provide a unified way to log messages, printf-style
  */
 void logInfo(const char* format, ...) {
-    //va_list args;
+#ifndef EDITOR
+	va_list args;
 
-    //va_start(args, format);
+	va_start(args, format);
 
-    //SDL_LogMessageV(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_INFO, format, args);
+	SDL_LogMessageV(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_INFO, format, args);
 
-    //va_end(args);
+	va_end(args);
+#endif
 }
 
 void logError(const char* format, ...) {
-    //va_list args;
+#ifndef EDITOR
+	va_list args;
 
-    //va_start(args, format);
+	va_start(args, format);
 
-    //SDL_LogMessageV(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_ERROR, format, args);
+	SDL_LogMessageV(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_ERROR, format, args);
 
-    //va_end(args);
+	va_end(args);
+#endif
 }
-/*
+#ifndef EDITOR
 void logErrorDialog(const char* dialog_text) {
 	SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "FLARE", dialog_text, NULL);
 }
@@ -313,4 +323,4 @@ void removeSaveDir(int slot) {
 		removeDirRecursive(path(&ss));
 	}
 }
-*/
+#endif

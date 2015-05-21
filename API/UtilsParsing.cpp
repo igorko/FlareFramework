@@ -19,7 +19,9 @@ FLARE.  If not, see http://www.gnu.org/licenses/
 
 #include "CommonIncludes.h"
 #include "UtilsParsing.h"
-//#include "Settings.h"
+#ifndef EDITOR
+#include "Settings.h"
+#endif
 #include <cstdlib>
 #include <typeinfo>
 #include <math.h>
@@ -49,13 +51,15 @@ int parse_duration(const std::string& s) {
 
 	if (val == 0)
 		return val;
-    //else if (suffix == "s")
-    //	val *= MAX_FRAMES_PER_SEC;
-    //else {
-    //	if (suffix != "ms")
-    //		logError("UtilsParsing: Duration of '%d' does not have a suffix. Assuming 'ms'.", val);
-    //	val = int(floor(((val*MAX_FRAMES_PER_SEC) / 1000.f) + 0.5f));
-    //}
+#ifndef EDITOR
+	else if (suffix == "s")
+		val *= MAX_FRAMES_PER_SEC;
+	else {
+		if (suffix != "ms")
+			logError("UtilsParsing: Duration of '%d' does not have a suffix. Assuming 'ms'.", val);
+		val = int(floor(((val*MAX_FRAMES_PER_SEC) / 1000.f) + 0.5f));
+	}
+#endif
 
 	// round back up to 1 if we rounded down to 0 for ms
 	if (val < 1) val = 1;
@@ -336,7 +340,7 @@ Rect toRect(std::string value) {
 	return r;
 }
 
-/*
+#ifndef EDITOR
 Color toRGB(std::string value) {
 	Color c;
 	c.r = popFirstInt(value);
@@ -353,4 +357,4 @@ Color toRGBA(std::string value) {
 	c.a = popFirstInt(value);
 	return c;
 }
-*/
+#endif

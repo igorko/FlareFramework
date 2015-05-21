@@ -18,7 +18,9 @@ FLARE.  If not, see http://www.gnu.org/licenses/
 #include "FileParser.h"
 #include "UtilsParsing.h"
 #include "UtilsFileSystem.h"
-//#include "SharedResources.h"
+#ifndef EDITOR
+#include "SharedResources.h"
+#endif
 
 #include <stdarg.h>
 
@@ -35,12 +37,16 @@ FileParser::FileParser()
 
 bool FileParser::open(const std::string& _filename, bool locateFileName, const std::string &_errormessage) {
 	filenames.clear();
-    //if (locateFileName) {
-    //	filenames = mods->list(_filename);
-    //}
-    //else {
+#ifndef EDITOR
+	if (locateFileName) {
+		filenames = mods->list(_filename);
+	}
+	else {
 		filenames.push_back(_filename);
-    //}
+	}
+#else
+	filenames.push_back(_filename);
+#endif
 	current_index = 0;
 	line_number = 0;
 	this->errormessage = _errormessage;
@@ -245,9 +251,18 @@ void FileParser::error(const char* format, ...) {
 	vsprintf(buffer, format, args);
 	va_end(args);
 
-	std::stringstream ss;
-	ss << "[" << filenames[current_index] << ":" << line_number << "] " << buffer;
-	logError(ss.str().c_str());
+	errorBuf(buffer);
+}
+
+void FileParser::errorBuf(const char* buffer) {
+	if (include_fp) {
+		include_fp->errorBuf(buffer);
+	}
+	else {
+		std::stringstream ss;
+		ss << "[" << filenames[current_index] << ":" << line_number << "] " << buffer;
+		logError(ss.str().c_str());
+	}
 }
 
 void FileParser::incrementLineNum() {
