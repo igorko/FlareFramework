@@ -9,7 +9,8 @@ ItemsWidget::ItemsWidget(QWidget *parent) :
     QWidget(parent),
     itemsEdited(false),
     ui(new Ui::ItemsWidget),
-    items(NULL)
+    items(NULL),
+    editedStyle("background-color:#66FF99;")
 {
     ui->setupUi(this);
 }
@@ -37,6 +38,14 @@ void ItemsWidget::loadItems(const std::string &path)
 
         }
     }
+    ui->itemTypeCB->clear();
+    std::map<std::string, std::string>::iterator iter;
+    for (iter = items->item_types.begin(); iter != items->item_types.end(); ++iter)
+    {
+        ui->itemTypeCB->addItem(QString::fromAscii(iter->second.data(), iter->second.size()),
+                                QString::fromAscii(iter->first.data(), iter->first.size()));
+    }
+
     ui->pushBtn->setEnabled(false);
 }
 
@@ -117,6 +126,8 @@ void ItemsWidget::on_pushBtn_clicked()
 
     for (int i = 0; i < docFrom->lineCount(); i++)
     {
+        if (docFrom->findBlockByLineNumber(i).text().isEmpty() || docTo->findBlockByLineNumber(i).text().isEmpty())
+            continue;
         items->items[index].replace_power.push_back(Point(
                                                         docFrom->findBlockByLineNumber(i).text().toInt(),
                                                         docTo->findBlockByLineNumber(i).text().toInt()));
@@ -127,11 +138,13 @@ void ItemsWidget::on_pushBtn_clicked()
 
     for (int i = 0; i < disabledSlots->lineCount(); i++)
     {
+        if (disabledSlots->findBlockByLineNumber(i).text().isEmpty())
+            continue;
         items->items[index].disable_slots.push_back(disabledSlots->findBlockByLineNumber(i).text().toAscii().constData());
     }
 
     // comboBoxes
-    //items->items[index].type     = ui->itemTypeCB->currentIndex();
+    items->items[index].type     = ui->itemTypeCB->itemData(ui->itemTypeCB->currentIndex()).toString().toAscii().constData();;
     items->items[index].quality  = ui->itemQualityCB->currentIndex();
     //items->items[index].sfx      = ui->sfxCb->currentIndex();
 
@@ -153,10 +166,10 @@ void ItemsWidget::on_pushBtn_clicked()
     items->items[index].req_stat.clear();
     items->items[index].req_val.clear();
 
-    if (ui->reqDef->value() > 0)
+    if (ui->reqPhys->value() > 0)
     {
         items->items[index].req_stat.push_back(REQUIRES_PHYS);
-        items->items[index].req_val.push_back(ui->reqDef->value());
+        items->items[index].req_val.push_back(ui->reqPhys->value());
     }
     if (ui->reqMent->value() > 0)
     {
@@ -208,7 +221,16 @@ void ItemsWidget::on_itemsList_itemClicked(QListWidgetItem *item)
     }
 
     // comboBoxes
-    //ui->itemTypeCB->setCurrentIndex(items->items[index].type);
+    QString type = QString::fromAscii(items->items[index].type.data(), items->items[index].type.size());
+    ui->itemTypeCB->setCurrentIndex(-1);
+    for (int i = 0; i < ui->itemTypeCB->count(); i++)
+    {
+        if (ui->itemTypeCB->itemData(i) == type)
+        {
+            ui->itemTypeCB->setCurrentIndex(i);
+            break;
+        }
+    }
     ui->itemQualityCB->setCurrentIndex(items->items[index].quality);
     //ui->sfxCb->setCurrentIndex(items->items[index].sfx);
 
@@ -227,6 +249,10 @@ void ItemsWidget::on_itemsList_itemClicked(QListWidgetItem *item)
     ui->rangMax->setValue(items->items[index].dmg_ranged_min);
     ui->power->setValue(items->items[index].power);
 
+    ui->reqPhys->setValue(0);
+    ui->reqMent->setValue(0);
+    ui->reqOff->setValue(0);
+    ui->reqDef->setValue(0);
     for (unsigned int i = 0; i < items->items[index].req_stat.size(); i++)
     {
         int value = items->items[index].req_val[i];
@@ -242,5 +268,299 @@ void ItemsWidget::on_itemsList_itemClicked(QListWidgetItem *item)
 
         else if (items->items[index].req_stat[i] == REQUIRES_DEF)
             ui->reqDef->setValue(value);
+    }
+}
+
+void ItemsWidget::on_absorbMin_valueChanged(int arg1)
+{
+    if (arg1 != 0)
+    {
+        ui->absorbMin->setStyleSheet("background-color:#66FF99;");
+    }
+    else
+    {
+        ui->absorbMin->setStyleSheet("");
+    }
+}
+
+void ItemsWidget::on_absorbMax_valueChanged(int arg1)
+{
+    if (arg1 != 0)
+    {
+        ui->absorbMax->setStyleSheet(editedStyle);
+    }
+    else
+    {
+        ui->absorbMax->setStyleSheet("");
+    }
+}
+
+void ItemsWidget::on_power_valueChanged(int arg1)
+{
+    if (arg1 != 0)
+    {
+        ui->power->setStyleSheet(editedStyle);
+    }
+    else
+    {
+        ui->power->setStyleSheet("");
+    }
+}
+
+void ItemsWidget::on_itemFlavor_textChanged(const QString &arg1)
+{
+    if (arg1 != "")
+    {
+        ui->itemFlavor->setStyleSheet(editedStyle);
+    }
+    else
+    {
+        ui->itemFlavor->setStyleSheet("");
+    }
+}
+
+void ItemsWidget::on_itemBook_textChanged(const QString &arg1)
+{
+    if (arg1 != "")
+    {
+        ui->itemBook->setStyleSheet(editedStyle);
+    }
+    else
+    {
+        ui->itemBook->setStyleSheet("");
+    }
+}
+
+void ItemsWidget::on_itemQualityCB_currentTextChanged(const QString &arg1)
+{
+    if (arg1 != "normal")
+    {
+        ui->itemBook->setStyleSheet(editedStyle);
+    }
+    else
+    {
+        ui->itemBook->setStyleSheet("");
+    }
+}
+
+void ItemsWidget::on_meleeMin_valueChanged(int arg1)
+{
+    if (arg1 != 0)
+    {
+        ui->meleeMin->setStyleSheet(editedStyle);
+    }
+    else
+    {
+        ui->meleeMin->setStyleSheet("");
+    }
+}
+
+void ItemsWidget::on_meleeMax_valueChanged(int arg1)
+{
+    if (arg1 != 0)
+    {
+        ui->meleeMax->setStyleSheet(editedStyle);
+    }
+    else
+    {
+        ui->meleeMax->setStyleSheet("");
+    }
+}
+
+void ItemsWidget::on_rangMin_valueChanged(int arg1)
+{
+    if (arg1 != 0)
+    {
+        ui->rangMin->setStyleSheet(editedStyle);
+    }
+    else
+    {
+        ui->rangMin->setStyleSheet("");
+    }
+}
+
+void ItemsWidget::on_rangMax_valueChanged(int arg1)
+{
+    if (arg1 != 0)
+    {
+        ui->rangMax->setStyleSheet(editedStyle);
+    }
+    else
+    {
+        ui->rangMax->setStyleSheet("");
+    }
+}
+
+void ItemsWidget::on_mentalMin_valueChanged(int arg1)
+{
+    if (arg1 != 0)
+    {
+        ui->mentalMin->setStyleSheet(editedStyle);
+    }
+    else
+    {
+        ui->mentalMin->setStyleSheet("");
+    }
+}
+
+void ItemsWidget::on_mentalMax_valueChanged(int arg1)
+{
+    if (arg1 != 0)
+    {
+        ui->mentalMax->setStyleSheet(editedStyle);
+    }
+    else
+    {
+        ui->mentalMax->setStyleSheet("");
+    }
+}
+
+void ItemsWidget::on_replacePowerFrom_textChanged()
+{
+    QTextDocument* docFrom = ui->replacePowerFrom->document();
+
+    if (docFrom->lineCount() >= 1 && !docFrom->findBlockByLineNumber(0).text().isEmpty())
+    {
+        ui->replacePowerFrom->setStyleSheet(editedStyle);
+    }
+    else
+    {
+        ui->replacePowerFrom->setStyleSheet("");
+    }
+}
+
+void ItemsWidget::on_replacePowerTo_textChanged()
+{
+    QTextDocument* docTo = ui->replacePowerTo->document();
+
+    if (docTo->lineCount() >= 1 && !docTo->findBlockByLineNumber(0).text().isEmpty())
+    {
+        ui->replacePowerTo->setStyleSheet(editedStyle);
+    }
+    else
+    {
+        ui->replacePowerTo->setStyleSheet("");
+    }
+}
+
+void ItemsWidget::on_disableSlots_textChanged()
+{
+    QTextDocument* doc = ui->disableSlots->document();
+
+    if (doc->lineCount() >= 1 && !doc->findBlockByLineNumber(0).text().isEmpty())
+    {
+        ui->disableSlots->setStyleSheet(editedStyle);
+    }
+    else
+    {
+        ui->disableSlots->setStyleSheet("");
+    }
+}
+
+void ItemsWidget::on_reqPhys_valueChanged(int arg1)
+{
+    if (arg1 != 0)
+    {
+        ui->reqPhys->setStyleSheet(editedStyle);
+    }
+    else
+    {
+        ui->reqPhys->setStyleSheet("");
+    }
+}
+
+void ItemsWidget::on_reqMent_valueChanged(int arg1)
+{
+    if (arg1 != 0)
+    {
+        ui->reqMent->setStyleSheet(editedStyle);
+    }
+    else
+    {
+        ui->reqMent->setStyleSheet("");
+    }
+}
+
+void ItemsWidget::on_reqOff_valueChanged(int arg1)
+{
+    if (arg1 != 0)
+    {
+        ui->reqOff->setStyleSheet(editedStyle);
+    }
+    else
+    {
+        ui->reqOff->setStyleSheet("");
+    }
+}
+
+void ItemsWidget::on_reqDef_valueChanged(int arg1)
+{
+    if (arg1 != 0)
+    {
+        ui->reqDef->setStyleSheet(editedStyle);
+    }
+    else
+    {
+        ui->reqDef->setStyleSheet("");
+    }
+}
+
+void ItemsWidget::on_price_valueChanged(int arg1)
+{
+    if (arg1 != 0)
+    {
+        ui->price->setStyleSheet(editedStyle);
+    }
+    else
+    {
+        ui->price->setStyleSheet("");
+    }
+}
+
+void ItemsWidget::on_sellPrice_valueChanged(int arg1)
+{
+    if (arg1 != 0)
+    {
+        ui->sellPrice->setStyleSheet(editedStyle);
+    }
+    else
+    {
+        ui->sellPrice->setStyleSheet("");
+    }
+}
+
+void ItemsWidget::on_maxQuantity_valueChanged(int arg1)
+{
+    if (arg1 != 1)
+    {
+        ui->maxQuantity->setStyleSheet(editedStyle);
+    }
+    else
+    {
+        ui->maxQuantity->setStyleSheet("");
+    }
+}
+
+void ItemsWidget::on_pickupStatus_textChanged(const QString &arg1)
+{
+    if (arg1 != "")
+    {
+        ui->pickupStatus->setStyleSheet(editedStyle);
+    }
+    else
+    {
+        ui->pickupStatus->setStyleSheet("");
+    }
+}
+
+void ItemsWidget::on_powerDesc_textChanged(const QString &arg1)
+{
+    if (arg1 != "")
+    {
+        ui->powerDesc->setStyleSheet(editedStyle);
+    }
+    else
+    {
+        ui->powerDesc->setStyleSheet("");
     }
 }

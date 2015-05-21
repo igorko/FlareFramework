@@ -23,12 +23,14 @@ FLARE.  If not, see http://www.gnu.org/licenses/
 #include "API/UtilsParsing.h"
 
 
-EditorItemManager::EditorItemManager(const std::string& filename) {
+EditorItemManager::EditorItemManager(const std::string& modpath) {
 	items = std::vector<Item>();
 
-	loadItems(filename, false);
+	loadItems(modpath + "items/items.txt", false);
 	if (!items.empty()) shrinkItems();
 	else items.resize(1);
+
+	loadTypes(modpath + "items/types.txt", false);
 }
 
 EditorItemManager::~EditorItemManager()
@@ -101,13 +103,16 @@ void EditorItemManager::save(const std::string& filename) {
 
 			outfile << "item_type=" << items[i].type << "\n";
 
-			for (unsigned k = 0;k < items[i].equip_flags.size(); k++) {
-				outfile << "equip_flags=" << items[i].equip_flags[k];
+			if (items[i].equip_flags.size() > 0)
+			{
+				outfile << "equip_flags=";
+				for (unsigned k = 0;k < items[i].equip_flags.size(); k++) {
+					outfile << items[i].equip_flags[k];
 
-				if (items[i].equip_flags.size() > 1  && k != items[i].equip_flags.size() - 1)
-					outfile << ",";
-				if (items[i].equip_flags.size() == 1 || k == items[i].equip_flags.size() - 1)
-					outfile << "\n";
+					if (items[i].equip_flags.size() > 1 && k != items[i].equip_flags.size() - 1)
+						outfile << ",";
+				}
+				outfile << "\n";
 			}
 
 			if (items[i].dmg_melee_min > 0 || items[i].dmg_melee_max > 0)
@@ -142,16 +147,22 @@ void EditorItemManager::save(const std::string& filename) {
 
 			// UNIMPLEMENTED: bonus
 			//outfile << "bonus=" << "\n";
-			// UNIMPLEMENTED: soundfx
-			//outfile << "soundfx=" << "\n";
+
+			if (items[i].sfx != "")
+				outfile << "soundfx=" << items[i].sfx << "\n";
 
 			if (items[i].gfx != "")
 				outfile << "gfx=" << items[i].gfx << "\n";
 
 			for (unsigned k = 0;k < items[i].loot_animation.size(); k++) {
-				outfile << "loot_animation=" << items[i].loot_animation[k].name << ","
-											 << items[i].loot_animation[k].low << ","
-											 << items[i].loot_animation[k].high << "\n";
+				outfile << "loot_animation=" << items[i].loot_animation[k].name;
+
+				if (items[i].loot_animation[k].low != 0)
+					outfile << "," << items[i].loot_animation[k].low;
+				if (items[i].loot_animation[k].high != 0)
+					outfile << "," << items[i].loot_animation[k].high;
+
+				outfile << "\n";
 			}
 
 			if (items[i].power > 0)
@@ -179,13 +190,16 @@ void EditorItemManager::save(const std::string& filename) {
 			if (items[i].stepfx != "")
 				outfile << "stepfx=" << items[i].stepfx << "\n";
 
-			for (unsigned k = 0;k < items[i].disable_slots.size(); k++) {
-				outfile << "disable_slots=" << items[i].disable_slots[k];
+			if (items[i].disable_slots.size() > 0)
+			{
+				outfile << "disable_slots=";
+				for (unsigned k = 0;k < items[i].disable_slots.size(); k++) {
+					outfile << items[i].disable_slots[k];
 
-				if (items[i].disable_slots.size() > 1  && k != items[i].disable_slots.size() - 1)
-					outfile << ",";
-				if (items[i].disable_slots.size() == 1 || k == items[i].disable_slots.size() - 1)
-					outfile << "\n";
+					if (items[i].disable_slots.size() > 1 && k != items[i].disable_slots.size() - 1)
+						outfile << ",";
+				}
+				outfile << "\n";
 			}
 
 			outfile << std::endl;

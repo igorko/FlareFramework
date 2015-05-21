@@ -27,7 +27,7 @@ FLARE.  If not, see http://www.gnu.org/licenses/
 class EditorItemManager : public ItemManager {
 public:
 
-	EditorItemManager(const std::string& filename);
+	EditorItemManager(const std::string& modpath);
 	~EditorItemManager();
 	
 	void shrinkItems();

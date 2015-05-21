@@ -98,13 +98,12 @@ void MainWindow::on_actionAdd_Item_triggered()
 
     if (!QDir(modPath + QDir::separator() + "items").exists())
         QDir().mkdir(modPath + QDir::separator() + "items");
-    QString filename = modPath + QDir::separator() + "items" + QDir::separator() + "items.txt";
 
-    QFile itemsFile(filename);
+    //QFile itemsFile(filepath);
     //if (!itemsFile.exists())
     //    itemsFile.Create();
 
-    std::string path = filename.toAscii().constData();
+    std::string path = (modPath + QDir::separator()).toAscii().constData();
     ui->Items->loadItems(path);
 }
 
