@@ -30,8 +30,8 @@ FLARE.  If not, see http://www.gnu.org/licenses/
 #include "Settings.h"
 #include "SharedResources.h"
 #include "StatBlock.h"
-#include "Stats.h"
 #endif
+#include "Stats.h"
 #include "UtilsFileSystem.h"
 #include "UtilsParsing.h"
 #ifndef EDITOR
@@ -493,7 +493,6 @@ void ItemManager::parseBonus(BonusData& bdata, FileParser& infile) {
 		return;
 	}
 
-#ifndef EDITOR
 	for (unsigned i=0; i<STAT_COUNT; ++i) {
 		if (bonus_str == STAT_KEY[i]) {
 			bdata.stat_index = (STAT)i;
@@ -501,12 +500,18 @@ void ItemManager::parseBonus(BonusData& bdata, FileParser& infile) {
 		}
 	}
 
+#ifndef EDITOR
 	for (unsigned i=0; i<ELEMENTS.size(); ++i) {
 		if (bonus_str == ELEMENTS[i].name + "_resist") {
 			bdata.resist_index = i;
 			return;
 		}
 	}
+#else
+    if (bonus_str.find("resist") != std::string::npos) {
+        bdata.resist_index = 0;
+        return;
+    }
 #endif
 
 	if (bonus_str == "physical") {

@@ -45,7 +45,7 @@ private slots:
 
     void on_itemBook_textChanged(const QString &arg1);
 
-    void on_itemQualityCB_currentTextChanged(const QString &arg1);
+    void on_itemQualityCB_currentIndexChanged(const QString &arg1);
 
     void on_meleeMin_valueChanged(int arg1);
 
@@ -82,6 +82,14 @@ private slots:
     void on_pickupStatus_textChanged(const QString &arg1);
 
     void on_powerDesc_textChanged(const QString &arg1);
+
+    void on_itemName_textChanged(const QString &arg1);
+
+    void on_equipFlags_textChanged();
+
+    void on_bonusName_textChanged();
+
+    void on_bonusValue_textChanged();
 
 private:
     Ui::ItemsWidget *ui;

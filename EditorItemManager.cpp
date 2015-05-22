@@ -21,11 +21,12 @@ FLARE.  If not, see http://www.gnu.org/licenses/
 
 #include "EditorItemManager.h"
 #include "API/UtilsParsing.h"
+#include "API/Stats.h"
 
 
 EditorItemManager::EditorItemManager(const std::string& modpath) {
 	items = std::vector<Item>();
-
+	setStatNames();
 	loadItems(modpath + "items/items.txt", false);
 	if (!items.empty()) shrinkItems();
 	else items.resize(1);
@@ -145,8 +146,33 @@ void EditorItemManager::save(const std::string& filename) {
 			if (items[i].requires_class != "")
 				outfile << "requires_class=" << items[i].requires_class << "\n";
 
-			// UNIMPLEMENTED: bonus
-			//outfile << "bonus=" << "\n";
+			for (unsigned k = 0;k < items[i].bonus.size(); k++) {
+				std::string bonus_str;
+				if (items[i].bonus[k].stat_index != -1)
+				{
+					bonus_str = STAT_KEY[items[i].bonus[k].stat_index];
+				}
+				else if (items[i].bonus[k].is_speed)
+				{
+					bonus_str = "speed";
+				}
+				else if (items[i].bonus[k].resist_index != -1)
+				{
+					bonus_str = "_error_";
+				}
+				else if (items[i].bonus[k].base_index != -1)
+				{
+					if (items[i].bonus[k].base_index == 0)
+						bonus_str = "physical";
+					else if (items[i].bonus[k].base_index == 1)
+					   bonus_str = "mental";
+					else if (items[i].bonus[k].base_index == 2)
+						bonus_str = "offense";
+					else if (items[i].bonus[k].base_index == 3)
+						bonus_str = "defense";
+				}
+				outfile << "bonus=" << bonus_str << "," << items[i].bonus[k].value << "\n";
+			}
 
 			if (items[i].sfx != "")
 				outfile << "soundfx=" << items[i].sfx << "\n";

@@ -17,6 +17,7 @@ SOURCES += main.cpp\
         EditorItemManager.cpp \
         API/FileParser.cpp \
         API/ItemManager.cpp \
+	API/Stats.cpp \
         API/Utils.cpp \
         API/UtilsFileSystem.cpp \
         API/UtilsParsing.cpp \
