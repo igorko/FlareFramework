@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1015</width>
-    <height>715</height>
+    <width>1004</width>
+    <height>762</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -426,14 +426,14 @@
       <bool>true</bool>
      </property>
      <layout class="QGridLayout" name="gridLayout_4">
-      <item row="0" column="1">
-       <widget class="QPushButton" name="assignAnimBtn">
+      <item row="3" column="1">
+       <widget class="QPushButton" name="assignStepBtn">
         <property name="text">
-         <string>Assign Animation</string>
+         <string>Assign StepFX</string>
         </property>
        </widget>
       </item>
-      <item row="2" column="0">
+      <item row="3" column="0">
        <widget class="QLabel" name="label_19">
         <property name="text">
          <string>StepFX</string>
@@ -443,56 +443,29 @@
         </property>
        </widget>
       </item>
-      <item row="1" column="1">
-       <widget class="QLineEdit" name="ClassEdit">
+      <item row="9" column="1">
+       <widget class="QPlainTextEdit" name="equipFlags">
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
-       </widget>
-      </item>
-      <item row="4" column="0">
-       <widget class="QLabel" name="disableSlotsLabel">
-        <property name="text">
-         <string>Disable Slots</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="label_22">
-        <property name="text">
-         <string>Requires Class</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
-        </property>
-       </widget>
-      </item>
-      <item row="5" column="0">
-       <spacer name="verticalSpacer_3">
-        <property name="orientation">
-         <enum>Qt::Vertical</enum>
-        </property>
-        <property name="sizeType">
-         <enum>QSizePolicy::Minimum</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
+        <property name="maximumSize">
          <size>
-          <width>20</width>
-          <height>40</height>
+          <width>150</width>
+          <height>120</height>
          </size>
         </property>
-       </spacer>
+       </widget>
       </item>
-      <item row="6" column="0">
-       <widget class="QPushButton" name="pushBtn">
+      <item row="9" column="0">
+       <widget class="QLabel" name="equipFlagsLabel">
         <property name="text">
-         <string>Push</string>
+         <string>Equip Flags</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
         </property>
        </widget>
       </item>
@@ -506,21 +479,71 @@
         </property>
        </widget>
       </item>
-      <item row="2" column="1">
-       <widget class="QPushButton" name="assignStepBtn">
+      <item row="6" column="0">
+       <widget class="QLabel" name="disableSlotsLabel">
         <property name="text">
-         <string>Assign StepFX</string>
+         <string>Disable Slots</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
         </property>
        </widget>
       </item>
-      <item row="6" column="1">
+      <item row="10" column="0">
+       <widget class="QPushButton" name="pushBtn">
+        <property name="text">
+         <string>Push</string>
+        </property>
+       </widget>
+      </item>
+      <item row="10" column="1">
        <widget class="QPushButton" name="clearBtn">
         <property name="text">
          <string>Clear</string>
         </property>
        </widget>
       </item>
-      <item row="4" column="1">
+      <item row="2" column="0">
+       <widget class="QLabel" name="label_22">
+        <property name="text">
+         <string>Requires Class</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="7" column="0">
+       <layout class="QHBoxLayout" name="horizontalLayout_4">
+        <item>
+         <spacer name="horizontalSpacer_2">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QPushButton" name="addEquipFlag">
+          <property name="maximumSize">
+           <size>
+            <width>30</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>+</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item row="6" column="1">
        <widget class="QPlainTextEdit" name="disableSlots">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
@@ -531,10 +554,56 @@
         <property name="maximumSize">
          <size>
           <width>150</width>
-          <height>16777215</height>
+          <height>120</height>
          </size>
         </property>
        </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QPushButton" name="assignAnimBtn">
+        <property name="text">
+         <string>Assign Animation</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="1">
+       <widget class="QComboBox" name="slotsList"/>
+      </item>
+      <item row="5" column="0">
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <item>
+         <spacer name="horizontalSpacer_3">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QPushButton" name="addDisableSlot">
+          <property name="maximumSize">
+           <size>
+            <width>30</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>+</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item row="7" column="1">
+       <widget class="QComboBox" name="equipList"/>
+      </item>
+      <item row="2" column="1">
+       <widget class="QComboBox" name="classList"/>
       </item>
      </layout>
     </widget>
@@ -545,35 +614,8 @@
       <bool>true</bool>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
-      <item row="0" column="1">
-       <widget class="QLabel" name="label">
-        <property name="text">
-         <string>Physical</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="1">
-       <widget class="QLabel" name="label_2">
-        <property name="text">
-         <string>Mental</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="2">
-       <widget class="QSpinBox" name="reqOff"/>
-      </item>
-      <item row="5" column="1">
-       <widget class="QSpinBox" name="price">
-        <property name="maximum">
-         <number>1000000</number>
-        </property>
-       </widget>
+      <item row="3" column="2">
+       <widget class="QSpinBox" name="reqDef"/>
       </item>
       <item row="2" column="1">
        <widget class="QLabel" name="label_3">
@@ -585,35 +627,40 @@
         </property>
        </widget>
       </item>
-      <item row="3" column="2">
-       <widget class="QSpinBox" name="reqDef"/>
+      <item row="2" column="2">
+       <widget class="QSpinBox" name="reqOff"/>
       </item>
-      <item row="8" column="0">
-       <widget class="QLabel" name="pickupLabel">
+      <item row="1" column="1">
+       <widget class="QLabel" name="label_2">
         <property name="text">
-         <string>Pickup Status</string>
+         <string>Mental</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>
         </property>
        </widget>
       </item>
-      <item row="8" column="1">
-       <widget class="QLineEdit" name="pickupStatus">
+      <item row="11" column="1">
+       <widget class="QPlainTextEdit" name="bonusName">
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
-       </widget>
-      </item>
-      <item row="7" column="1">
-       <widget class="QSpinBox" name="maxQuantity">
-        <property name="maximum">
-         <number>1000</number>
+        <property name="maximumSize">
+         <size>
+          <width>140</width>
+          <height>120</height>
+         </size>
         </property>
        </widget>
+      </item>
+      <item row="0" column="2">
+       <widget class="QSpinBox" name="reqPhys"/>
+      </item>
+      <item row="1" column="2">
+       <widget class="QSpinBox" name="reqMent"/>
       </item>
       <item row="6" column="0">
        <widget class="QLabel" name="sellPriceLabel">
@@ -625,13 +672,29 @@
         </property>
        </widget>
       </item>
-      <item row="10" column="0">
-       <widget class="QLabel" name="equipFlagsLabel">
+      <item row="7" column="0">
+       <widget class="QLabel" name="maxQuantLabel">
         <property name="text">
-         <string>Equip Flags</string>
+         <string>Max Quantity</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="11" column="2">
+       <widget class="QPlainTextEdit" name="bonusValue">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>140</width>
+          <height>120</height>
+         </size>
         </property>
        </widget>
       </item>
@@ -645,26 +708,71 @@
         </property>
        </widget>
       </item>
-      <item row="1" column="2">
-       <widget class="QSpinBox" name="reqMent"/>
-      </item>
-      <item row="7" column="0">
-       <widget class="QLabel" name="maxQuantLabel">
+      <item row="11" column="0">
+       <widget class="QLabel" name="bonusLabel">
         <property name="text">
-         <string>Max Quantity</string>
+         <string>Bonus</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>
         </property>
        </widget>
       </item>
-      <item row="0" column="2">
-       <widget class="QSpinBox" name="reqPhys"/>
+      <item row="6" column="1">
+       <widget class="QSpinBox" name="sellPrice">
+        <property name="maximum">
+         <number>1000000</number>
+        </property>
+       </widget>
+      </item>
+      <item row="7" column="1">
+       <widget class="QSpinBox" name="maxQuantity">
+        <property name="maximum">
+         <number>1000</number>
+        </property>
+       </widget>
+      </item>
+      <item row="8" column="1">
+       <widget class="QLineEdit" name="pickupStatus">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="1">
+       <widget class="QSpinBox" name="price">
+        <property name="maximum">
+         <number>1000000</number>
+        </property>
+       </widget>
+      </item>
+      <item row="8" column="0">
+       <widget class="QLabel" name="pickupLabel">
+        <property name="text">
+         <string>Pickup Status</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
       </item>
       <item row="5" column="0">
        <widget class="QLabel" name="priceLabel">
         <property name="text">
          <string>Price</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>Physical</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>
@@ -681,58 +789,41 @@
         </property>
        </widget>
       </item>
-      <item row="6" column="1">
-       <widget class="QSpinBox" name="sellPrice">
-        <property name="maximum">
-         <number>1000000</number>
-        </property>
-       </widget>
-      </item>
-      <item row="9" column="0">
-       <widget class="QLabel" name="bonusLabel">
-        <property name="text">
-         <string>Bonus</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
-        </property>
-       </widget>
-      </item>
-      <item row="10" column="1">
-       <widget class="QPlainTextEdit" name="equipFlags">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>140</width>
-          <height>16777215</height>
-         </size>
-        </property>
-       </widget>
+      <item row="9" column="2">
+       <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <item>
+         <widget class="QPushButton" name="addBonus">
+          <property name="maximumSize">
+           <size>
+            <width>30</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>+</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Expanding</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
       </item>
       <item row="9" column="1">
-       <widget class="QPlainTextEdit" name="bonusName">
-        <property name="maximumSize">
-         <size>
-          <width>140</width>
-          <height>16777215</height>
-         </size>
-        </property>
-       </widget>
-      </item>
-      <item row="9" column="2">
-       <widget class="QPlainTextEdit" name="bonusValue">
-        <property name="maximumSize">
-         <size>
-          <width>140</width>
-          <height>16777215</height>
-         </size>
-        </property>
-       </widget>
+       <widget class="QComboBox" name="bonusList"/>
       </item>
      </layout>
     </widget>

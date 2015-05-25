@@ -27,6 +27,7 @@ FLARE.  If not, see http://www.gnu.org/licenses/
 EditorItemManager::EditorItemManager(const std::string& modpath) {
 	items = std::vector<Item>();
 	setStatNames();
+	loadMiscTypes();
 	loadItems(modpath + "items/items.txt", false);
 	if (!items.empty()) shrinkItems();
 	else items.resize(1);
@@ -37,6 +38,83 @@ EditorItemManager::EditorItemManager(const std::string& modpath) {
 EditorItemManager::~EditorItemManager()
 {}
 
+/**
+ * This method is a collection of misc code parts that are taken from flare-engine.
+ */
+
+void EditorItemManager::loadMiscTypes()
+{
+	FileParser infile;
+	// @CLASS MenuInventory|Description of menus/inventory.txt
+	if (infile.open("menus/inventory.txt")) {
+		while(infile.next()) {
+			// @ATTR equipment_slot|x (integer), y (integer), size (integer), slot_type (string)|Position and item type of an equipment slot.
+			if(infile.key == "equipment_slot") {
+				Rect area;
+				Point pos;
+
+				pos.x = area.x = popFirstInt(infile.val);
+				pos.y = area.y = popFirstInt(infile.val);
+				area.w = area.h = popFirstInt(infile.val);
+
+				slot_type.push_back(popFirstString(infile.val));
+			}
+		}
+		infile.close();
+	}
+
+	// @CLASS Settings: Elements|Description of engine/elements.txt
+	if (infile.open("engine/elements.txt")) {
+		std::string name;
+		while (infile.next()) {
+			// @ATTR name|string|An identifier for this element.
+			if (infile.key == "name") name = infile.val;
+
+			if (name != "") {
+				elements.push_back(name);
+				name = "";
+			}
+		}
+		infile.close();
+	}
+
+	// @CLASS Settings: Equip flags|Description of engine/equip_flags.txt
+	if (infile.open("engine/equip_flags.txt")) {
+		std::string type;
+		type = "";
+
+		while (infile.next()) {
+			// @ATTR name|string|An identifier for this equip flag.
+			if (infile.key == "name") type = infile.val;
+
+			if (type != "") {
+				equip_flags.push_back(type);
+				type = "";
+			}
+		}
+		infile.close();
+	}
+
+	// @CLASS Settings: Classes|Description of engine/classes.txt
+	if (infile.open("engine/classes.txt")) {
+		while (infile.next()) {
+			if (infile.new_section) {
+				if (infile.section == "class") {
+					hero_classes.push_back("");
+				}
+			}
+
+			if (infile.section != "class")
+				continue;
+
+			if (!hero_classes.empty()) {
+				// @ATTR name|string|The displayed name of this class.
+				if (infile.key == "name") hero_classes.back() = infile.val;
+			}
+		}
+		infile.close();
+	}
+}
 /**
  * Shrinks the items vector to the absolute needed size.
  *
@@ -158,7 +236,7 @@ void EditorItemManager::save(const std::string& filename) {
 				}
 				else if (items[i].bonus[k].resist_index != -1)
 				{
-					bonus_str = "_error_";
+                    bonus_str = elements[items[i].bonus[k].resist_index] + "_resist";
 				}
 				else if (items[i].bonus[k].base_index != -1)
 				{

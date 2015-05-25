@@ -228,6 +228,8 @@ public:
 #ifndef EDITOR
 	TooltipData getTooltip(ItemStack stack, StatBlock *stats, int context);
 	TooltipData getShortTooltip(ItemStack item);
+#else
+	std::vector<std::string> elements;
 #endif
 	std::string getItemType(std::string _type);
 	void addUnknownItem(int id);

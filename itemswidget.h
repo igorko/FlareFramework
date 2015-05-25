@@ -91,12 +91,19 @@ private slots:
 
     void on_bonusValue_textChanged();
 
+    void on_addDisableSlot_clicked();
+
+    void on_addEquipFlag_clicked();
+
+    void on_addBonus_clicked();
+
 private:
     Ui::ItemsWidget *ui;
 
     EditorItemManager * items;
 
     QString editedStyle;
+    QString invalidStyle;
 
 };
 

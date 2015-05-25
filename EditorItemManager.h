@@ -33,6 +33,13 @@ public:
 	void shrinkItems();
 
 	void save(const std::string& filename);
+
+    std::vector<std::string> slot_type;
+    std::vector<std::string> equip_flags;
+    std::vector<std::string> hero_classes;
+
+private:
+	void loadMiscTypes();
 };
 
 #endif

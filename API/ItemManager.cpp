@@ -508,10 +508,12 @@ void ItemManager::parseBonus(BonusData& bdata, FileParser& infile) {
 		}
 	}
 #else
-    if (bonus_str.find("resist") != std::string::npos) {
-        bdata.resist_index = 0;
-        return;
-    }
+	for (unsigned i=0; i<elements.size(); ++i) {
+		if (bonus_str == elements[i] + "_resist") {
+			bdata.resist_index = i;
+			return;
+		}
+	}
 #endif
 
 	if (bonus_str == "physical") {

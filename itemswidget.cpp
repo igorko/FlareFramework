@@ -12,7 +12,8 @@ ItemsWidget::ItemsWidget(QWidget *parent) :
     itemsEdited(false),
     ui(new Ui::ItemsWidget),
     items(NULL),
-    editedStyle("background-color:#66FF99;")
+    editedStyle("background-color:#66FF99;"),
+    invalidStyle("background-color:#FF3333;")
 {
     ui->setupUi(this);
 }
@@ -30,7 +31,7 @@ void ItemsWidget::saveItems(const std::string &path)
 void ItemsWidget::loadItems(const std::string &path)
 {
     items = new EditorItemManager(path);
-    for (unsigned i = 1; i<items->items.size(); i++)
+    for (unsigned i = 0; i<items->items.size(); i++)
     {
         if (items->items[i].name != "")
         {
@@ -47,7 +48,41 @@ void ItemsWidget::loadItems(const std::string &path)
         ui->itemTypeCB->addItem(QString::fromAscii(iter->second.data(), iter->second.size()),
                                 QString::fromAscii(iter->first.data(), iter->first.size()));
     }
+    if (ui->itemTypeCB->count() == 0) ui->itemTypeCB->setStyleSheet(invalidStyle);
 
+    for (unsigned i = 0; i<items->equip_flags.size(); i++)
+    {
+        ui->equipList->addItem(QString::fromAscii(items->equip_flags[i].data(), items->equip_flags[i].size()));
+    }
+    if (ui->equipList->count() == 0) ui->equipList->setStyleSheet(invalidStyle);
+
+    for (unsigned i = 0; i<items->slot_type.size(); i++)
+    {
+        ui->slotsList->addItem(QString::fromAscii(items->slot_type[i].data(), items->slot_type[i].size()));
+    }
+    if (ui->slotsList->count() == 0) ui->slotsList->setStyleSheet(invalidStyle);
+
+    for (unsigned i = 0; i<items->elements.size(); i++)
+    {
+        ui->bonusList->addItem(QString::fromAscii(items->elements[i].data(), items->elements[i].size()) + "_resist");
+    }
+    if (ui->bonusList->count() == 0) ui->bonusList->setStyleSheet(invalidStyle);
+
+    ui->bonusList->addItem("speed");
+    ui->bonusList->addItem("physical");
+    ui->bonusList->addItem("mental");
+    ui->bonusList->addItem("offense");
+    ui->bonusList->addItem("defense");
+    for (unsigned i = 0; i<STAT_COUNT; i++)
+    {
+        ui->bonusList->addItem(QString::fromAscii(STAT_KEY[i].data(), STAT_KEY[i].size()));
+    }
+
+    ui->classList->addItem("");
+    for (unsigned i = 0; i<items->hero_classes.size(); i++)
+    {
+        ui->classList->addItem(QString::fromAscii(items->hero_classes[i].data(), items->hero_classes[i].size()));
+    }
     ui->pushBtn->setEnabled(false);
 }
 
@@ -76,7 +111,7 @@ void ItemsWidget::on_clearBtn_clicked()
 	ui->itemName->setText("ItemName");
     ui->itemFlavor->clear();
     ui->itemBook->clear();
-	ui->ClassEdit->clear();
+    ui->classList->clear();
 	ui->pickupStatus->clear();
 	ui->powerDesc->clear();
     ui->replacePowerFrom->clear();
@@ -121,7 +156,6 @@ void ItemsWidget::on_pushBtn_clicked()
     items->items[index].pickup_status = ui->pickupStatus->text().toAscii().constData();
     items->items[index].power_desc = ui->powerDesc->text().toAscii().constData();
     items->items[index].book = ui->itemBook->text().toAscii().constData();
-    items->items[index].requires_class = ui->ClassEdit->text().toAscii().constData();
 
     QTextDocument* docFrom = ui->replacePowerFrom->document();
     QTextDocument* docTo   = ui->replacePowerTo->document();
@@ -171,9 +205,6 @@ void ItemsWidget::on_pushBtn_clicked()
         if (bonus_str == "speed") {
             items->items[index].bonus.back().is_speed = true;
         }
-        else if (bonus_str == "_error_") {
-            items->items[index].bonus.back().resist_index = 0;
-        }
         else if (bonus_str == "physical") {
             items->items[index].bonus.back().base_index = 0;
         }
@@ -186,9 +217,18 @@ void ItemsWidget::on_pushBtn_clicked()
         else if (bonus_str == "defense") {
             items->items[index].bonus.back().base_index = 3;
         }
+
+        for (unsigned k=0; k<items->elements.size(); ++k) {
+            if (bonus_str == QString::fromAscii(items->elements[k].data(), items->elements[k].size()) + "_resist")
+            {
+                items->items[index].bonus.back().resist_index = k;
+                break;
+            }
+        }
         for (unsigned k=0; k<STAT_COUNT; ++k) {
             if (bonus_str == QString::fromAscii(STAT_KEY[k].data(), STAT_KEY[k].size())) {
                 items->items[index].bonus.back().stat_index = (STAT)k;
+                break;
             }
         }
 
@@ -196,8 +236,9 @@ void ItemsWidget::on_pushBtn_clicked()
     }
 
     // comboBoxes
-    items->items[index].type     = ui->itemTypeCB->itemData(ui->itemTypeCB->currentIndex()).toString().toAscii().constData();;
+    items->items[index].type     = ui->itemTypeCB->itemData(ui->itemTypeCB->currentIndex()).toString().toAscii().constData();
     items->items[index].quality  = ui->itemQualityCB->currentIndex();
+    items->items[index].requires_class = ui->classList->currentText().toAscii().constData();
 
     // spinBoxes
     items->items[index].level        = ui->itemLvlSpin->value();
@@ -255,7 +296,6 @@ void ItemsWidget::on_itemsList_itemClicked(QListWidgetItem *item)
     ui->powerDesc->setText(QString::fromAscii(items->items[index].power_desc.data(), items->items[index].power_desc.size()));
     ui->itemFlavor->setText(QString::fromAscii(items->items[index].flavor.data(), items->items[index].flavor.size()));
     ui->itemBook->setText(QString::fromAscii(items->items[index].book.data(), items->items[index].book.size()));
-    ui->ClassEdit->setText(QString::fromAscii(items->items[index].requires_class.data(), items->items[index].requires_class.size()));
 
     ui->replacePowerFrom->clear();
     ui->replacePowerTo->clear();
@@ -292,7 +332,7 @@ void ItemsWidget::on_itemsList_itemClicked(QListWidgetItem *item)
         }
         else if (resist_index != -1)
         {
-            ui->bonusName->appendPlainText(QString("_error_"));
+            ui->bonusName->appendPlainText(QString::fromAscii(items->elements[resist_index].data(), items->elements[resist_index].size()) + "_resist");
         }
         else if (is_speed)
         {
@@ -327,6 +367,17 @@ void ItemsWidget::on_itemsList_itemClicked(QListWidgetItem *item)
         }
     }
     ui->itemQualityCB->setCurrentIndex(items->items[index].quality);
+
+    type = QString::fromAscii(items->items[index].requires_class.data(), items->items[index].requires_class.size());
+    ui->classList->setCurrentIndex(-1);
+    for (int i = 0; i < ui->classList->count(); i++)
+    {
+        if (ui->classList->itemText(i) == type)
+        {
+            ui->classList->setCurrentIndex(i);
+            break;
+        }
+    }
 
     // spinBoxes
     ui->itemLvlSpin->setValue(items->items[index].level);
@@ -667,7 +718,7 @@ void ItemsWidget::on_itemName_textChanged(const QString &arg1)
     }
     else
     {
-        ui->itemName->setStyleSheet("background-color:#FF3333;");
+        ui->itemName->setStyleSheet(invalidStyle);
     }
 }
 
@@ -711,4 +762,19 @@ void ItemsWidget::on_bonusValue_textChanged()
     {
         ui->bonusValue->setStyleSheet("");
     }
+}
+
+void ItemsWidget::on_addDisableSlot_clicked()
+{
+    ui->disableSlots->appendPlainText(ui->slotsList->currentText());
+}
+
+void ItemsWidget::on_addEquipFlag_clicked()
+{
+    ui->equipFlags->appendPlainText(ui->equipList->currentText());
+}
+
+void ItemsWidget::on_addBonus_clicked()
+{
+    ui->bonusName->appendPlainText(ui->bonusList->currentText());
 }
