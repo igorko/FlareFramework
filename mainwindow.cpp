@@ -75,7 +75,7 @@ void MainWindow::on_actionClose_Mod_triggered()
         if (reply == QMessageBox::Yes)
         {
             QString filename = modPath + QDir::separator() + "items" + QDir::separator() + "items.txt";
-            std::string path = filename.toAscii().constData();
+            std::string path = filename.toUtf8().constData();
             ui->Items->saveItems(path);
         }
     }
@@ -103,14 +103,14 @@ void MainWindow::on_actionAdd_Item_triggered()
     //if (!itemsFile.exists())
     //    itemsFile.Create();
 
-    std::string path = (modPath + QDir::separator()).toAscii().constData();
+    std::string path = (modPath + QDir::separator()).toUtf8().constData();
     ui->Items->loadItems(path);
 }
 
 void MainWindow::on_actionSave_Mod_triggered()
 {
     QString filename = modPath + QDir::separator() + "items" + QDir::separator() + "items.txt";
-    ui->Items->saveItems(filename.toAscii().constData());
+    ui->Items->saveItems(filename.toUtf8().constData());
     //ToDo
 
 }

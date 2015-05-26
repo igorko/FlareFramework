@@ -46,7 +46,7 @@ std::vector<std::string> listAllFiles(const std::string &path, bool full_paths) 
     std::vector<std::string> ret;
     std::string test_path;
 
-    std::string modFolder = MainWindow::modPath.toAscii().constData();;
+    std::string modFolder = MainWindow::modPath.toUtf8().constData();;
 
     test_path = modFolder + "/" + path;
 

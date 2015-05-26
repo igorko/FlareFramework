@@ -35,7 +35,7 @@ void ItemsWidget::loadItems(const std::string &path)
     {
         if (items->items[i].name != "")
         {
-            QListWidgetItem* item = new QListWidgetItem(QString::fromAscii(items->items[i].name.data(), items->items[i].name.size()));
+            QListWidgetItem* item = new QListWidgetItem(QString::fromUtf8(items->items[i].name.data(), items->items[i].name.size()));
             item->setData(Qt::UserRole, i);
             ui->itemsList->addItem(item);
 
@@ -45,26 +45,26 @@ void ItemsWidget::loadItems(const std::string &path)
     std::map<std::string, std::string>::iterator iter;
     for (iter = items->item_types.begin(); iter != items->item_types.end(); ++iter)
     {
-        ui->itemTypeCB->addItem(QString::fromAscii(iter->second.data(), iter->second.size()),
-                                QString::fromAscii(iter->first.data(), iter->first.size()));
+        ui->itemTypeCB->addItem(QString::fromUtf8(iter->second.data(), iter->second.size()),
+                                QString::fromUtf8(iter->first.data(), iter->first.size()));
     }
     if (ui->itemTypeCB->count() == 0) ui->itemTypeCB->setStyleSheet(invalidStyle);
 
     for (unsigned i = 0; i<items->equip_flags.size(); i++)
     {
-        ui->equipList->addItem(QString::fromAscii(items->equip_flags[i].data(), items->equip_flags[i].size()));
+        ui->equipList->addItem(QString::fromUtf8(items->equip_flags[i].data(), items->equip_flags[i].size()));
     }
     if (ui->equipList->count() == 0) ui->equipList->setStyleSheet(invalidStyle);
 
     for (unsigned i = 0; i<items->slot_type.size(); i++)
     {
-        ui->slotsList->addItem(QString::fromAscii(items->slot_type[i].data(), items->slot_type[i].size()));
+        ui->slotsList->addItem(QString::fromUtf8(items->slot_type[i].data(), items->slot_type[i].size()));
     }
     if (ui->slotsList->count() == 0) ui->slotsList->setStyleSheet(invalidStyle);
 
     for (unsigned i = 0; i<items->elements.size(); i++)
     {
-        ui->bonusList->addItem(QString::fromAscii(items->elements[i].data(), items->elements[i].size()) + "_resist");
+        ui->bonusList->addItem(QString::fromUtf8(items->elements[i].data(), items->elements[i].size()) + "_resist");
     }
     if (ui->bonusList->count() == 0) ui->bonusList->setStyleSheet(invalidStyle);
 
@@ -75,13 +75,13 @@ void ItemsWidget::loadItems(const std::string &path)
     ui->bonusList->addItem("defense");
     for (unsigned i = 0; i<STAT_COUNT; i++)
     {
-        ui->bonusList->addItem(QString::fromAscii(STAT_KEY[i].data(), STAT_KEY[i].size()));
+        ui->bonusList->addItem(QString::fromUtf8(STAT_KEY[i].data(), STAT_KEY[i].size()));
     }
 
     ui->classList->addItem("");
     for (unsigned i = 0; i<items->hero_classes.size(); i++)
     {
-        ui->classList->addItem(QString::fromAscii(items->hero_classes[i].data(), items->hero_classes[i].size()));
+        ui->classList->addItem(QString::fromUtf8(items->hero_classes[i].data(), items->hero_classes[i].size()));
     }
     ui->pushBtn->setEnabled(false);
 }
@@ -151,11 +151,11 @@ void ItemsWidget::on_pushBtn_clicked()
     int index = ui->itemsList->currentItem()->data(Qt::UserRole).toInt();
 
     // TextEdits
-    items->items[index].name = ui->itemName->text().toAscii().constData();
-    items->items[index].flavor = ui->itemFlavor->text().toAscii().constData();
-    items->items[index].pickup_status = ui->pickupStatus->text().toAscii().constData();
-    items->items[index].power_desc = ui->powerDesc->text().toAscii().constData();
-    items->items[index].book = ui->itemBook->text().toAscii().constData();
+    items->items[index].name = ui->itemName->text().toUtf8().constData();
+    items->items[index].flavor = ui->itemFlavor->text().toUtf8().constData();
+    items->items[index].pickup_status = ui->pickupStatus->text().toUtf8().constData();
+    items->items[index].power_desc = ui->powerDesc->text().toUtf8().constData();
+    items->items[index].book = ui->itemBook->text().toUtf8().constData();
 
     QTextDocument* docFrom = ui->replacePowerFrom->document();
     QTextDocument* docTo   = ui->replacePowerTo->document();
@@ -177,7 +177,7 @@ void ItemsWidget::on_pushBtn_clicked()
     {
         if (disabledSlots->findBlockByLineNumber(i).text().isEmpty())
             continue;
-        items->items[index].disable_slots.push_back(disabledSlots->findBlockByLineNumber(i).text().toAscii().constData());
+        items->items[index].disable_slots.push_back(disabledSlots->findBlockByLineNumber(i).text().toUtf8().constData());
     }
 
     QTextDocument* equipFlags = ui->equipFlags->document();
@@ -187,7 +187,7 @@ void ItemsWidget::on_pushBtn_clicked()
     {
         if (equipFlags->findBlockByLineNumber(i).text().isEmpty())
             continue;
-        items->items[index].equip_flags.push_back(equipFlags->findBlockByLineNumber(i).text().toAscii().constData());
+        items->items[index].equip_flags.push_back(equipFlags->findBlockByLineNumber(i).text().toUtf8().constData());
     }
 
     QTextDocument* bonusName    = ui->bonusName->document();
@@ -219,14 +219,14 @@ void ItemsWidget::on_pushBtn_clicked()
         }
 
         for (unsigned k=0; k<items->elements.size(); ++k) {
-            if (bonus_str == QString::fromAscii(items->elements[k].data(), items->elements[k].size()) + "_resist")
+            if (bonus_str == QString::fromUtf8(items->elements[k].data(), items->elements[k].size()) + "_resist")
             {
                 items->items[index].bonus.back().resist_index = k;
                 break;
             }
         }
         for (unsigned k=0; k<STAT_COUNT; ++k) {
-            if (bonus_str == QString::fromAscii(STAT_KEY[k].data(), STAT_KEY[k].size())) {
+            if (bonus_str == QString::fromUtf8(STAT_KEY[k].data(), STAT_KEY[k].size())) {
                 items->items[index].bonus.back().stat_index = (STAT)k;
                 break;
             }
@@ -236,9 +236,9 @@ void ItemsWidget::on_pushBtn_clicked()
     }
 
     // comboBoxes
-    items->items[index].type     = ui->itemTypeCB->itemData(ui->itemTypeCB->currentIndex()).toString().toAscii().constData();
+    items->items[index].type     = ui->itemTypeCB->itemData(ui->itemTypeCB->currentIndex()).toString().toUtf8().constData();
     items->items[index].quality  = ui->itemQualityCB->currentIndex();
-    items->items[index].requires_class = ui->classList->currentText().toAscii().constData();
+    items->items[index].requires_class = ui->classList->currentText().toUtf8().constData();
 
     // spinBoxes
     items->items[index].level        = ui->itemLvlSpin->value();
@@ -291,11 +291,11 @@ void ItemsWidget::on_itemsList_itemClicked(QListWidgetItem *item)
     int index = item->data(Qt::UserRole).toInt();
 
     // TextEdits
-    ui->itemName->setText(QString::fromAscii(items->items[index].name.data(), items->items[index].name.size()));
-    ui->pickupStatus->setText(QString::fromAscii(items->items[index].pickup_status.data(), items->items[index].pickup_status.size()));
-    ui->powerDesc->setText(QString::fromAscii(items->items[index].power_desc.data(), items->items[index].power_desc.size()));
-    ui->itemFlavor->setText(QString::fromAscii(items->items[index].flavor.data(), items->items[index].flavor.size()));
-    ui->itemBook->setText(QString::fromAscii(items->items[index].book.data(), items->items[index].book.size()));
+    ui->itemName->setText(QString::fromUtf8(items->items[index].name.data(), items->items[index].name.size()));
+    ui->pickupStatus->setText(QString::fromUtf8(items->items[index].pickup_status.data(), items->items[index].pickup_status.size()));
+    ui->powerDesc->setText(QString::fromUtf8(items->items[index].power_desc.data(), items->items[index].power_desc.size()));
+    ui->itemFlavor->setText(QString::fromUtf8(items->items[index].flavor.data(), items->items[index].flavor.size()));
+    ui->itemBook->setText(QString::fromUtf8(items->items[index].book.data(), items->items[index].book.size()));
 
     ui->replacePowerFrom->clear();
     ui->replacePowerTo->clear();
@@ -308,13 +308,13 @@ void ItemsWidget::on_itemsList_itemClicked(QListWidgetItem *item)
     ui->disableSlots->clear();
     for (unsigned int i = 0; i < items->items[index].disable_slots.size(); i++)
     {
-        ui->disableSlots->appendPlainText(QString::fromAscii(items->items[index].disable_slots[i].data(), items->items[index].disable_slots[i].size()));
+        ui->disableSlots->appendPlainText(QString::fromUtf8(items->items[index].disable_slots[i].data(), items->items[index].disable_slots[i].size()));
     }
 
     ui->equipFlags->clear();
     for (unsigned int i = 0; i < items->items[index].equip_flags.size(); i++)
     {
-        ui->equipFlags->appendPlainText(QString::fromAscii(items->items[index].equip_flags[i].data(), items->items[index].equip_flags[i].size()));
+        ui->equipFlags->appendPlainText(QString::fromUtf8(items->items[index].equip_flags[i].data(), items->items[index].equip_flags[i].size()));
     }
 
     ui->bonusName->clear();
@@ -328,11 +328,11 @@ void ItemsWidget::on_itemsList_itemClicked(QListWidgetItem *item)
 
         if (stat_index != -1)
         {
-            ui->bonusName->appendPlainText(QString::fromAscii(STAT_KEY[stat_index].data(), STAT_KEY[stat_index].size()));
+            ui->bonusName->appendPlainText(QString::fromUtf8(STAT_KEY[stat_index].data(), STAT_KEY[stat_index].size()));
         }
         else if (resist_index != -1)
         {
-            ui->bonusName->appendPlainText(QString::fromAscii(items->elements[resist_index].data(), items->elements[resist_index].size()) + "_resist");
+            ui->bonusName->appendPlainText(QString::fromUtf8(items->elements[resist_index].data(), items->elements[resist_index].size()) + "_resist");
         }
         else if (is_speed)
         {
@@ -356,7 +356,7 @@ void ItemsWidget::on_itemsList_itemClicked(QListWidgetItem *item)
     }
 
     // comboBoxes
-    QString type = QString::fromAscii(items->items[index].type.data(), items->items[index].type.size());
+    QString type = QString::fromUtf8(items->items[index].type.data(), items->items[index].type.size());
     ui->itemTypeCB->setCurrentIndex(-1);
     for (int i = 0; i < ui->itemTypeCB->count(); i++)
     {
@@ -368,7 +368,7 @@ void ItemsWidget::on_itemsList_itemClicked(QListWidgetItem *item)
     }
     ui->itemQualityCB->setCurrentIndex(items->items[index].quality);
 
-    type = QString::fromAscii(items->items[index].requires_class.data(), items->items[index].requires_class.size());
+    type = QString::fromUtf8(items->items[index].requires_class.data(), items->items[index].requires_class.size());
     ui->classList->setCurrentIndex(-1);
     for (int i = 0; i < ui->classList->count(); i++)
     {
