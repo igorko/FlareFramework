@@ -1,7 +1,7 @@
 #ifndef ITEMSWIDGET_H
 #define ITEMSWIDGET_H
 
-#include <QWidget>
+#include <QScrollArea>
 #include <QListWidgetItem>
 
 class EditorItemManager;
@@ -10,11 +10,11 @@ namespace Ui {
 class ItemsWidget;
 }
 
-class ItemsWidget : public QWidget
+class ItemsWidget : public QScrollArea
 {
 	Q_OBJECT
 public:
-	explicit ItemsWidget(QWidget *parent = 0);
+	explicit ItemsWidget(QScrollArea *parent = 0);
     ~ItemsWidget();
     void saveItems(const std::string& path);
     void loadItems(const std::string& path);

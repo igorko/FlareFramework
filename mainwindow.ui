@@ -7,8 +7,14 @@
     <x>0</x>
     <y>0</y>
     <width>1022</width>
-    <height>658</height>
+    <height>600</height>
    </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>1022</width>
+    <height>600</height>
+   </size>
   </property>
   <property name="acceptDrops">
    <bool>false</bool>
@@ -32,6 +38,15 @@
        </attribute>
       </widget>
       <widget class="ItemsWidget" name="Items">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="verticalScrollBarPolicy">
+        <enum>Qt::ScrollBarAlwaysOn</enum>
+       </property>
        <attribute name="title">
         <string>Items</string>
        </attribute>
@@ -288,7 +303,7 @@
  <customwidgets>
   <customwidget>
    <class>ItemsWidget</class>
-   <extends>QWidget</extends>
+   <extends>QScrollArea</extends>
    <header location="global">itemswidget.h</header>
    <container>1</container>
   </customwidget>

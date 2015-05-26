@@ -7,8 +7,8 @@
 #include <QTextBlock>
 #include <QMessageBox>
 
-ItemsWidget::ItemsWidget(QWidget *parent) :
-    QWidget(parent),
+ItemsWidget::ItemsWidget(QScrollArea *parent) :
+    QScrollArea(parent),
     ui(new Ui::ItemsWidget),
     items(NULL),
     itemsEdited(false),
