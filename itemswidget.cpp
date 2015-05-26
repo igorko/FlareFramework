@@ -49,25 +49,61 @@ void ItemsWidget::loadItems(const std::string &path)
         ui->itemTypeCB->addItem(QString::fromUtf8(iter->second.data(), iter->second.size()),
                                 QString::fromUtf8(iter->first.data(), iter->first.size()));
     }
-    if (ui->itemTypeCB->count() == 0) ui->itemTypeCB->setStyleSheet(invalidStyle);
+    if (ui->itemTypeCB->count() == 0)
+    {
+        ui->itemTypeCB->setStyleSheet(invalidStyle);
+        ui->itemTypeCB->setToolTip("items/types.txt is missing. Copy it from base mod.");
+    }
+    else
+    {
+        ui->itemTypeCB->setStyleSheet("");
+        ui->itemTypeCB->setToolTip("");
+    }
 
     for (unsigned i = 0; i<items->equip_flags.size(); i++)
     {
         ui->equipList->addItem(QString::fromUtf8(items->equip_flags[i].data(), items->equip_flags[i].size()));
     }
-    if (ui->equipList->count() == 0) ui->equipList->setStyleSheet(invalidStyle);
+    if (ui->equipList->count() == 0)
+    {
+        ui->equipList->setStyleSheet(invalidStyle);
+        ui->equipList->setToolTip("engine/equip_flags.txt is missing. Copy it from base mod.");
+    }
+    else
+    {
+        ui->equipList->setStyleSheet("");
+        ui->equipList->setToolTip("");
+    }
 
     for (unsigned i = 0; i<items->slot_type.size(); i++)
     {
         ui->slotsList->addItem(QString::fromUtf8(items->slot_type[i].data(), items->slot_type[i].size()));
     }
-    if (ui->slotsList->count() == 0) ui->slotsList->setStyleSheet(invalidStyle);
+    if (ui->slotsList->count() == 0)
+    {
+        ui->slotsList->setStyleSheet(invalidStyle);
+        ui->slotsList->setToolTip("menus/inventory.txt is missing. Copy it from base mod.");
+    }
+    else
+    {
+        ui->slotsList->setStyleSheet("");
+        ui->slotsList->setToolTip("");
+    }
 
     for (unsigned i = 0; i<items->elements.size(); i++)
     {
         ui->bonusList->addItem(QString::fromUtf8(items->elements[i].data(), items->elements[i].size()) + "_resist");
     }
-    if (ui->bonusList->count() == 0) ui->bonusList->setStyleSheet(invalidStyle);
+    if (ui->bonusList->count() == 0)
+    {
+        ui->bonusList->setStyleSheet(invalidStyle);
+        ui->bonusList->setToolTip("engine/elements.txt is missing. Copy it from base mod.");
+    }
+    else
+    {
+        ui->bonusList->setStyleSheet("");
+        ui->bonusList->setToolTip("");
+    }
 
     ui->bonusList->addItem("speed");
     ui->bonusList->addItem("physical");
@@ -730,10 +766,12 @@ void ItemsWidget::on_itemName_textChanged(const QString &arg1)
     if (arg1 != "")
     {
         ui->itemName->setStyleSheet("");
+        ui->itemName->setToolTip("");
     }
     else
     {
         ui->itemName->setStyleSheet(invalidStyle);
+        ui->itemName->setToolTip("Item name should be not empty");
     }
 }
 
