@@ -13,11 +13,26 @@ MainWindow::MainWindow(QWidget *parent) :
     setMenusEnabled(false);
     disableAllTabsExceptIndex(0);
     modPath = "";
+
+    connect(ui->Items, SIGNAL(itemsNotEdited()), this, SLOT(disableSaving()));
+    connect(ui->Items, SIGNAL(itemsWereEdited()), this, SLOT(enableSaving()));
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::enableSaving()
+{
+    QList<QAction*> actions = menuBar()->actions();
+    actions.at(MENU_FILE)->menu()->actions().at(2)->setEnabled(true);
+}
+
+void MainWindow::disableSaving()
+{
+    QList<QAction*> actions = menuBar()->actions();
+    actions.at(MENU_FILE)->menu()->actions().at(2)->setEnabled(false);
 }
 
 void MainWindow::on_itemClose_clicked()
@@ -68,7 +83,7 @@ void MainWindow::setMenusEnabled(bool state)
 void MainWindow::on_actionClose_Mod_triggered()
 {
     if (modPath == "") return;
-    if (ui->Items->itemsEdited)
+    if (ui->Items->itemsAreEdited())
     {
         QMessageBox::StandardButton reply = QMessageBox::question(this, "Save mod", "Save mod before closing?", QMessageBox::Yes|QMessageBox::No);
 
@@ -136,6 +151,7 @@ void MainWindow::on_actionOpen_Mod_triggered()
     if (!path.isEmpty()){
         modPath = path;
         setMenusEnabled(true);
+        disableSaving();
     }
 }
 
@@ -146,5 +162,6 @@ void MainWindow::on_actionNew_Mod_triggered()
     if (!path.isEmpty()){
         modPath = path;
         setMenusEnabled(true);
+        disableSaving();
     }
 }

@@ -9,9 +9,9 @@
 
 ItemsWidget::ItemsWidget(QWidget *parent) :
     QWidget(parent),
-    itemsEdited(false),
     ui(new Ui::ItemsWidget),
     items(NULL),
+    itemsEdited(false),
     editedStyle("background-color:#66FF99;"),
     invalidStyle("background-color:#FF3333;")
 {
@@ -26,6 +26,7 @@ ItemsWidget::~ItemsWidget()
 void ItemsWidget::saveItems(const std::string &path)
 {
     if (items != NULL) items->save(path);
+    setItemsAreEdited(false);
 }
 
 void ItemsWidget::loadItems(const std::string &path)
@@ -89,9 +90,23 @@ void ItemsWidget::loadItems(const std::string &path)
 void ItemsWidget::clearItemsList()
 {
     ui->itemsList->clear();
-    itemsEdited = false;
+    setItemsAreEdited(false);
     delete items;
     items = NULL;
+}
+
+bool ItemsWidget::itemsAreEdited()
+{
+    return itemsEdited;
+}
+
+void ItemsWidget::setItemsAreEdited(bool state)
+{
+    if (state)
+        emit itemsWereEdited();
+    else
+        emit itemsNotEdited();
+    itemsEdited = state;
 }
 
 void ItemsWidget::on_addNewItem_clicked()
@@ -282,7 +297,7 @@ void ItemsWidget::on_pushBtn_clicked()
     //Update ListBox
     ui->itemsList->currentItem()->setData(Qt::DisplayRole, ui->itemName->text());
 
-    itemsEdited = true;
+    setItemsAreEdited(true);
 }
 
 void ItemsWidget::on_itemsList_itemClicked(QListWidgetItem *item)

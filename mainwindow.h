@@ -30,6 +30,10 @@ public:
     
     static QString modPath;
 
+public slots:
+    void enableSaving();
+    void disableSaving();
+
 private slots:
     void on_itemClose_clicked();
 

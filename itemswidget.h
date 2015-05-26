@@ -21,9 +21,12 @@ public:
 
     void clearItemsList();
 
-    bool itemsEdited;
+    bool itemsAreEdited();
+    void setItemsAreEdited(bool state);
 
 signals:
+    void itemsWereEdited();
+    void itemsNotEdited();
 
 public slots:
 	void on_addNewItem_clicked();
@@ -101,6 +104,8 @@ private:
     Ui::ItemsWidget *ui;
 
     EditorItemManager * items;
+
+    bool itemsEdited;
 
     QString editedStyle;
     QString invalidStyle;
