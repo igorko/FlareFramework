@@ -37,7 +37,7 @@ void ItemsWidget::loadItems(const std::string &path)
     {
         if (items->items[i].name != "")
         {
-            QListWidgetItem* item = new QListWidgetItem(QString::fromUtf8(items->items[i].name.data(), items->items[i].name.size()));
+            QListWidgetItem* item = new QListWidgetItem(qString(items->items[i].name));
             item->setData(Qt::UserRole, i);
             ui->itemsList->addItem(item);
 
@@ -47,64 +47,27 @@ void ItemsWidget::loadItems(const std::string &path)
     std::map<std::string, std::string>::iterator iter;
     for (iter = items->item_types.begin(); iter != items->item_types.end(); ++iter)
     {
-        ui->itemTypeCB->addItem(QString::fromUtf8(iter->second.data(), iter->second.size()),
-                                QString::fromUtf8(iter->first.data(), iter->first.size()));
+        ui->itemTypeCB->addItem(qString(iter->second), qString(iter->first));
     }
-    if (ui->itemTypeCB->count() == 0)
-    {
-        ui->itemTypeCB->setStyleSheet(invalidStyle);
-        ui->itemTypeCB->setToolTip("items/types.txt is missing. Copy it from base mod.");
-    }
-    else
-    {
-        ui->itemTypeCB->setStyleSheet("");
-        ui->itemTypeCB->setToolTip("");
-    }
+    checkComboBoxForError(ui->itemTypeCB, "items/types.txt is missing. Copy it from base mod.");
 
     for (unsigned i = 0; i<items->equip_flags.size(); i++)
     {
-        ui->equipList->addItem(QString::fromUtf8(items->equip_flags[i].data(), items->equip_flags[i].size()));
+        ui->equipList->addItem(qString(items->equip_flags[i]));
     }
-    if (ui->equipList->count() == 0)
-    {
-        ui->equipList->setStyleSheet(invalidStyle);
-        ui->equipList->setToolTip("engine/equip_flags.txt is missing. Copy it from base mod.");
-    }
-    else
-    {
-        ui->equipList->setStyleSheet("");
-        ui->equipList->setToolTip("");
-    }
+    checkComboBoxForError(ui->equipList, "engine/equip_flags.txt is missing. Copy it from base mod.");
 
     for (unsigned i = 0; i<items->slot_type.size(); i++)
     {
-        ui->slotsList->addItem(QString::fromUtf8(items->slot_type[i].data(), items->slot_type[i].size()));
+        ui->slotsList->addItem(qString(items->slot_type[i]));
     }
-    if (ui->slotsList->count() == 0)
-    {
-        ui->slotsList->setStyleSheet(invalidStyle);
-        ui->slotsList->setToolTip("menus/inventory.txt is missing. Copy it from base mod.");
-    }
-    else
-    {
-        ui->slotsList->setStyleSheet("");
-        ui->slotsList->setToolTip("");
-    }
+    checkComboBoxForError(ui->slotsList, "menus/inventory.txt is missing. Copy it from base mod.");
 
     for (unsigned i = 0; i<items->elements.size(); i++)
     {
-        ui->bonusList->addItem(QString::fromUtf8(items->elements[i].data(), items->elements[i].size()) + "_resist");
+        ui->bonusList->addItem(qString(items->elements[i]) + "_resist");
     }
-    if (ui->bonusList->count() == 0)
-    {
-        ui->bonusList->setStyleSheet(invalidStyle);
-        ui->bonusList->setToolTip("engine/elements.txt is missing. Copy it from base mod.");
-    }
-    else
-    {
-        ui->bonusList->setStyleSheet("");
-        ui->bonusList->setToolTip("");
-    }
+    checkComboBoxForError(ui->bonusList, "engine/elements.txt is missing. Copy it from base mod.");
 
     ui->bonusList->addItem("speed");
     ui->bonusList->addItem("physical");
@@ -113,13 +76,13 @@ void ItemsWidget::loadItems(const std::string &path)
     ui->bonusList->addItem("defense");
     for (unsigned i = 0; i<STAT_COUNT; i++)
     {
-        ui->bonusList->addItem(QString::fromUtf8(STAT_KEY[i].data(), STAT_KEY[i].size()));
+        ui->bonusList->addItem(qString(STAT_KEY[i]));
     }
 
     ui->classList->addItem("");
     for (unsigned i = 0; i<items->hero_classes.size(); i++)
     {
-        ui->classList->addItem(QString::fromUtf8(items->hero_classes[i].data(), items->hero_classes[i].size()));
+        ui->classList->addItem(qString(items->hero_classes[i]));
     }
     ui->pushBtn->setEnabled(false);
 
@@ -209,11 +172,11 @@ void ItemsWidget::on_pushBtn_clicked()
     int index = ui->itemsList->currentItem()->data(Qt::UserRole).toInt();
 
     // TextEdits
-    items->items[index].name = ui->itemName->text().toUtf8().constData();
-    items->items[index].flavor = ui->itemFlavor->text().toUtf8().constData();
-    items->items[index].pickup_status = ui->pickupStatus->text().toUtf8().constData();
-    items->items[index].power_desc = ui->powerDesc->text().toUtf8().constData();
-    items->items[index].book = ui->itemBook->text().toUtf8().constData();
+    items->items[index].name = stdString(ui->itemName->text());
+    items->items[index].flavor = stdString(ui->itemFlavor->text());
+    items->items[index].pickup_status = stdString(ui->pickupStatus->text());
+    items->items[index].power_desc = stdString(ui->powerDesc->text());
+    items->items[index].book = stdString(ui->itemBook->text());
 
     QTextDocument* docFrom = ui->replacePowerFrom->document();
     QTextDocument* docTo   = ui->replacePowerTo->document();
@@ -235,7 +198,7 @@ void ItemsWidget::on_pushBtn_clicked()
     {
         if (disabledSlots->findBlockByLineNumber(i).text().isEmpty())
             continue;
-        items->items[index].disable_slots.push_back(disabledSlots->findBlockByLineNumber(i).text().toUtf8().constData());
+        items->items[index].disable_slots.push_back(stdString(disabledSlots->findBlockByLineNumber(i).text()));
     }
 
     QTextDocument* equipFlags = ui->equipFlags->document();
@@ -245,7 +208,7 @@ void ItemsWidget::on_pushBtn_clicked()
     {
         if (equipFlags->findBlockByLineNumber(i).text().isEmpty())
             continue;
-        items->items[index].equip_flags.push_back(equipFlags->findBlockByLineNumber(i).text().toUtf8().constData());
+        items->items[index].equip_flags.push_back(stdString(equipFlags->findBlockByLineNumber(i).text()));
     }
 
     QTextDocument* bonusName    = ui->bonusName->document();
@@ -277,14 +240,14 @@ void ItemsWidget::on_pushBtn_clicked()
         }
 
         for (unsigned k=0; k<items->elements.size(); ++k) {
-            if (bonus_str == QString::fromUtf8(items->elements[k].data(), items->elements[k].size()) + "_resist")
+            if (bonus_str == qString(items->elements[k]) + "_resist")
             {
                 items->items[index].bonus.back().resist_index = k;
                 break;
             }
         }
         for (unsigned k=0; k<STAT_COUNT; ++k) {
-            if (bonus_str == QString::fromUtf8(STAT_KEY[k].data(), STAT_KEY[k].size())) {
+            if (bonus_str == qString(STAT_KEY[k])) {
                 items->items[index].bonus.back().stat_index = (STAT)k;
                 break;
             }
@@ -294,16 +257,16 @@ void ItemsWidget::on_pushBtn_clicked()
     }
 
     // comboBoxes
-    items->items[index].type     = ui->itemTypeCB->itemData(ui->itemTypeCB->currentIndex()).toString().toUtf8().constData();
+    items->items[index].type     = stdString(ui->itemTypeCB->itemData(ui->itemTypeCB->currentIndex()).toString());
     items->items[index].quality  = ui->itemQualityCB->currentIndex();
-    items->items[index].requires_class = ui->classList->currentText().toUtf8().constData();
+    items->items[index].requires_class = stdString(ui->classList->currentText());
 
     items->items[index].loot_animation.resize(1);
-    items->items[index].loot_animation.back().name = std::string("animations/loot/") + ui->lootAnimList->itemText(ui->lootAnimList->currentIndex()).toUtf8().constData();
+    items->items[index].loot_animation.back().name = std::string("animations/loot/") + stdString(ui->lootAnimList->itemText(ui->lootAnimList->currentIndex()));
 
-    items->items[index].sfx    = std::string("soundfx/inventory/") + ui->sfxCb->itemText(ui->sfxCb->currentIndex()).toUtf8().constData();
-    items->items[index].gfx    = ui->equipAnimList->itemText(ui->equipAnimList->currentIndex()).toUtf8().constData();
-    items->items[index].stepfx = ui->stepSoundList->itemText(ui->stepSoundList->currentIndex()).toUtf8().constData();
+    items->items[index].sfx    = std::string("soundfx/inventory/") + stdString(ui->sfxCb->itemText(ui->sfxCb->currentIndex()));
+    items->items[index].gfx    = stdString(ui->equipAnimList->itemText(ui->equipAnimList->currentIndex()));
+    items->items[index].stepfx = stdString(ui->stepSoundList->itemText(ui->stepSoundList->currentIndex()));
 
     // spinBoxes
     items->items[index].level        = ui->itemLvlSpin->value();
@@ -356,11 +319,11 @@ void ItemsWidget::on_itemsList_itemClicked(QListWidgetItem *item)
     int index = item->data(Qt::UserRole).toInt();
 
     // TextEdits
-    ui->itemName->setText(QString::fromUtf8(items->items[index].name.data(), items->items[index].name.size()));
-    ui->pickupStatus->setText(QString::fromUtf8(items->items[index].pickup_status.data(), items->items[index].pickup_status.size()));
-    ui->powerDesc->setText(QString::fromUtf8(items->items[index].power_desc.data(), items->items[index].power_desc.size()));
-    ui->itemFlavor->setText(QString::fromUtf8(items->items[index].flavor.data(), items->items[index].flavor.size()));
-    ui->itemBook->setText(QString::fromUtf8(items->items[index].book.data(), items->items[index].book.size()));
+    ui->itemName->setText(qString(items->items[index].name));
+    ui->pickupStatus->setText(qString(items->items[index].pickup_status));
+    ui->powerDesc->setText(qString(items->items[index].power_desc));
+    ui->itemFlavor->setText(qString(items->items[index].flavor));
+    ui->itemBook->setText(qString(items->items[index].book));
 
     ui->replacePowerFrom->clear();
     ui->replacePowerTo->clear();
@@ -373,13 +336,13 @@ void ItemsWidget::on_itemsList_itemClicked(QListWidgetItem *item)
     ui->disableSlots->clear();
     for (unsigned int i = 0; i < items->items[index].disable_slots.size(); i++)
     {
-        ui->disableSlots->appendPlainText(QString::fromUtf8(items->items[index].disable_slots[i].data(), items->items[index].disable_slots[i].size()));
+        ui->disableSlots->appendPlainText(qString(items->items[index].disable_slots[i]));
     }
 
     ui->equipFlags->clear();
     for (unsigned int i = 0; i < items->items[index].equip_flags.size(); i++)
     {
-        ui->equipFlags->appendPlainText(QString::fromUtf8(items->items[index].equip_flags[i].data(), items->items[index].equip_flags[i].size()));
+        ui->equipFlags->appendPlainText(qString(items->items[index].equip_flags[i]));
     }
 
     ui->bonusName->clear();
@@ -393,11 +356,11 @@ void ItemsWidget::on_itemsList_itemClicked(QListWidgetItem *item)
 
         if (stat_index != -1)
         {
-            ui->bonusName->appendPlainText(QString::fromUtf8(STAT_KEY[stat_index].data(), STAT_KEY[stat_index].size()));
+            ui->bonusName->appendPlainText(qString(STAT_KEY[stat_index]));
         }
         else if (resist_index != -1)
         {
-            ui->bonusName->appendPlainText(QString::fromUtf8(items->elements[resist_index].data(), items->elements[resist_index].size()) + "_resist");
+            ui->bonusName->appendPlainText(qString(items->elements[resist_index]) + "_resist");
         }
         else if (is_speed)
         {
@@ -421,7 +384,7 @@ void ItemsWidget::on_itemsList_itemClicked(QListWidgetItem *item)
     }
 
     // comboBoxes
-    QString type = QString::fromUtf8(items->items[index].type.data(), items->items[index].type.size());
+    QString type = qString(items->items[index].type);
     ui->itemTypeCB->setCurrentIndex(-1);
     for (int i = 0; i < ui->itemTypeCB->count(); i++)
     {
@@ -433,66 +396,24 @@ void ItemsWidget::on_itemsList_itemClicked(QListWidgetItem *item)
     }
     ui->itemQualityCB->setCurrentIndex(items->items[index].quality);
 
-    type = QString::fromUtf8(items->items[index].requires_class.data(), items->items[index].requires_class.size());
-    ui->classList->setCurrentIndex(-1);
-    for (int i = 0; i < ui->classList->count(); i++)
-    {
-        if (ui->classList->itemText(i) == type)
-        {
-            ui->classList->setCurrentIndex(i);
-            break;
-        }
-    }
+    type = qString(items->items[index].requires_class);
+    selectComboBoxItemByText(ui->classList, type);
 
-    QString soundfx = QString::fromUtf8(items->items[index].sfx.data(), items->items[index].sfx.size());
-    ui->sfxCb->setCurrentIndex(-1);
-    for (int i = 0; i < ui->sfxCb->count(); i++)
-    {
-        if (ui->sfxCb->itemText(i) == QFileInfo(soundfx).fileName())
-        {
-            ui->sfxCb->setCurrentIndex(i);
-            break;
-        }
-    }
+    QString soundfx = qString(items->items[index].sfx);
+    selectComboBoxItemByText(ui->sfxCb, QFileInfo(soundfx).fileName());
 
-    QString stepfx = QString::fromUtf8(items->items[index].stepfx.data(), items->items[index].stepfx.size());
-    ui->stepSoundList->setCurrentIndex(-1);
-    for (int i = 0; i < ui->stepSoundList->count(); i++)
-    {
-        if (ui->stepSoundList->itemText(i) == stepfx)
-        {
-            ui->stepSoundList->setCurrentIndex(i);
-            break;
-        }
-    }
+    QString stepfx = qString(items->items[index].stepfx);
+    selectComboBoxItemByText(ui->stepSoundList, stepfx);
 
     QString loot_anim;
     if (!items->items[index].loot_animation.empty())
     {
-        loot_anim = QString::fromUtf8(
-                                    items->items[index].loot_animation.back().name.data(),
-                                    items->items[index].loot_animation.back().name.size());
-        ui->lootAnimList->setCurrentIndex(-1);
-        for (int i = 0; i < ui->lootAnimList->count(); i++)
-        {
-            if (ui->lootAnimList->itemText(i) == QFileInfo(loot_anim).fileName())
-            {
-                ui->lootAnimList->setCurrentIndex(i);
-                break;
-            }
-        }
+        loot_anim = qString(items->items[index].loot_animation.back().name);
+        selectComboBoxItemByText(ui->lootAnimList, QFileInfo(loot_anim).fileName());
     }
 
-    QString gfx = QString::fromUtf8(items->items[index].gfx.data(), items->items[index].gfx.size());
-    ui->equipAnimList->setCurrentIndex(-1);
-    for (int i = 0; i < ui->equipAnimList->count(); i++)
-    {
-        if (ui->equipAnimList->itemText(i) == gfx)
-        {
-            ui->equipAnimList->setCurrentIndex(i);
-            break;
-        }
-    }
+    QString gfx = qString(items->items[index].gfx);
+    selectComboBoxItemByText(ui->equipAnimList, gfx);
 
     // spinBoxes
     ui->itemLvlSpin->setValue(items->items[index].level);
@@ -533,62 +454,27 @@ void ItemsWidget::on_itemsList_itemClicked(QListWidgetItem *item)
 
 void ItemsWidget::on_absorbMin_valueChanged(int arg1)
 {
-    if (arg1 != 0)
-    {
-        ui->absorbMin->setStyleSheet("background-color:#66FF99;");
-    }
-    else
-    {
-        ui->absorbMin->setStyleSheet("");
-    }
+    markNotDefaultSpinBox(ui->absorbMin, arg1, 0);
 }
 
 void ItemsWidget::on_absorbMax_valueChanged(int arg1)
 {
-    if (arg1 != 0)
-    {
-        ui->absorbMax->setStyleSheet(editedStyle);
-    }
-    else
-    {
-        ui->absorbMax->setStyleSheet("");
-    }
+    markNotDefaultSpinBox(ui->absorbMax, arg1, 0);
 }
 
 void ItemsWidget::on_power_valueChanged(int arg1)
 {
-    if (arg1 != 0)
-    {
-        ui->power->setStyleSheet(editedStyle);
-    }
-    else
-    {
-        ui->power->setStyleSheet("");
-    }
+    markNotDefaultSpinBox(ui->power, arg1, 0);
 }
 
 void ItemsWidget::on_itemFlavor_textChanged(const QString &arg1)
 {
-    if (arg1 != "")
-    {
-        ui->itemFlavor->setStyleSheet(editedStyle);
-    }
-    else
-    {
-        ui->itemFlavor->setStyleSheet("");
-    }
+    markNotEmptyLineEdit(ui->itemFlavor, arg1);
 }
 
 void ItemsWidget::on_itemBook_textChanged(const QString &arg1)
 {
-    if (arg1 != "")
-    {
-        ui->itemBook->setStyleSheet(editedStyle);
-    }
-    else
-    {
-        ui->itemBook->setStyleSheet("");
-    }
+    markNotEmptyLineEdit(ui->itemBook, arg1);
 }
 
 void ItemsWidget::on_itemQualityCB_currentIndexChanged(const QString &arg1)
@@ -605,224 +491,92 @@ void ItemsWidget::on_itemQualityCB_currentIndexChanged(const QString &arg1)
 
 void ItemsWidget::on_meleeMin_valueChanged(int arg1)
 {
-    if (arg1 != 0)
-    {
-        ui->meleeMin->setStyleSheet(editedStyle);
-    }
-    else
-    {
-        ui->meleeMin->setStyleSheet("");
-    }
+    markNotDefaultSpinBox(ui->meleeMin, arg1, 0);
 }
 
 void ItemsWidget::on_meleeMax_valueChanged(int arg1)
 {
-    if (arg1 != 0)
-    {
-        ui->meleeMax->setStyleSheet(editedStyle);
-    }
-    else
-    {
-        ui->meleeMax->setStyleSheet("");
-    }
+    markNotDefaultSpinBox(ui->meleeMax, arg1, 0);
 }
 
 void ItemsWidget::on_rangMin_valueChanged(int arg1)
 {
-    if (arg1 != 0)
-    {
-        ui->rangMin->setStyleSheet(editedStyle);
-    }
-    else
-    {
-        ui->rangMin->setStyleSheet("");
-    }
+    markNotDefaultSpinBox(ui->rangMin, arg1, 0);
 }
 
 void ItemsWidget::on_rangMax_valueChanged(int arg1)
 {
-    if (arg1 != 0)
-    {
-        ui->rangMax->setStyleSheet(editedStyle);
-    }
-    else
-    {
-        ui->rangMax->setStyleSheet("");
-    }
+    markNotDefaultSpinBox(ui->rangMax, arg1, 0);
 }
 
 void ItemsWidget::on_mentalMin_valueChanged(int arg1)
 {
-    if (arg1 != 0)
-    {
-        ui->mentalMin->setStyleSheet(editedStyle);
-    }
-    else
-    {
-        ui->mentalMin->setStyleSheet("");
-    }
+    markNotDefaultSpinBox(ui->mentalMin, arg1, 0);
 }
 
 void ItemsWidget::on_mentalMax_valueChanged(int arg1)
 {
-    if (arg1 != 0)
-    {
-        ui->mentalMax->setStyleSheet(editedStyle);
-    }
-    else
-    {
-        ui->mentalMax->setStyleSheet("");
-    }
+    markNotDefaultSpinBox(ui->mentalMax, arg1, 0);
 }
 
 void ItemsWidget::on_replacePowerFrom_textChanged()
 {
-    QTextDocument* docFrom = ui->replacePowerFrom->document();
-
-    if (docFrom->lineCount() >= 1 && !docFrom->findBlockByLineNumber(0).text().isEmpty())
-    {
-        ui->replacePowerFrom->setStyleSheet(editedStyle);
-    }
-    else
-    {
-        ui->replacePowerFrom->setStyleSheet("");
-    }
+    markNotEmptyPlainTextEdit(ui->replacePowerFrom);
 }
 
 void ItemsWidget::on_replacePowerTo_textChanged()
 {
-    QTextDocument* docTo = ui->replacePowerTo->document();
-
-    if (docTo->lineCount() >= 1 && !docTo->findBlockByLineNumber(0).text().isEmpty())
-    {
-        ui->replacePowerTo->setStyleSheet(editedStyle);
-    }
-    else
-    {
-        ui->replacePowerTo->setStyleSheet("");
-    }
+    markNotEmptyPlainTextEdit(ui->replacePowerTo);
 }
 
 void ItemsWidget::on_disableSlots_textChanged()
 {
-    QTextDocument* doc = ui->disableSlots->document();
-
-    if (doc->lineCount() >= 1 && !doc->findBlockByLineNumber(0).text().isEmpty())
-    {
-        ui->disableSlots->setStyleSheet(editedStyle);
-    }
-    else
-    {
-        ui->disableSlots->setStyleSheet("");
-    }
+    markNotEmptyPlainTextEdit(ui->disableSlots);
 }
 
 void ItemsWidget::on_reqPhys_valueChanged(int arg1)
 {
-    if (arg1 != 0)
-    {
-        ui->reqPhys->setStyleSheet(editedStyle);
-    }
-    else
-    {
-        ui->reqPhys->setStyleSheet("");
-    }
+    markNotDefaultSpinBox(ui->reqPhys, arg1, 0);
 }
 
 void ItemsWidget::on_reqMent_valueChanged(int arg1)
 {
-    if (arg1 != 0)
-    {
-        ui->reqMent->setStyleSheet(editedStyle);
-    }
-    else
-    {
-        ui->reqMent->setStyleSheet("");
-    }
+    markNotDefaultSpinBox(ui->reqMent, arg1, 0);
 }
 
 void ItemsWidget::on_reqOff_valueChanged(int arg1)
 {
-    if (arg1 != 0)
-    {
-        ui->reqOff->setStyleSheet(editedStyle);
-    }
-    else
-    {
-        ui->reqOff->setStyleSheet("");
-    }
+    markNotDefaultSpinBox(ui->reqOff, arg1, 0);
 }
 
 void ItemsWidget::on_reqDef_valueChanged(int arg1)
 {
-    if (arg1 != 0)
-    {
-        ui->reqDef->setStyleSheet(editedStyle);
-    }
-    else
-    {
-        ui->reqDef->setStyleSheet("");
-    }
+    markNotDefaultSpinBox(ui->reqDef, arg1, 0);
 }
 
 void ItemsWidget::on_price_valueChanged(int arg1)
 {
-    if (arg1 != 0)
-    {
-        ui->price->setStyleSheet(editedStyle);
-    }
-    else
-    {
-        ui->price->setStyleSheet("");
-    }
+    markNotDefaultSpinBox(ui->price, arg1, 0);
 }
 
 void ItemsWidget::on_sellPrice_valueChanged(int arg1)
 {
-    if (arg1 != 0)
-    {
-        ui->sellPrice->setStyleSheet(editedStyle);
-    }
-    else
-    {
-        ui->sellPrice->setStyleSheet("");
-    }
+    markNotDefaultSpinBox(ui->sellPrice, arg1, 0);
 }
 
 void ItemsWidget::on_maxQuantity_valueChanged(int arg1)
 {
-    if (arg1 != 1)
-    {
-        ui->maxQuantity->setStyleSheet(editedStyle);
-    }
-    else
-    {
-        ui->maxQuantity->setStyleSheet("");
-    }
+    markNotDefaultSpinBox(ui->maxQuantity, arg1, 1);
 }
 
 void ItemsWidget::on_pickupStatus_textChanged(const QString &arg1)
 {
-    if (arg1 != "")
-    {
-        ui->pickupStatus->setStyleSheet(editedStyle);
-    }
-    else
-    {
-        ui->pickupStatus->setStyleSheet("");
-    }
+    markNotEmptyLineEdit(ui->pickupStatus, arg1);
 }
 
 void ItemsWidget::on_powerDesc_textChanged(const QString &arg1)
 {
-    if (arg1 != "")
-    {
-        ui->powerDesc->setStyleSheet(editedStyle);
-    }
-    else
-    {
-        ui->powerDesc->setStyleSheet("");
-    }
+    markNotEmptyLineEdit(ui->powerDesc, arg1);
 }
 
 void ItemsWidget::on_itemName_textChanged(const QString &arg1)
@@ -841,44 +595,17 @@ void ItemsWidget::on_itemName_textChanged(const QString &arg1)
 
 void ItemsWidget::on_equipFlags_textChanged()
 {
-    QTextDocument* doc = ui->equipFlags->document();
-
-    if (doc->lineCount() >= 1 && !doc->findBlockByLineNumber(0).text().isEmpty())
-    {
-        ui->equipFlags->setStyleSheet(editedStyle);
-    }
-    else
-    {
-        ui->equipFlags->setStyleSheet("");
-    }
+    markNotEmptyPlainTextEdit(ui->equipFlags);
 }
 
 void ItemsWidget::on_bonusName_textChanged()
 {
-    QTextDocument* doc = ui->bonusName->document();
-
-    if (doc->lineCount() >= 1 && !doc->findBlockByLineNumber(0).text().isEmpty())
-    {
-        ui->bonusName->setStyleSheet(editedStyle);
-    }
-    else
-    {
-        ui->bonusName->setStyleSheet("");
-    }
+    markNotEmptyPlainTextEdit(ui->bonusName);
 }
 
 void ItemsWidget::on_bonusValue_textChanged()
 {
-    QTextDocument* doc = ui->bonusValue->document();
-
-    if (doc->lineCount() >= 1 && !doc->findBlockByLineNumber(0).text().isEmpty())
-    {
-        ui->bonusValue->setStyleSheet(editedStyle);
-    }
-    else
-    {
-        ui->bonusValue->setStyleSheet("");
-    }
+    markNotEmptyPlainTextEdit(ui->bonusValue);
 }
 
 void ItemsWidget::on_addDisableSlot_clicked()
@@ -898,34 +625,16 @@ void ItemsWidget::on_addBonus_clicked()
 
 void ItemsWidget::collectFileLists(const std::string &path)
 {
-    QString modPath = QString::fromUtf8(path.data(), path.size());
+    QString modPath = qString(path);
     QDir pathSfx(modPath + "soundfx" + QDir::separator() + "inventory");
     QStringList files = pathSfx.entryList(QDir::Files);
     ui->sfxCb->addItems(files);
-    if (ui->sfxCb->count() == 0)
-    {
-        ui->sfxCb->setStyleSheet(invalidStyle);
-        ui->sfxCb->setToolTip("soundfx/inventory folder is empty. Place some sound files in it.");
-    }
-    else
-    {
-        ui->sfxCb->setStyleSheet("");
-        ui->sfxCb->setToolTip("");
-    }
+    checkComboBoxForError(ui->sfxCb, "soundfx/inventory folder is empty. Place some sound files in it.");
 
     QDir pathLootAnim(modPath + "animations" + QDir::separator() + "loot");
     files = pathLootAnim.entryList(QDir::Files);
     ui->lootAnimList->addItems(files);
-    if (ui->lootAnimList->count() == 0)
-    {
-        ui->lootAnimList->setStyleSheet(invalidStyle);
-        ui->lootAnimList->setToolTip("animations/loot folder is empty. Place some loot animation files in it.");
-    }
-    else
-    {
-        ui->lootAnimList->setStyleSheet("");
-        ui->lootAnimList->setToolTip("");
-    }
+    checkComboBoxForError(ui->lootAnimList, "animations/loot folder is empty. Place some loot animation files in it.");
 
     QDir pathStepFx(modPath + "soundfx" + QDir::separator() + "steps");
     files = pathStepFx.entryList(QDir::Files);
@@ -936,16 +645,7 @@ void ItemsWidget::collectFileLists(const std::string &path)
     }
     files.removeDuplicates();
     ui->stepSoundList->addItems(files);
-    if (ui->stepSoundList->count() == 0)
-    {
-        ui->stepSoundList->setStyleSheet(invalidStyle);
-        ui->stepSoundList->setToolTip("soundfx/steps folder is empty. Place some sound files in it.");
-    }
-    else
-    {
-        ui->stepSoundList->setStyleSheet("");
-        ui->stepSoundList->setToolTip("");
-    }
+    checkComboBoxForError(ui->stepSoundList, "soundfx/steps folder is empty. Place some sound files in it.");
 
     QDir pathGfx(modPath + "animations" + QDir::separator() + "avatar" + QDir::separator() + "male");
     files = pathGfx.entryList(QDir::Files);
@@ -954,14 +654,81 @@ void ItemsWidget::collectFileLists(const std::string &path)
         files[i].remove(files[i].size() - 4, 4);
     }
     ui->equipAnimList->addItems(files);
-    if (ui->equipAnimList->count() == 0)
+    checkComboBoxForError(ui->equipAnimList, "animations/avatar/male folder is empty. Place some equip animation files in it.");
+}
+
+QString ItemsWidget::qString(std::string value)
+{
+
+    return QString::fromUtf8(value.data(), value.size());
+}
+
+std::string ItemsWidget::stdString(QString value)
+{
+    return value.toUtf8().constData();
+}
+
+void ItemsWidget::checkComboBoxForError(QComboBox *widget, const QString &errorText)
+{
+    if (widget->count() == 0)
     {
-        ui->equipAnimList->setStyleSheet(invalidStyle);
-        ui->equipAnimList->setToolTip("animations/avatar/male folder is empty. Place some equip animation files in it.");
+        widget->setStyleSheet(invalidStyle);
+        widget->setToolTip(errorText);
     }
     else
     {
-        ui->equipAnimList->setStyleSheet("");
-        ui->equipAnimList->setToolTip("");
+        widget->setStyleSheet("");
+        widget->setToolTip("");
+    }
+}
+
+void ItemsWidget::markNotEmptyLineEdit(QLineEdit *widget, const QString& text)
+{
+    if (text != "")
+    {
+        widget->setStyleSheet(editedStyle);
+    }
+    else
+    {
+        widget->setStyleSheet("");
+    }
+}
+
+void ItemsWidget::markNotEmptyPlainTextEdit(QPlainTextEdit *widget)
+{
+    QTextDocument* doc = widget->document();
+
+    if (doc->lineCount() >= 1 && !doc->findBlockByLineNumber(0).text().isEmpty())
+    {
+        widget->setStyleSheet(editedStyle);
+    }
+    else
+    {
+        widget->setStyleSheet("");
+    }
+}
+
+void ItemsWidget::selectComboBoxItemByText(QComboBox *widget, const QString &text)
+{
+    widget->setCurrentIndex(-1);
+    for (int i = 0; i < widget->count(); i++)
+    {
+        if (widget->itemText(i) == text)
+        {
+            widget->setCurrentIndex(i);
+            break;
+        }
+    }
+}
+
+void ItemsWidget::markNotDefaultSpinBox(QSpinBox *widget, int value, int defaultValue)
+{
+    if (value != defaultValue)
+    {
+        widget->setStyleSheet(editedStyle);
+    }
+    else
+    {
+        widget->setStyleSheet("");
     }
 }

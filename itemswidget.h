@@ -3,6 +3,10 @@
 
 #include <QScrollArea>
 #include <QListWidgetItem>
+#include <QComboBox>
+#include <QLineEdit>
+#include <QSpinBox>
+#include <QPlainTextEdit>
 
 class EditorItemManager;
 
@@ -102,6 +106,16 @@ private slots:
 
 private:
     void collectFileLists(const std::string& path);
+    QString qString(std::string value);
+    std::string stdString(QString value);
+
+    void checkComboBoxForError(QComboBox* widget, const QString& errorText);
+    void markNotDefaultSpinBox(QSpinBox* widget, int value, int defaultValue);
+
+    void markNotEmptyLineEdit(QLineEdit* widget, const QString& text);
+    void markNotEmptyPlainTextEdit(QPlainTextEdit* widget);
+
+    void selectComboBoxItemByText(QComboBox* widget, const QString& text);
 
     Ui::ItemsWidget *ui;
 
