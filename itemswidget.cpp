@@ -6,6 +6,7 @@
 
 #include <QTextBlock>
 #include <QMessageBox>
+#include <QDir>
 
 ItemsWidget::ItemsWidget(QScrollArea *parent) :
     QScrollArea(parent),
@@ -121,6 +122,9 @@ void ItemsWidget::loadItems(const std::string &path)
         ui->classList->addItem(QString::fromUtf8(items->hero_classes[i].data(), items->hero_classes[i].size()));
     }
     ui->pushBtn->setEnabled(false);
+
+    collectFileLists(path);
+    on_clearBtn_clicked();
 }
 
 void ItemsWidget::clearItemsList()
@@ -173,9 +177,12 @@ void ItemsWidget::on_clearBtn_clicked()
     ui->bonusValue->clear();
 
     // comboBoxes
-    ui->itemTypeCB->clear();
     ui->itemQualityCB->setCurrentIndex(1);
-	ui->sfxCb->clear();
+    ui->itemTypeCB->setCurrentIndex(-1);
+    ui->sfxCb->setCurrentIndex(-1);
+    ui->lootAnimList->setCurrentIndex(-1);
+    ui->stepSoundList->setCurrentIndex(-1);
+    ui->equipAnimList->setCurrentIndex(-1);
 
     // spinBoxes
     ui->itemLvlSpin->setValue(0);
@@ -290,6 +297,13 @@ void ItemsWidget::on_pushBtn_clicked()
     items->items[index].type     = ui->itemTypeCB->itemData(ui->itemTypeCB->currentIndex()).toString().toUtf8().constData();
     items->items[index].quality  = ui->itemQualityCB->currentIndex();
     items->items[index].requires_class = ui->classList->currentText().toUtf8().constData();
+
+    items->items[index].loot_animation.resize(1);
+    items->items[index].loot_animation.back().name = std::string("animations/loot/") + ui->lootAnimList->itemText(ui->lootAnimList->currentIndex()).toUtf8().constData();
+
+    items->items[index].sfx    = std::string("soundfx/inventory/") + ui->sfxCb->itemText(ui->sfxCb->currentIndex()).toUtf8().constData();
+    items->items[index].gfx    = ui->equipAnimList->itemText(ui->equipAnimList->currentIndex()).toUtf8().constData();
+    items->items[index].stepfx = ui->stepSoundList->itemText(ui->stepSoundList->currentIndex()).toUtf8().constData();
 
     // spinBoxes
     items->items[index].level        = ui->itemLvlSpin->value();
@@ -426,6 +440,56 @@ void ItemsWidget::on_itemsList_itemClicked(QListWidgetItem *item)
         if (ui->classList->itemText(i) == type)
         {
             ui->classList->setCurrentIndex(i);
+            break;
+        }
+    }
+
+    QString soundfx = QString::fromUtf8(items->items[index].sfx.data(), items->items[index].sfx.size());
+    ui->sfxCb->setCurrentIndex(-1);
+    for (int i = 0; i < ui->sfxCb->count(); i++)
+    {
+        if (ui->sfxCb->itemText(i) == QFileInfo(soundfx).fileName())
+        {
+            ui->sfxCb->setCurrentIndex(i);
+            break;
+        }
+    }
+
+    QString stepfx = QString::fromUtf8(items->items[index].stepfx.data(), items->items[index].stepfx.size());
+    ui->stepSoundList->setCurrentIndex(-1);
+    for (int i = 0; i < ui->stepSoundList->count(); i++)
+    {
+        if (ui->stepSoundList->itemText(i) == stepfx)
+        {
+            ui->stepSoundList->setCurrentIndex(i);
+            break;
+        }
+    }
+
+    QString loot_anim;
+    if (!items->items[index].loot_animation.empty())
+    {
+        loot_anim = QString::fromUtf8(
+                                    items->items[index].loot_animation.back().name.data(),
+                                    items->items[index].loot_animation.back().name.size());
+        ui->lootAnimList->setCurrentIndex(-1);
+        for (int i = 0; i < ui->lootAnimList->count(); i++)
+        {
+            if (ui->lootAnimList->itemText(i) == QFileInfo(loot_anim).fileName())
+            {
+                ui->lootAnimList->setCurrentIndex(i);
+                break;
+            }
+        }
+    }
+
+    QString gfx = QString::fromUtf8(items->items[index].gfx.data(), items->items[index].gfx.size());
+    ui->equipAnimList->setCurrentIndex(-1);
+    for (int i = 0; i < ui->equipAnimList->count(); i++)
+    {
+        if (ui->equipAnimList->itemText(i) == gfx)
+        {
+            ui->equipAnimList->setCurrentIndex(i);
             break;
         }
     }
@@ -830,4 +894,74 @@ void ItemsWidget::on_addEquipFlag_clicked()
 void ItemsWidget::on_addBonus_clicked()
 {
     ui->bonusName->appendPlainText(ui->bonusList->currentText());
+}
+
+void ItemsWidget::collectFileLists(const std::string &path)
+{
+    QString modPath = QString::fromUtf8(path.data(), path.size());
+    QDir pathSfx(modPath + "soundfx" + QDir::separator() + "inventory");
+    QStringList files = pathSfx.entryList(QDir::Files);
+    ui->sfxCb->addItems(files);
+    if (ui->sfxCb->count() == 0)
+    {
+        ui->sfxCb->setStyleSheet(invalidStyle);
+        ui->sfxCb->setToolTip("soundfx/inventory folder is empty. Place some sound files in it.");
+    }
+    else
+    {
+        ui->sfxCb->setStyleSheet("");
+        ui->sfxCb->setToolTip("");
+    }
+
+    QDir pathLootAnim(modPath + "animations" + QDir::separator() + "loot");
+    files = pathLootAnim.entryList(QDir::Files);
+    ui->lootAnimList->addItems(files);
+    if (ui->lootAnimList->count() == 0)
+    {
+        ui->lootAnimList->setStyleSheet(invalidStyle);
+        ui->lootAnimList->setToolTip("animations/loot folder is empty. Place some loot animation files in it.");
+    }
+    else
+    {
+        ui->lootAnimList->setStyleSheet("");
+        ui->lootAnimList->setToolTip("");
+    }
+
+    QDir pathStepFx(modPath + "soundfx" + QDir::separator() + "steps");
+    files = pathStepFx.entryList(QDir::Files);
+    for (int i = 0; i < files.size(); i++)
+    {
+        files[i].remove(0, 5);
+        files[i].remove(files[i].size() - 5, 5);
+    }
+    files.removeDuplicates();
+    ui->stepSoundList->addItems(files);
+    if (ui->stepSoundList->count() == 0)
+    {
+        ui->stepSoundList->setStyleSheet(invalidStyle);
+        ui->stepSoundList->setToolTip("soundfx/steps folder is empty. Place some sound files in it.");
+    }
+    else
+    {
+        ui->stepSoundList->setStyleSheet("");
+        ui->stepSoundList->setToolTip("");
+    }
+
+    QDir pathGfx(modPath + "animations" + QDir::separator() + "avatar" + QDir::separator() + "male");
+    files = pathGfx.entryList(QDir::Files);
+    for (int i = 0; i < files.size(); i++)
+    {
+        files[i].remove(files[i].size() - 4, 4);
+    }
+    ui->equipAnimList->addItems(files);
+    if (ui->equipAnimList->count() == 0)
+    {
+        ui->equipAnimList->setStyleSheet(invalidStyle);
+        ui->equipAnimList->setToolTip("animations/avatar/male folder is empty. Place some equip animation files in it.");
+    }
+    else
+    {
+        ui->equipAnimList->setStyleSheet("");
+        ui->equipAnimList->setToolTip("");
+    }
 }

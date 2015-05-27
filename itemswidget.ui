@@ -28,7 +28,7 @@
      <x>0</x>
      <y>0</y>
      <width>977</width>
-     <height>729</height>
+     <height>723</height>
     </rect>
    </property>
    <layout class="QGridLayout" name="gridLayout">
@@ -69,7 +69,7 @@
       <item row="2" column="0">
        <widget class="QPushButton" name="assignIconBtn">
         <property name="text">
-         <string>Assign Icon</string>
+         <string>Add custom Icon</string>
         </property>
        </widget>
       </item>
@@ -341,17 +341,10 @@
        <item row="2" column="0">
         <widget class="QLabel" name="label_17">
          <property name="text">
-          <string>ItemGFX</string>
+          <string>Equip Animation</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="1" colspan="2">
-        <widget class="QPushButton" name="assignGfxBtn">
-         <property name="text">
-          <string>Assign GFX</string>
          </property>
         </widget>
        </item>
@@ -405,7 +398,7 @@
        <item row="1" column="0">
         <widget class="QLabel" name="label_16">
          <property name="text">
-          <string>ItemSFX</string>
+          <string>Item Sound Effect</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
@@ -435,6 +428,9 @@
          </property>
         </widget>
        </item>
+       <item row="2" column="1" colspan="2">
+        <widget class="QComboBox" name="equipAnimList"/>
+       </item>
       </layout>
      </widget>
     </item>
@@ -444,17 +440,10 @@
        <bool>true</bool>
       </property>
       <layout class="QGridLayout" name="gridLayout_4">
-       <item row="3" column="1">
-        <widget class="QPushButton" name="assignStepBtn">
-         <property name="text">
-          <string>Assign StepFX</string>
-         </property>
-        </widget>
-       </item>
        <item row="3" column="0">
         <widget class="QLabel" name="label_19">
          <property name="text">
-          <string>StepFX</string>
+          <string>Step Sound</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
@@ -577,13 +566,6 @@
          </property>
         </widget>
        </item>
-       <item row="0" column="1">
-        <widget class="QPushButton" name="assignAnimBtn">
-         <property name="text">
-          <string>Assign Animation</string>
-         </property>
-        </widget>
-       </item>
        <item row="5" column="1">
         <widget class="QComboBox" name="slotsList"/>
        </item>
@@ -622,6 +604,12 @@
        </item>
        <item row="2" column="1">
         <widget class="QComboBox" name="classList"/>
+       </item>
+       <item row="0" column="1">
+        <widget class="QComboBox" name="lootAnimList"/>
+       </item>
+       <item row="3" column="1">
+        <widget class="QComboBox" name="stepSoundList"/>
        </item>
       </layout>
      </widget>

@@ -101,6 +101,8 @@ private slots:
     void on_addBonus_clicked();
 
 private:
+    void collectFileLists(const std::string& path);
+
     Ui::ItemsWidget *ui;
 
     EditorItemManager * items;
