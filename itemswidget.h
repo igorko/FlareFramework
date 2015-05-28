@@ -52,8 +52,6 @@ private slots:
 
     void on_itemBook_textChanged(const QString &arg1);
 
-    void on_itemQualityCB_currentIndexChanged(const QString &arg1);
-
     void on_meleeMin_valueChanged(int arg1);
 
     void on_meleeMax_valueChanged(int arg1);

@@ -67,7 +67,7 @@ public:
 #ifndef EDITOR
 class Color {
 public:
-    Uint8 r, g, b, a;
+	Uint8 r, g, b, a;
 	Color() : r(0), g(0), b(0), a(255) {}
 	Color(Uint8 _r, Uint8 _g, Uint8 _b) : r(_r), g(_g), b(_b), a(255) {}
 	Color(Uint8 _r, Uint8 _g, Uint8 _b, Uint8 _a) : r(_r), g(_g), b(_b), a(_a) {}
@@ -124,7 +124,7 @@ public:
 
 class EffectDef {
 public:
-	std::string name;
+	std::string id;
 	std::string type;
 	int icon;
 	std::string animation;
@@ -132,7 +132,7 @@ public:
 	bool render_above;
 
 	EffectDef()
-		: name("")
+		: id("")
 		, type("")
 		, icon(-1)
 		, animation("")

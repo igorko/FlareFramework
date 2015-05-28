@@ -33,6 +33,7 @@ EditorItemManager::EditorItemManager(const std::string& modpath) {
 	else items.resize(1);
 
 	loadTypes(modpath + "items/types.txt", false);
+    loadQualities(modpath + "items/qualities.txt", false);
 }
 
 EditorItemManager::~EditorItemManager()
@@ -65,34 +66,64 @@ void EditorItemManager::loadMiscTypes()
 
 	// @CLASS Settings: Elements|Description of engine/elements.txt
 	if (infile.open("engine/elements.txt")) {
-		std::string name;
 		while (infile.next()) {
-			// @ATTR name|string|An identifier for this element.
-			if (infile.key == "name") name = infile.val;
-
-			if (name != "") {
-				elements.push_back(name);
-				name = "";
+			if (infile.new_section) {
+				if (infile.section == "element") {
+					// check if the previous element and remove it if there is no identifier
+					if (!ELEMENTS.empty() && ELEMENTS.back().id == "") {
+						ELEMENTS.pop_back();
+					}
+					ELEMENTS.resize(ELEMENTS.size()+1);
+				}
 			}
+
+			if (ELEMENTS.empty() || infile.section != "element")
+				continue;
+
+			// @ATTR element.id|string|An identifier for this element.
+			if (infile.key == "id") ELEMENTS.back().id = infile.val;
+			// @ATTR element.name|string|The displayed name of this element.
+			else if (infile.key == "name") ELEMENTS.back().name = infile.val;
+
+			else infile.error("Settings: '%s' is not a valid key.", infile.key.c_str());
 		}
 		infile.close();
+
+		// check if the last element and remove it if there is no identifier
+		if (!ELEMENTS.empty() && ELEMENTS.back().id == "") {
+			ELEMENTS.pop_back();
+		}
 	}
 
 	// @CLASS Settings: Equip flags|Description of engine/equip_flags.txt
 	if (infile.open("engine/equip_flags.txt")) {
-		std::string type;
-		type = "";
-
 		while (infile.next()) {
-			// @ATTR name|string|An identifier for this equip flag.
-			if (infile.key == "name") type = infile.val;
-
-			if (type != "") {
-				equip_flags.push_back(type);
-				type = "";
+			if (infile.new_section) {
+				if (infile.section == "flag") {
+					// check if the previous flag and remove it if there is no identifier
+					if (!EQUIP_FLAGS.empty() && EQUIP_FLAGS.back().id == "") {
+						EQUIP_FLAGS.pop_back();
+					}
+					EQUIP_FLAGS.resize(EQUIP_FLAGS.size()+1);
+				}
 			}
+
+			if (EQUIP_FLAGS.empty() || infile.section != "flag")
+				continue;
+
+			// @ATTR flag.id|string|An identifier for this equip flag.
+			if (infile.key == "id") EQUIP_FLAGS.back().id = infile.val;
+			// @ATTR flag.name|string|The displayed name of this equip flag.
+			else if (infile.key == "name") EQUIP_FLAGS.back().name = infile.val;
+
+			else infile.error("Settings: '%s' is not a valid key.", infile.key.c_str());
 		}
 		infile.close();
+
+		// check if the last flag and remove it if there is no identifier
+		if (!EQUIP_FLAGS.empty() && EQUIP_FLAGS.back().id == "") {
+			EQUIP_FLAGS.pop_back();
+		}
 	}
 
 	// @CLASS Settings: Classes|Description of engine/classes.txt
@@ -100,20 +131,82 @@ void EditorItemManager::loadMiscTypes()
 		while (infile.next()) {
 			if (infile.new_section) {
 				if (infile.section == "class") {
-					hero_classes.push_back("");
+					// check if the previous class and remove it if there is no name
+					if (!HERO_CLASSES.empty() && HERO_CLASSES.back().name == "") {
+						HERO_CLASSES.pop_back();
+					}
+					HERO_CLASSES.resize(HERO_CLASSES.size()+1);
 				}
 			}
 
-			if (infile.section != "class")
+			if (HERO_CLASSES.empty() || infile.section != "class")
 				continue;
 
-			if (!hero_classes.empty()) {
+			if (!HERO_CLASSES.empty()) {
 				// @ATTR name|string|The displayed name of this class.
-				if (infile.key == "name") hero_classes.back() = infile.val;
+				if (infile.key == "name") HERO_CLASSES.back().name = infile.val;
+				// @ATTR description|string|A description of this class.
+				else if (infile.key == "description") HERO_CLASSES.back().description = infile.val;
+				// @ATTR currency|integer|The amount of currency this class will start with.
+				else if (infile.key == "currency") HERO_CLASSES.back().currency = toInt(infile.val);
+				// @ATTR equipment|item (integer), ...|A list of items that are equipped when starting with this class.
+				else if (infile.key == "equipment") HERO_CLASSES.back().equipment = infile.val;
+				// @ATTR physical|integer|Class starts with this physical stat.
+				else if (infile.key == "physical") HERO_CLASSES.back().physical = toInt(infile.val);
+				// @ATTR mental|integer|Class starts with this mental stat.
+				else if (infile.key == "mental") HERO_CLASSES.back().mental = toInt(infile.val);
+				// @ATTR offense|integer|Class starts with this offense stat.
+				else if (infile.key == "offense") HERO_CLASSES.back().offense = toInt(infile.val);
+				// @ATTR defense|integer|Class starts with this defense stat.
+				else if (infile.key == "defense") HERO_CLASSES.back().defense = toInt(infile.val);
+
+				else if (infile.key == "powers") {
+					// @ATTR powers|power (integer), ...|A list of powers that are unlocked when starting this class.
+					std::string power;
+					while ( (power = infile.nextValue()) != "") {
+						HERO_CLASSES.back().powers.push_back(toInt(power));
+					}
+				}
+				else if (infile.key == "campaign") {
+					// @ATTR campaign|status (string), ...|A list of campaign statuses that are set when starting this class.
+					std::string status;
+					while ( (status = infile.nextValue()) != "") {
+						HERO_CLASSES.back().statuses.push_back(status);
+					}
+				}
+				// @ATTR power_tree|string|Power tree that will be loaded by MenuPowers
+				else if (infile.key == "power_tree") HERO_CLASSES.back().power_tree = infile.val;
+
+				else infile.error("Settings: '%s' is not a valid key.", infile.key.c_str());
 			}
 		}
 		infile.close();
+
+		// check if the last class and remove it if there is no name
+		if (!HERO_CLASSES.empty() && HERO_CLASSES.back().name == "") {
+			HERO_CLASSES.pop_back();
+		}
 	}
+
+    // load foot-step definitions
+    // @CLASS Avatar: Step sounds|Description of items/step_sounds.txt
+    if (infile.open("items/step_sounds.txt", true, "")) {
+        while (infile.next()) {
+            if (infile.key == "id") {
+                // @ATTR id|string|An identifier name for a set of step sounds.
+                step_def.push_back(Step_sfx());
+                step_def.back().id = infile.val;
+            }
+
+            if (step_def.empty()) continue;
+
+            if (infile.key == "step") {
+                // @ATTR step|string|Filename of a step sound effect.
+                step_def.back().steps.push_back(infile.val);
+            }
+        }
+        infile.close();
+    }
 }
 /**
  * Shrinks the items vector to the absolute needed size.
@@ -167,17 +260,8 @@ void EditorItemManager::save(const std::string& filename) {
 			if (items[i].book != "")
 				outfile << "book=" << items[i].book << "\n";
 
-			if (items[i].quality != ITEM_QUALITY_NORMAL) {
-
-				std::string  quality = "";
-				if (items[i].quality == ITEM_QUALITY_LOW)
-					quality = "low";
-				else if (items[i].quality == ITEM_QUALITY_HIGH)
-					quality = "high";
-				else if (items[i].quality == ITEM_QUALITY_EPIC)
-					quality = "epic";
-
-				outfile << "quality=" << quality << "\n";
+            if (items[i].quality != "") {
+                outfile << "quality=" << items[i].quality << "\n";
 			}
 
 			outfile << "item_type=" << items[i].type << "\n";
@@ -236,7 +320,7 @@ void EditorItemManager::save(const std::string& filename) {
 				}
 				else if (items[i].bonus[k].resist_index != -1)
 				{
-                    bonus_str = elements[items[i].bonus[k].resist_index] + "_resist";
+                    bonus_str = ELEMENTS[items[i].bonus[k].resist_index].id + "_resist";
 				}
 				else if (items[i].bonus[k].base_index != -1)
 				{

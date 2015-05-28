@@ -35,8 +35,7 @@ public:
 	void save(const std::string& filename);
 
     std::vector<std::string> slot_type;
-    std::vector<std::string> equip_flags;
-    std::vector<std::string> hero_classes;
+    std::vector<Step_sfx> step_def;
 
 private:
 	void loadMiscTypes();

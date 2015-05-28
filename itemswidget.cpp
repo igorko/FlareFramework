@@ -44,30 +44,35 @@ void ItemsWidget::loadItems(const std::string &path)
         }
     }
     ui->itemTypeCB->clear();
-    std::map<std::string, std::string>::iterator iter;
-    for (iter = items->item_types.begin(); iter != items->item_types.end(); ++iter)
+    for (unsigned i = 0; i<items->item_types.size(); i++)
     {
-        ui->itemTypeCB->addItem(qString(iter->second), qString(iter->first));
+        ui->itemTypeCB->addItem(qString(items->item_types[i].name), qString(items->item_types[i].id));
     }
-    checkComboBoxForError(ui->itemTypeCB, "items/types.txt is missing. Copy it from base mod.");
+    checkComboBoxForError(ui->itemTypeCB, "items/types.txt is missing or incorrect. Copy it from base mod.");
 
-    for (unsigned i = 0; i<items->equip_flags.size(); i++)
+    for (unsigned i = 0; i<items->item_qualities.size(); i++)
     {
-        ui->equipList->addItem(qString(items->equip_flags[i]));
+        ui->itemQualityCB->addItem(qString(items->item_qualities[i].id));
     }
-    checkComboBoxForError(ui->equipList, "engine/equip_flags.txt is missing. Copy it from base mod.");
+    checkComboBoxForError(ui->itemTypeCB, "items/qualities.txt is missing or incorrect. Copy it from base mod.");
+
+    for (unsigned i = 0; i<items->EQUIP_FLAGS.size(); i++)
+    {
+        ui->equipList->addItem(qString(items->EQUIP_FLAGS[i].id));
+    }
+    checkComboBoxForError(ui->equipList, "engine/equip_flags.txt is missing or incorrect. Copy it from base mod.");
 
     for (unsigned i = 0; i<items->slot_type.size(); i++)
     {
         ui->slotsList->addItem(qString(items->slot_type[i]));
     }
-    checkComboBoxForError(ui->slotsList, "menus/inventory.txt is missing. Copy it from base mod.");
+    checkComboBoxForError(ui->slotsList, "menus/inventory.txt is missing or incorrect. Copy it from base mod.");
 
-    for (unsigned i = 0; i<items->elements.size(); i++)
+    for (unsigned i = 0; i<items->ELEMENTS.size(); i++)
     {
-        ui->bonusList->addItem(qString(items->elements[i]) + "_resist");
+        ui->bonusList->addItem(qString(items->ELEMENTS[i].id) + "_resist");
     }
-    checkComboBoxForError(ui->bonusList, "engine/elements.txt is missing. Copy it from base mod.");
+    checkComboBoxForError(ui->bonusList, "engine/elements.txt is missing or incorrect. Copy it from base mod.");
 
     ui->bonusList->addItem("speed");
     ui->bonusList->addItem("physical");
@@ -80,9 +85,9 @@ void ItemsWidget::loadItems(const std::string &path)
     }
 
     ui->classList->addItem("");
-    for (unsigned i = 0; i<items->hero_classes.size(); i++)
+    for (unsigned i = 0; i<items->HERO_CLASSES.size(); i++)
     {
-        ui->classList->addItem(qString(items->hero_classes[i]));
+        ui->classList->addItem(qString(items->HERO_CLASSES[i].name));
     }
     ui->pushBtn->setEnabled(false);
 
@@ -140,7 +145,7 @@ void ItemsWidget::on_clearBtn_clicked()
     ui->bonusValue->clear();
 
     // comboBoxes
-    ui->itemQualityCB->setCurrentIndex(1);
+    ui->itemQualityCB->setCurrentIndex(-1);
     ui->itemTypeCB->setCurrentIndex(-1);
     ui->sfxCb->setCurrentIndex(-1);
     ui->lootAnimList->setCurrentIndex(-1);
@@ -239,8 +244,8 @@ void ItemsWidget::on_pushBtn_clicked()
             items->items[index].bonus.back().base_index = 3;
         }
 
-        for (unsigned k=0; k<items->elements.size(); ++k) {
-            if (bonus_str == qString(items->elements[k]) + "_resist")
+        for (unsigned k=0; k<items->ELEMENTS.size(); ++k) {
+            if (bonus_str == qString(items->ELEMENTS[k].id) + "_resist")
             {
                 items->items[index].bonus.back().resist_index = k;
                 break;
@@ -258,7 +263,7 @@ void ItemsWidget::on_pushBtn_clicked()
 
     // comboBoxes
     items->items[index].type     = stdString(ui->itemTypeCB->itemData(ui->itemTypeCB->currentIndex()).toString());
-    items->items[index].quality  = ui->itemQualityCB->currentIndex();
+    items->items[index].quality  = stdString(ui->itemQualityCB->currentText());
     items->items[index].requires_class = stdString(ui->classList->currentText());
 
     items->items[index].loot_animation.resize(1);
@@ -360,7 +365,7 @@ void ItemsWidget::on_itemsList_itemClicked(QListWidgetItem *item)
         }
         else if (resist_index != -1)
         {
-            ui->bonusName->appendPlainText(qString(items->elements[resist_index]) + "_resist");
+            ui->bonusName->appendPlainText(qString(items->ELEMENTS[resist_index].id) + "_resist");
         }
         else if (is_speed)
         {
@@ -394,7 +399,8 @@ void ItemsWidget::on_itemsList_itemClicked(QListWidgetItem *item)
             break;
         }
     }
-    ui->itemQualityCB->setCurrentIndex(items->items[index].quality);
+    QString quality = qString(items->items[index].quality);
+    selectComboBoxItemByText(ui->itemQualityCB, quality);
 
     type = qString(items->items[index].requires_class);
     selectComboBoxItemByText(ui->classList, type);
@@ -475,18 +481,6 @@ void ItemsWidget::on_itemFlavor_textChanged(const QString &arg1)
 void ItemsWidget::on_itemBook_textChanged(const QString &arg1)
 {
     markNotEmptyLineEdit(ui->itemBook, arg1);
-}
-
-void ItemsWidget::on_itemQualityCB_currentIndexChanged(const QString &arg1)
-{
-    if (arg1 != "normal")
-    {
-        ui->itemQualityCB->setStyleSheet(editedStyle);
-    }
-    else
-    {
-        ui->itemQualityCB->setStyleSheet("");
-    }
 }
 
 void ItemsWidget::on_meleeMin_valueChanged(int arg1)

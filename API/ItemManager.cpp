@@ -70,10 +70,7 @@ static inline void shrinkVecToFit(std::vector<Ty_>& vec) {
 
 ItemManager::ItemManager()
 #ifndef EDITOR
-	: color_normal(font->getColor("item_normal"))
-	, color_low(font->getColor("item_low"))
-	, color_high(font->getColor("item_high"))
-	, color_epic(font->getColor("item_epic"))
+	: color_normal(font->getColor("widget_normal"))
 	, color_bonus(font->getColor("item_bonus"))
 	, color_penalty(font->getColor("item_penalty"))
 	, color_requirements_not_met(font->getColor("requirements_not_met"))
@@ -97,6 +94,7 @@ void ItemManager::loadAll() {
 	this->loadItems("items/items.txt");
 	this->loadTypes("items/types.txt");
 	this->loadSets("items/sets.txt");
+	this->loadQualities("items/qualities.txt");
 
 	/*
 	 * Shrinks the items vector to the absolute needed size.
@@ -185,13 +183,8 @@ void ItemManager::loadItems(const std::string& filename, bool locateFileName) {
 			items[id].book = infile.val;
 		}
 		else if (infile.key == "quality") {
-			// @ATTR quality|[low:high:epic]|Item quality, corresponds to item color.
-			if (infile.val == "low")
-				items[id].quality = ITEM_QUALITY_LOW;
-			else if (infile.val == "high")
-				items[id].quality = ITEM_QUALITY_HIGH;
-			else if (infile.val == "epic")
-				items[id].quality = ITEM_QUALITY_EPIC;
+			// @ATTR quality|string|Item quality matching an id in items/qualities.txt
+			items[id].quality = infile.val;
 		}
 		else if (infile.key == "item_type") {
 			// @ATTR item_type|string|Equipment slot [artifact, head, chest, hands, legs, feets, main, off, ring] or base item type [gem, consumable]
@@ -334,7 +327,7 @@ void ItemManager::loadItems(const std::string& filename, bool locateFileName) {
 			// @ATTR stepfx|string|Sound effect when walking, this applies only to armors.
 			items[id].stepfx = infile.val;
 		else if (infile.key == "disable_slots") {
-			// @ATTR disable_slots|type (string), ...|A comma separated list of slot types to disable when this item is equipped.
+			// @ATTR disable_slots|type (string), ...|A comma separated list of equip slot types to disable when this item is equipped.
 			items[id].disable_slots.clear();
 			std::string slot_type = popFirstString(infile.val);
 
@@ -358,34 +351,92 @@ void ItemManager::loadItems(const std::string& filename, bool locateFileName) {
  */
 void ItemManager::loadTypes(const std::string& filename, bool locateFileName) {
 	FileParser infile;
-	std::string type,description;
-	type = description = "";
 
 	// @CLASS ItemManager: Types|Definition of a item types, items/types.txt...
 	if (infile.open(filename, locateFileName)) {
 		while (infile.next()) {
-			// @ATTR name|string|Item type name.
-			if (infile.key == "name")
-				type = infile.val;
-			// @ATTR description|string|Item type description.
-			else if (infile.key == "description")
-				description = infile.val;
+			if (infile.new_section) {
+				if (infile.section == "type") {
+					// check if the previous type and remove it if there is no identifier
+					if (!item_types.empty() && item_types.back().id == "") {
+						item_types.pop_back();
+					}
+					item_types.resize(item_types.size()+1);
+				}
+			}
+
+			if (item_types.empty() || infile.section != "type")
+				continue;
+
+			// @ATTR type.id|string|Item type identifier.
+			if (infile.key == "id")
+				item_types.back().id = infile.val;
+			// @ATTR type.name|string|Item type name.
+			else if (infile.key == "name")
+				item_types.back().name = infile.val;
 			else
 				infile.error("ItemManager: '%s' is not a valid key.", infile.key.c_str());
-
-			if (type != "" && description != "") {
-				item_types[type] = description;
-				type = description = "";
-			}
 		}
 		infile.close();
+
+		// check if the last type and remove it if there is no identifier
+		if (!item_types.empty() && item_types.back().id == "") {
+			item_types.pop_back();
+		}
+	}
+}
+
+/**
+ * Load a specific item qualities file
+ *
+ * @param filename The (full) path and name of the file to load
+ */
+void ItemManager::loadQualities(const std::string& filename, bool locateFileName) {
+	FileParser infile;
+
+	// @CLASS ItemManager: Qualities|Definition of a item qualities, items/types.txt...
+	if (infile.open(filename, locateFileName)) {
+		while (infile.next()) {
+			if (infile.new_section) {
+				if (infile.section == "quality") {
+					// check if the previous quality and remove it if there is no identifier
+					if (!item_qualities.empty() && item_qualities.back().id == "") {
+						item_qualities.pop_back();
+					}
+					item_qualities.resize(item_qualities.size()+1);
+				}
+			}
+
+			if (item_qualities.empty() || infile.section != "quality")
+				continue;
+
+			// @ATTR quality.id|string|Item quality identifier.
+			if (infile.key == "id")
+				item_qualities.back().id = infile.val;
+			// @ATTR quality.name|string|Item quality name.
+			else if (infile.key == "name")
+				item_qualities.back().name = infile.val;
+#ifndef EDITOR
+			// @ATTR quality.color|r (integer), g (integer), b (integer)|Item quality color.
+			else if (infile.key == "color")
+				item_qualities.back().color = toRGB(infile.val);
+#endif
+			else
+				infile.error("ItemManager: '%s' is not a valid key.", infile.key.c_str());
+		}
+		infile.close();
+
+		// check if the last quality and remove it if there is no identifier
+		if (!item_qualities.empty() && item_qualities.back().id == "") {
+			item_qualities.pop_back();
+		}
 	}
 }
 
 std::string ItemManager::getItemType(std::string _type) {
-	std::map<std::string, std::string>::iterator it,end;
-	for (it=item_types.begin(), end=item_types.end(); it!=end; ++it) {
-		if (_type.compare(it->first) == 0) return it->second;
+	for (unsigned i=0; i<item_types.size(); ++i) {
+		if (item_types[i].id == _type)
+			return item_types[i].name;
 	}
 	// If all else fails, return the original string
 	return _type;
@@ -500,21 +551,12 @@ void ItemManager::parseBonus(BonusData& bdata, FileParser& infile) {
 		}
 	}
 
-#ifndef EDITOR
 	for (unsigned i=0; i<ELEMENTS.size(); ++i) {
-		if (bonus_str == ELEMENTS[i].name + "_resist") {
+		if (bonus_str == ELEMENTS[i].id + "_resist") {
 			bdata.resist_index = i;
 			return;
 		}
 	}
-#else
-	for (unsigned i=0; i<elements.size(); ++i) {
-		if (bonus_str == elements[i] + "_resist") {
-			bdata.resist_index = i;
-			return;
-		}
-	}
-#endif
 
 	if (bonus_str == "physical") {
 		bdata.base_index = 0;
@@ -549,7 +591,7 @@ void ItemManager::getBonusString(std::stringstream& ss, BonusData* bdata) {
 		ss << " " << STAT_NAME[bdata->stat_index];
 	}
 	else if (bdata->resist_index != -1) {
-		ss << "% " << msg->get(ELEMENTS[bdata->resist_index].description);
+		ss << "% " << msg->get(ELEMENTS[bdata->resist_index].name);
 	}
 	else if (bdata->base_index != -1) {
 		if (bdata->base_index == 0)
@@ -578,14 +620,13 @@ TooltipData ItemManager::getShortTooltip(ItemStack stack) {
 	if (items[stack.item].set > 0) {
 		color = item_sets[items[stack.item].set].color;
 	}
-	else if (items[stack.item].quality == ITEM_QUALITY_LOW) {
-		color = color_low;
-	}
-	else if (items[stack.item].quality == ITEM_QUALITY_HIGH) {
-		color = color_high;
-	}
-	else if (items[stack.item].quality == ITEM_QUALITY_EPIC) {
-		color = color_epic;
+	else {
+		for (unsigned i=0; i<item_qualities.size(); ++i) {
+			if (item_qualities[i].id == items[stack.item].quality) {
+				color = item_qualities[i].color;
+				break;
+			}
+		}
 	}
 
 	// name
@@ -614,21 +655,14 @@ TooltipData ItemManager::getTooltip(ItemStack stack, StatBlock *stats, int conte
 	if (items[stack.item].set > 0) {
 		color = item_sets[items[stack.item].set].color;
 	}
-	else if (items[stack.item].quality == ITEM_QUALITY_LOW) {
-		color = color_low;
-		quality_desc = msg->get("Low");
-	}
-	else if (items[stack.item].quality == ITEM_QUALITY_NORMAL) {
-		color = color_normal;
-		quality_desc = msg->get("Normal");
-	}
-	else if (items[stack.item].quality == ITEM_QUALITY_HIGH) {
-		color = color_high;
-		quality_desc = msg->get("High");
-	}
-	else if (items[stack.item].quality == ITEM_QUALITY_EPIC) {
-		color = color_epic;
-		quality_desc = msg->get("Epic");
+	else {
+		for (unsigned i=0; i<item_qualities.size(); ++i) {
+			if (item_qualities[i].id == items[stack.item].quality) {
+				color = item_qualities[i].color;
+				quality_desc = msg->get(item_qualities[i].name);
+				break;
+			}
+		}
 	}
 
 	// name

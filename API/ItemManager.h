@@ -31,6 +31,52 @@ FLARE.  If not, see http://www.gnu.org/licenses/
 #include "TooltipData.h"
 #else
 #include "Utils.h"
+
+class Element {
+public:
+	std::string id;
+	std::string name;
+};
+
+class EquipFlag {
+public:
+	std::string id;
+	std::string name;
+};
+
+class HeroClass {
+public:
+	std::string name;
+	std::string description;
+	int currency;
+	std::string equipment;
+	int physical;
+	int mental;
+	int offense;
+	int defense;
+	std::vector<int> powers;
+	std::vector<std::string> statuses;
+	std::string power_tree;
+
+	HeroClass()
+		: name("")
+		, description("")
+		, currency(0)
+		, equipment("")
+		, physical(0)
+		, mental(0)
+		, offense(0)
+		, defense(0)
+		, power_tree("") {
+	}
+};
+
+class Step_sfx {
+public:
+	std::string id;
+	std::vector<std::string> steps;
+};
+
 #endif
 
 #include <stdint.h>
@@ -45,11 +91,6 @@ const int REQUIRES_PHYS = 0;
 const int REQUIRES_MENT = 1;
 const int REQUIRES_OFF = 2;
 const int REQUIRES_DEF = 3;
-
-const int ITEM_QUALITY_LOW = 0;
-const int ITEM_QUALITY_NORMAL = 1;
-const int ITEM_QUALITY_HIGH = 2;
-const int ITEM_QUALITY_EPIC = 3;
 
 class LootAnimation {
 public:
@@ -88,13 +129,31 @@ public:
 	}
 };
 
+class ItemQuality {
+public:
+	std::string id;
+	std::string name;
+#ifndef EDITOR
+	Color color;
+#endif
+	ItemQuality()
+		: id("")
+		, name("")
+#ifndef EDITOR
+		, color(255,255,255) {
+	}
+#else
+	{}
+#endif
+};
+
 class Item {
 public:
 	std::string name;     // item name displayed on long and short tool tips
 	std::string flavor;   // optional flavor text describing the item
 	int level;            // rough estimate of quality, used in the loot algorithm
 	int set;              // item can be attached to item set
-	int quality;          // low, normal, high, epic; corresponds to item name color
+	std::string quality;  // should match an id from items/qualities.txt
 	std::string type;     // equipment slot or base item type
 	std::vector<std::string> equip_flags;   // common values include: melee, ranged, mental, shield
 	int icon;             // icon index on small pixel sheet
@@ -134,7 +193,7 @@ public:
 		, flavor("")
 		, level(0)
 		, set(0)
-		, quality(ITEM_QUALITY_NORMAL)
+		, quality("")
 		, type("other")
 		, icon(0)
 		, dmg_melee_min(0)
@@ -200,11 +259,24 @@ public:
 	void clear();
 };
 
+class ItemType {
+public:
+	ItemType()
+		: id("")
+		, name("") {
+	}
+	~ItemType() {}
+
+	std::string id;
+	std::string name;
+};
+
 class ItemManager {
 protected:
 	void loadItems(const std::string& filename, bool locateFileName = true);
 	void loadTypes(const std::string& filename, bool locateFileName = true);
 	void loadSets(const std::string& filename, bool locateFileName = true);
+	void loadQualities(const std::string& filename, bool locateFileName = true);
 private:
 	void loadAll();
 	void parseBonus(BonusData& bdata, FileParser& infile);
@@ -229,15 +301,18 @@ public:
 	TooltipData getTooltip(ItemStack stack, StatBlock *stats, int context);
 	TooltipData getShortTooltip(ItemStack item);
 #else
-	std::vector<std::string> elements;
+	std::vector<Element> ELEMENTS;
+	std::vector<EquipFlag> EQUIP_FLAGS;
+	std::vector<HeroClass> HERO_CLASSES;
 #endif
 	std::string getItemType(std::string _type);
 	void addUnknownItem(int id);
 	bool requirementsMet(const StatBlock *stats, int item);
 
 	std::vector<Item> items;
-	std::map<std::string,std::string> item_types;
+	std::vector<ItemType> item_types;
 	std::vector<ItemSet> item_sets;
+	std::vector<ItemQuality> item_qualities;
 };
 
 #endif
