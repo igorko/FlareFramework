@@ -44,30 +44,36 @@ void ItemsWidget::loadItems(const std::string &path)
         }
     }
     ui->itemTypeCB->clear();
+    ui->itemTypeCB->addItem("");
     for (unsigned i = 0; i<items->item_types.size(); i++)
     {
         ui->itemTypeCB->addItem(qString(items->item_types[i].name), qString(items->item_types[i].id));
     }
     checkComboBoxForError(ui->itemTypeCB, "items/types.txt is missing or incorrect. Copy it from base mod.");
 
+    ui->itemQualityCB->clear();
+    ui->itemQualityCB->addItem("");
     for (unsigned i = 0; i<items->item_qualities.size(); i++)
     {
         ui->itemQualityCB->addItem(qString(items->item_qualities[i].id));
     }
     checkComboBoxForError(ui->itemTypeCB, "items/qualities.txt is missing or incorrect. Copy it from base mod.");
 
+    ui->equipList->clear();
     for (unsigned i = 0; i<items->EQUIP_FLAGS.size(); i++)
     {
         ui->equipList->addItem(qString(items->EQUIP_FLAGS[i].id));
     }
     checkComboBoxForError(ui->equipList, "engine/equip_flags.txt is missing or incorrect. Copy it from base mod.");
 
+    ui->slotsList->clear();
     for (unsigned i = 0; i<items->slot_type.size(); i++)
     {
         ui->slotsList->addItem(qString(items->slot_type[i]));
     }
     checkComboBoxForError(ui->slotsList, "menus/inventory.txt is missing or incorrect. Copy it from base mod.");
 
+    ui->bonusList->clear();
     for (unsigned i = 0; i<items->ELEMENTS.size(); i++)
     {
         ui->bonusList->addItem(qString(items->ELEMENTS[i].id) + "_resist");
@@ -84,6 +90,15 @@ void ItemsWidget::loadItems(const std::string &path)
         ui->bonusList->addItem(qString(STAT_KEY[i]));
     }
 
+    ui->stepSoundList->clear();
+    ui->stepSoundList->addItem("");
+    for (unsigned int i = 0; i<items->step_def.size(); i++)
+    {
+        ui->stepSoundList->addItem(qString(items->step_def[i].id));
+    }
+    checkComboBoxForError(ui->stepSoundList, "items/step_sounds.txt is missing or incorrect. Copy it from base mod.");
+
+    ui->classList->clear();
     ui->classList->addItem("");
     for (unsigned i = 0; i<items->HERO_CLASSES.size(); i++)
     {
@@ -134,7 +149,6 @@ void ItemsWidget::on_clearBtn_clicked()
 	ui->itemName->setText("ItemName");
     ui->itemFlavor->clear();
     ui->itemBook->clear();
-    ui->classList->clear();
 	ui->pickupStatus->clear();
 	ui->powerDesc->clear();
     ui->replacePowerFrom->clear();
@@ -145,12 +159,14 @@ void ItemsWidget::on_clearBtn_clicked()
     ui->bonusValue->clear();
 
     // comboBoxes
-    ui->itemQualityCB->setCurrentIndex(-1);
-    ui->itemTypeCB->setCurrentIndex(-1);
-    ui->sfxCb->setCurrentIndex(-1);
-    ui->lootAnimList->setCurrentIndex(-1);
-    ui->stepSoundList->setCurrentIndex(-1);
-    ui->equipAnimList->setCurrentIndex(-1);
+    ui->itemQualityCB->setCurrentIndex(0);
+    ui->itemTypeCB->setCurrentIndex(0);
+    ui->classList->setCurrentIndex(0);
+
+    ui->sfxCb->setCurrentIndex(0);
+    ui->lootAnimList->setCurrentIndex(0);
+    ui->stepSoundList->setCurrentIndex(0);
+    ui->equipAnimList->setCurrentIndex(0);
 
     // spinBoxes
     ui->itemLvlSpin->setValue(0);
@@ -216,6 +232,22 @@ void ItemsWidget::on_pushBtn_clicked()
         items->items[index].equip_flags.push_back(stdString(equipFlags->findBlockByLineNumber(i).text()));
     }
 
+    QTextDocument* loot = ui->animations->document();
+    QTextDocument* lootMin = ui->animationMin->document();
+    QTextDocument* lootmax = ui->animationMax->document();
+    items->items[index].loot_animation.clear();
+
+    for (int i = 0; i < loot->lineCount(); i++)
+    {
+        if (loot->findBlockByLineNumber(i).text().isEmpty())
+            continue;
+        items->items[index].loot_animation.push_back(LootAnimation());
+
+        items->items[index].loot_animation.back().name = stdString(loot->findBlockByLineNumber(i).text());
+        items->items[index].loot_animation.back().low  = lootMin->findBlockByLineNumber(i).text().toInt();
+        items->items[index].loot_animation.back().high = lootmax->findBlockByLineNumber(i).text().toInt();
+    }
+
     QTextDocument* bonusName    = ui->bonusName->document();
     QTextDocument* bonusValue   = ui->bonusValue->document();
     items->items[index].bonus.clear();
@@ -266,12 +298,9 @@ void ItemsWidget::on_pushBtn_clicked()
     items->items[index].quality  = stdString(ui->itemQualityCB->currentText());
     items->items[index].requires_class = stdString(ui->classList->currentText());
 
-    items->items[index].loot_animation.resize(1);
-    items->items[index].loot_animation.back().name = std::string("animations/loot/") + stdString(ui->lootAnimList->itemText(ui->lootAnimList->currentIndex()));
-
-    items->items[index].sfx    = std::string("soundfx/inventory/") + stdString(ui->sfxCb->itemText(ui->sfxCb->currentIndex()));
-    items->items[index].gfx    = stdString(ui->equipAnimList->itemText(ui->equipAnimList->currentIndex()));
-    items->items[index].stepfx = stdString(ui->stepSoundList->itemText(ui->stepSoundList->currentIndex()));
+    items->items[index].sfx    = std::string("soundfx/inventory/") + stdString(ui->sfxCb->currentText());
+    items->items[index].gfx    = stdString(ui->equipAnimList->currentText());
+    items->items[index].stepfx = stdString(ui->stepSoundList->currentText());
 
     // spinBoxes
     items->items[index].level        = ui->itemLvlSpin->value();
@@ -336,6 +365,16 @@ void ItemsWidget::on_itemsList_itemClicked(QListWidgetItem *item)
     {
         ui->replacePowerFrom->appendPlainText(QString::number(items->items[index].replace_power[i].x));
         ui->replacePowerTo->appendPlainText(QString::number(items->items[index].replace_power[i].y));
+    }
+
+    ui->animations->clear();
+    ui->animationMin->clear();
+    ui->animationMax->clear();
+    for (unsigned int i = 0; i < items->items[index].loot_animation.size(); i++)
+    {
+        ui->animations->appendPlainText(qString(items->items[index].loot_animation[i].name));
+        ui->animationMin->appendPlainText(QString::number(items->items[index].loot_animation[i].low));
+        ui->animationMax->appendPlainText(QString::number(items->items[index].loot_animation[i].high));
     }
 
     ui->disableSlots->clear();
@@ -410,13 +449,6 @@ void ItemsWidget::on_itemsList_itemClicked(QListWidgetItem *item)
 
     QString stepfx = qString(items->items[index].stepfx);
     selectComboBoxItemByText(ui->stepSoundList, stepfx);
-
-    QString loot_anim;
-    if (!items->items[index].loot_animation.empty())
-    {
-        loot_anim = qString(items->items[index].loot_animation.back().name);
-        selectComboBoxItemByText(ui->lootAnimList, QFileInfo(loot_anim).fileName());
-    }
 
     QString gfx = qString(items->items[index].gfx);
     selectComboBoxItemByText(ui->equipAnimList, gfx);
@@ -619,6 +651,14 @@ void ItemsWidget::on_addBonus_clicked()
 
 void ItemsWidget::collectFileLists(const std::string &path)
 {
+    ui->sfxCb->clear();
+    ui->sfxCb->addItem("");
+
+    ui->lootAnimList->clear();
+
+    ui->equipAnimList->clear();
+    ui->equipAnimList->addItem("");
+
     QString modPath = qString(path);
     QDir pathSfx(modPath + "soundfx" + QDir::separator() + "inventory");
     QStringList files = pathSfx.entryList(QDir::Files);
@@ -629,17 +669,6 @@ void ItemsWidget::collectFileLists(const std::string &path)
     files = pathLootAnim.entryList(QDir::Files);
     ui->lootAnimList->addItems(files);
     checkComboBoxForError(ui->lootAnimList, "animations/loot folder is empty. Place some loot animation files in it.");
-
-    QDir pathStepFx(modPath + "soundfx" + QDir::separator() + "steps");
-    files = pathStepFx.entryList(QDir::Files);
-    for (int i = 0; i < files.size(); i++)
-    {
-        files[i].remove(0, 5);
-        files[i].remove(files[i].size() - 5, 5);
-    }
-    files.removeDuplicates();
-    ui->stepSoundList->addItems(files);
-    checkComboBoxForError(ui->stepSoundList, "soundfx/steps folder is empty. Place some sound files in it.");
 
     QDir pathGfx(modPath + "animations" + QDir::separator() + "avatar" + QDir::separator() + "male");
     files = pathGfx.entryList(QDir::Files);
@@ -725,4 +754,24 @@ void ItemsWidget::markNotDefaultSpinBox(QSpinBox *widget, int value, int default
     {
         widget->setStyleSheet("");
     }
+}
+
+void ItemsWidget::on_lootAnimAdd_clicked()
+{
+    ui->animations->appendPlainText(ui->lootAnimList->currentText());
+}
+
+void ItemsWidget::on_animations_textChanged()
+{
+    markNotEmptyPlainTextEdit(ui->animations);
+}
+
+void ItemsWidget::on_animationMin_textChanged()
+{
+    markNotEmptyPlainTextEdit(ui->animationMin);
+}
+
+void ItemsWidget::on_animationMax_textChanged()
+{
+    markNotEmptyPlainTextEdit(ui->animationMax);
 }

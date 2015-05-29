@@ -102,6 +102,14 @@ private slots:
 
     void on_addBonus_clicked();
 
+    void on_lootAnimAdd_clicked();
+
+    void on_animations_textChanged();
+
+    void on_animationMin_textChanged();
+
+    void on_animationMax_textChanged();
+
 private:
     void collectFileLists(const std::string& path);
     QString qString(std::string value);
