@@ -109,6 +109,8 @@ void ItemsWidget::loadItems(const std::string &path)
 
     collectFileLists(path);
     clearBtn();
+
+    ui->iconsView->init(qString(path));
 }
 
 void ItemsWidget::clearItemsList()

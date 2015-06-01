@@ -21,10 +21,12 @@ SOURCES += main.cpp\
         API/Utils.cpp \
         API/UtilsFileSystem.cpp \
         API/UtilsParsing.cpp \
-    itemswidget.cpp
+    itemswidget.cpp \
+    iconview.cpp
 
 HEADERS  += mainwindow.h \
-    itemswidget.h
+    itemswidget.h \
+    iconview.h
 
 FORMS    += mainwindow.ui \
     itemswidget.ui
