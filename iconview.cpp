@@ -34,7 +34,7 @@ void IconView::mousePressEvent(QMouseEvent *event)
 {
     if (event->modifiers() & Qt::AltModifier)
     {
-        auto point = event->pos();
+        QPoint point = event->pos();
         if (point.x() >= 0 && point.x() <= icons.width() && point.y() >= 0 && point.y() <= icons.height())
         {
             selection = point;
@@ -54,8 +54,8 @@ void IconView::mouseMoveEvent(QMouseEvent *event)
 
 void IconView::updateSelection(int x, int y)
 {
-    auto hBar = horizontalScrollBar();
-    auto vBar = verticalScrollBar();
+    QScrollBar* hBar = horizontalScrollBar();
+    QScrollBar* vBar = verticalScrollBar();
 
     hBar->setValue(x);
     vBar->setValue(y);
