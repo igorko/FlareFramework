@@ -35,29 +35,30 @@ public slots:
     void disableSaving();
 
 private slots:
-    void on_itemClose_clicked();
+    void itemClose();
 
-    void on_actionClose_Mod_triggered();
+    void Close_Mod();
 
-    void on_actionAdd_Item_triggered();
+    void Add_Item();
 
-    void on_actionSave_Mod_triggered();
+    void Save_Mod();
 
-    void on_actionQuit_triggered();
+    void Quit();
 
-    void on_actionAbout_triggered();
+    void About();
 
-    void on_actionOpen_Mod_triggered();
+    void Open_Mod();
 
-    void on_actionNew_Mod_triggered();
+    void New_Mod();
 
 private:
     Ui::MainWindow *ui;
 
     void disableAllTabsExceptIndex(int index);
     void setMenusEnabled(bool state);
-    void ToDo();
+    void setupConnections();
     void CloseAll();
+
     bool newMod;
 
 };

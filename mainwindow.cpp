@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "ui_itemswidget.h"
 
 #include <QFileDialog>
 #include <QMessageBox>
@@ -14,8 +15,29 @@ MainWindow::MainWindow(QWidget *parent) :
     disableAllTabsExceptIndex(0);
     modPath = "";
 
+    setupConnections();
+
     connect(ui->Items, SIGNAL(itemsNotEdited()), this, SLOT(disableSaving()));
     connect(ui->Items, SIGNAL(itemsWereEdited()), this, SLOT(enableSaving()));
+}
+
+void MainWindow::setupConnections()
+{
+    connect(ui->Items->ui->itemClose, SIGNAL(clicked()), SLOT(itemClose()));
+
+    connect(ui->actionClose_Mod, SIGNAL(triggered()), SLOT(Close_Mod()));
+
+    connect(ui->actionAdd_Item, SIGNAL(triggered()), SLOT(Add_Item()));
+
+    connect(ui->actionSave_Mod, SIGNAL(triggered()), SLOT(Save_Mod()));
+
+    connect(ui->actionQuit, SIGNAL(triggered()), SLOT(Quit()));
+
+    connect(ui->actionAbout, SIGNAL(triggered()), SLOT(About()));
+
+    connect(ui->actionOpen_Mod, SIGNAL(triggered()), SLOT(Open_Mod()));
+
+    connect(ui->actionNew_Mod, SIGNAL(triggered()), SLOT(New_Mod()));
 }
 
 MainWindow::~MainWindow()
@@ -35,7 +57,7 @@ void MainWindow::disableSaving()
     actions.at(MENU_FILE)->menu()->actions().at(2)->setEnabled(false);
 }
 
-void MainWindow::on_itemClose_clicked()
+void MainWindow::itemClose()
 {
     disableAllTabsExceptIndex(TAB_MAIN);
 }
@@ -80,7 +102,7 @@ void MainWindow::setMenusEnabled(bool state)
     actions.at(MENU_STORY)->menu()->actions().at(0)->setEnabled(state);
 }
 
-void MainWindow::on_actionClose_Mod_triggered()
+void MainWindow::Close_Mod()
 {
     if (modPath == "") return;
     if (ui->Items->itemsAreEdited())
@@ -107,7 +129,7 @@ void MainWindow::CloseAll()
     //ToDo
 }
 
-void MainWindow::on_actionAdd_Item_triggered()
+void MainWindow::Add_Item()
 {
     disableAllTabsExceptIndex(TAB_ITEMS);
 
@@ -122,7 +144,7 @@ void MainWindow::on_actionAdd_Item_triggered()
     ui->Items->loadItems(path);
 }
 
-void MainWindow::on_actionSave_Mod_triggered()
+void MainWindow::Save_Mod()
 {
     QString filename = modPath + QDir::separator() + "items" + QDir::separator() + "items.txt";
     ui->Items->saveItems(filename.toUtf8().constData());
@@ -130,12 +152,12 @@ void MainWindow::on_actionSave_Mod_triggered()
 
 }
 
-void MainWindow::on_actionQuit_triggered()
+void MainWindow::Quit()
 {
     QApplication::quit();
 }
 
-void MainWindow::on_actionAbout_triggered()
+void MainWindow::About()
 {
     QString msg = "FLARE Game Development Environment v0.1";
     QMessageBox* msgBox = new QMessageBox(this);
@@ -143,7 +165,7 @@ void MainWindow::on_actionAbout_triggered()
     msgBox->exec();
 }
 
-void MainWindow::on_actionOpen_Mod_triggered()
+void MainWindow::Open_Mod()
 {
     newMod = false;
     QString path = QFileDialog::getExistingDirectory(this, QObject::tr("Select mod folder"));
@@ -155,7 +177,7 @@ void MainWindow::on_actionOpen_Mod_triggered()
     }
 }
 
-void MainWindow::on_actionNew_Mod_triggered()
+void MainWindow::New_Mod()
 {
     newMod = true;
     QString path = QFileDialog::getExistingDirectory(this, QObject::tr("Select mod folder"));

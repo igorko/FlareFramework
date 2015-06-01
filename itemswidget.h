@@ -33,82 +33,85 @@ signals:
     void itemsNotEdited();
 
 public slots:
-	void on_addNewItem_clicked();
+    void addNewItem();
 
-	void on_clearBtn_clicked();
+    void clearBtn();
 
-	void on_pushBtn_clicked();
+    void pushBtn();
 
-	void on_itemsList_itemClicked(QListWidgetItem *item);
+    void itemsList(QListWidgetItem *item);
 
 private slots:
-    void on_absorbMin_valueChanged(int arg1);
+    void absorbMin(int arg1);
 
-    void on_absorbMax_valueChanged(int arg1);
+    void absorbMax(int arg1);
 
-    void on_power_valueChanged(int arg1);
+    void power(int arg1);
 
-    void on_itemFlavor_textChanged(const QString &arg1);
+    void itemFlavor(const QString &arg1);
 
-    void on_itemBook_textChanged(const QString &arg1);
+    void itemBook(const QString &arg1);
 
-    void on_meleeMin_valueChanged(int arg1);
+    void meleeMin(int arg1);
 
-    void on_meleeMax_valueChanged(int arg1);
+    void meleeMax(int arg1);
 
-    void on_rangMin_valueChanged(int arg1);
+    void rangMin(int arg1);
 
-    void on_rangMax_valueChanged(int arg1);
+    void rangMax(int arg1);
 
-    void on_mentalMin_valueChanged(int arg1);
+    void mentalMin(int arg1);
 
-    void on_mentalMax_valueChanged(int arg1);
+    void mentalMax(int arg1);
 
-    void on_replacePowerFrom_textChanged();
+    void replacePowerFrom();
 
-    void on_replacePowerTo_textChanged();
+    void replacePowerTo();
 
-    void on_disableSlots_textChanged();
+    void disableSlots();
 
-    void on_reqPhys_valueChanged(int arg1);
+    void reqPhys(int arg1);
 
-    void on_reqMent_valueChanged(int arg1);
+    void reqMent(int arg1);
 
-    void on_reqOff_valueChanged(int arg1);
+    void reqOff(int arg1);
 
-    void on_reqDef_valueChanged(int arg1);
+    void reqDef(int arg1);
 
-    void on_price_valueChanged(int arg1);
+    void price(int arg1);
 
-    void on_sellPrice_valueChanged(int arg1);
+    void sellPrice(int arg1);
 
-    void on_maxQuantity_valueChanged(int arg1);
+    void maxQuantity(int arg1);
 
-    void on_pickupStatus_textChanged(const QString &arg1);
+    void pickupStatus(const QString &arg1);
 
-    void on_powerDesc_textChanged(const QString &arg1);
+    void powerDesc(const QString &arg1);
 
-    void on_itemName_textChanged(const QString &arg1);
+    void itemName(const QString &arg1);
 
-    void on_equipFlags_textChanged();
+    void equipFlags();
 
-    void on_bonusName_textChanged();
+    void bonusName();
 
-    void on_bonusValue_textChanged();
+    void bonusValue();
 
-    void on_addDisableSlot_clicked();
+    void addDisableSlot();
 
-    void on_addEquipFlag_clicked();
+    void addEquipFlag();
 
-    void on_addBonus_clicked();
+    void addBonus();
 
-    void on_lootAnimAdd_clicked();
+    void lootAnimAdd();
 
-    void on_animations_textChanged();
+    void animations();
 
-    void on_animationMin_textChanged();
+    void animationMin();
 
-    void on_animationMax_textChanged();
+    void animationMax();
+
+public:
+    Ui::ItemsWidget *ui;
 
 private:
     void collectFileLists(const std::string& path);
@@ -122,8 +125,7 @@ private:
     void markNotEmptyPlainTextEdit(QPlainTextEdit* widget);
 
     void selectComboBoxItemByText(QComboBox* widget, const QString& text);
-
-    Ui::ItemsWidget *ui;
+    void setupConnections();
 
     EditorItemManager * items;
 

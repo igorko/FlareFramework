@@ -17,6 +17,7 @@ ItemsWidget::ItemsWidget(QScrollArea *parent) :
     invalidStyle("background-color:#FF3333;")
 {
     ui->setupUi(this);
+    setupConnections();
 }
 
 ItemsWidget::~ItemsWidget()
@@ -107,7 +108,7 @@ void ItemsWidget::loadItems(const std::string &path)
     ui->pushBtn->setEnabled(false);
 
     collectFileLists(path);
-    on_clearBtn_clicked();
+    clearBtn();
 }
 
 void ItemsWidget::clearItemsList()
@@ -132,7 +133,7 @@ void ItemsWidget::setItemsAreEdited(bool state)
     itemsEdited = state;
 }
 
-void ItemsWidget::on_addNewItem_clicked()
+void ItemsWidget::addNewItem()
 {
 	items->items.resize(items->items.size() + 1);
     int index = items->items.size() - 1;
@@ -143,7 +144,7 @@ void ItemsWidget::on_addNewItem_clicked()
     ui->itemsList->addItem(item);
 }
 
-void ItemsWidget::on_clearBtn_clicked()
+void ItemsWidget::clearBtn()
 {
     ui->itemName->clear();
 	ui->itemName->setText("ItemName");
@@ -188,7 +189,7 @@ void ItemsWidget::on_clearBtn_clicked()
     ui->reqDef->setValue(0);
 }
 
-void ItemsWidget::on_pushBtn_clicked()
+void ItemsWidget::pushBtn()
 {
     int index = ui->itemsList->currentItem()->data(Qt::UserRole).toInt();
 
@@ -347,7 +348,7 @@ void ItemsWidget::on_pushBtn_clicked()
     setItemsAreEdited(true);
 }
 
-void ItemsWidget::on_itemsList_itemClicked(QListWidgetItem *item)
+void ItemsWidget::itemsList(QListWidgetItem *item)
 {
     ui->pushBtn->setEnabled(true);
     int index = item->data(Qt::UserRole).toInt();
@@ -490,122 +491,122 @@ void ItemsWidget::on_itemsList_itemClicked(QListWidgetItem *item)
     }
 }
 
-void ItemsWidget::on_absorbMin_valueChanged(int arg1)
+void ItemsWidget::absorbMin(int arg1)
 {
     markNotDefaultSpinBox(ui->absorbMin, arg1, 0);
 }
 
-void ItemsWidget::on_absorbMax_valueChanged(int arg1)
+void ItemsWidget::absorbMax(int arg1)
 {
     markNotDefaultSpinBox(ui->absorbMax, arg1, 0);
 }
 
-void ItemsWidget::on_power_valueChanged(int arg1)
+void ItemsWidget::power(int arg1)
 {
     markNotDefaultSpinBox(ui->power, arg1, 0);
 }
 
-void ItemsWidget::on_itemFlavor_textChanged(const QString &arg1)
+void ItemsWidget::itemFlavor(const QString &arg1)
 {
     markNotEmptyLineEdit(ui->itemFlavor, arg1);
 }
 
-void ItemsWidget::on_itemBook_textChanged(const QString &arg1)
+void ItemsWidget::itemBook(const QString &arg1)
 {
     markNotEmptyLineEdit(ui->itemBook, arg1);
 }
 
-void ItemsWidget::on_meleeMin_valueChanged(int arg1)
+void ItemsWidget::meleeMin(int arg1)
 {
     markNotDefaultSpinBox(ui->meleeMin, arg1, 0);
 }
 
-void ItemsWidget::on_meleeMax_valueChanged(int arg1)
+void ItemsWidget::meleeMax(int arg1)
 {
     markNotDefaultSpinBox(ui->meleeMax, arg1, 0);
 }
 
-void ItemsWidget::on_rangMin_valueChanged(int arg1)
+void ItemsWidget::rangMin(int arg1)
 {
     markNotDefaultSpinBox(ui->rangMin, arg1, 0);
 }
 
-void ItemsWidget::on_rangMax_valueChanged(int arg1)
+void ItemsWidget::rangMax(int arg1)
 {
     markNotDefaultSpinBox(ui->rangMax, arg1, 0);
 }
 
-void ItemsWidget::on_mentalMin_valueChanged(int arg1)
+void ItemsWidget::mentalMin(int arg1)
 {
     markNotDefaultSpinBox(ui->mentalMin, arg1, 0);
 }
 
-void ItemsWidget::on_mentalMax_valueChanged(int arg1)
+void ItemsWidget::mentalMax(int arg1)
 {
     markNotDefaultSpinBox(ui->mentalMax, arg1, 0);
 }
 
-void ItemsWidget::on_replacePowerFrom_textChanged()
+void ItemsWidget::replacePowerFrom()
 {
     markNotEmptyPlainTextEdit(ui->replacePowerFrom);
 }
 
-void ItemsWidget::on_replacePowerTo_textChanged()
+void ItemsWidget::replacePowerTo()
 {
     markNotEmptyPlainTextEdit(ui->replacePowerTo);
 }
 
-void ItemsWidget::on_disableSlots_textChanged()
+void ItemsWidget::disableSlots()
 {
     markNotEmptyPlainTextEdit(ui->disableSlots);
 }
 
-void ItemsWidget::on_reqPhys_valueChanged(int arg1)
+void ItemsWidget::reqPhys(int arg1)
 {
     markNotDefaultSpinBox(ui->reqPhys, arg1, 0);
 }
 
-void ItemsWidget::on_reqMent_valueChanged(int arg1)
+void ItemsWidget::reqMent(int arg1)
 {
     markNotDefaultSpinBox(ui->reqMent, arg1, 0);
 }
 
-void ItemsWidget::on_reqOff_valueChanged(int arg1)
+void ItemsWidget::reqOff(int arg1)
 {
     markNotDefaultSpinBox(ui->reqOff, arg1, 0);
 }
 
-void ItemsWidget::on_reqDef_valueChanged(int arg1)
+void ItemsWidget::reqDef(int arg1)
 {
     markNotDefaultSpinBox(ui->reqDef, arg1, 0);
 }
 
-void ItemsWidget::on_price_valueChanged(int arg1)
+void ItemsWidget::price(int arg1)
 {
     markNotDefaultSpinBox(ui->price, arg1, 0);
 }
 
-void ItemsWidget::on_sellPrice_valueChanged(int arg1)
+void ItemsWidget::sellPrice(int arg1)
 {
     markNotDefaultSpinBox(ui->sellPrice, arg1, 0);
 }
 
-void ItemsWidget::on_maxQuantity_valueChanged(int arg1)
+void ItemsWidget::maxQuantity(int arg1)
 {
     markNotDefaultSpinBox(ui->maxQuantity, arg1, 1);
 }
 
-void ItemsWidget::on_pickupStatus_textChanged(const QString &arg1)
+void ItemsWidget::pickupStatus(const QString &arg1)
 {
     markNotEmptyLineEdit(ui->pickupStatus, arg1);
 }
 
-void ItemsWidget::on_powerDesc_textChanged(const QString &arg1)
+void ItemsWidget::powerDesc(const QString &arg1)
 {
     markNotEmptyLineEdit(ui->powerDesc, arg1);
 }
 
-void ItemsWidget::on_itemName_textChanged(const QString &arg1)
+void ItemsWidget::itemName(const QString &arg1)
 {
     if (arg1 != "")
     {
@@ -619,32 +620,32 @@ void ItemsWidget::on_itemName_textChanged(const QString &arg1)
     }
 }
 
-void ItemsWidget::on_equipFlags_textChanged()
+void ItemsWidget::equipFlags()
 {
     markNotEmptyPlainTextEdit(ui->equipFlags);
 }
 
-void ItemsWidget::on_bonusName_textChanged()
+void ItemsWidget::bonusName()
 {
     markNotEmptyPlainTextEdit(ui->bonusName);
 }
 
-void ItemsWidget::on_bonusValue_textChanged()
+void ItemsWidget::bonusValue()
 {
     markNotEmptyPlainTextEdit(ui->bonusValue);
 }
 
-void ItemsWidget::on_addDisableSlot_clicked()
+void ItemsWidget::addDisableSlot()
 {
     ui->disableSlots->appendPlainText(ui->slotsList->currentText());
 }
 
-void ItemsWidget::on_addEquipFlag_clicked()
+void ItemsWidget::addEquipFlag()
 {
     ui->equipFlags->appendPlainText(ui->equipList->currentText());
 }
 
-void ItemsWidget::on_addBonus_clicked()
+void ItemsWidget::addBonus()
 {
     ui->bonusName->appendPlainText(ui->bonusList->currentText());
 }
@@ -744,6 +745,85 @@ void ItemsWidget::selectComboBoxItemByText(QComboBox *widget, const QString &tex
     }
 }
 
+void ItemsWidget::setupConnections()
+{
+    connect(ui->addNewItem, SIGNAL(clicked()), SLOT(addNewItem()));
+
+    connect(ui->clearBtn, SIGNAL(clicked()), SLOT(clearBtn()));
+
+    connect(ui->pushBtn, SIGNAL(clicked()), SLOT(pushBtn()));
+
+    connect(ui->itemsList, SIGNAL(itemClicked(QListWidgetItem*)), SLOT(itemsList(QListWidgetItem*)));
+
+    connect(ui->absorbMin, SIGNAL(valueChanged(int)), SLOT(absorbMin(int)));
+
+    connect(ui->absorbMax, SIGNAL(valueChanged(int)), SLOT(absorbMax(int)));
+
+    connect(ui->power, SIGNAL(valueChanged(int)), SLOT(power(int)));
+
+    connect(ui->itemFlavor, SIGNAL(textChanged(const QString&)), SLOT(itemFlavor(const QString&)));
+
+    connect(ui->itemBook, SIGNAL(textChanged(const QString&)), SLOT(itemBook(const QString&)));
+
+    connect(ui->meleeMin, SIGNAL(valueChanged(int)), SLOT(meleeMin(int)));
+
+    connect(ui->meleeMax, SIGNAL(valueChanged(int)), SLOT(meleeMax(int)));
+
+    connect(ui->rangMin, SIGNAL(valueChanged(int)), SLOT(rangMin(int)));
+
+    connect(ui->rangMax, SIGNAL(valueChanged(int)), SLOT(rangMax(int)));
+
+    connect(ui->mentalMin, SIGNAL(valueChanged(int)), SLOT(mentalMin(int)));
+
+    connect(ui->mentalMax, SIGNAL(valueChanged(int)), SLOT(mentalMax(int)));
+
+    connect(ui->replacePowerFrom, SIGNAL(textChanged()), SLOT(replacePowerFrom()));
+
+    connect(ui->replacePowerTo, SIGNAL(textChanged()), SLOT(replacePowerTo()));
+
+    connect(ui->disableSlots, SIGNAL(textChanged()), SLOT(disableSlots()));
+
+    connect(ui->reqPhys, SIGNAL(valueChanged(int)), SLOT(reqPhys(int)));
+
+    connect(ui->reqMent, SIGNAL(valueChanged(int)), SLOT(reqMent(int)));
+
+    connect(ui->reqOff, SIGNAL(valueChanged(int)), SLOT(reqOff(int)));
+
+    connect(ui->reqDef, SIGNAL(valueChanged(int)), SLOT(reqDef(int)));
+
+    connect(ui->price, SIGNAL(valueChanged(int)), SLOT(price(int)));
+
+    connect(ui->sellPrice, SIGNAL(valueChanged(int)), SLOT(sellPrice(int)));
+
+    connect(ui->maxQuantity, SIGNAL(valueChanged(int)), SLOT(maxQuantity(int)));
+
+    connect(ui->pickupStatus, SIGNAL(textChanged(const QString&)), SLOT(pickupStatus(const QString&)));
+
+    connect(ui->powerDesc, SIGNAL(textChanged(const QString&)), SLOT(powerDesc(const QString&)));
+
+    connect(ui->itemName, SIGNAL(textChanged(const QString&)), SLOT(itemName(const QString&)));
+
+    connect(ui->equipFlags, SIGNAL(textChanged()), SLOT(equipFlags()));
+
+    connect(ui->bonusName, SIGNAL(textChanged()), SLOT(bonusName()));
+
+    connect(ui->bonusValue, SIGNAL(textChanged()), SLOT(bonusValue()));
+
+    connect(ui->addDisableSlot, SIGNAL(clicked()), SLOT(addDisableSlot()));
+
+    connect(ui->addEquipFlag, SIGNAL(clicked()), SLOT(addEquipFlag()));
+
+    connect(ui->addBonus, SIGNAL(clicked()), SLOT(addBonus()));
+
+    connect(ui->lootAnimAdd, SIGNAL(clicked()), SLOT(lootAnimAdd()));
+
+    connect(ui->animations, SIGNAL(textChanged()), SLOT(animations()));
+
+    connect(ui->animationMin, SIGNAL(textChanged()), SLOT(animationMin()));
+
+    connect(ui->animationMax, SIGNAL(textChanged()), SLOT(animationMax()));
+}
+
 void ItemsWidget::markNotDefaultSpinBox(QSpinBox *widget, int value, int defaultValue)
 {
     if (value != defaultValue)
@@ -756,22 +836,22 @@ void ItemsWidget::markNotDefaultSpinBox(QSpinBox *widget, int value, int default
     }
 }
 
-void ItemsWidget::on_lootAnimAdd_clicked()
+void ItemsWidget::lootAnimAdd()
 {
     ui->animations->appendPlainText(ui->lootAnimList->currentText());
 }
 
-void ItemsWidget::on_animations_textChanged()
+void ItemsWidget::animations()
 {
     markNotEmptyPlainTextEdit(ui->animations);
 }
 
-void ItemsWidget::on_animationMin_textChanged()
+void ItemsWidget::animationMin()
 {
     markNotEmptyPlainTextEdit(ui->animationMin);
 }
 
-void ItemsWidget::on_animationMax_textChanged()
+void ItemsWidget::animationMax()
 {
     markNotEmptyPlainTextEdit(ui->animationMax);
 }
