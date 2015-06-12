@@ -8,7 +8,8 @@
 
 IconSelector::IconSelector(QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::IconSelector)
+    ui(new Ui::IconSelector),
+    selectionChanged(false)
 {
     ui->setupUi(this);
 
@@ -26,27 +27,29 @@ void IconSelector::openIcon()
         QPixmap p(fileName);
         int w = ui->iconImage->width();
         int h = ui->iconImage->height();
+        QPixmap scaled = p.scaled(w, h, Qt::KeepAspectRatio);
 
-        ui->iconImage->setPixmap(p.scaled(w, h, Qt::KeepAspectRatio));
-        update();
+        ui->iconImage->setPixmap(scaled);
+        pixmapSize = scaled.size();
+        selectionChanged = true;
     }
 }
 
 void IconSelector::paintEvent(QPaintEvent *event)
 {
-    QDialog::paintEvent(event);
-
-    if (ui->iconImage->pixmap())
+    if (ui->iconImage->pixmap() && selectionChanged)
     {
-        float ratio = ui->iconImage->height() / ICON_SIZE;
+        float ratio = (float)qMin(pixmapSize.width(), pixmapSize.height()) / (float)ICON_SIZE;
 
-        QPainter painter(this);
-        painter.setPen(QPen(QBrush(Qt::red), 5));
+        QImage tmp(ui->iconImage->pixmap()->toImage());
+        QPainter painter(&tmp);
 
-        int xOffset = (ui->iconImage->width() - ratio * ICON_SIZE) / 2;
-        painter.drawRect(QRect(ui->iconImage->x() + xOffset,
-                               ui->iconImage->y(),
-                               ratio * ICON_SIZE, ratio * ICON_SIZE));
+        painter.setPen(QPen(QBrush(Qt::red), 3));
+
+        painter.drawRect(QRect(0, 0, ratio * ICON_SIZE - 2, ratio * ICON_SIZE - 2));
+
+        ui->iconImage->setPixmap(QPixmap::fromImage(tmp));
+        selectionChanged = false;
     }
 }
 

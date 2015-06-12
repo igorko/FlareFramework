@@ -23,6 +23,8 @@ private slots:
 
 private:
     Ui::IconSelector *ui;
+    bool selectionChanged;
+    QSize pixmapSize;
 };
 
 #endif // ICONSELECTOR_H
