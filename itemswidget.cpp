@@ -4,6 +4,8 @@
 #include "EditorItemManager.h"
 #include "API/Stats.h"
 
+#include "iconselector.h"
+
 #include <QTextBlock>
 #include <QMessageBox>
 #include <QDir>
@@ -108,9 +110,9 @@ void ItemsWidget::loadItems(const std::string &path)
     ui->pushBtn->setEnabled(false);
 
     collectFileLists(path);
-    clearBtn();
-
     ui->iconsView->init(qString(path));
+
+    clearBtn();
 }
 
 void ItemsWidget::clearItemsList()
@@ -189,6 +191,8 @@ void ItemsWidget::clearBtn()
     ui->reqMent->setValue(0);
     ui->reqOff->setValue(0);
     ui->reqDef->setValue(0);
+
+    ui->iconsView->setActiveIcon(0);
 }
 
 void ItemsWidget::pushBtn()
@@ -344,6 +348,8 @@ void ItemsWidget::pushBtn()
         items->items[index].req_val.push_back(ui->reqDef->value());
     }
 
+    items->items[index].icon = ui->iconsView->getActiveIcon();
+
     //Update ListBox
     ui->itemsList->currentItem()->setData(Qt::DisplayRole, ui->itemName->text());
 
@@ -491,6 +497,8 @@ void ItemsWidget::itemsList(QListWidgetItem *item)
         else if (items->items[index].req_stat[i] == REQUIRES_DEF)
             ui->reqDef->setValue(value);
     }
+
+    ui->iconsView->setActiveIcon(items->items[index].icon);
 }
 
 void ItemsWidget::absorbMin(int arg1)
@@ -824,6 +832,18 @@ void ItemsWidget::setupConnections()
     connect(ui->animationMin, SIGNAL(textChanged()), SLOT(animationMin()));
 
     connect(ui->animationMax, SIGNAL(textChanged()), SLOT(animationMax()));
+
+    connect(ui->assignIconBtn, SIGNAL(clicked()), SLOT(requestIconAdd()));
+}
+
+void ItemsWidget::requestIconAdd()
+{
+    IconSelector* dialog = new IconSelector();
+    int ret = dialog->exec();
+    if (ret == QDialog::Accepted)
+    {
+        //TODO: crop image and append to icons.png
+    }
 }
 
 void ItemsWidget::markNotDefaultSpinBox(QSpinBox *widget, int value, int defaultValue)

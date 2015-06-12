@@ -24,13 +24,16 @@ SOURCES += main.cpp\
     itemswidget.cpp \
     iconview.cpp \
     iconwidget.cpp \
+    iconselector.cpp
 
 HEADERS  += mainwindow.h \
     itemswidget.h \
     iconview.h \
-    iconwidget.h
+    iconwidget.h \
+    iconselector.h
 
 FORMS    += mainwindow.ui \
-    itemswidget.ui
+    itemswidget.ui \
+    iconselector.ui
 
 DEFINES  += EDITOR

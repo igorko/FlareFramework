@@ -34,3 +34,16 @@ void IconView::updateSelection(int x, int y)
     hBar->setValue(x);
     vBar->setValue(y);
 }
+
+void IconView::setActiveIcon(int icon)
+{
+    dynamic_cast<IconWidget*>(this->widget())->setIconNumber(icon);
+    horizontalScrollBar()->setValue(ICON_SIZE * (icon % ICONS_IN_ROW) );
+    verticalScrollBar()->setValue(ICON_SIZE * (icon / ICONS_IN_ROW) );
+    this->widget()->update();
+}
+
+int IconView::getActiveIcon()
+{
+    return dynamic_cast<IconWidget*>(this->widget())->getIconNumber();
+}

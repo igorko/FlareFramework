@@ -42,6 +42,8 @@ public slots:
     void itemsList(QListWidgetItem *item);
 
 private slots:
+    void requestIconAdd();
+
     void absorbMin(int arg1);
 
     void absorbMax(int arg1);

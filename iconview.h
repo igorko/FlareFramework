@@ -11,6 +11,9 @@ public:
     explicit IconView(QWidget *parent = 0);
     void init(const QString& path);
 
+    void setActiveIcon(int icon);
+    int getActiveIcon();
+
 signals:
 
 public slots:

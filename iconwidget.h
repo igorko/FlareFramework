@@ -12,6 +12,9 @@ class IconWidget : public QLabel
 public:
     explicit IconWidget(QWidget *parent = 0);
 
+    void setIconNumber(int icon);
+    int getIconNumber();
+
 signals:
 
 public slots:

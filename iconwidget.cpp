@@ -7,6 +7,17 @@ IconWidget::IconWidget(QWidget *parent) :
 {
 }
 
+void IconWidget::setIconNumber(int icon)
+{
+    iconNumber = icon;
+    selection = QPoint(icon % ICONS_IN_ROW, icon / ICONS_IN_ROW);
+}
+
+int IconWidget::getIconNumber()
+{
+    return iconNumber;
+}
+
 void IconWidget::paintEvent(QPaintEvent *event)
 {
     QLabel::paintEvent(event);
