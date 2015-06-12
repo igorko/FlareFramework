@@ -630,8 +630,8 @@
         </property>
        </widget>
       </item>
-      <item row="1" column="0">
-       <widget class="IconView" name="iconsView">
+      <item row="2" column="0">
+       <widget class="IconView" name="iconsView" native="true">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
           <horstretch>0</horstretch>
@@ -646,10 +646,23 @@
         </property>
        </widget>
       </item>
-      <item row="2" column="0">
+      <item row="3" column="0">
        <widget class="QPushButton" name="assignIconBtn">
         <property name="text">
          <string>Add custom Icon</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_10">
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>20</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>Hold &quot;Alt&quot; key to select icon</string>
         </property>
        </widget>
       </item>
@@ -897,6 +910,13 @@
    </layout>
   </widget>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>IconView</class>
+   <extends>QWidget</extends>
+   <header>iconview.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>
