@@ -3,7 +3,7 @@
 #include "iconwidget.h"
 
 #include <QPainter>
-#include <QFileDIalog>
+#include <QFileDialog>
 #include <QDesktopServices>
 
 IconSelector::IconSelector(QWidget *parent) :
