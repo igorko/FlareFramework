@@ -14,6 +14,8 @@ public:
 
     void setIconNumber(int icon);
     int getIconNumber();
+    void requestIconAppend();
+    void setNewIcon(QImage iIcon);
 
 signals:
 
@@ -30,6 +32,8 @@ private:
 
     QPoint selection;
     int iconNumber;
+    bool iconPlacingRequested;
+    QImage newIcon;
 
 };
 

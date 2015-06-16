@@ -47,3 +47,11 @@ int IconView::getActiveIcon()
 {
     return dynamic_cast<IconWidget*>(this->widget())->getIconNumber();
 }
+
+void IconView::appendIcon(QImage newIcon)
+{
+    IconWidget* widget = dynamic_cast<IconWidget*>(this->widget());
+
+    widget->setNewIcon(newIcon);
+    widget->requestIconAppend();
+}

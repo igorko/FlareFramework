@@ -13,6 +13,7 @@ public:
 
     void setActiveIcon(int icon);
     int getActiveIcon();
+    void appendIcon(QImage newIcon);
 
 signals:
 

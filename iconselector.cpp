@@ -5,6 +5,7 @@
 #include <QPainter>
 #include <QFileDialog>
 #include <QDesktopServices>
+#include <QMouseEvent>
 
 IconSelector::IconSelector(QWidget *parent) :
     QDialog(parent),
@@ -27,10 +28,12 @@ void IconSelector::openIcon()
         QPixmap p(fileName);
         int w = ui->iconImage->width();
         int h = ui->iconImage->height();
-        QPixmap scaled = p.scaled(w, h, Qt::KeepAspectRatio);
+        image = p.scaled(w, h, Qt::KeepAspectRatio);
 
-        ui->iconImage->setPixmap(scaled);
-        pixmapSize = scaled.size();
+        ui->iconImage->setPixmap(image);
+        QSize pixmapSize = image.size();
+        ratio = (float)qMin(pixmapSize.width(), pixmapSize.height()) / (float)ICON_SIZE;
+        selection = QRect(0, 0, ratio * ICON_SIZE - 2, ratio * ICON_SIZE - 2);
         selectionChanged = true;
     }
 }
@@ -39,21 +42,50 @@ void IconSelector::paintEvent(QPaintEvent *event)
 {
     if (ui->iconImage->pixmap() && selectionChanged)
     {
-        float ratio = (float)qMin(pixmapSize.width(), pixmapSize.height()) / (float)ICON_SIZE;
-
-        QImage tmp(ui->iconImage->pixmap()->toImage());
+        QImage tmp(image.toImage());
         QPainter painter(&tmp);
 
         painter.setPen(QPen(QBrush(Qt::red), 3));
-
-        painter.drawRect(QRect(0, 0, ratio * ICON_SIZE - 2, ratio * ICON_SIZE - 2));
+        painter.drawRect(selection);
 
         ui->iconImage->setPixmap(QPixmap::fromImage(tmp));
         selectionChanged = false;
     }
 }
 
+void IconSelector::mouseMoveEvent(QMouseEvent *event)
+{
+    if (event->buttons() == Qt::LeftButton)
+    {
+        updateSelection(event->pos().x(), event->pos().y());
+    }
+}
+
+void IconSelector::mousePressEvent(QMouseEvent *event)
+{
+    this->setCursor(Qt::OpenHandCursor);
+}
+
+void IconSelector::mouseReleaseEvent(QMouseEvent *event)
+{
+    this->setCursor(Qt::ArrowCursor);
+}
+
+void IconSelector::updateSelection(int x, int y)
+{
+    selection = QRect(x - ratio * ICON_SIZE / 2,
+                      y - ratio * ICON_SIZE / 2,
+                      ratio * ICON_SIZE - 2,
+                      ratio * ICON_SIZE - 2);
+    selectionChanged = true;
+}
+
 IconSelector::~IconSelector()
 {
     delete ui;
+}
+
+QImage IconSelector::getSelection()
+{
+    return image.copy(selection).toImage().scaled(QSize(ICON_SIZE, ICON_SIZE));
 }

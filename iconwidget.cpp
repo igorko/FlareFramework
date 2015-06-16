@@ -3,7 +3,7 @@
 #include <QMouseEvent>
 
 IconWidget::IconWidget(QWidget *parent) :
-    QLabel(parent), iconNumber(0)
+    QLabel(parent), iconNumber(0), iconPlacingRequested(false)
 {
 }
 
@@ -16,6 +16,16 @@ void IconWidget::setIconNumber(int icon)
 int IconWidget::getIconNumber()
 {
     return iconNumber;
+}
+
+void IconWidget::requestIconAppend()
+{
+    iconPlacingRequested = true;
+}
+
+void IconWidget::setNewIcon(QImage icon)
+{
+    newIcon = icon;
 }
 
 void IconWidget::paintEvent(QPaintEvent *event)
@@ -33,6 +43,25 @@ void IconWidget::paintEvent(QPaintEvent *event)
 
 void IconWidget::mousePressEvent(QMouseEvent *event)
 {
+    if (iconPlacingRequested)
+    {
+        QPoint point = event->pos();
+        if (point.x() >= 0 && point.x() <= this->width() && point.y() >= 0 && point.y() <= this->height())
+        {
+            QImage icons = pixmap()->toImage();
+            QPainter p(&icons);
+            p.setCompositionMode(QPainter::CompositionMode_Source);
+
+            // FIXME: Use corrected position
+            QPoint selection = QPoint(point.x(), point.y());
+
+            p.drawImage(selection, newIcon);
+            setPixmap(QPixmap::fromImage(icons));
+        }
+        iconPlacingRequested = false;
+        // FIXME: remove "Please paste icon" message here
+    }
+
     if (event->modifiers() & Qt::AltModifier)
     {
         QPoint point = event->pos();

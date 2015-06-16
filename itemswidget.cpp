@@ -19,6 +19,7 @@ ItemsWidget::ItemsWidget(QScrollArea *parent) :
     invalidStyle("background-color:#FF3333;")
 {
     ui->setupUi(this);
+    ui->iconPasteLabel->hide();
     setupConnections();
 }
 
@@ -842,7 +843,9 @@ void ItemsWidget::requestIconAdd()
     int ret = dialog->exec();
     if (ret == QDialog::Accepted)
     {
-        //TODO: crop image and append to icons.png
+        QImage newIcon = dialog->getSelection();
+        ui->iconPasteLabel->show();
+        ui->iconsView->appendIcon(newIcon);
     }
 }
 
