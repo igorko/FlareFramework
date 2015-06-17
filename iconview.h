@@ -15,7 +15,10 @@ public:
     int getActiveIcon();
     void appendIcon(QImage newIcon);
 
+    void saveIcons(const QString &path);
 signals:
+    void iconPlaced();
+    void iconSkipped();
 
 public slots:
 
@@ -25,7 +28,7 @@ protected:
 private:
     void updateSelection(int x, int y);
 
-    QImage icons;
+    QPixmap icons;
 
 };
 

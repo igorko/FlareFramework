@@ -87,5 +87,5 @@ IconSelector::~IconSelector()
 
 QImage IconSelector::getSelection()
 {
-    return image.copy(selection).toImage().scaled(QSize(ICON_SIZE, ICON_SIZE));
+    return image.copy(selection).toImage().scaled(QSize(ICON_SIZE, ICON_SIZE), Qt::KeepAspectRatio);
 }

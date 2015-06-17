@@ -13,8 +13,11 @@ IconView::IconView(QWidget *parent) :
 void IconView::init(const QString &path)
 {
     IconWidget *imageLabel = new IconWidget;
-    icons = QImage(path + "images/icons/icons.png");
-    imageLabel->setPixmap(QPixmap::fromImage(icons));
+    connect(imageLabel, SIGNAL(iconPlaced()), this, SIGNAL(iconPlaced()));
+    connect(imageLabel, SIGNAL(iconSkipped()), this, SIGNAL(iconSkipped()));
+
+    icons = QPixmap(path + "images/icons/icons.png");
+    imageLabel->setPixmap(icons);
     this->setWidget(imageLabel);
 }
 
@@ -52,6 +55,16 @@ void IconView::appendIcon(QImage newIcon)
 {
     IconWidget* widget = dynamic_cast<IconWidget*>(this->widget());
 
-    widget->setNewIcon(newIcon);
-    widget->requestIconAppend();
+    widget->requestIconAppend(newIcon);
+}
+
+void IconView::saveIcons(const QString& path)
+{
+    IconWidget* widget = dynamic_cast<IconWidget*>(this->widget());
+
+    if (widget->iconsWereEdited())
+    {
+        QImage icons = widget->pixmap()->toImage();
+        icons.save(path);
+    }
 }

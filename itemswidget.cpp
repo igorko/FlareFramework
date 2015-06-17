@@ -28,9 +28,14 @@ ItemsWidget::~ItemsWidget()
     delete items;
 }
 
-void ItemsWidget::saveItems(const std::string &path)
+void ItemsWidget::saveItems(const QString &path)
 {
-    if (items != NULL) items->save(path);
+    QString filename = path + QDir::separator() + "items" + QDir::separator() + "items.txt";
+    if (items != NULL) items->save(filename.toUtf8().constData());
+
+    filename = path + QDir::separator() + "images" + QDir::separator() + "icons" + QDir::separator() + "icons.png";
+    ui->iconsView->saveIcons(filename);
+
     setItemsAreEdited(false);
 }
 
@@ -835,6 +840,22 @@ void ItemsWidget::setupConnections()
     connect(ui->animationMax, SIGNAL(textChanged()), SLOT(animationMax()));
 
     connect(ui->assignIconBtn, SIGNAL(clicked()), SLOT(requestIconAdd()));
+
+    connect(ui->iconsView, SIGNAL(iconPlaced()), SLOT(finishIconAdd()));
+    connect(ui->iconsView, SIGNAL(iconSkipped()), SLOT(skipIconAdd()));
+}
+
+void ItemsWidget::finishIconAdd()
+{
+    ui->iconPasteLabel->hide();
+    setItemsAreEdited(true);
+
+}
+
+void ItemsWidget::skipIconAdd()
+{
+    ui->iconPasteLabel->hide();
+
 }
 
 void ItemsWidget::requestIconAdd()

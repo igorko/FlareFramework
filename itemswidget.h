@@ -20,7 +20,7 @@ class ItemsWidget : public QScrollArea
 public:
 	explicit ItemsWidget(QScrollArea *parent = 0);
     ~ItemsWidget();
-    void saveItems(const std::string& path);
+    void saveItems(const QString& path);
     void loadItems(const std::string& path);
 
     void clearItemsList();
@@ -41,6 +41,8 @@ public slots:
 
     void itemsList(QListWidgetItem *item);
 
+    void finishIconAdd();
+    void skipIconAdd();
 private slots:
     void requestIconAdd();
 

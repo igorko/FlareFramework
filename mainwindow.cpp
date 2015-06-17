@@ -112,9 +112,7 @@ void MainWindow::Close_Mod()
 
         if (reply == QMessageBox::Yes)
         {
-            QString filename = modPath + QDir::separator() + "items" + QDir::separator() + "items.txt";
-            std::string path = filename.toUtf8().constData();
-            ui->Items->saveItems(path);
+            ui->Items->saveItems(modPath);
         }
     }
     modPath = "";

@@ -3,7 +3,7 @@
 #include <QMouseEvent>
 
 IconWidget::IconWidget(QWidget *parent) :
-    QLabel(parent), iconNumber(0), iconPlacingRequested(false)
+    QLabel(parent), iconNumber(0), iconPlacingRequested(false), iconsEdited(false)
 {
 }
 
@@ -18,14 +18,15 @@ int IconWidget::getIconNumber()
     return iconNumber;
 }
 
-void IconWidget::requestIconAppend()
+void IconWidget::requestIconAppend(QImage icon)
 {
     iconPlacingRequested = true;
+    newIcon = icon;
 }
 
-void IconWidget::setNewIcon(QImage icon)
+bool IconWidget::iconsWereEdited()
 {
-    newIcon = icon;
+    return iconsEdited;
 }
 
 void IconWidget::paintEvent(QPaintEvent *event)
@@ -43,7 +44,7 @@ void IconWidget::paintEvent(QPaintEvent *event)
 
 void IconWidget::mousePressEvent(QMouseEvent *event)
 {
-    if (iconPlacingRequested)
+    if (iconPlacingRequested && event->button() == Qt::LeftButton)
     {
         QPoint point = event->pos();
         if (point.x() >= 0 && point.x() <= this->width() && point.y() >= 0 && point.y() <= this->height())
@@ -52,14 +53,21 @@ void IconWidget::mousePressEvent(QMouseEvent *event)
             QPainter p(&icons);
             p.setCompositionMode(QPainter::CompositionMode_Source);
 
-            // FIXME: Use corrected position
-            QPoint selection = QPoint(point.x(), point.y());
+            QPoint selection = QPoint((point.x() / ICON_SIZE) * ICON_SIZE,
+                                      (point.y() / ICON_SIZE) * ICON_SIZE);
 
             p.drawImage(selection, newIcon);
             setPixmap(QPixmap::fromImage(icons));
+
+            iconsEdited = true;
+            iconPlacingRequested = false;
+            emit iconPlaced();
         }
+    }
+    else if (event->button() == Qt::RightButton)
+    {
         iconPlacingRequested = false;
-        // FIXME: remove "Please paste icon" message here
+        emit iconSkipped();
     }
 
     if (event->modifiers() & Qt::AltModifier)

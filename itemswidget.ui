@@ -19,6 +19,9 @@
   <property name="windowTitle">
    <string>ScrollArea</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true"/>
+  </property>
   <property name="widgetResizable">
    <bool>true</bool>
   </property>
@@ -645,6 +648,12 @@
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>20</height>
+         </size>
+        </property>
         <property name="text">
          <string>Item Icon</string>
         </property>
@@ -674,7 +683,7 @@
         <property name="maximumSize">
          <size>
           <width>16777215</width>
-          <height>40</height>
+          <height>60</height>
          </size>
         </property>
         <property name="font">
@@ -688,7 +697,8 @@
         </property>
         <property name="text">
          <string>Click on empty place
-to paste new icon</string>
+to paste new icon
+Right-click to cancel pasting</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>

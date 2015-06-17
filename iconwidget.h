@@ -14,10 +14,12 @@ public:
 
     void setIconNumber(int icon);
     int getIconNumber();
-    void requestIconAppend();
-    void setNewIcon(QImage iIcon);
+    void requestIconAppend(QImage icon);
+    bool iconsWereEdited();
 
 signals:
+    void iconPlaced();
+    void iconSkipped();
 
 public slots:
 
@@ -34,6 +36,7 @@ private:
     int iconNumber;
     bool iconPlacingRequested;
     QImage newIcon;
+    bool iconsEdited;
 
 };
 
