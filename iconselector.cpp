@@ -6,6 +6,7 @@
 #include <QFileDialog>
 #include <QDesktopServices>
 #include <QMouseEvent>
+#include <QDebug>
 
 IconSelector::IconSelector(QWidget *parent) :
     QDialog(parent),
@@ -33,7 +34,8 @@ void IconSelector::openIcon()
         ui->iconImage->setPixmap(image);
         QSize pixmapSize = image.size();
         ratio = (float)qMin(pixmapSize.width(), pixmapSize.height()) / (float)ICON_SIZE;
-        selection = QRect(0, 0, ratio * ICON_SIZE - 2, ratio * ICON_SIZE - 2);
+        int size = ratio * ICON_SIZE - 2;
+        selection = QRect(0, 0, size, size);
         selectionChanged = true;
     }
 }
@@ -57,7 +59,7 @@ void IconSelector::mouseMoveEvent(QMouseEvent *event)
 {
     if (event->buttons() == Qt::LeftButton)
     {
-        updateSelection(event->pos().x(), event->pos().y());
+        updateSelection(event->pos());
     }
 }
 
@@ -71,12 +73,39 @@ void IconSelector::mouseReleaseEvent(QMouseEvent *event)
     this->setCursor(Qt::ArrowCursor);
 }
 
-void IconSelector::updateSelection(int x, int y)
+void IconSelector::wheelEvent(QWheelEvent *event)
 {
-    selection = QRect(x - ratio * ICON_SIZE / 2,
-                      y - ratio * ICON_SIZE / 2,
-                      ratio * ICON_SIZE - 2,
-                      ratio * ICON_SIZE - 2);
+    if (ui->iconImage->rect().contains(event->pos()))
+    {
+        int numDegrees = event->delta() / 8;
+
+        int numSteps = numDegrees / 5;
+
+        int width = selection.width() + numSteps;
+        int height = selection.height() + numSteps;
+
+        if (width > ui->iconImage->width() || height > ui->iconImage->height() || width < 32 || height < 32)
+        {
+            return;
+        }
+
+        selection = QRect(selection.x() - numSteps/2, selection.y() - numSteps/2, width, height);
+        selectionChanged = true;
+
+        event->accept();
+    }
+    QDialog::wheelEvent(event);
+}
+
+void IconSelector::updateSelection(const QPoint &pos)
+{
+    selection.moveCenter(pos);
+
+    // TODO: review offsets, something is wrong with mouse pointer centering
+    int xOffset = abs(ui->iconImage->width() - image.width()) / 2;
+    int yOffset = abs(ui->iconImage->height() - image.height()) / 2;
+    selection.moveTopLeft(QPoint(selection.left() - xOffset, selection.top() - yOffset));
+
     selectionChanged = true;
 }
 

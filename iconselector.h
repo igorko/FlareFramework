@@ -22,12 +22,13 @@ protected:
     void mouseMoveEvent(QMouseEvent* event);
     void mousePressEvent(QMouseEvent *event);
     void mouseReleaseEvent(QMouseEvent *event);
+    void wheelEvent(QWheelEvent *event);
 
 private slots:
     void openIcon();
 
 private:
-    void updateSelection(int x, int y);
+    void updateSelection(const QPoint& pos);
 
     Ui::IconSelector *ui;
     bool selectionChanged;
