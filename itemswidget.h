@@ -28,6 +28,9 @@ public:
     bool itemsAreEdited();
     void setItemsAreEdited(bool state);
 
+    static QString qString(std::string value);
+    static std::string stdString(QString value);
+
 signals:
     void itemsWereEdited();
     void itemsNotEdited();
@@ -119,8 +122,6 @@ public:
 
 private:
     void collectFileLists(const std::string& path);
-    QString qString(std::string value);
-    std::string stdString(QString value);
 
     void checkComboBoxForError(QComboBox* widget, const QString& errorText);
     void markNotDefaultSpinBox(QSpinBox* widget, int value, int defaultValue);

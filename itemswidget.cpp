@@ -3,6 +3,8 @@
 
 #include "EditorItemManager.h"
 #include "API/Stats.h"
+#include "API/AnimationSet.h"
+#include "API/Animation.h"
 
 #include "iconselector.h"
 
@@ -505,6 +507,17 @@ void ItemsWidget::itemsList(QListWidgetItem *item)
     }
 
     ui->iconsView->setActiveIcon(items->items[index].icon);
+
+    // load item animation if available
+    if (items->items[index].loot_animation.size() > 0)
+    {
+        AnimationSet* animat = new AnimationSet(items->items[index].loot_animation[0].name);
+        QImage frame = animat->getAnimation()->getCurrentFrame(0);
+        QGraphicsScene* scene = new QGraphicsScene();
+        ui->graphicsView->setScene(scene);
+        scene->addPixmap(QPixmap::fromImage(frame));
+    }
+
 }
 
 void ItemsWidget::absorbMin(int arg1)

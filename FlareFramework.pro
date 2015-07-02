@@ -21,6 +21,8 @@ SOURCES += main.cpp\
         API/Utils.cpp \
         API/UtilsFileSystem.cpp \
         API/UtilsParsing.cpp \
+	API/Animation.cpp \
+	API/AnimationSet.cpp \
     itemswidget.cpp \
     iconview.cpp \
     iconwidget.cpp \
