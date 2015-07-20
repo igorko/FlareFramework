@@ -61,6 +61,7 @@ void MainWindow::disableSaving()
 void MainWindow::itemClose()
 {
     disableAllTabsExceptIndex(TAB_MAIN);
+    ui->Items->clearItemsList();
 }
 
 void MainWindow::disableAllTabsExceptIndex(int index)

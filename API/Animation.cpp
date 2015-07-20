@@ -217,6 +217,15 @@ QImage Animation::getCurrentFrame(int kind) {
     }
     return r;
 }
+
+QPointF Animation::getFramePos(int kind) {
+    QPointF pos;
+    if (this && !frames.empty()) {
+        const int index = (max_kinds*frames[cur_frame_index]) + kind;
+        pos = QPointF(gfx[index].x, gfx[index].y);
+    }
+    return pos;
+}
 #endif
 
 void Animation::reset() {

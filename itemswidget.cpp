@@ -11,6 +11,9 @@
 #include <QTextBlock>
 #include <QMessageBox>
 #include <QDir>
+#include <QTimeLine>
+#include <QGraphicsItemAnimation>
+#include <QGraphicsPixmapItem>
 
 ItemsWidget::ItemsWidget(QScrollArea *parent) :
     QScrollArea(parent),
@@ -509,13 +512,40 @@ void ItemsWidget::itemsList(QListWidgetItem *item)
     ui->iconsView->setActiveIcon(items->items[index].icon);
 
     // load item animation if available
+    if (ui->graphicsView->scene() != 0)
+        ui->graphicsView->scene()->clear();
     if (items->items[index].loot_animation.size() > 0)
     {
         AnimationSet* animat = new AnimationSet(items->items[index].loot_animation[0].name);
-        QImage frame = animat->getAnimation()->getCurrentFrame(0);
+        int count = animat->getAnimationFrames("power");
+        /*
+        QImage frame = *animat->sprite;
+
+        QGraphicsItem *sprite = new QGraphicsPixmapItem(QPixmap::fromImage(frame));
+
+        QTimeLine *timer = new QTimeLine(20000);
+        timer->setFrameRange(0, count);
+
+        QGraphicsItemAnimation *animation = new QGraphicsItemAnimation;
+        animation->setItem(sprite);
+        animation->setTimeLine(timer);
+        */
+
         QGraphicsScene* scene = new QGraphicsScene();
         ui->graphicsView->setScene(scene);
-        scene->addPixmap(QPixmap::fromImage(frame));
+
+        for (int i = 0; i < count; ++i)
+        {
+            QImage frame = animat->getAnimation("power")->getCurrentFrame(i);
+            //QPointF pos = animat->getAnimation("power")->getFramePos(i);
+            //animation->setPosAt(i / (float)count, pos);
+            scene->addPixmap(QPixmap::fromImage(frame));
+        }
+
+        //QGraphicsScene* scene = new QGraphicsScene();
+        //ui->graphicsView->setScene(scene);
+
+        //timer->start();
     }
 
 }

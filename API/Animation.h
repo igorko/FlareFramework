@@ -120,6 +120,7 @@ public:
 	Renderable getCurrentFrame(int direction);
 #else
     QImage getCurrentFrame(int direction);
+    QPointF getFramePos(int direction);
 #endif
 
 	bool isFirstFrame();
