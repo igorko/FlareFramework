@@ -43,43 +43,43 @@ QString MainWindow::modPath = "";
 std::vector<std::string> listAllFiles(const std::string& path, bool full_paths = true);
 
 std::vector<std::string> listAllFiles(const std::string &path, bool full_paths) {
-    std::vector<std::string> ret;
-    std::string test_path;
+	std::vector<std::string> ret;
+	std::string test_path;
 
-    std::string modFolder = MainWindow::modPath.toUtf8().constData();;
+	std::string modFolder = MainWindow::modPath.toUtf8().constData();;
 
-    test_path = modFolder + "/" + path;
+	test_path = modFolder + "/" + path;
 
-    if (pathExists(test_path)) {
-        if (isDirectory(test_path)) {
-            getFileList(test_path, "txt", ret);
-        }
-        else {
-            ret.push_back(test_path);
-        }
-    }
+	if (pathExists(test_path)) {
+		if (isDirectory(test_path)) {
+			getFileList(test_path, "txt", ret);
+		}
+		else {
+			ret.push_back(test_path);
+		}
+	}
 
-    // we don't need to check for duplicates if there are no paths
-    if (ret.empty()) return ret;
+	// we don't need to check for duplicates if there are no paths
+	if (ret.empty()) return ret;
 
-    if (!full_paths) {
-        // reduce the each file path down to be relative to mods/
-        for (unsigned i=0; i<ret.size(); ++i) {
-            ret[i] = ret[i].substr(ret[i].rfind(path), ret[i].length());
-        }
+	if (!full_paths) {
+		// reduce the each file path down to be relative to mods/
+		for (unsigned i=0; i<ret.size(); ++i) {
+			ret[i] = ret[i].substr(ret[i].rfind(path), ret[i].length());
+		}
 
-        // remove duplicates
-        for (unsigned i = 0; i < ret.size(); ++i) {
-            for (unsigned j = 0; j < i; ++j) {
-                if (ret[i] == ret[j]) {
-                    ret.erase(ret.begin()+j);
-                    break;
-                }
-            }
-        }
-    }
+		// remove duplicates
+		for (unsigned i = 0; i < ret.size(); ++i) {
+			for (unsigned j = 0; j < i; ++j) {
+				if (ret[i] == ret[j]) {
+					ret.erase(ret.begin()+j);
+					break;
+				}
+			}
+		}
+	}
 
-    return ret;
+	return ret;
 }
 
 bool FileParser::open(const std::string& _filename, bool locateFileName, const std::string &_errormessage) {
@@ -100,7 +100,7 @@ bool FileParser::open(const std::string& _filename, bool locateFileName, const s
 	line_number = 0;
 	this->errormessage = _errormessage;
 
-	if (filenames.size() == 0 && !errormessage.empty()) {
+	if (filenames.empty() && !errormessage.empty()) {
 		logError("FileParser: %s: %s: No such file or directory!", _filename.c_str(), errormessage.c_str());
 		return false;
 	}
@@ -108,7 +108,7 @@ bool FileParser::open(const std::string& _filename, bool locateFileName, const s
 	bool ret = false;
 
 	// Cycle through all filenames from the end, stopping when a file is to overwrite all further files.
-	for (unsigned i=filenames.size(); i>0; i--) {
+	for (size_t i=filenames.size(); i>0; i--) {
 		infile.open(filenames[i-1].c_str(), std::ios::in);
 		ret = infile.is_open();
 
@@ -126,7 +126,7 @@ bool FileParser::open(const std::string& _filename, bool locateFileName, const s
 				}
 
 				if (test_line != "APPEND") {
-					current_index = i-1;
+					current_index = static_cast<unsigned>(i)-1;
 					infile.clear(); // reset flags
 					infile.seekg(0, std::ios::beg);
 					break;

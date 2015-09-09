@@ -139,7 +139,7 @@ void ItemManager::loadItems(const std::string& filename, bool locateFileName) {
 			// @ATTR id|integer|An uniq id of the item used as reference from other classes.
 			id_line = true;
 			id = toInt(infile.val);
-			ensureFitsId(items, id+1);
+			addUnknownItem(id);
 
 			clear_req_stat = true;
 			clear_bonus = true;
@@ -433,6 +433,22 @@ void ItemManager::loadQualities(const std::string& filename, bool locateFileName
 	}
 }
 
+std::string ItemManager::getItemName(unsigned id) {
+#ifndef EDITOR
+	if (id >= items.size()) return msg->get("Unknown Item");
+
+	if (items[id].name == "")
+		items[id].name = msg->get("Unknown Item");
+#else
+	if (id >= items.size()) return "Unknown Item";
+
+	if (items[id].name == "")
+		items[id].name = "Unknown Item";
+#endif
+
+	return items[id].name;
+}
+
 std::string ItemManager::getItemType(std::string _type) {
 	for (unsigned i=0; i<item_types.size(); ++i) {
 		if (item_types[i].id == _type)
@@ -442,13 +458,8 @@ std::string ItemManager::getItemType(std::string _type) {
 	return _type;
 }
 
-void ItemManager::addUnknownItem(int id) {
+void ItemManager::addUnknownItem(unsigned id) {
 	ensureFitsId(items, id);
-#ifndef EDITOR
-	items[id].name = msg->get("Unknown Item");
-#else
-	items[id].name = "Unknown Item";
-#endif
 }
 
 /**
@@ -631,10 +642,10 @@ TooltipData ItemManager::getShortTooltip(ItemStack stack) {
 
 	// name
 	if (stack.quantity > 1) {
-		ss << stack.quantity << " " << items[stack.item].name;
+		ss << stack.quantity << " " << getItemName(stack.item);
 	}
 	else {
-		ss << items[stack.item].name;
+		ss << getItemName(stack.item);
 	}
 	tip.addText(ss.str(), color);
 
@@ -668,10 +679,19 @@ TooltipData ItemManager::getTooltip(ItemStack stack, StatBlock *stats, int conte
 	// name
 	std::stringstream ss;
 	if (stack.quantity == 1)
-		ss << items[stack.item].name;
+		ss << getItemName(stack.item);
 	else
-		ss << items[stack.item].name << " (" << stack.quantity << ")";
+		ss << getItemName(stack.item) << " (" << stack.quantity << ")";
 	tip.addText(ss.str(), color);
+
+	// only show the name of the currency item
+	if (stack.item == CURRENCY_ID)
+		return tip;
+
+	// flavor text
+	if (items[stack.item].flavor != "") {
+		tip.addText(items[stack.item].flavor, color_flavor);
+	}
 
 	// level
 	if (items[stack.item].level != 0) {
@@ -679,7 +699,7 @@ TooltipData ItemManager::getTooltip(ItemStack stack, StatBlock *stats, int conte
 	}
 
 	// type
-	if (items[stack.item].type != "other" && items[stack.item].type != "book") {
+	if (items[stack.item].type != "") {
 		tip.addText(msg->get(getItemType(items[stack.item].type)));
 	}
 
@@ -779,11 +799,6 @@ TooltipData ItemManager::getTooltip(ItemStack stack, StatBlock *stats, int conte
 	if (COLORBLIND && quality_desc != "") {
 		color = color_normal;
 		tip.addText(msg->get("Quality: %s", quality_desc), color);
-	}
-
-	// flavor text
-	if (items[stack.item].flavor != "") {
-		tip.addText(items[stack.item].flavor, color_flavor);
 	}
 
 	// buy or sell price
@@ -933,9 +948,10 @@ int Item::getSellPrice() {
 	if (price_sell != 0)
 		new_price = price_sell;
 	else
-		new_price = static_cast<int>(price * VENDOR_RATIO);
+		new_price = static_cast<int>(static_cast<float>(price) * VENDOR_RATIO);
 	if (new_price == 0) new_price = 1;
 #endif
+
 	return new_price;
 }
 

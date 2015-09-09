@@ -42,6 +42,7 @@ void IconSelector::openIcon()
 
 void IconSelector::paintEvent(QPaintEvent *event)
 {
+    Q_UNUSED(event);
     if (ui->iconImage->pixmap() && selectionChanged)
     {
         QImage tmp(image.toImage());
@@ -66,11 +67,13 @@ void IconSelector::mouseMoveEvent(QMouseEvent *event)
 void IconSelector::mousePressEvent(QMouseEvent *event)
 {
     this->setCursor(Qt::OpenHandCursor);
+    QDialog::mousePressEvent(event);
 }
 
 void IconSelector::mouseReleaseEvent(QMouseEvent *event)
 {
     this->setCursor(Qt::ArrowCursor);
+    QDialog::mouseReleaseEvent(event);
 }
 
 void IconSelector::wheelEvent(QWheelEvent *event)

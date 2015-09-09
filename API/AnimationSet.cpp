@@ -67,7 +67,7 @@ AnimationSet::AnimationSet(const std::string &animationname)
 	, parent(NULL)
 	, animations()
 	, sprite(NULL) {
-    defaultAnimation = new Animation("default", "play_once", NULL);
+	defaultAnimation = new Animation("default", "play_once", NULL);
 	defaultAnimation->setupUncompressed(Point(), Point(), 0, 1, 0);
 }
 
@@ -100,7 +100,7 @@ void AnimationSet::load() {
 		// create the animation if finished parsing a section
 		if (parser.new_section) {
 			if (!first_section && !compressed_loading) {
-                Animation *a = new Animation(_name, type, sprite);
+				Animation *a = new Animation(_name, type, sprite);
 				a->setupUncompressed(render_size, render_offset, position, frames, duration);
 				if (!active_frames.empty())
 					a->setActiveFrames(active_frames);
@@ -123,10 +123,10 @@ void AnimationSet::load() {
 			}
 			sprite = render_device->loadImage(parser.val);
 #else
-                exit(128);
-            }
-            std::string path = ItemsWidget::stdString(MainWindow::modPath + QDir::separator() + ItemsWidget::qString(parser.val));
-            sprite = new QImage(path.c_str());
+				exit(128);
+			}
+			std::string path = ItemsWidget::stdString(MainWindow::modPath + QDir::separator() + ItemsWidget::qString(parser.val));
+			sprite = new QImage(path.c_str());
 #endif
 		}
 		else if (parser.key == "position") {
@@ -231,7 +231,7 @@ AnimationSet::~AnimationSet() {
 #ifndef EDITOR
 	if (sprite) sprite->unref();
 #else
-    delete sprite;
+	delete sprite;
 #endif
 	for (unsigned i = 0; i < animations.size(); ++i)
 		delete animations[i];

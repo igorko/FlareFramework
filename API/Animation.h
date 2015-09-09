@@ -52,7 +52,6 @@ protected:
 
 	const std::string name;
 	const animation_type type;
-
 	Image *sprite;
 
 	unsigned short number_frames; // how many ticks this animation lasts.

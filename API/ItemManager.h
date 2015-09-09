@@ -148,8 +148,16 @@ public:
 };
 
 class Item {
+#ifndef EDITOR
+private:
+	std::string name;     // item name displayed on long and short tool tips
+	friend class ItemManager;
+#else
 public:
 	std::string name;     // item name displayed on long and short tool tips
+#endif
+
+public:
 	std::string flavor;   // optional flavor text describing the item
 	int level;            // rough estimate of quality, used in the loot algorithm
 	int set;              // item can be attached to item set
@@ -194,7 +202,7 @@ public:
 		, level(0)
 		, set(0)
 		, quality("")
-		, type("other")
+		, type("")
 		, icon(0)
 		, dmg_melee_min(0)
 		, dmg_melee_max(0)
@@ -305,8 +313,9 @@ public:
 	std::vector<EquipFlag> EQUIP_FLAGS;
 	std::vector<HeroClass> HERO_CLASSES;
 #endif
+	std::string getItemName(unsigned id);
 	std::string getItemType(std::string _type);
-	void addUnknownItem(int id);
+	void addUnknownItem(unsigned id);
 	bool requirementsMet(const StatBlock *stats, int item);
 
 	std::vector<Item> items;
