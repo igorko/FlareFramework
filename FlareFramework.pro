@@ -26,16 +26,25 @@ SOURCES += main.cpp\
     itemswidget.cpp \
     iconview.cpp \
     iconwidget.cpp \
-    iconselector.cpp
+    iconselector.cpp \
+    spinbox.cpp \
+    checkbox.cpp \
+    lineedit.cpp
 
 HEADERS  += mainwindow.h \
     itemswidget.h \
     iconview.h \
     iconwidget.h \
-    iconselector.h
+    iconselector.h \
+    spinbox.h \
+    checkbox.h \
+    lineedit.h
 
 FORMS    += mainwindow.ui \
     itemswidget.ui \
-    iconselector.ui
+    iconselector.ui \
+    spinbox.ui \
+    checkbox.ui \
+    lineedit.ui
 
 DEFINES  += EDITOR

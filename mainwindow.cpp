@@ -1,10 +1,14 @@
-#include "mainwindow.h"
-#include "ui_mainwindow.h"
-#include "ui_itemswidget.h"
-
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QFile>
+#include <QCheckBox>
+
+#include "mainwindow.h"
+#include "ui_mainwindow.h"
+#include "ui_itemswidget.h"
+#include "lineedit.h"
+#include "spinbox.h"
+#include "checkbox.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -28,6 +32,10 @@ MainWindow::MainWindow(QWidget *parent) :
 
     setMenusEnabled(false);
     disableAllTabsExceptIndex(0);
+
+    // add tabs and not disable unselected, for testing
+    BuildUI();
+
     modPath = "";
 
     setupConnections();
@@ -194,7 +202,7 @@ bool MainWindow::ParseAttributesXML()
                     ReadNameTypeElementAttributes(xml.attributes().value("name").toString());
                 }
                 else
-                xml.skipCurrentElement();
+                    xml.skipCurrentElement();
             }
         }
         else
@@ -264,5 +272,62 @@ void MainWindow::New_Mod()
         modPath = path;
         setMenusEnabled(true);
         disableSaving();
+    }
+}
+
+void MainWindow::BuildUI()
+{
+    for (QString widgetTabName : m_nameTypeElements.keys())
+    {
+        int rowOnTab = 0;
+        int columnOntab = 0;
+        QWidget * tab = new QWidget();
+        QGridLayout * layout = new QGridLayout();
+        tab->setLayout(layout);
+
+        NameTypeElementAttributes attributes = m_nameTypeElements.value(widgetTabName);
+        for (QString attribute : attributes.keys())
+        {
+            QString attrType = attributes[attribute].first;
+            if (attrType == "integer")
+            {
+                layout->addWidget(new SpinBox(attribute, attributes[attribute].second),
+                                  rowOnTab, columnOntab);
+            }
+            else if (attrType == "integer")
+            {
+                layout->addWidget(new SpinBox(attribute, attributes[attribute].second),
+                                  rowOnTab, columnOntab);
+            }
+            else if (attrType == "float")
+            {
+                layout->addWidget(new SpinBox(attribute, attributes[attribute].second),
+                                  rowOnTab, columnOntab);
+            }
+            else if (attrType == "bool")
+            {
+                layout->addWidget(new CheckBox(attribute, attributes[attribute].second),
+                                  rowOnTab, columnOntab);
+            }
+            else if (attrType == "string")
+            {
+                layout->addWidget(new LineEdit(attribute, attributes[attribute].second),
+                                  rowOnTab, columnOntab);
+            }
+            else if (attrType == "duraton")
+            {
+                layout->addWidget(new SpinBox(attribute, attributes[attribute].second),
+                                  rowOnTab, columnOntab);
+            }
+
+            columnOntab++;
+            if (columnOntab == 4)
+            {
+                columnOntab = 0;
+                rowOnTab++;
+            }
+        }
+        int tabIndex = ui->tabWidget->addTab(tab, widgetTabName);
+        ui->tabWidget->setTabToolTip(tabIndex, m_nameTypeElementDescriptions[widgetTabName]);
     }
 }

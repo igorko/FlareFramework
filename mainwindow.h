@@ -59,6 +59,7 @@ private slots:
 private:
     Ui::MainWindow *ui;
 
+    void BuildUI();
     void disableAllTabsExceptIndex(int index);
     void setMenusEnabled(bool state);
     void setupConnections();
