@@ -2,6 +2,8 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QXmlStreamReader>
+#include <QMap>
 
 const int TAB_MAIN = 0;
 const int TAB_ITEMS = 1;
@@ -15,6 +17,9 @@ const int MENU_CREATURES = 1;
 const int MENU_MENUS = 2;
 const int MENU_STUFF = 3;
 const int MENU_STORY = 5;
+
+//key is property name, value is pair<type, description>
+typedef QMap<QString, QPair<QString, QString> > NameTypeElementAttributes;
 
 namespace Ui {
 class MainWindow;
@@ -59,7 +64,15 @@ private:
     void setupConnections();
     void CloseAll();
 
+    bool ParseAttributesXML();
+    void ReadNameTypeElementAttributes(QString elementName);
+
+private:
     bool newMod;
+    QXmlStreamReader xml;
+    QMap<QString, NameTypeElementAttributes> m_nameTypeElements;
+    QMap<QString, QString> m_nameTypeElementDescriptions;
+    QVector<QString> predefinedNameTypeElements;
 
 };
 

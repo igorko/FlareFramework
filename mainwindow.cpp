@@ -4,6 +4,7 @@
 
 #include <QFileDialog>
 #include <QMessageBox>
+#include <QFile>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -11,6 +12,19 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     menuBar()->setNativeMenuBar(false);
+
+    predefinedNameTypeElements.append("ItemManager: Types");
+    predefinedNameTypeElements.append("ItemManager: Items");
+    predefinedNameTypeElements.append("ItemManager: Qualities");
+    predefinedNameTypeElements.append("ItemManager: Sets");
+    predefinedNameTypeElements.append("Effects");
+    predefinedNameTypeElements.append("Powers");
+    predefinedNameTypeElements.append("QuestLog");
+    predefinedNameTypeElements.append("Cutscene");
+    predefinedNameTypeElements.append("NPC");
+
+
+    ParseAttributesXML();
 
     setMenusEnabled(false);
     disableAllTabsExceptIndex(0);
@@ -127,6 +141,71 @@ void MainWindow::CloseAll()
 {
     disableAllTabsExceptIndex(TAB_MAIN);
     //ToDo
+}
+
+void MainWindow::ReadNameTypeElementAttributes(QString elementName)
+{
+    NameTypeElementAttributes elementAttributes;
+    while(xml.readNext())
+    {
+        if(xml.isEndElement() && xml.name() == "class")
+        {
+            m_nameTypeElements.insert(elementName, elementAttributes);
+            break;
+        }
+        else if(xml.isStartElement() && xml.name() == "description")
+        {
+            m_nameTypeElementDescriptions[elementName] = xml.readElementText();
+        }
+        else if(xml.isStartElement())
+        {
+            QXmlStreamAttributes attributes = xml.attributes();
+            if (!attributes.empty())
+            {
+                QString description = xml.readElementText();
+                elementAttributes.insert(attributes.value("name").toString(),
+                    qMakePair(attributes.value("type").toString(), description));
+            }
+        }
+    }
+}
+
+bool MainWindow::ParseAttributesXML()
+{
+    QFile attributesXML("../FlareFramework/Resources/code_documentation.xml");
+
+    if(!attributesXML.open(QFile::ReadOnly | QFile::Text))
+    {
+        return false;
+    }
+
+    xml.setDevice(&attributesXML);
+
+    if (xml.readNextStartElement())
+    {
+        if (xml.name() == "classes")
+        {
+            while(xml.readNextStartElement())
+            {
+                if (xml.name() == "class" && xml.attributes().hasAttribute("name")
+                    && predefinedNameTypeElements.contains(xml.attributes().value("name").toString())
+                   )
+                {
+                    ReadNameTypeElementAttributes(xml.attributes().value("name").toString());
+                }
+                else
+                xml.skipCurrentElement();
+            }
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    attributesXML.close();
+
+    return true;
 }
 
 void MainWindow::Add_Item()
