@@ -292,32 +292,41 @@ void MainWindow::BuildUI()
             if (attrType == "integer")
             {
                 layout->addWidget(new SpinBox(attribute, attributes[attribute].second),
-                                  rowOnTab, columnOntab);
+                                  rowOnTab, columnOntab, Qt::AlignLeft | Qt::AlignTop);
             }
             else if (attrType == "integer")
             {
                 layout->addWidget(new SpinBox(attribute, attributes[attribute].second),
-                                  rowOnTab, columnOntab);
+                                  rowOnTab, columnOntab, Qt::AlignLeft | Qt::AlignTop);
             }
             else if (attrType == "float")
             {
                 layout->addWidget(new SpinBox(attribute, attributes[attribute].second),
-                                  rowOnTab, columnOntab);
+                                  rowOnTab, columnOntab, Qt::AlignLeft | Qt::AlignTop);
             }
             else if (attrType == "bool")
             {
                 layout->addWidget(new CheckBox(attribute, attributes[attribute].second),
-                                  rowOnTab, columnOntab);
+                                  rowOnTab, columnOntab, Qt::AlignLeft | Qt::AlignTop);
             }
             else if (attrType == "string")
             {
                 layout->addWidget(new LineEdit(attribute, attributes[attribute].second),
-                                  rowOnTab, columnOntab);
+                                  rowOnTab, columnOntab, Qt::AlignLeft | Qt::AlignTop);
             }
             else if (attrType == "duraton")
             {
                 layout->addWidget(new SpinBox(attribute, attributes[attribute].second),
-                                  rowOnTab, columnOntab);
+                                  rowOnTab, columnOntab, Qt::AlignLeft | Qt::AlignTop);
+            }
+            else
+            {
+                QLabel * label = new QLabel();
+                label->setText("UNSUPPORTED TYPE");
+                label->setMinimumHeight(42);
+                label->setMinimumWidth(220);
+                label->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Fixed);
+                layout->addWidget(label, rowOnTab, columnOntab, Qt::AlignLeft | Qt::AlignTop);
             }
 
             columnOntab++;
