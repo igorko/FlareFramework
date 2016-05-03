@@ -281,9 +281,11 @@ void MainWindow::BuildUI()
     {
         int rowOnTab = 0;
         int columnOntab = 0;
-        QWidget * tab = new QWidget();
-        QGridLayout * layout = new QGridLayout();
-        tab->setLayout(layout);
+        QScrollArea * tab = new QScrollArea();
+        QGridLayout * layout = new QGridLayout(tab);
+        layout->setSizeConstraint(QLayout::SetMinAndMaxSize);
+        tab->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+        tab->setWidgetResizable(true);
 
         NameTypeElementAttributes attributes = m_nameTypeElements.value(widgetTabName);
         for (QString attribute : attributes.keys())
@@ -323,8 +325,8 @@ void MainWindow::BuildUI()
             {
                 QLabel * label = new QLabel();
                 label->setText("UNSUPPORTED TYPE");
-                label->setMinimumHeight(42);
-                label->setMinimumWidth(220);
+                label->setMinimumHeight(46);
+                label->resize(231, 46);
                 label->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Fixed);
                 layout->addWidget(label, rowOnTab, columnOntab, Qt::AlignLeft | Qt::AlignTop);
             }
