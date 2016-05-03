@@ -1,13 +1,13 @@
 #ifndef LINEEDIT_H
 #define LINEEDIT_H
 
-#include <QWidget>
+#include <QFrame>
 
 namespace Ui {
 class LineEdit;
 }
 
-class LineEdit : public QWidget
+class LineEdit : public QFrame
 {
     Q_OBJECT
 

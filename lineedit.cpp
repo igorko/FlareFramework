@@ -2,7 +2,7 @@
 #include "ui_lineedit.h"
 
 LineEdit::LineEdit(QString name, QString description, QWidget *parent) :
-    QWidget(parent),
+    QFrame(parent),
     ui(new Ui::LineEdit)
 {
     ui->setupUi(this);

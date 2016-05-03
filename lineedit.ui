@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>LineEdit</class>
- <widget class="QWidget" name="LineEdit">
+ <widget class="QFrame" name="LineEdit">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -12,6 +12,9 @@
   </property>
   <property name="windowTitle">
    <string>Form</string>
+  </property>
+  <property name="frameShape">
+   <enum>QFrame::Box</enum>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout">
    <item>

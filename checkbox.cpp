@@ -2,7 +2,7 @@
 #include "ui_checkbox.h"
 
 CheckBox::CheckBox(QString name, QString description, QWidget *parent) :
-    QWidget(parent),
+    QFrame(parent),
     ui(new Ui::CheckBox)
 {
     ui->setupUi(this);

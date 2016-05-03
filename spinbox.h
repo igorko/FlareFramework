@@ -1,13 +1,13 @@
 #ifndef SPINBOX_H
 #define SPINBOX_H
 
-#include <QWidget>
+#include <QFrame>
 
 namespace Ui {
 class SpinBox;
 }
 
-class SpinBox : public QWidget
+class SpinBox : public QFrame
 {
     Q_OBJECT
 

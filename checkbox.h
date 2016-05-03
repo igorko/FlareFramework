@@ -1,13 +1,13 @@
 #ifndef CHECKBOX_H
 #define CHECKBOX_H
 
-#include <QWidget>
+#include <QFrame>
 
 namespace Ui {
 class CheckBox;
 }
 
-class CheckBox : public QWidget
+class CheckBox : public QFrame
 {
     Q_OBJECT
 
