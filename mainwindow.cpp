@@ -285,8 +285,10 @@ void MainWindow::BuildUI()
         int columnOntab = 0;
         QScrollArea * tab = new QScrollArea();
         tab->setWidgetResizable(true);
-        QWidget * widget = new QWidget(tab);
-        QGridLayout * layout = new QGridLayout(widget);
+        QWidget * widget = new QWidget();
+        tab->setWidget(widget);
+        QGridLayout * layout = new QGridLayout();
+        widget->setLayout(layout);
         tab->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
         tab->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
 
