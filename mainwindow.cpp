@@ -277,23 +277,28 @@ void MainWindow::New_Mod()
 
 void MainWindow::BuildUI()
 {
-    for (QString widgetTabName : m_nameTypeElements.keys())
+    QMap<QString, NameTypeElementAttributes>::iterator end = m_nameTypeElements.end();
+    for (QMap<QString, NameTypeElementAttributes>::iterator it = m_nameTypeElements.begin(); it != end; ++it)
     {
+        QString widgetTabName = it.key();
         int rowOnTab = 0;
         int columnOntab = 0;
         QScrollArea * tab = new QScrollArea();
-        QGridLayout * layout = new QGridLayout(tab);
-        layout->setSizeConstraint(QLayout::SetMinAndMaxSize);
-        tab->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
         tab->setWidgetResizable(true);
+        QWidget * widget = new QWidget(tab);
+        QGridLayout * layout = new QGridLayout(widget);
+        tab->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+        tab->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
 
-        NameTypeElementAttributes attributes = m_nameTypeElements.value(widgetTabName);
-        for (QString attribute : attributes.keys())
+        NameTypeElementAttributes attributes = it.value();
+        NameTypeElementAttributes::iterator attrEnd = attributes.end();
+        for (NameTypeElementAttributes::iterator attrIt = attributes.begin(); attrIt != attrEnd; ++attrIt)
         {
-            QString attrType = attributes[attribute].first;
+            QString attribute = attrIt.key();
+            QString attrType = attrIt.value().first;
             if (attrType == "integer")
             {
-                layout->addWidget(new SpinBox(attribute, attributes[attribute].second),
+                layout->addWidget(new SpinBox(attribute, attrIt.value().second),
                                   rowOnTab, columnOntab, Qt::AlignLeft | Qt::AlignTop);
             }
             else if (attrType == "integer")
