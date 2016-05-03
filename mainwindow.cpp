@@ -8,7 +8,14 @@
 #include "ui_itemswidget.h"
 #include "lineedit.h"
 #include "spinbox.h"
+#include "doublespinbox.h"
 #include "checkbox.h"
+#include "iconchooser.h"
+#include "stringlistwidget.h"
+#include "lootanimationwidget.h"
+#include "twospinbox.h"
+#include "twostringlists.h"
+#include "combobox.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -298,19 +305,19 @@ void MainWindow::BuildUI()
         {
             QString attribute = attrIt.key();
             QString attrType = attrIt.value().first;
-            if (attrType == "integer")
-            {
-                layout->addWidget(new SpinBox(attribute, attrIt.value().second),
-                                  rowOnTab, columnOntab, Qt::AlignLeft | Qt::AlignTop);
-            }
-            else if (attrType == "integer")
+            if (attrType == "integer" || attrType == "duration" || attrType == "power_id")
             {
                 layout->addWidget(new SpinBox(attribute, attributes[attribute].second),
+                                  rowOnTab, columnOntab, Qt::AlignLeft | Qt::AlignTop);
+            }
+            else if (attrType == "icon_id")
+            {
+                layout->addWidget(new IconChooser(),
                                   rowOnTab, columnOntab, Qt::AlignLeft | Qt::AlignTop);
             }
             else if (attrType == "float")
             {
-                layout->addWidget(new SpinBox(attribute, attributes[attribute].second),
+                layout->addWidget(new DoubleSpinBox(attribute, attributes[attribute].second),
                                   rowOnTab, columnOntab, Qt::AlignLeft | Qt::AlignTop);
             }
             else if (attrType == "bool")
@@ -323,9 +330,29 @@ void MainWindow::BuildUI()
                 layout->addWidget(new LineEdit(attribute, attributes[attribute].second),
                                   rowOnTab, columnOntab, Qt::AlignLeft | Qt::AlignTop);
             }
-            else if (attrType == "duraton")
+            else if (attrType == "stringlist")
             {
-                layout->addWidget(new SpinBox(attribute, attributes[attribute].second),
+                layout->addWidget(new StringListWidget(attribute, attributes[attribute].second),
+                                  rowOnTab, columnOntab, Qt::AlignLeft | Qt::AlignTop);
+            }
+            else if (attrType == "integer,integer")
+            {
+                layout->addWidget(new TwoSpinBox(attribute, attributes[attribute].second),
+                                  rowOnTab, columnOntab, Qt::AlignLeft | Qt::AlignTop);
+            }
+            else if (attrType == "repeatable(integer,integer)")
+            {
+                layout->addWidget(new TwoStringLists(attribute, attributes[attribute].second),
+                                  rowOnTab, columnOntab, Qt::AlignLeft | Qt::AlignTop);
+            }
+            else if (attrType == "filename")
+            {
+                layout->addWidget(new ComboBox(attribute, attributes[attribute].second),
+                                  rowOnTab, columnOntab, Qt::AlignLeft | Qt::AlignTop);
+            }
+            else if (attrType == "filename (string), min quantity (int), max quantity (int)")
+            {
+                layout->addWidget(new LootAnimationWidget(),
                                   rowOnTab, columnOntab, Qt::AlignLeft | Qt::AlignTop);
             }
             else

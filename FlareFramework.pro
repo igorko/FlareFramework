@@ -29,7 +29,14 @@ SOURCES += main.cpp\
     iconselector.cpp \
     spinbox.cpp \
     checkbox.cpp \
-    lineedit.cpp
+    lineedit.cpp \
+    doublespinbox.cpp \
+    iconchooser.cpp \
+    stringlistwidget.cpp \
+    lootanimationwidget.cpp \
+    twospinbox.cpp \
+    twostringlists.cpp \
+    combobox.cpp
 
 HEADERS  += mainwindow.h \
     itemswidget.h \
@@ -38,13 +45,27 @@ HEADERS  += mainwindow.h \
     iconselector.h \
     spinbox.h \
     checkbox.h \
-    lineedit.h
+    lineedit.h \
+    doublespinbox.h \
+    iconchooser.h \
+    stringlistwidget.h \
+    lootanimationwidget.h \
+    twospinbox.h \
+    twostringlists.h \
+    combobox.h
 
 FORMS    += mainwindow.ui \
     itemswidget.ui \
     iconselector.ui \
     spinbox.ui \
     checkbox.ui \
-    lineedit.ui
+    lineedit.ui \
+    doublespinbox.ui \
+    iconchooser.ui \
+    stringlistwidget.ui \
+    lootanimationwidget.ui \
+    twospinbox.ui \
+    twostringlists.ui \
+    combobox.ui
 
 DEFINES  += EDITOR
