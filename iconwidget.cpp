@@ -1,4 +1,5 @@
 #include "iconwidget.h"
+
 #include <QPainter>
 #include <QMouseEvent>
 

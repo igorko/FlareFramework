@@ -1,12 +1,12 @@
 #include "iconselector.h"
 #include "ui_iconselector.h"
-#include "iconwidget.h"
 
 #include <QPainter>
 #include <QFileDialog>
-#include <QDesktopServices>
 #include <QMouseEvent>
 #include <QDebug>
+
+#include "iconwidget.h"
 
 IconSelector::IconSelector(QWidget *parent) :
     QDialog(parent),
@@ -20,9 +20,7 @@ IconSelector::IconSelector(QWidget *parent) :
 
 void IconSelector::openIcon()
 {
-    QString fileName = QFileDialog::getOpenFileName(this, "Open File",
-                                 QDesktopServices::storageLocation(QDesktopServices::HomeLocation),
-                                 "Images (*.png *.jpg)");
+    QString fileName = QFileDialog::getOpenFileName(this, "Open File", QDir::homePath(), "Images (*.png *.jpg)");
 
     if (!fileName.isEmpty())
     {

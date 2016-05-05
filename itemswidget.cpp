@@ -1,19 +1,19 @@
 #include "itemswidget.h"
 #include "ui_itemswidget.h"
 
-#include "EditorItemManager.h"
-#include "API/Stats.h"
-#include "API/AnimationSet.h"
-#include "API/Animation.h"
-
-#include "iconselector.h"
-
 #include <QTextBlock>
 #include <QMessageBox>
 #include <QDir>
 #include <QTimeLine>
 #include <QGraphicsItemAnimation>
 #include <QGraphicsPixmapItem>
+
+#include "EditorItemManager.h"
+#include "API/Stats.h"
+#include "API/AnimationSet.h"
+#include "API/Animation.h"
+
+#include "iconselector.h"
 
 ItemsWidget::ItemsWidget(QScrollArea *parent) :
     QScrollArea(parent),

@@ -1,14 +1,15 @@
 #include "itemshandler.h"
+
+#include <QDir>
+#include <QTextBlock>
+#include <QLineEdit>
+#include <QSpinBox>
+
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
 #include "iconchooser.h"
 #include "ui_iconchooser.h"
-
-#include "EditorItemManager.h"
-#include "API/Stats.h"
-#include "API/AnimationSet.h"
-#include "API/Animation.h"
 
 #include "iconselector.h"
 
@@ -21,10 +22,10 @@
 #include "controlframe.h"
 #include "ui_controlframe.h"
 
-#include <QDir>
-#include <QTextBlock>
-#include <QLineEdit>
-#include <QSpinBox>
+#include "EditorItemManager.h"
+#include "API/Stats.h"
+#include "API/AnimationSet.h"
+#include "API/Animation.h"
 
 ItemsHandler::ItemsHandler(MainWindow * _mainWindow, QObject *parent) :
     mainWindow(_mainWindow),

@@ -1,3 +1,6 @@
+#include "mainwindow.h"
+#include "ui_mainwindow.h"
+
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QFile>
@@ -5,8 +8,6 @@
 #include <QLabel>
 #include <QScrollArea>
 
-#include "mainwindow.h"
-#include "ui_mainwindow.h"
 #include "lineedit.h"
 #include "spinbox.h"
 #include "doublespinbox.h"

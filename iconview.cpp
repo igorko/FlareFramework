@@ -1,9 +1,11 @@
 #include "iconview.h"
-#include "iconwidget.h"
+
 #include <QPainter>
 #include <QLabel>
 #include <QMouseEvent>
 #include <QScrollBar>
+
+#include "iconwidget.h"
 
 IconView::IconView(QWidget *parent) :
     QScrollArea(parent)
