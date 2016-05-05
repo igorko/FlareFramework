@@ -383,5 +383,6 @@ void MainWindow::BuildUI()
         }
         int tabIndex = ui->tabWidget->addTab(tab, widgetTabName);
         ui->tabWidget->setTabToolTip(tabIndex, m_nameTypeElementDescriptions[widgetTabName]);
+        predefinedNameTypeElements[widgetTabName] = tabIndex;
     }
 }
