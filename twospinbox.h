@@ -15,6 +15,8 @@ public:
     explicit TwoSpinBox(QString name, QString description, QWidget *parent = 0);
     ~TwoSpinBox();
 
+    void setValue(int value);
+
 private:
     Ui::TwoSpinBox *ui;
 };

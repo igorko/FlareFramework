@@ -15,6 +15,8 @@ public:
     explicit StringListWidget(QString name, QString description, QWidget *parent = 0);
     ~StringListWidget();
 
+    void clear();
+
 private:
     Ui::StringListWidget *ui;
 };

@@ -15,3 +15,9 @@ StringListWidget::~StringListWidget()
 {
     delete ui;
 }
+
+void StringListWidget::clear()
+{
+    ui->List->clear();
+    ui->Selector->setCurrentIndex(0);
+}

@@ -13,3 +13,13 @@ LootAnimationWidget::~LootAnimationWidget()
 {
     delete ui;
 }
+
+void LootAnimationWidget::clear()
+{
+    ui->lootAnimList->setCurrentIndex(0);
+
+    ui->animationMax->clear();
+    ui->animationMin->clear();
+    ui->animations->clear();
+
+}

@@ -15,6 +15,8 @@ public:
     explicit IconChooser(QString name, QWidget *parent = 0);
     ~IconChooser();
 
+    void setActiveIcon(int value);
+
     Ui::IconChooser *ui;
 
 };

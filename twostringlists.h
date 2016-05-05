@@ -15,6 +15,8 @@ public:
     explicit TwoStringLists(QString name, QString description, QWidget *parent = 0);
     ~TwoStringLists();
 
+    void clear();
+
 private:
     Ui::TwoStringLists *ui;
 };

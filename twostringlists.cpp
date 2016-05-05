@@ -15,3 +15,9 @@ TwoStringLists::~TwoStringLists()
 {
     delete ui;
 }
+
+void TwoStringLists::clear()
+{
+    ui->edit_1->clear();
+    ui->edit_2->clear();
+}

@@ -15,6 +15,8 @@ public:
     explicit CheckBox(QString name, QString description, QWidget *parent = 0);
     ~CheckBox();
 
+    void setChecked(bool check);
+
 private:
     Ui::CheckBox *ui;
 };

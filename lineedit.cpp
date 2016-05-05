@@ -15,3 +15,8 @@ LineEdit::~LineEdit()
 {
     delete ui;
 }
+
+void LineEdit::clear()
+{
+    ui->lineEdit->clear();
+}

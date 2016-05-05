@@ -15,3 +15,8 @@ CheckBox::~CheckBox()
 {
     delete ui;
 }
+
+void CheckBox::setChecked(bool check)
+{
+ui->checkBox->setChecked(check);
+}

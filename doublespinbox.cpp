@@ -15,3 +15,8 @@ DoubleSpinBox::~DoubleSpinBox()
 {
     delete ui;
 }
+
+void DoubleSpinBox::setValue(double value)
+{
+    ui->doubleSpinBox->setValue(value);
+}

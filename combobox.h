@@ -15,6 +15,9 @@ public:
     explicit ComboBox(QString name, QString description, QWidget *parent = 0);
     ~ComboBox();
 
+    void setCurrentIndex(int index);
+    void clear();
+
 private:
     Ui::ComboBox *ui;
 };

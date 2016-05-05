@@ -15,6 +15,8 @@ public:
     explicit LineEdit(QString name, QString description, QWidget *parent = 0);
     ~LineEdit();
 
+    void clear();
+
 private:
     Ui::LineEdit *ui;
 };

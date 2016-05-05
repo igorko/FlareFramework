@@ -27,6 +27,17 @@
 #include "API/AnimationSet.h"
 #include "API/Animation.h"
 
+#include "lineedit.h"
+#include "spinbox.h"
+#include "doublespinbox.h"
+#include "checkbox.h"
+#include "iconchooser.h"
+#include "stringlistwidget.h"
+#include "lootanimationwidget.h"
+#include "twospinbox.h"
+#include "twostringlists.h"
+#include "combobox.h"
+
 ItemsHandler::ItemsHandler(MainWindow * _mainWindow, QObject *parent) :
     mainWindow(_mainWindow),
     itemsLayout(NULL),
@@ -97,38 +108,46 @@ void ItemsHandler::loadItems(const std::string &path)
             }
         }
     }
+
+    for (int i = 0; i < itemsLayout->count(); i++)
+    {
+        QWidget * widget = itemsLayout->itemAt(i)->widget();
+
+        if (widget && widget->metaObject()->className() == "ComboBox")
+        {
+            dynamic_cast<ComboBox*>(widget)->clear();
+        }
+    }
     /*
-    ui->itemTypeCB->clear();
     ui->itemTypeCB->addItem("");
+    ui->itemQualityCB->addItem("");
+    ui->stepSoundList->addItem("");
+    ui->classList->addItem("");
+
     for (unsigned i = 0; i<items->item_types.size(); i++)
     {
         ui->itemTypeCB->addItem(qString(items->item_types[i].name), qString(items->item_types[i].id));
     }
     checkComboBoxForError(ui->itemTypeCB, "items/types.txt is missing or incorrect. Copy it from base mod.");
 
-    ui->itemQualityCB->clear();
-    ui->itemQualityCB->addItem("");
     for (unsigned i = 0; i<items->item_qualities.size(); i++)
     {
         ui->itemQualityCB->addItem(qString(items->item_qualities[i].id));
     }
     checkComboBoxForError(ui->itemTypeCB, "items/qualities.txt is missing or incorrect. Copy it from base mod.");
 
-    ui->equipList->clear();
     for (unsigned i = 0; i<items->EQUIP_FLAGS.size(); i++)
     {
         ui->equipList->addItem(qString(items->EQUIP_FLAGS[i].id));
     }
     checkComboBoxForError(ui->equipList, "engine/equip_flags.txt is missing or incorrect. Copy it from base mod.");
 
-    ui->slotsList->clear();
     for (unsigned i = 0; i<items->slot_type.size(); i++)
     {
         ui->slotsList->addItem(qString(items->slot_type[i]));
     }
     checkComboBoxForError(ui->slotsList, "menus/inventory.txt is missing or incorrect. Copy it from base mod.");
 
-    ui->bonusList->clear();
     for (unsigned i = 0; i<items->ELEMENTS.size(); i++)
     {
         ui->bonusList->addItem(qString(items->ELEMENTS[i].id) + "_resist");
@@ -145,27 +164,42 @@ void ItemsHandler::loadItems(const std::string &path)
         ui->bonusList->addItem(qString(STAT_KEY[i]));
     }
 
-    ui->stepSoundList->clear();
-    ui->stepSoundList->addItem("");
     for (unsigned int i = 0; i<items->step_def.size(); i++)
     {
         ui->stepSoundList->addItem(qString(items->step_def[i].id));
     }
     checkComboBoxForError(ui->stepSoundList, "items/step_sounds.txt is missing or incorrect. Copy it from base mod.");
 
-    ui->classList->clear();
-    ui->classList->addItem("");
     for (unsigned i = 0; i<items->HERO_CLASSES.size(); i++)
     {
         ui->classList->addItem(qString(items->HERO_CLASSES[i].name));
     }
-    ui->pushBtn->setEnabled(false);
+    */
+
+    for (int i = 0; i < itemsLayout->count(); i++)
+    {
+        QWidget * widget = itemsLayout->itemAt(i)->widget();
+
+        if (widget && widget->accessibleName() == "controlframe")
+        {
+            dynamic_cast<ControlFrame*>(widget)->ui->pushBtn->setEnabled(false);
+            break;
+        }
+    }
 
     collectFileLists(path);
-    ui->iconsView->init(qString(path));
+    for (int i = 0; i < itemsLayout->count(); i++)
+    {
+        QWidget * widget = itemsLayout->itemAt(i)->widget();
+
+        if (widget && widget->accessibleName() == "icon")
+        {
+            dynamic_cast<IconChooser*>(widget)->ui->iconsView->init(qString(path));
+            break;
+        }
+    }
 
     clearBtn();
-    */
 }
 
 void ItemsHandler::clearItemsList()
@@ -221,37 +255,49 @@ void ItemsHandler::addNewItem()
 
 void ItemsHandler::clearBtn()
 {
-    // these should be our hand-made widgets, not Qt
     for (int i = 0; i < itemsLayout->count(); i++)
     {
         QWidget * widget = itemsLayout->itemAt(i)->widget();
 
-        if (widget && widget->metaObject()->className() == "QComboBox")
+        if (widget && widget->metaObject()->className() == "ComboBox")
         {
-            dynamic_cast<QComboBox*>(widget)->setCurrentIndex(0);
+            dynamic_cast<ComboBox*>(widget)->setCurrentIndex(0);
         }
-        else if (widget && widget->metaObject()->className() == "QSpinBox")
+        else if (widget && widget->metaObject()->className() == "SpinBox")
         {
-            dynamic_cast<QSpinBox*>(widget)->setValue(0);
+            dynamic_cast<SpinBox*>(widget)->setValue(0);
         }
-        else if (widget && widget->metaObject()->className() == "QLineEdit")
+        else if (widget && widget->metaObject()->className() == "DoubleSpinBox")
         {
-            dynamic_cast<QLineEdit*>(widget)->clear();
+            dynamic_cast<DoubleSpinBox*>(widget)->setValue(0.0);
         }
-        else if (widget && widget->metaObject()->className() == "QPlainTextEdit")
+        else if (widget && widget->metaObject()->className() == "LineEdit")
         {
-            dynamic_cast<QPlainTextEdit*>(widget)->clear();
+            dynamic_cast<LineEdit*>(widget)->clear();
         }
-    }
-
-    for (int i = 0; i < itemsLayout->count(); i++)
-    {
-        QWidget * widget = itemsLayout->itemAt(i)->widget();
-
-        if (widget && widget->accessibleName() == "icon")
+        else if (widget && widget->metaObject()->className() == "StringListWidget")
         {
-            dynamic_cast<IconChooser*>(widget)->ui->iconsView->setActiveIcon(0);
-            break;
+            dynamic_cast<StringListWidget*>(widget)->clear();
+        }
+        else if (widget && widget->metaObject()->className() == "TwoSpinBox")
+        {
+            dynamic_cast<TwoSpinBox*>(widget)->setValue(0);
+        }
+        else if (widget && widget->metaObject()->className() == "TwoStringLists")
+        {
+            dynamic_cast<TwoStringLists*>(widget)->clear();
+        }
+        else if (widget && widget->metaObject()->className() == "LootAnimationWidget")
+        {
+            dynamic_cast<LootAnimationWidget*>(widget)->clear();
+        }
+        else if (widget && widget->metaObject()->className() == "IconChooser")
+        {
+            dynamic_cast<IconChooser*>(widget)->setActiveIcon(0);
+        }
+        else if (widget && widget->metaObject()->className() == "CheckBox")
+        {
+            dynamic_cast<CheckBox*>(widget)->setChecked(false);
         }
     }
 }
@@ -420,10 +466,25 @@ void ItemsHandler::pushBtn()
 
 void ItemsHandler::selectItem(QListWidgetItem *item)
 {
-    /*
-    ui->pushBtn->setEnabled(true);
-    int index = item->data(Qt::UserRole).toInt();
+    clearBtn();
 
+    for (int i = 0; i < itemsLayout->count(); i++)
+    {
+        QWidget * widget = itemsLayout->itemAt(i)->widget();
+
+        //fixme crash
+        /*if (widget && widget->accessibleName() == "item_type")
+        {
+            dynamic_cast<ComboBox*>(widget)->setCurrentIndex(-1);
+        }
+        else */if (widget && widget->accessibleName() == "controlframe")
+        {
+            dynamic_cast<ControlFrame*>(widget)->ui->pushBtn->setEnabled(true);
+        }
+    }
+
+    int index = item->data(Qt::UserRole).toInt();
+    /*
     // TextEdits
     ui->itemName->setText(qString(items->items[index].name));
     ui->pickupStatus->setText(qString(items->items[index].pickup_status));
@@ -431,17 +492,12 @@ void ItemsHandler::selectItem(QListWidgetItem *item)
     ui->itemFlavor->setText(qString(items->items[index].flavor));
     ui->itemBook->setText(qString(items->items[index].book));
 
-    ui->replacePowerFrom->clear();
-    ui->replacePowerTo->clear();
     for (unsigned int i = 0; i < items->items[index].replace_power.size(); i++)
     {
         ui->replacePowerFrom->appendPlainText(QString::number(items->items[index].replace_power[i].x));
         ui->replacePowerTo->appendPlainText(QString::number(items->items[index].replace_power[i].y));
     }
 
-    ui->animations->clear();
-    ui->animationMin->clear();
-    ui->animationMax->clear();
     for (unsigned int i = 0; i < items->items[index].loot_animation.size(); i++)
     {
         ui->animations->appendPlainText(qString(items->items[index].loot_animation[i].name));
@@ -449,20 +505,16 @@ void ItemsHandler::selectItem(QListWidgetItem *item)
         ui->animationMax->appendPlainText(QString::number(items->items[index].loot_animation[i].high));
     }
 
-    ui->disableSlots->clear();
     for (unsigned int i = 0; i < items->items[index].disable_slots.size(); i++)
     {
         ui->disableSlots->appendPlainText(qString(items->items[index].disable_slots[i]));
     }
 
-    ui->equipFlags->clear();
     for (unsigned int i = 0; i < items->items[index].equip_flags.size(); i++)
     {
         ui->equipFlags->appendPlainText(qString(items->items[index].equip_flags[i]));
     }
 
-    ui->bonusName->clear();
-    ui->bonusValue->clear();
     for (unsigned int i = 0; i < items->items[index].bonus.size(); i++)
     {
         int stat_index     = items->items[index].bonus[i].stat_index;
@@ -501,7 +553,6 @@ void ItemsHandler::selectItem(QListWidgetItem *item)
 
     // comboBoxes
     QString type = qString(items->items[index].type);
-    ui->itemTypeCB->setCurrentIndex(-1);
     for (int i = 0; i < ui->itemTypeCB->count(); i++)
     {
         if (ui->itemTypeCB->itemData(i) == type)
@@ -540,10 +591,6 @@ void ItemsHandler::selectItem(QListWidgetItem *item)
     ui->rangMax->setValue(items->items[index].dmg_ranged_min);
     ui->power->setValue(items->items[index].power);
 
-    ui->reqPhys->setValue(0);
-    ui->reqMent->setValue(0);
-    ui->reqOff->setValue(0);
-    ui->reqDef->setValue(0);
     for (unsigned int i = 0; i < items->items[index].req_stat.size(); i++)
     {
         int value = items->items[index].req_val[i];
@@ -600,6 +647,307 @@ void ItemsHandler::selectItem(QListWidgetItem *item)
         //timer->start();
     }
     */
+}
+
+void ItemsHandler::collectFileLists(const std::string &path)
+{
+    /*
+    ui->sfxCb->clear();
+    ui->sfxCb->addItem("");
+
+    ui->lootAnimList->clear();
+
+    ui->equipAnimList->clear();
+    ui->equipAnimList->addItem("");
+
+    QString modPath = qString(path);
+    QDir pathSfx(modPath + "soundfx" + QDir::separator() + "inventory");
+    QStringList files = pathSfx.entryList(QDir::Files);
+    ui->sfxCb->addItems(files);
+    checkComboBoxForError(ui->sfxCb, "soundfx/inventory folder is empty. Place some sound files in it.");
+
+    QDir pathLootAnim(modPath + "animations" + QDir::separator() + "loot");
+    files = pathLootAnim.entryList(QDir::Files);
+    ui->lootAnimList->addItems(files);
+    checkComboBoxForError(ui->lootAnimList, "animations/loot folder is empty. Place some loot animation files in it.");
+
+    QDir pathGfx(modPath + "animations" + QDir::separator() + "avatar" + QDir::separator() + "male");
+    files = pathGfx.entryList(QDir::Files);
+    for (int i = 0; i < files.size(); i++)
+    {
+        files[i].remove(files[i].size() - 4, 4);
+    }
+    ui->equipAnimList->addItems(files);
+    checkComboBoxForError(ui->equipAnimList, "animations/avatar/male folder is empty. Place some equip animation files in it.");
+*/
+}
+
+QString ItemsHandler::qString(std::string value)
+{
+
+    return QString::fromUtf8(value.data(), value.size());
+}
+
+std::string ItemsHandler::stdString(QString value)
+{
+    return value.toUtf8().constData();
+}
+
+QObject *ItemsHandler::CloseButton()
+{
+    for (int i = 0; i < itemsLayout->count(); i++)
+    {
+        QWidget * widget = itemsLayout->itemAt(i)->widget();
+
+        if (widget && widget->accessibleName() == "controlframe")
+        {
+            return dynamic_cast<ControlFrame*>(widget)->ui->itemClose;
+        }
+    }
+}
+
+void ItemsHandler::checkComboBoxForError(QComboBox *widget, const QString &errorText)
+{
+    if (widget->count() == 0)
+    {
+        widget->setStyleSheet(invalidStyle);
+        widget->setToolTip(errorText);
+    }
+    else
+    {
+        widget->setStyleSheet("");
+        widget->setToolTip("");
+    }
+}
+
+void ItemsHandler::markNotEmptyLineEdit(QLineEdit *widget, const QString& text)
+{
+    if (text != "")
+    {
+        widget->setStyleSheet(editedStyle);
+    }
+    else
+    {
+        widget->setStyleSheet("");
+    }
+}
+
+void ItemsHandler::markNotEmptyPlainTextEdit(QPlainTextEdit *widget)
+{
+    QTextDocument* doc = widget->document();
+
+    if (doc->lineCount() >= 1 && !doc->findBlockByLineNumber(0).text().isEmpty())
+    {
+        widget->setStyleSheet(editedStyle);
+    }
+    else
+    {
+        widget->setStyleSheet("");
+    }
+}
+
+void ItemsHandler::selectComboBoxItemByText(QComboBox *widget, const QString &text)
+{
+    widget->setCurrentIndex(-1);
+    for (int i = 0; i < widget->count(); i++)
+    {
+        if (widget->itemText(i) == text)
+        {
+            widget->setCurrentIndex(i);
+            break;
+        }
+    }
+}
+
+void ItemsHandler::setupConnections()
+{
+    for (int i = 0; i < itemsLayout->count(); i++)
+    {
+        QWidget * widget = itemsLayout->itemAt(i)->widget();
+
+        if (widget && widget->accessibleName() == "controlframe")
+        {
+            ControlFrame * controlFrame = dynamic_cast<ControlFrame*>(widget);
+            connect(controlFrame->ui->addNewItem, SIGNAL(clicked()), SLOT(addNewItem()));
+            connect(controlFrame->ui->clearBtn, SIGNAL(clicked()), SLOT(clearBtn()));
+            connect(controlFrame->ui->pushBtn, SIGNAL(clicked()), SLOT(pushBtn()));
+        }
+        else if (widget && widget->accessibleName() == "icon")
+        {
+            IconChooser * iconChooser = dynamic_cast<IconChooser*>(widget);
+            connect(iconChooser->ui->assignIconBtn, SIGNAL(clicked()), SLOT(requestIconAdd()));
+            connect(iconChooser->ui->iconsView, SIGNAL(iconPlaced()), SLOT(finishIconAdd()));
+            connect(iconChooser->ui->iconsView, SIGNAL(iconSkipped()), SLOT(skipIconAdd()));
+        }
+        else if (widget && widget->accessibleName() == "elementslist")
+        {
+            ElementsList * elementsList = dynamic_cast<ElementsList*>(widget);
+            connect(elementsList->ui->itemsList, SIGNAL(itemClicked(QListWidgetItem*)), SLOT(selectItem(QListWidgetItem*)));
+        }
+    }
+/*
+
+    connect(ui->absorbMin, SIGNAL(valueChanged(int)), SLOT(absorbMin(int)));
+
+    connect(ui->absorbMax, SIGNAL(valueChanged(int)), SLOT(absorbMax(int)));
+
+    connect(ui->power, SIGNAL(valueChanged(int)), SLOT(power(int)));
+
+    connect(ui->itemFlavor, SIGNAL(textChanged(const QString&)), SLOT(itemFlavor(const QString&)));
+
+    connect(ui->itemBook, SIGNAL(textChanged(const QString&)), SLOT(itemBook(const QString&)));
+
+    connect(ui->meleeMin, SIGNAL(valueChanged(int)), SLOT(meleeMin(int)));
+
+    connect(ui->meleeMax, SIGNAL(valueChanged(int)), SLOT(meleeMax(int)));
+
+    connect(ui->rangMin, SIGNAL(valueChanged(int)), SLOT(rangMin(int)));
+
+    connect(ui->rangMax, SIGNAL(valueChanged(int)), SLOT(rangMax(int)));
+
+    connect(ui->mentalMin, SIGNAL(valueChanged(int)), SLOT(mentalMin(int)));
+
+    connect(ui->mentalMax, SIGNAL(valueChanged(int)), SLOT(mentalMax(int)));
+
+    connect(ui->replacePowerFrom, SIGNAL(textChanged()), SLOT(replacePowerFrom()));
+
+    connect(ui->replacePowerTo, SIGNAL(textChanged()), SLOT(replacePowerTo()));
+
+    connect(ui->disableSlots, SIGNAL(textChanged()), SLOT(disableSlots()));
+
+    connect(ui->reqPhys, SIGNAL(valueChanged(int)), SLOT(reqPhys(int)));
+
+    connect(ui->reqMent, SIGNAL(valueChanged(int)), SLOT(reqMent(int)));
+
+    connect(ui->reqOff, SIGNAL(valueChanged(int)), SLOT(reqOff(int)));
+
+    connect(ui->reqDef, SIGNAL(valueChanged(int)), SLOT(reqDef(int)));
+
+    connect(ui->price, SIGNAL(valueChanged(int)), SLOT(price(int)));
+
+    connect(ui->sellPrice, SIGNAL(valueChanged(int)), SLOT(sellPrice(int)));
+
+    connect(ui->maxQuantity, SIGNAL(valueChanged(int)), SLOT(maxQuantity(int)));
+
+    connect(ui->pickupStatus, SIGNAL(textChanged(const QString&)), SLOT(pickupStatus(const QString&)));
+
+    connect(ui->powerDesc, SIGNAL(textChanged(const QString&)), SLOT(powerDesc(const QString&)));
+
+    connect(ui->itemName, SIGNAL(textChanged(const QString&)), SLOT(itemName(const QString&)));
+
+    connect(ui->equipFlags, SIGNAL(textChanged()), SLOT(equipFlags()));
+
+    connect(ui->bonusName, SIGNAL(textChanged()), SLOT(bonusName()));
+
+    connect(ui->bonusValue, SIGNAL(textChanged()), SLOT(bonusValue()));
+
+    connect(ui->addDisableSlot, SIGNAL(clicked()), SLOT(addDisableSlot()));
+
+    connect(ui->addEquipFlag, SIGNAL(clicked()), SLOT(addEquipFlag()));
+
+    connect(ui->addBonus, SIGNAL(clicked()), SLOT(addBonus()));
+
+    connect(ui->lootAnimAdd, SIGNAL(clicked()), SLOT(lootAnimAdd()));
+
+    connect(ui->animations, SIGNAL(textChanged()), SLOT(animations()));
+
+    connect(ui->animationMin, SIGNAL(textChanged()), SLOT(animationMin()));
+
+    connect(ui->animationMax, SIGNAL(textChanged()), SLOT(animationMax()));
+    */
+}
+
+void ItemsHandler::finishIconAdd()
+{
+    for (int i = 0; i < itemsLayout->count(); i++)
+    {
+        QWidget * widget = itemsLayout->itemAt(i)->widget();
+
+        if (widget && widget->accessibleName() == "icon")
+        {
+            dynamic_cast<IconChooser*>(widget)->ui->iconPasteLabel->hide();
+            break;
+        }
+    }
+    setItemsAreEdited(true);
+
+}
+
+void ItemsHandler::skipIconAdd()
+{
+    for (int i = 0; i < itemsLayout->count(); i++)
+    {
+        QWidget * widget = itemsLayout->itemAt(i)->widget();
+
+        if (widget && widget->accessibleName() == "icon")
+        {
+            dynamic_cast<IconChooser*>(widget)->ui->iconPasteLabel->hide();
+            break;
+        }
+    }
+}
+
+void ItemsHandler::requestIconAdd()
+{
+    IconSelector* dialog = new IconSelector();
+    int ret = dialog->exec();
+    if (ret == QDialog::Accepted)
+    {
+        QImage newIcon = dialog->getSelection();
+        for (int i = 0; i < itemsLayout->count(); i++)
+        {
+            QWidget * widget = itemsLayout->itemAt(i)->widget();
+
+            if (widget && widget->accessibleName() == "icon")
+            {
+                dynamic_cast<IconChooser*>(widget)->ui->iconPasteLabel->show();
+                dynamic_cast<IconChooser*>(widget)->ui->iconsView->appendIcon(newIcon);
+                break;
+            }
+        }
+    }
+}
+
+void ItemsHandler::markNotDefaultSpinBox(QSpinBox *widget, int value, int defaultValue)
+{
+    if (value != defaultValue)
+    {
+        widget->setStyleSheet(editedStyle);
+    }
+    else
+    {
+        widget->setStyleSheet("");
+    }
+}
+
+void ItemsHandler::lootAnimAdd()
+{
+    for (int i = 0; i < itemsLayout->count(); i++)
+    {
+        QWidget * widget = itemsLayout->itemAt(i)->widget();
+
+        if (widget && widget->accessibleName() == "loot_animation")
+        {
+            dynamic_cast<LootAnimationWidget*>(widget)->ui->animations->appendPlainText(
+                dynamic_cast<LootAnimationWidget*>(widget)->ui->lootAnimList->currentText());
+            break;
+        }
+    }
+}
+
+void ItemsHandler::animations()
+{
+    //markNotEmptyPlainTextEdit(ui->animations);
+}
+
+void ItemsHandler::animationMin()
+{
+    //markNotEmptyPlainTextEdit(ui->animationMin);
+}
+
+void ItemsHandler::animationMax()
+{
+    //markNotEmptyPlainTextEdit(ui->animationMax);
 }
 
 void ItemsHandler::absorbMin(int arg1)
@@ -761,293 +1109,4 @@ void ItemsHandler::addEquipFlag()
 void ItemsHandler::addBonus()
 {
     //ui->bonusName->appendPlainText(ui->bonusList->currentText());
-}
-
-void ItemsHandler::collectFileLists(const std::string &path)
-{
-    /*
-    ui->sfxCb->clear();
-    ui->sfxCb->addItem("");
-
-    ui->lootAnimList->clear();
-
-    ui->equipAnimList->clear();
-    ui->equipAnimList->addItem("");
-
-    QString modPath = qString(path);
-    QDir pathSfx(modPath + "soundfx" + QDir::separator() + "inventory");
-    QStringList files = pathSfx.entryList(QDir::Files);
-    ui->sfxCb->addItems(files);
-    checkComboBoxForError(ui->sfxCb, "soundfx/inventory folder is empty. Place some sound files in it.");
-
-    QDir pathLootAnim(modPath + "animations" + QDir::separator() + "loot");
-    files = pathLootAnim.entryList(QDir::Files);
-    ui->lootAnimList->addItems(files);
-    checkComboBoxForError(ui->lootAnimList, "animations/loot folder is empty. Place some loot animation files in it.");
-
-    QDir pathGfx(modPath + "animations" + QDir::separator() + "avatar" + QDir::separator() + "male");
-    files = pathGfx.entryList(QDir::Files);
-    for (int i = 0; i < files.size(); i++)
-    {
-        files[i].remove(files[i].size() - 4, 4);
-    }
-    ui->equipAnimList->addItems(files);
-    checkComboBoxForError(ui->equipAnimList, "animations/avatar/male folder is empty. Place some equip animation files in it.");
-*/
-}
-
-QString ItemsHandler::qString(std::string value)
-{
-
-    return QString::fromUtf8(value.data(), value.size());
-}
-
-std::string ItemsHandler::stdString(QString value)
-{
-    return value.toUtf8().constData();
-}
-
-QObject *ItemsHandler::CloseButton()
-{
-    for (int i = 0; i < itemsLayout->count(); i++)
-    {
-        QWidget * widget = itemsLayout->itemAt(i)->widget();
-
-        if (widget && widget->accessibleName() == "controlframe")
-        {
-            return dynamic_cast<ControlFrame*>(widget)->ui->itemClose;
-        }
-    }
-}
-
-void ItemsHandler::checkComboBoxForError(QComboBox *widget, const QString &errorText)
-{
-    if (widget->count() == 0)
-    {
-        widget->setStyleSheet(invalidStyle);
-        widget->setToolTip(errorText);
-    }
-    else
-    {
-        widget->setStyleSheet("");
-        widget->setToolTip("");
-    }
-}
-
-void ItemsHandler::markNotEmptyLineEdit(QLineEdit *widget, const QString& text)
-{
-    if (text != "")
-    {
-        widget->setStyleSheet(editedStyle);
-    }
-    else
-    {
-        widget->setStyleSheet("");
-    }
-}
-
-void ItemsHandler::markNotEmptyPlainTextEdit(QPlainTextEdit *widget)
-{
-    QTextDocument* doc = widget->document();
-
-    if (doc->lineCount() >= 1 && !doc->findBlockByLineNumber(0).text().isEmpty())
-    {
-        widget->setStyleSheet(editedStyle);
-    }
-    else
-    {
-        widget->setStyleSheet("");
-    }
-}
-
-void ItemsHandler::selectComboBoxItemByText(QComboBox *widget, const QString &text)
-{
-    widget->setCurrentIndex(-1);
-    for (int i = 0; i < widget->count(); i++)
-    {
-        if (widget->itemText(i) == text)
-        {
-            widget->setCurrentIndex(i);
-            break;
-        }
-    }
-}
-
-void ItemsHandler::setupConnections()
-{
-    /*
-    connect(ui->addNewItem, SIGNAL(clicked()), SLOT(addNewItem()));
-
-    connect(ui->clearBtn, SIGNAL(clicked()), SLOT(clearBtn()));
-
-    connect(ui->pushBtn, SIGNAL(clicked()), SLOT(pushBtn()));
-
-    connect(ui->itemsList, SIGNAL(itemClicked(QListWidgetItem*)), SLOT(selectItem(QListWidgetItem*)));
-
-    connect(ui->absorbMin, SIGNAL(valueChanged(int)), SLOT(absorbMin(int)));
-
-    connect(ui->absorbMax, SIGNAL(valueChanged(int)), SLOT(absorbMax(int)));
-
-    connect(ui->power, SIGNAL(valueChanged(int)), SLOT(power(int)));
-
-    connect(ui->itemFlavor, SIGNAL(textChanged(const QString&)), SLOT(itemFlavor(const QString&)));
-
-    connect(ui->itemBook, SIGNAL(textChanged(const QString&)), SLOT(itemBook(const QString&)));
-
-    connect(ui->meleeMin, SIGNAL(valueChanged(int)), SLOT(meleeMin(int)));
-
-    connect(ui->meleeMax, SIGNAL(valueChanged(int)), SLOT(meleeMax(int)));
-
-    connect(ui->rangMin, SIGNAL(valueChanged(int)), SLOT(rangMin(int)));
-
-    connect(ui->rangMax, SIGNAL(valueChanged(int)), SLOT(rangMax(int)));
-
-    connect(ui->mentalMin, SIGNAL(valueChanged(int)), SLOT(mentalMin(int)));
-
-    connect(ui->mentalMax, SIGNAL(valueChanged(int)), SLOT(mentalMax(int)));
-
-    connect(ui->replacePowerFrom, SIGNAL(textChanged()), SLOT(replacePowerFrom()));
-
-    connect(ui->replacePowerTo, SIGNAL(textChanged()), SLOT(replacePowerTo()));
-
-    connect(ui->disableSlots, SIGNAL(textChanged()), SLOT(disableSlots()));
-
-    connect(ui->reqPhys, SIGNAL(valueChanged(int)), SLOT(reqPhys(int)));
-
-    connect(ui->reqMent, SIGNAL(valueChanged(int)), SLOT(reqMent(int)));
-
-    connect(ui->reqOff, SIGNAL(valueChanged(int)), SLOT(reqOff(int)));
-
-    connect(ui->reqDef, SIGNAL(valueChanged(int)), SLOT(reqDef(int)));
-
-    connect(ui->price, SIGNAL(valueChanged(int)), SLOT(price(int)));
-
-    connect(ui->sellPrice, SIGNAL(valueChanged(int)), SLOT(sellPrice(int)));
-
-    connect(ui->maxQuantity, SIGNAL(valueChanged(int)), SLOT(maxQuantity(int)));
-
-    connect(ui->pickupStatus, SIGNAL(textChanged(const QString&)), SLOT(pickupStatus(const QString&)));
-
-    connect(ui->powerDesc, SIGNAL(textChanged(const QString&)), SLOT(powerDesc(const QString&)));
-
-    connect(ui->itemName, SIGNAL(textChanged(const QString&)), SLOT(itemName(const QString&)));
-
-    connect(ui->equipFlags, SIGNAL(textChanged()), SLOT(equipFlags()));
-
-    connect(ui->bonusName, SIGNAL(textChanged()), SLOT(bonusName()));
-
-    connect(ui->bonusValue, SIGNAL(textChanged()), SLOT(bonusValue()));
-
-    connect(ui->addDisableSlot, SIGNAL(clicked()), SLOT(addDisableSlot()));
-
-    connect(ui->addEquipFlag, SIGNAL(clicked()), SLOT(addEquipFlag()));
-
-    connect(ui->addBonus, SIGNAL(clicked()), SLOT(addBonus()));
-
-    connect(ui->lootAnimAdd, SIGNAL(clicked()), SLOT(lootAnimAdd()));
-
-    connect(ui->animations, SIGNAL(textChanged()), SLOT(animations()));
-
-    connect(ui->animationMin, SIGNAL(textChanged()), SLOT(animationMin()));
-
-    connect(ui->animationMax, SIGNAL(textChanged()), SLOT(animationMax()));
-
-    connect(ui->assignIconBtn, SIGNAL(clicked()), SLOT(requestIconAdd()));
-
-    connect(ui->iconsView, SIGNAL(iconPlaced()), SLOT(finishIconAdd()));
-    connect(ui->iconsView, SIGNAL(iconSkipped()), SLOT(skipIconAdd()));
-    */
-}
-
-void ItemsHandler::finishIconAdd()
-{
-    for (int i = 0; i < itemsLayout->count(); i++)
-    {
-        QWidget * widget = itemsLayout->itemAt(i)->widget();
-
-        if (widget && widget->accessibleName() == "icon")
-        {
-            dynamic_cast<IconChooser*>(widget)->ui->iconPasteLabel->hide();
-            break;
-        }
-    }
-    setItemsAreEdited(true);
-
-}
-
-void ItemsHandler::skipIconAdd()
-{
-    for (int i = 0; i < itemsLayout->count(); i++)
-    {
-        QWidget * widget = itemsLayout->itemAt(i)->widget();
-
-        if (widget && widget->accessibleName() == "icon")
-        {
-            dynamic_cast<IconChooser*>(widget)->ui->iconPasteLabel->hide();
-            break;
-        }
-    }
-}
-
-void ItemsHandler::requestIconAdd()
-{
-    IconSelector* dialog = new IconSelector();
-    int ret = dialog->exec();
-    if (ret == QDialog::Accepted)
-    {
-        QImage newIcon = dialog->getSelection();
-        for (int i = 0; i < itemsLayout->count(); i++)
-        {
-            QWidget * widget = itemsLayout->itemAt(i)->widget();
-
-            if (widget && widget->accessibleName() == "icon")
-            {
-                dynamic_cast<IconChooser*>(widget)->ui->iconPasteLabel->show();
-                dynamic_cast<IconChooser*>(widget)->ui->iconsView->appendIcon(newIcon);
-                break;
-            }
-        }
-    }
-}
-
-void ItemsHandler::markNotDefaultSpinBox(QSpinBox *widget, int value, int defaultValue)
-{
-    if (value != defaultValue)
-    {
-        widget->setStyleSheet(editedStyle);
-    }
-    else
-    {
-        widget->setStyleSheet("");
-    }
-}
-
-void ItemsHandler::lootAnimAdd()
-{
-    for (int i = 0; i < itemsLayout->count(); i++)
-    {
-        QWidget * widget = itemsLayout->itemAt(i)->widget();
-
-        if (widget && widget->accessibleName() == "loot_animation")
-        {
-            dynamic_cast<LootAnimationWidget*>(widget)->ui->animations->appendPlainText(
-                dynamic_cast<LootAnimationWidget*>(widget)->ui->lootAnimList->currentText());
-            break;
-        }
-    }
-}
-
-void ItemsHandler::animations()
-{
-    //markNotEmptyPlainTextEdit(ui->animations);
-}
-
-void ItemsHandler::animationMin()
-{
-    //markNotEmptyPlainTextEdit(ui->animationMin);
-}
-
-void ItemsHandler::animationMax()
-{
-    //markNotEmptyPlainTextEdit(ui->animationMax);
 }

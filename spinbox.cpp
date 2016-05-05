@@ -15,3 +15,8 @@ SpinBox::~SpinBox()
 {
     delete ui;
 }
+
+void SpinBox::setValue(int value)
+{
+    ui->spinBox->setValue(value);
+}

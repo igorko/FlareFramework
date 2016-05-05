@@ -15,3 +15,13 @@ ComboBox::~ComboBox()
 {
     delete ui;
 }
+
+void ComboBox::setCurrentIndex(int index)
+{
+    ui->comboBox->setCurrentIndex(index);
+}
+
+void ComboBox::clear()
+{
+    ui->comboBox->clear();
+}

@@ -15,6 +15,8 @@ public:
     explicit SpinBox(QString name, QString description, QWidget *parent = 0);
     ~SpinBox();
 
+    void setValue(int value);
+
 private:
     Ui::SpinBox *ui;
 };

@@ -13,3 +13,9 @@ IconChooser::~IconChooser()
 {
     delete ui;
 }
+
+void IconChooser::setActiveIcon(int value)
+{
+
+    ui->iconsView->setActiveIcon(value);
+}

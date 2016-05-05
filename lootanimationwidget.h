@@ -15,6 +15,8 @@ public:
     explicit LootAnimationWidget(QString name, QWidget *parent = 0);
     ~LootAnimationWidget();
 
+    void clear();
+
     Ui::LootAnimationWidget *ui;
 };
 
