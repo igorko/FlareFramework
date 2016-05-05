@@ -220,49 +220,29 @@ void ItemsHandler::addNewItem()
 
 void ItemsHandler::clearBtn()
 {
-    /*
-    ui->itemName->clear();
-	ui->itemName->setText("ItemName");
-    ui->itemFlavor->clear();
-    ui->itemBook->clear();
-	ui->pickupStatus->clear();
-	ui->powerDesc->clear();
-    ui->replacePowerFrom->clear();
-    ui->replacePowerTo->clear();
-    ui->disableSlots->clear();
-    ui->equipFlags->clear();
-    ui->bonusName->clear();
-    ui->bonusValue->clear();
+    // these should be our hand-made widgets, not Qt
+    for (int i = 0; i < itemsLayout->count(); i++)
+    {
+        QWidget * widget = itemsLayout->itemAt(i)->widget();
 
-    // comboBoxes
-    ui->itemQualityCB->setCurrentIndex(0);
-    ui->itemTypeCB->setCurrentIndex(0);
-    ui->classList->setCurrentIndex(0);
+        if (widget && widget->metaObject()->className() == "QComboBox")
+        {
+            dynamic_cast<QComboBox*>(widget)->setCurrentIndex(0);
+        }
+        else if (widget && widget->metaObject()->className() == "QSpinBox")
+        {
+            dynamic_cast<QSpinBox*>(widget)->setValue(0);
+        }
+        else if (widget && widget->metaObject()->className() == "QLineEdit")
+        {
+            dynamic_cast<QLineEdit*>(widget)->clear();
+        }
+        else if (widget && widget->metaObject()->className() == "QPlainTextEdit")
+        {
+            dynamic_cast<QPlainTextEdit*>(widget)->clear();
+        }
+    }
 
-    ui->sfxCb->setCurrentIndex(0);
-    ui->lootAnimList->setCurrentIndex(0);
-    ui->stepSoundList->setCurrentIndex(0);
-    ui->equipAnimList->setCurrentIndex(0);
-
-    // spinBoxes
-    ui->itemLvlSpin->setValue(0);
-    ui->price->setValue(0);
-    ui->sellPrice->setValue(0);
-    ui->absorbMax->setValue(0);
-    ui->absorbMin->setValue(0);
-    ui->maxQuantity->setValue(0);
-    ui->meleeMin->setValue(0);
-    ui->meleeMax->setValue(0);
-    ui->mentalMin->setValue(0);
-    ui->mentalMax->setValue(0);
-    ui->power->setValue(0);
-    ui->rangMin->setValue(0);
-    ui->rangMax->setValue(0);
-    ui->reqDef->setValue(0);
-    ui->reqMent->setValue(0);
-    ui->reqOff->setValue(0);
-    ui->reqDef->setValue(0);
-*/
     for (int i = 0; i < itemsLayout->count(); i++)
     {
         QWidget * widget = itemsLayout->itemAt(i)->widget();
