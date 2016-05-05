@@ -8,6 +8,7 @@ ComboBox::ComboBox(QString name, QString description, QWidget *parent) :
     ui->setupUi(this);
     ui->label->setText(name);
     ui->label->setToolTip(description);
+    setAccessibleName(name);
 }
 
 ComboBox::~ComboBox()

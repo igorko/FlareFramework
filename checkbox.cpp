@@ -8,6 +8,7 @@ CheckBox::CheckBox(QString name, QString description, QWidget *parent) :
     ui->setupUi(this);
     ui->checkBox->setText(name);
     ui->checkBox->setToolTip(description);
+    setAccessibleName(name);
 }
 
 CheckBox::~CheckBox()

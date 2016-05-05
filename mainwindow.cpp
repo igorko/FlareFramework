@@ -16,6 +16,7 @@
 #include "twospinbox.h"
 #include "twostringlists.h"
 #include "combobox.h"
+#include "elementslist.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -24,15 +25,15 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     menuBar()->setNativeMenuBar(false);
 
-    predefinedNameTypeElements.append("ItemManager: Types");
-    predefinedNameTypeElements.append("ItemManager: Items");
-    predefinedNameTypeElements.append("ItemManager: Qualities");
-    predefinedNameTypeElements.append("ItemManager: Sets");
-    predefinedNameTypeElements.append("Effects");
-    predefinedNameTypeElements.append("Powers");
-    predefinedNameTypeElements.append("QuestLog");
-    predefinedNameTypeElements.append("Cutscene");
-    predefinedNameTypeElements.append("NPC");
+    predefinedNameTypeElements[ITEM_TYPES] = -1;
+    predefinedNameTypeElements[ITEMS] = -1;
+    predefinedNameTypeElements[ITEM_QUALITIES] = -1;
+    predefinedNameTypeElements[ITEM_SETS] = -1;
+    predefinedNameTypeElements[EFFECTS] = -1;
+    predefinedNameTypeElements[POWERS] = -1;
+    predefinedNameTypeElements[QUEST_LOG] = -1;
+    predefinedNameTypeElements[CUTSCENE] = -1;
+    predefinedNameTypeElements[NPC] = -1;
 
 
     ParseAttributesXML();
@@ -225,7 +226,8 @@ bool MainWindow::ParseAttributesXML()
 
 void MainWindow::Add_Item()
 {
-    disableAllTabsExceptIndex(TAB_ITEMS);
+    // for testing
+    //disableAllTabsExceptIndex(TAB_ITEMS);
 
     if (!QDir(modPath + QDir::separator() + "items").exists())
         QDir().mkdir(modPath + QDir::separator() + "items");
@@ -235,6 +237,8 @@ void MainWindow::Add_Item()
     //    itemsFile.Create();
 
     std::string path = (modPath + QDir::separator()).toUtf8().constData();
+    itemsHandler = new ItemsHandler(this);
+    itemsHandler->loadItems(path);
     ui->Items->loadItems(path);
 }
 
@@ -299,6 +303,11 @@ void MainWindow::BuildUI()
         tab->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
         tab->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
 
+        layout->addWidget(new ElementsList(),
+                          rowOnTab, columnOntab, Qt::AlignLeft | Qt::AlignTop);
+
+        columnOntab++;
+
         NameTypeElementAttributes attributes = it.value();
         NameTypeElementAttributes::iterator attrEnd = attributes.end();
         for (NameTypeElementAttributes::iterator attrIt = attributes.begin(); attrIt != attrEnd; ++attrIt)
@@ -312,7 +321,7 @@ void MainWindow::BuildUI()
             }
             else if (attrType == "icon_id")
             {
-                layout->addWidget(new IconChooser(),
+                layout->addWidget(new IconChooser(attribute),
                                   rowOnTab, columnOntab, Qt::AlignLeft | Qt::AlignTop);
             }
             else if (attrType == "float")
@@ -352,7 +361,7 @@ void MainWindow::BuildUI()
             }
             else if (attrType == "filename (string), min quantity (int), max quantity (int)")
             {
-                layout->addWidget(new LootAnimationWidget(),
+                layout->addWidget(new LootAnimationWidget(attribute),
                                   rowOnTab, columnOntab, Qt::AlignLeft | Qt::AlignTop);
             }
             else

@@ -12,10 +12,9 @@ class LootAnimationWidget : public QFrame
     Q_OBJECT
 
 public:
-    explicit LootAnimationWidget(QWidget *parent = 0);
+    explicit LootAnimationWidget(QString name, QWidget *parent = 0);
     ~LootAnimationWidget();
 
-private:
     Ui::LootAnimationWidget *ui;
 };
 

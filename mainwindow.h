@@ -5,6 +5,8 @@
 #include <QXmlStreamReader>
 #include <QMap>
 
+#include "itemshandler.h"
+
 const int TAB_MAIN = 0;
 const int TAB_ITEMS = 1;
 const int TAB_POWERS = 2;
@@ -17,6 +19,16 @@ const int MENU_CREATURES = 1;
 const int MENU_MENUS = 2;
 const int MENU_STUFF = 3;
 const int MENU_STORY = 5;
+
+#define ITEM_TYPES      "ItemManager: Types"
+#define ITEMS           "ItemManager: Items"
+#define ITEM_QUALITIES  "ItemManager: Qualities"
+#define ITEM_SETS       "ItemManager: Sets"
+#define EFFECTS         "Effects"
+#define POWERS          "Powers"
+#define QUEST_LOG       "QuestLog"
+#define CUTSCENE        "Cutscene"
+#define NPC             "NPC"
 
 //key is property name, value is pair<type, description>
 typedef QMap<QString, QPair<QString, QString> > NameTypeElementAttributes;
@@ -34,6 +46,10 @@ public:
     ~MainWindow();
     
     static QString modPath;
+
+    Ui::MainWindow *ui;
+
+    QMap<QString, int> predefinedNameTypeElements;
 
 public slots:
     void enableSaving();
@@ -57,7 +73,6 @@ private slots:
     void New_Mod();
 
 private:
-    Ui::MainWindow *ui;
 
     void BuildUI();
     void disableAllTabsExceptIndex(int index);
@@ -73,7 +88,7 @@ private:
     QXmlStreamReader xml;
     QMap<QString, NameTypeElementAttributes> m_nameTypeElements;
     QMap<QString, QString> m_nameTypeElementDescriptions;
-    QVector<QString> predefinedNameTypeElements;
+    ItemsHandler * itemsHandler;
 
 };
 

@@ -8,6 +8,7 @@ StringListWidget::StringListWidget(QString name, QString description, QWidget *p
     ui->setupUi(this);
     ui->Label->setText(name);
     ui->Label->setToolTip(description);
+    setAccessibleName(name);
 }
 
 StringListWidget::~StringListWidget()

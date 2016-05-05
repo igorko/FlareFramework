@@ -8,6 +8,7 @@ TwoStringLists::TwoStringLists(QString name, QString description, QWidget *paren
     ui->setupUi(this);
     ui->label->setText(name);
     ui->label->setToolTip(description);
+    setAccessibleName(name);
 }
 
 TwoStringLists::~TwoStringLists()

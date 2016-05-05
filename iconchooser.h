@@ -12,11 +12,11 @@ class IconChooser : public QFrame
     Q_OBJECT
 
 public:
-    explicit IconChooser(QWidget *parent = 0);
+    explicit IconChooser(QString name, QWidget *parent = 0);
     ~IconChooser();
 
-private:
     Ui::IconChooser *ui;
+
 };
 
 #endif // ICONCHOOSER_H

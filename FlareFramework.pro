@@ -36,7 +36,9 @@ SOURCES += main.cpp\
     lootanimationwidget.cpp \
     twospinbox.cpp \
     twostringlists.cpp \
-    combobox.cpp
+    combobox.cpp \
+    elementslist.cpp \
+    itemshandler.cpp
 
 HEADERS  += mainwindow.h \
     itemswidget.h \
@@ -52,7 +54,9 @@ HEADERS  += mainwindow.h \
     lootanimationwidget.h \
     twospinbox.h \
     twostringlists.h \
-    combobox.h
+    combobox.h \
+    elementslist.h \
+    itemshandler.h
 
 FORMS    += mainwindow.ui \
     itemswidget.ui \
@@ -66,6 +70,7 @@ FORMS    += mainwindow.ui \
     lootanimationwidget.ui \
     twospinbox.ui \
     twostringlists.ui \
-    combobox.ui
+    combobox.ui \
+    elementslist.ui
 
 DEFINES  += EDITOR
