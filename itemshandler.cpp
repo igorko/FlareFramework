@@ -23,6 +23,8 @@
 
 #include <QDir>
 #include <QTextBlock>
+#include <QLineEdit>
+#include <QSpinBox>
 
 ItemsHandler::ItemsHandler(MainWindow * _mainWindow, QObject *parent) :
     mainWindow(_mainWindow),
@@ -435,7 +437,7 @@ void ItemsHandler::pushBtn()
     setItemsAreEdited(true);
 }
 
-void ItemsHandler::itemsList(QListWidgetItem *item)
+void ItemsHandler::selectItem(QListWidgetItem *item)
 {
     /*
     ui->pushBtn->setEnabled(true);
@@ -899,7 +901,7 @@ void ItemsHandler::setupConnections()
 
     connect(ui->pushBtn, SIGNAL(clicked()), SLOT(pushBtn()));
 
-    connect(ui->itemsList, SIGNAL(itemClicked(QListWidgetItem*)), SLOT(itemsList(QListWidgetItem*)));
+    connect(ui->itemsList, SIGNAL(itemClicked(QListWidgetItem*)), SLOT(selectItem(QListWidgetItem*)));
 
     connect(ui->absorbMin, SIGNAL(valueChanged(int)), SLOT(absorbMin(int)));
 

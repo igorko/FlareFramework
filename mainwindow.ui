@@ -30,25 +30,11 @@
        <string/>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="Main">
        <attribute name="title">
         <string>Main</string>
-       </attribute>
-      </widget>
-      <widget class="ItemsWidget" name="Items">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="verticalScrollBarPolicy">
-        <enum>Qt::ScrollBarAlwaysOn</enum>
-       </property>
-       <attribute name="title">
-        <string>Items</string>
        </attribute>
       </widget>
       <widget class="QWidget" name="Powers">
@@ -300,14 +286,6 @@
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <customwidgets>
-  <customwidget>
-   <class>ItemsWidget</class>
-   <extends>QScrollArea</extends>
-   <header location="global">itemswidget.h</header>
-   <container>1</container>
-  </customwidget>
- </customwidgets>
  <resources/>
  <connections/>
 </ui>

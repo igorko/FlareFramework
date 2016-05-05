@@ -42,7 +42,7 @@ public slots:
 
     void pushBtn();
 
-    void itemsList(QListWidgetItem *item);
+    void selectItem(QListWidgetItem *item);
 
     void finishIconAdd();
     void skipIconAdd();

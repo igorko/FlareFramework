@@ -3,6 +3,7 @@
 #include <QFile>
 #include <QCheckBox>
 #include <QLabel>
+#include <QScrollArea>
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
@@ -39,17 +40,16 @@ MainWindow::MainWindow(QWidget *parent) :
     ParseAttributesXML();
 
     setMenusEnabled(false);
-    disableAllTabsExceptIndex(0);
 
     modPath = "";
-
-    connect(ui->Items, SIGNAL(itemsNotEdited()), this, SLOT(disableSaving()));
-    connect(ui->Items, SIGNAL(itemsWereEdited()), this, SLOT(enableSaving()));
 }
 
 void MainWindow::setupConnections()
 {
     connect(itemsHandler->CloseButton(), SIGNAL(clicked()), SLOT(itemClose()));
+
+    connect(itemsHandler, SIGNAL(itemsNotEdited()), this, SLOT(disableSaving()));
+    connect(itemsHandler, SIGNAL(itemsWereEdited()), this, SLOT(enableSaving()));
 
     connect(ui->actionClose_Mod, SIGNAL(triggered()), SLOT(Close_Mod()));
 
@@ -86,7 +86,7 @@ void MainWindow::disableSaving()
 void MainWindow::itemClose()
 {
     disableAllTabsExceptIndex(TAB_MAIN);
-    ui->Items->clearItemsList();
+    itemsHandler->clearItemsList();
 }
 
 void MainWindow::disableAllTabsExceptIndex(int index)
@@ -132,18 +132,18 @@ void MainWindow::setMenusEnabled(bool state)
 void MainWindow::Close_Mod()
 {
     if (modPath == "") return;
-    if (ui->Items->itemsAreEdited())
+    if (itemsHandler->itemsAreEdited())
     {
         QMessageBox::StandardButton reply = QMessageBox::question(this, "Save mod", "Save mod before closing?", QMessageBox::Yes|QMessageBox::No);
 
         if (reply == QMessageBox::Yes)
         {
-            ui->Items->saveItems(modPath);
+            itemsHandler->saveItems(modPath);
         }
     }
     modPath = "";
     setMenusEnabled(false);
-    ui->Items->clearItemsList();
+    itemsHandler->clearItemsList();
 
     CloseAll();
 }
@@ -221,8 +221,7 @@ bool MainWindow::ParseAttributesXML()
 
 void MainWindow::Add_Item()
 {
-    // for testing
-    //disableAllTabsExceptIndex(TAB_ITEMS);
+    disableAllTabsExceptIndex(TAB_ITEMS);
 
     if (!QDir(modPath + QDir::separator() + "items").exists())
         QDir().mkdir(modPath + QDir::separator() + "items");
@@ -233,13 +232,13 @@ void MainWindow::Add_Item()
 
     std::string path = (modPath + QDir::separator()).toUtf8().constData();
     itemsHandler->loadItems(path);
-    ui->Items->loadItems(path);
+    itemsHandler->loadItems(path);
 }
 
 void MainWindow::Save_Mod()
 {
     QString filename = modPath + QDir::separator() + "items" + QDir::separator() + "items.txt";
-    ui->Items->saveItems(filename.toUtf8().constData());
+    itemsHandler->saveItems(filename.toUtf8().constData());
     //ToDo
 
 }
@@ -375,7 +374,16 @@ void MainWindow::BuildUI()
                 rowOnTab++;
             }
         }
-        int tabIndex = ui->tabWidget->addTab(tab, widgetTabName);
+        int tabIndex = -1;
+        // temporary solution before refactor
+        if (widgetTabName == ITEMS)
+        {
+            tabIndex = ui->tabWidget->insertTab(TAB_ITEMS, tab, widgetTabName);
+        }
+        else
+        {
+            tabIndex = ui->tabWidget->addTab(tab, widgetTabName);
+        }
         ui->tabWidget->setTabToolTip(tabIndex, m_nameTypeElementDescriptions[widgetTabName]);
         predefinedNameTypeElements[widgetTabName] = tabIndex;
 
@@ -384,4 +392,5 @@ void MainWindow::BuildUI()
 
     itemsHandler = new ItemsHandler(this);
     setupConnections();
+    disableAllTabsExceptIndex(0);
 }
