@@ -5,6 +5,12 @@
 
 class EditorItemManager;
 class MainWindow;
+class QGridLayout;
+class QListWidgetItem;
+class QComboBox;
+class QSpinBox;
+class QLineEdit;
+class QPlainTextEdit;
 
 class ItemsHandler : public QObject
 {
@@ -28,13 +34,15 @@ signals:
     void itemsNotEdited();
 
 public slots:
+    QObject * CloseButton();
+
     void addNewItem();
 
     void clearBtn();
 
     void pushBtn();
 
-    //void itemsList(QListWidgetItem *item);
+    void itemsList(QListWidgetItem *item);
 
     void finishIconAdd();
     void skipIconAdd();
@@ -112,24 +120,23 @@ private slots:
 private:
     void collectFileLists(const std::string& path);
 
-    //void checkComboBoxForError(QComboBox* widget, const QString& errorText);
-    //void markNotDefaultSpinBox(QSpinBox* widget, int value, int defaultValue);
+    void checkComboBoxForError(QComboBox* widget, const QString& errorText);
+    void markNotDefaultSpinBox(QSpinBox* widget, int value, int defaultValue);
 
-    //void markNotEmptyLineEdit(QLineEdit* widget, const QString& text);
-    //void markNotEmptyPlainTextEdit(QPlainTextEdit* widget);
+    void markNotEmptyLineEdit(QLineEdit* widget, const QString& text);
+    void markNotEmptyPlainTextEdit(QPlainTextEdit* widget);
 
-    //void selectComboBoxItemByText(QComboBox* widget, const QString& text);
+    void selectComboBoxItemByText(QComboBox* widget, const QString& text);
     void setupConnections();
 
-    EditorItemManager * items;
+    MainWindow * mainWindow;
+    QGridLayout * itemsLayout;
 
+    EditorItemManager * items;
     bool itemsEdited;
 
     QString editedStyle;
     QString invalidStyle;
-
-    MainWindow * mainWindow;
-
 };
 
 #endif // ITEMSHANDLER_H

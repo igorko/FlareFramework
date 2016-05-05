@@ -2,10 +2,10 @@
 #include <QMessageBox>
 #include <QFile>
 #include <QCheckBox>
+#include <QLabel>
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "ui_itemswidget.h"
 #include "lineedit.h"
 #include "spinbox.h"
 #include "doublespinbox.h"
@@ -17,6 +17,7 @@
 #include "twostringlists.h"
 #include "combobox.h"
 #include "elementslist.h"
+#include "controlframe.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -35,18 +36,12 @@ MainWindow::MainWindow(QWidget *parent) :
     predefinedNameTypeElements[CUTSCENE] = -1;
     predefinedNameTypeElements[NPC] = -1;
 
-
     ParseAttributesXML();
 
     setMenusEnabled(false);
     disableAllTabsExceptIndex(0);
 
-    // add tabs and not disable unselected, for testing
-    BuildUI();
-
     modPath = "";
-
-    setupConnections();
 
     connect(ui->Items, SIGNAL(itemsNotEdited()), this, SLOT(disableSaving()));
     connect(ui->Items, SIGNAL(itemsWereEdited()), this, SLOT(enableSaving()));
@@ -54,7 +49,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 void MainWindow::setupConnections()
 {
-    connect(ui->Items->ui->itemClose, SIGNAL(clicked()), SLOT(itemClose()));
+    connect(itemsHandler->CloseButton(), SIGNAL(clicked()), SLOT(itemClose()));
 
     connect(ui->actionClose_Mod, SIGNAL(triggered()), SLOT(Close_Mod()));
 
@@ -237,7 +232,6 @@ void MainWindow::Add_Item()
     //    itemsFile.Create();
 
     std::string path = (modPath + QDir::separator()).toUtf8().constData();
-    itemsHandler = new ItemsHandler(this);
     itemsHandler->loadItems(path);
     ui->Items->loadItems(path);
 }
@@ -384,5 +378,10 @@ void MainWindow::BuildUI()
         int tabIndex = ui->tabWidget->addTab(tab, widgetTabName);
         ui->tabWidget->setTabToolTip(tabIndex, m_nameTypeElementDescriptions[widgetTabName]);
         predefinedNameTypeElements[widgetTabName] = tabIndex;
+
+        layout->addWidget(new ControlFrame("controlframe"), rowOnTab, columnOntab, Qt::AlignLeft | Qt::AlignTop);
     }
+
+    itemsHandler = new ItemsHandler(this);
+    setupConnections();
 }

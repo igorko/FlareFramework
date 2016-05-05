@@ -45,6 +45,8 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
     
+    void BuildUI();
+
     static QString modPath;
 
     Ui::MainWindow *ui;
@@ -73,8 +75,6 @@ private slots:
     void New_Mod();
 
 private:
-
-    void BuildUI();
     void disableAllTabsExceptIndex(int index);
     void setMenusEnabled(bool state);
     void setupConnections();

@@ -1,6 +1,7 @@
 #include "itemshandler.h"
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+
 #include "iconchooser.h"
 #include "ui_iconchooser.h"
 
@@ -10,22 +11,40 @@
 #include "API/Animation.h"
 
 #include "iconselector.h"
+
 #include "elementslist.h"
 #include "ui_elementslist.h"
+
 #include "lootanimationwidget.h"
 #include "ui_lootanimationwidget.h"
 
+#include "controlframe.h"
+#include "ui_controlframe.h"
+
 #include <QDir>
+#include <QTextBlock>
 
 ItemsHandler::ItemsHandler(MainWindow * _mainWindow, QObject *parent) :
     mainWindow(_mainWindow),
+    itemsLayout(NULL),
     QObject(parent),
     items(NULL),
     itemsEdited(false),
     editedStyle("background-color:#66FF99;"),
     invalidStyle("background-color:#FF3333;")
 {
-    //ui->iconPasteLabel->hide();
+    QScrollArea * itemsTab = dynamic_cast<QScrollArea *>(mainWindow->ui->tabWidget->widget(mainWindow->predefinedNameTypeElements[ITEMS]));
+    itemsLayout = dynamic_cast<QGridLayout *>(itemsTab->widget()->layout());
+    for (int i = 0; i < itemsLayout->count(); i++)
+    {
+        QWidget * widget = itemsLayout->itemAt(i)->widget();
+
+        if (widget && widget->accessibleName() == "icon")
+        {
+            dynamic_cast<IconChooser*>(widget)->ui->iconPasteLabel->hide();
+            break;
+        }
+    }
     setupConnections();
 }
 
@@ -40,11 +59,9 @@ void ItemsHandler::saveItems(const QString &path)
     if (items != NULL) items->save(filename.toUtf8().constData());
 
     filename = path + QDir::separator() + "images" + QDir::separator() + "icons" + QDir::separator() + "icons.png";
-    QScrollArea * itemsTab = dynamic_cast<QScrollArea *>(mainWindow->ui->tabWidget->widget(mainWindow->predefinedNameTypeElements[ITEMS]));
-    QGridLayout * layout = dynamic_cast<QGridLayout *>(itemsTab->widget()->layout());
-    for (int i = 0; i < layout->count(); i++)
+    for (int i = 0; i < itemsLayout->count(); i++)
     {
-        QWidget * widget = layout->itemAt(i)->widget();
+        QWidget * widget = itemsLayout->itemAt(i)->widget();
 
         if (widget && widget->accessibleName() == "icon")
         {
@@ -65,11 +82,9 @@ void ItemsHandler::loadItems(const std::string &path)
         {
             QListWidgetItem* item = new QListWidgetItem(qString(items->items[i].name));
             item->setData(Qt::UserRole, i);
-            QScrollArea * itemsTab = dynamic_cast<QScrollArea *>(mainWindow->ui->tabWidget->widget(mainWindow->predefinedNameTypeElements[ITEMS]));
-            QGridLayout * layout = dynamic_cast<QGridLayout *>(itemsTab->widget()->layout());
-            for (int i = 0; i < layout->count(); i++)
+            for (int i = 0; i < itemsLayout->count(); i++)
             {
-                QWidget * widget = layout->itemAt(i)->widget();
+                QWidget * widget = itemsLayout->itemAt(i)->widget();
 
                 if (widget && widget->accessibleName() == "elementslist")
                 {
@@ -152,11 +167,9 @@ void ItemsHandler::loadItems(const std::string &path)
 
 void ItemsHandler::clearItemsList()
 {
-    QScrollArea * itemsTab = dynamic_cast<QScrollArea *>(mainWindow->ui->tabWidget->widget(mainWindow->predefinedNameTypeElements[ITEMS]));
-    QGridLayout * layout = dynamic_cast<QGridLayout *>(itemsTab->widget()->layout());
-    for (int i = 0; i < layout->count(); i++)
+    for (int i = 0; i < itemsLayout->count(); i++)
     {
-        QWidget * widget = layout->itemAt(i)->widget();
+        QWidget * widget = itemsLayout->itemAt(i)->widget();
 
         if (widget && widget->accessibleName() == "elementslist")
         {
@@ -191,11 +204,9 @@ void ItemsHandler::addNewItem()
 
     QListWidgetItem* item = new QListWidgetItem("newItem");
     item->setData(Qt::UserRole, index);
-    QScrollArea * itemsTab = dynamic_cast<QScrollArea *>(mainWindow->ui->tabWidget->widget(mainWindow->predefinedNameTypeElements[ITEMS]));
-    QGridLayout * layout = dynamic_cast<QGridLayout *>(itemsTab->widget()->layout());
-    for (int i = 0; i < layout->count(); i++)
+    for (int i = 0; i < itemsLayout->count(); i++)
     {
-        QWidget * widget = layout->itemAt(i)->widget();
+        QWidget * widget = itemsLayout->itemAt(i)->widget();
 
         if (widget && widget->accessibleName() == "elementslist")
         {
@@ -250,11 +261,9 @@ void ItemsHandler::clearBtn()
     ui->reqOff->setValue(0);
     ui->reqDef->setValue(0);
 */
-    QScrollArea * itemsTab = dynamic_cast<QScrollArea *>(mainWindow->ui->tabWidget->widget(mainWindow->predefinedNameTypeElements[ITEMS]));
-    QGridLayout * layout = dynamic_cast<QGridLayout *>(itemsTab->widget()->layout());
-    for (int i = 0; i < layout->count(); i++)
+    for (int i = 0; i < itemsLayout->count(); i++)
     {
-        QWidget * widget = layout->itemAt(i)->widget();
+        QWidget * widget = itemsLayout->itemAt(i)->widget();
 
         if (widget && widget->accessibleName() == "icon")
         {
@@ -425,9 +434,10 @@ void ItemsHandler::pushBtn()
     */
     setItemsAreEdited(true);
 }
-/*
+
 void ItemsHandler::itemsList(QListWidgetItem *item)
 {
+    /*
     ui->pushBtn->setEnabled(true);
     int index = item->data(Qt::UserRole).toInt();
 
@@ -606,9 +616,9 @@ void ItemsHandler::itemsList(QListWidgetItem *item)
 
         //timer->start();
     }
-
+    */
 }
-*/
+
 void ItemsHandler::absorbMin(int arg1)
 {
     //markNotDefaultSpinBox(ui->absorbMin, arg1, 0);
@@ -813,7 +823,20 @@ std::string ItemsHandler::stdString(QString value)
 {
     return value.toUtf8().constData();
 }
-/*
+
+QObject *ItemsHandler::CloseButton()
+{
+    for (int i = 0; i < itemsLayout->count(); i++)
+    {
+        QWidget * widget = itemsLayout->itemAt(i)->widget();
+
+        if (widget && widget->accessibleName() == "controlframe")
+        {
+            return dynamic_cast<ControlFrame*>(widget)->ui->itemClose;
+        }
+    }
+}
+
 void ItemsHandler::checkComboBoxForError(QComboBox *widget, const QString &errorText)
 {
     if (widget->count() == 0)
@@ -866,7 +889,7 @@ void ItemsHandler::selectComboBoxItemByText(QComboBox *widget, const QString &te
         }
     }
 }
-*/
+
 void ItemsHandler::setupConnections()
 {
     /*
@@ -955,11 +978,9 @@ void ItemsHandler::setupConnections()
 
 void ItemsHandler::finishIconAdd()
 {
-    QScrollArea * itemsTab = dynamic_cast<QScrollArea *>(mainWindow->ui->tabWidget->widget(mainWindow->predefinedNameTypeElements[ITEMS]));
-    QGridLayout * layout = dynamic_cast<QGridLayout *>(itemsTab->widget()->layout());
-    for (int i = 0; i < layout->count(); i++)
+    for (int i = 0; i < itemsLayout->count(); i++)
     {
-        QWidget * widget = layout->itemAt(i)->widget();
+        QWidget * widget = itemsLayout->itemAt(i)->widget();
 
         if (widget && widget->accessibleName() == "icon")
         {
@@ -973,11 +994,9 @@ void ItemsHandler::finishIconAdd()
 
 void ItemsHandler::skipIconAdd()
 {
-    QScrollArea * itemsTab = dynamic_cast<QScrollArea *>(mainWindow->ui->tabWidget->widget(mainWindow->predefinedNameTypeElements[ITEMS]));
-    QGridLayout * layout = dynamic_cast<QGridLayout *>(itemsTab->widget()->layout());
-    for (int i = 0; i < layout->count(); i++)
+    for (int i = 0; i < itemsLayout->count(); i++)
     {
-        QWidget * widget = layout->itemAt(i)->widget();
+        QWidget * widget = itemsLayout->itemAt(i)->widget();
 
         if (widget && widget->accessibleName() == "icon")
         {
@@ -994,11 +1013,9 @@ void ItemsHandler::requestIconAdd()
     if (ret == QDialog::Accepted)
     {
         QImage newIcon = dialog->getSelection();
-        QScrollArea * itemsTab = dynamic_cast<QScrollArea *>(mainWindow->ui->tabWidget->widget(mainWindow->predefinedNameTypeElements[ITEMS]));
-        QGridLayout * layout = dynamic_cast<QGridLayout *>(itemsTab->widget()->layout());
-        for (int i = 0; i < layout->count(); i++)
+        for (int i = 0; i < itemsLayout->count(); i++)
         {
-            QWidget * widget = layout->itemAt(i)->widget();
+            QWidget * widget = itemsLayout->itemAt(i)->widget();
 
             if (widget && widget->accessibleName() == "icon")
             {
@@ -1009,7 +1026,7 @@ void ItemsHandler::requestIconAdd()
         }
     }
 }
-/*
+
 void ItemsHandler::markNotDefaultSpinBox(QSpinBox *widget, int value, int defaultValue)
 {
     if (value != defaultValue)
@@ -1021,14 +1038,12 @@ void ItemsHandler::markNotDefaultSpinBox(QSpinBox *widget, int value, int defaul
         widget->setStyleSheet("");
     }
 }
-*/
+
 void ItemsHandler::lootAnimAdd()
 {
-    QScrollArea * itemsTab = dynamic_cast<QScrollArea *>(mainWindow->ui->tabWidget->widget(mainWindow->predefinedNameTypeElements[ITEMS]));
-    QGridLayout * layout = dynamic_cast<QGridLayout *>(itemsTab->widget()->layout());
-    for (int i = 0; i < layout->count(); i++)
+    for (int i = 0; i < itemsLayout->count(); i++)
     {
-        QWidget * widget = layout->itemAt(i)->widget();
+        QWidget * widget = itemsLayout->itemAt(i)->widget();
 
         if (widget && widget->accessibleName() == "loot_animation")
         {

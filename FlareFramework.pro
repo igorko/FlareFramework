@@ -38,7 +38,8 @@ SOURCES += main.cpp\
     twostringlists.cpp \
     combobox.cpp \
     elementslist.cpp \
-    itemshandler.cpp
+    itemshandler.cpp \
+    controlframe.cpp
 
 HEADERS  += mainwindow.h \
     itemswidget.h \
@@ -56,7 +57,8 @@ HEADERS  += mainwindow.h \
     twostringlists.h \
     combobox.h \
     elementslist.h \
-    itemshandler.h
+    itemshandler.h \
+    controlframe.h
 
 FORMS    += mainwindow.ui \
     itemswidget.ui \
@@ -71,6 +73,7 @@ FORMS    += mainwindow.ui \
     twospinbox.ui \
     twostringlists.ui \
     combobox.ui \
-    elementslist.ui
+    elementslist.ui \
+    controlframe.ui
 
 DEFINES  += EDITOR
