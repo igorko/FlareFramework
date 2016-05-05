@@ -17,6 +17,8 @@ public:
 
     void clear();
 
+    void setText(QString text);
+
 private:
     Ui::LineEdit *ui;
 };

@@ -128,31 +128,26 @@ void ItemsHandler::loadItems(const std::string &path)
     {
         ui->itemTypeCB->addItem(qString(items->item_types[i].name), qString(items->item_types[i].id));
     }
-    checkComboBoxForError(ui->itemTypeCB, "items/types.txt is missing or incorrect. Copy it from base mod.");
 
     for (unsigned i = 0; i<items->item_qualities.size(); i++)
     {
         ui->itemQualityCB->addItem(qString(items->item_qualities[i].id));
     }
-    checkComboBoxForError(ui->itemTypeCB, "items/qualities.txt is missing or incorrect. Copy it from base mod.");
 
     for (unsigned i = 0; i<items->EQUIP_FLAGS.size(); i++)
     {
         ui->equipList->addItem(qString(items->EQUIP_FLAGS[i].id));
     }
-    checkComboBoxForError(ui->equipList, "engine/equip_flags.txt is missing or incorrect. Copy it from base mod.");
 
     for (unsigned i = 0; i<items->slot_type.size(); i++)
     {
         ui->slotsList->addItem(qString(items->slot_type[i]));
     }
-    checkComboBoxForError(ui->slotsList, "menus/inventory.txt is missing or incorrect. Copy it from base mod.");
 
     for (unsigned i = 0; i<items->ELEMENTS.size(); i++)
     {
         ui->bonusList->addItem(qString(items->ELEMENTS[i].id) + "_resist");
     }
-    checkComboBoxForError(ui->bonusList, "engine/elements.txt is missing or incorrect. Copy it from base mod.");
 
     ui->bonusList->addItem("speed");
     ui->bonusList->addItem("physical");
@@ -168,12 +163,19 @@ void ItemsHandler::loadItems(const std::string &path)
     {
         ui->stepSoundList->addItem(qString(items->step_def[i].id));
     }
-    checkComboBoxForError(ui->stepSoundList, "items/step_sounds.txt is missing or incorrect. Copy it from base mod.");
 
     for (unsigned i = 0; i<items->HERO_CLASSES.size(); i++)
     {
         ui->classList->addItem(qString(items->HERO_CLASSES[i].name));
     }
+
+    checkComboBoxForError(ui->itemTypeCB, "items/types.txt is missing or incorrect. Copy it from base mod.");
+    checkComboBoxForError(ui->itemTypeCB, "items/qualities.txt is missing or incorrect. Copy it from base mod.");
+    checkComboBoxForError(ui->equipList, "engine/equip_flags.txt is missing or incorrect. Copy it from base mod.");
+    checkComboBoxForError(ui->slotsList, "menus/inventory.txt is missing or incorrect. Copy it from base mod.");
+    checkComboBoxForError(ui->bonusList, "engine/elements.txt is missing or incorrect. Copy it from base mod.");
+    checkComboBoxForError(ui->stepSoundList, "items/step_sounds.txt is missing or incorrect. Copy it from base mod.");
+
     */
 
     for (int i = 0; i < itemsLayout->count(); i++)
@@ -258,44 +260,49 @@ void ItemsHandler::clearBtn()
     for (int i = 0; i < itemsLayout->count(); i++)
     {
         QWidget * widget = itemsLayout->itemAt(i)->widget();
-
-        if (widget && widget->metaObject()->className() == "ComboBox")
+        if (widget == NULL)
+        {
+            continue;
+        }
+        QString name = QString(widget->metaObject()->className());
+        if (name == "ComboBox")
         {
             dynamic_cast<ComboBox*>(widget)->setCurrentIndex(0);
         }
-        else if (widget && widget->metaObject()->className() == "SpinBox")
+        else if (name == "SpinBox")
         {
             dynamic_cast<SpinBox*>(widget)->setValue(0);
         }
-        else if (widget && widget->metaObject()->className() == "DoubleSpinBox")
+        else if (name == "DoubleSpinBox")
         {
             dynamic_cast<DoubleSpinBox*>(widget)->setValue(0.0);
         }
-        else if (widget && widget->metaObject()->className() == "LineEdit")
+        else if (name == "LineEdit")
         {
             dynamic_cast<LineEdit*>(widget)->clear();
         }
-        else if (widget && widget->metaObject()->className() == "StringListWidget")
+        else if (name == "StringListWidget")
         {
             dynamic_cast<StringListWidget*>(widget)->clear();
         }
-        else if (widget && widget->metaObject()->className() == "TwoSpinBox")
+        else if (name == "TwoSpinBox")
         {
-            dynamic_cast<TwoSpinBox*>(widget)->setValue(0);
+            dynamic_cast<TwoSpinBox*>(widget)->setValue1(0);
+            dynamic_cast<TwoSpinBox*>(widget)->setValue2(0);
         }
-        else if (widget && widget->metaObject()->className() == "TwoStringLists")
+        else if (name == "TwoStringLists")
         {
             dynamic_cast<TwoStringLists*>(widget)->clear();
         }
-        else if (widget && widget->metaObject()->className() == "LootAnimationWidget")
+        else if (name == "LootAnimationWidget")
         {
             dynamic_cast<LootAnimationWidget*>(widget)->clear();
         }
-        else if (widget && widget->metaObject()->className() == "IconChooser")
+        else if (name == "IconChooser")
         {
             dynamic_cast<IconChooser*>(widget)->setActiveIcon(0);
         }
-        else if (widget && widget->metaObject()->className() == "CheckBox")
+        else if (name == "CheckBox")
         {
             dynamic_cast<CheckBox*>(widget)->setChecked(false);
         }
@@ -464,7 +471,7 @@ void ItemsHandler::pushBtn()
     setItemsAreEdited(true);
 }
 
-void ItemsHandler::selectItem(QListWidgetItem *item)
+void ItemsHandler::selectItem(QListWidgetItem *_item)
 {
     clearBtn();
 
@@ -483,26 +490,147 @@ void ItemsHandler::selectItem(QListWidgetItem *item)
         }
     }
 
-    int index = item->data(Qt::UserRole).toInt();
-    /*
-    // TextEdits
-    ui->itemName->setText(qString(items->items[index].name));
-    ui->pickupStatus->setText(qString(items->items[index].pickup_status));
-    ui->powerDesc->setText(qString(items->items[index].power_desc));
-    ui->itemFlavor->setText(qString(items->items[index].flavor));
-    ui->itemBook->setText(qString(items->items[index].book));
+    int index = _item->data(Qt::UserRole).toInt();
+    Item item = items->items[index];
 
+    for (int i = 0; i < itemsLayout->count(); i++)
+    {
+        QWidget * widget = itemsLayout->itemAt(i)->widget();
+        if (widget == NULL)
+        {
+            continue;
+        }
+        QString name = QString(widget->metaObject()->className());
+        if (name == "LineEdit")
+        {
+            if (widget->accessibleName() == "name")
+            {
+                dynamic_cast<LineEdit*>(widget)->setText(qString(item.name));
+            }
+            else if (widget->accessibleName() == "pickup_status")
+            {
+                dynamic_cast<LineEdit*>(widget)->setText(qString(item.pickup_status));
+            }
+            else if (widget->accessibleName() == "power_desc")
+            {
+                dynamic_cast<LineEdit*>(widget)->setText(qString(item.power_desc));
+            }
+            else if (widget->accessibleName() == "flavor")
+            {
+                dynamic_cast<LineEdit*>(widget)->setText(qString(item.flavor));
+            }
+            else if (widget->accessibleName() == "book")
+            {
+                dynamic_cast<LineEdit*>(widget)->setText(qString(item.book));
+            }
+        }
+        else if (name == "SpinBox")
+        {
+            if (widget->accessibleName() == "level")
+            {
+                dynamic_cast<SpinBox*>(widget)->setValue(item.level);
+            }
+            else if (widget->accessibleName() == "price")
+            {
+                dynamic_cast<SpinBox*>(widget)->setValue(item.price);
+            }
+            else if (widget->accessibleName() == "price_sell")
+            {
+                dynamic_cast<SpinBox*>(widget)->setValue(item.price_sell);
+            }
+            else if (widget->accessibleName() == "max_quantity")
+            {
+                dynamic_cast<SpinBox*>(widget)->setValue(item.max_quantity);
+            }
+            else if (widget->accessibleName() == "power")
+            {
+                dynamic_cast<SpinBox*>(widget)->setValue(item.power);
+            }
+        }
+        else if (name == "TwoSpinBox")
+        {
+            if (widget->accessibleName() == "abs")
+            {
+                dynamic_cast<TwoSpinBox*>(widget)->setValue1(item.abs_min);
+                dynamic_cast<TwoSpinBox*>(widget)->setValue2(item.abs_max);
+            }
+            else if (widget->accessibleName() == "dmg_melee")
+            {
+                dynamic_cast<TwoSpinBox*>(widget)->setValue1(item.dmg_melee_min);
+                dynamic_cast<TwoSpinBox*>(widget)->setValue2(item.dmg_melee_max);
+            }
+            else if (widget->accessibleName() == "dmg_ment")
+            {
+                dynamic_cast<TwoSpinBox*>(widget)->setValue1(item.dmg_ment_min);
+                dynamic_cast<TwoSpinBox*>(widget)->setValue2(item.dmg_ment_max);
+            }
+            else if (widget->accessibleName() == "dmg_ranged")
+            {
+                dynamic_cast<TwoSpinBox*>(widget)->setValue1(item.dmg_ranged_min);
+                dynamic_cast<TwoSpinBox*>(widget)->setValue2(item.dmg_ranged_max);
+            }
+        }
+        else if (widget->accessibleName() == "icon")
+        {
+            dynamic_cast<IconChooser*>(widget)->ui->iconsView->setActiveIcon(item.icon);
+        }
+        else if (widget->accessibleName() == "loot_animation")
+        {
+            LootAnimationWidget * lootAnim = dynamic_cast<LootAnimationWidget*>(widget);
+
+            QVector<QAnimation> animations_v;
+            for (unsigned int i = 0; i < item.loot_animation.size(); i++)
+            {
+                QAnimation anm;
+                anm.name = qString(item.loot_animation[i].name);
+                anm.low = item.loot_animation[i].low;
+                anm.high = item.loot_animation[i].high;
+                animations_v.append(anm);
+            }
+            lootAnim->setValues(animations_v);
+
+            // load item animation if available
+            if (lootAnim->ui->graphicsView->scene() != 0)
+                lootAnim->ui->graphicsView->scene()->clear();
+            if (item.loot_animation.size() > 0)
+            {
+                AnimationSet* animat = new AnimationSet(items->items[index].loot_animation[0].name);
+                int count = animat->getAnimationFrames("power");
+
+                //QImage frame = *animat->sprite;
+
+                //QGraphicsItem *sprite = new QGraphicsPixmapItem(QPixmap::fromImage(frame));
+
+                //QTimeLine *timer = new QTimeLine(20000);
+                //timer->setFrameRange(0, count);
+
+                //QGraphicsItemAnimation *animation = new QGraphicsItemAnimation;
+                //animation->setItem(sprite);
+                //animation->setTimeLine(timer);
+
+                QGraphicsScene* scene = new QGraphicsScene();
+                lootAnim->ui->graphicsView->setScene(scene);
+
+                for (int i = 0; i < count; ++i)
+                {
+                    QImage frame = animat->getAnimation("power")->getCurrentFrame(i);
+                    //QPointF pos = animat->getAnimation("power")->getFramePos(i);
+                    //animation->setPosAt(i / (float)count, pos);
+                    scene->addPixmap(QPixmap::fromImage(frame));
+                }
+
+                //QGraphicsScene* scene = new QGraphicsScene();
+                //ui->graphicsView->setScene(scene);
+
+                //timer->start();
+            }
+        }
+    }
+    /*
     for (unsigned int i = 0; i < items->items[index].replace_power.size(); i++)
     {
         ui->replacePowerFrom->appendPlainText(QString::number(items->items[index].replace_power[i].x));
         ui->replacePowerTo->appendPlainText(QString::number(items->items[index].replace_power[i].y));
-    }
-
-    for (unsigned int i = 0; i < items->items[index].loot_animation.size(); i++)
-    {
-        ui->animations->appendPlainText(qString(items->items[index].loot_animation[i].name));
-        ui->animationMin->appendPlainText(QString::number(items->items[index].loot_animation[i].low));
-        ui->animationMax->appendPlainText(QString::number(items->items[index].loot_animation[i].high));
     }
 
     for (unsigned int i = 0; i < items->items[index].disable_slots.size(); i++)
@@ -576,21 +704,6 @@ void ItemsHandler::selectItem(QListWidgetItem *item)
     QString gfx = qString(items->items[index].gfx);
     selectComboBoxItemByText(ui->equipAnimList, gfx);
 
-    // spinBoxes
-    ui->itemLvlSpin->setValue(items->items[index].level);
-    ui->price->setValue(items->items[index].price);
-    ui->sellPrice->setValue(items->items[index].price_sell);
-    ui->absorbMax->setValue(items->items[index].abs_max);
-    ui->absorbMin->setValue(items->items[index].abs_min);
-    ui->maxQuantity->setValue(items->items[index].max_quantity);
-    ui->meleeMin->setValue(items->items[index].dmg_melee_min);
-    ui->meleeMax->setValue(items->items[index].dmg_melee_max);
-    ui->mentalMin->setValue(items->items[index].dmg_ment_max);
-    ui->mentalMax->setValue(items->items[index].dmg_ment_max);
-    ui->rangMin->setValue(items->items[index].dmg_ranged_max);
-    ui->rangMax->setValue(items->items[index].dmg_ranged_min);
-    ui->power->setValue(items->items[index].power);
-
     for (unsigned int i = 0; i < items->items[index].req_stat.size(); i++)
     {
         int value = items->items[index].req_val[i];
@@ -607,69 +720,23 @@ void ItemsHandler::selectItem(QListWidgetItem *item)
         else if (items->items[index].req_stat[i] == REQUIRES_DEF)
             ui->reqDef->setValue(value);
     }
-
-    ui->iconsView->setActiveIcon(items->items[index].icon);
-
-    // load item animation if available
-    if (ui->graphicsView->scene() != 0)
-        ui->graphicsView->scene()->clear();
-    if (items->items[index].loot_animation.size() > 0)
-    {
-        AnimationSet* animat = new AnimationSet(items->items[index].loot_animation[0].name);
-        int count = animat->getAnimationFrames("power");
-
-        //QImage frame = *animat->sprite;
-
-        //QGraphicsItem *sprite = new QGraphicsPixmapItem(QPixmap::fromImage(frame));
-
-        //QTimeLine *timer = new QTimeLine(20000);
-        //timer->setFrameRange(0, count);
-
-        //QGraphicsItemAnimation *animation = new QGraphicsItemAnimation;
-        //animation->setItem(sprite);
-        //animation->setTimeLine(timer);
-
-
-        QGraphicsScene* scene = new QGraphicsScene();
-        ui->graphicsView->setScene(scene);
-
-        for (int i = 0; i < count; ++i)
-        {
-            QImage frame = animat->getAnimation("power")->getCurrentFrame(i);
-            //QPointF pos = animat->getAnimation("power")->getFramePos(i);
-            //animation->setPosAt(i / (float)count, pos);
-            scene->addPixmap(QPixmap::fromImage(frame));
-        }
-
-        //QGraphicsScene* scene = new QGraphicsScene();
-        //ui->graphicsView->setScene(scene);
-
-        //timer->start();
-    }
     */
 }
 
 void ItemsHandler::collectFileLists(const std::string &path)
 {
     /*
-    ui->sfxCb->clear();
     ui->sfxCb->addItem("");
-
-    ui->lootAnimList->clear();
-
-    ui->equipAnimList->clear();
     ui->equipAnimList->addItem("");
 
     QString modPath = qString(path);
     QDir pathSfx(modPath + "soundfx" + QDir::separator() + "inventory");
     QStringList files = pathSfx.entryList(QDir::Files);
     ui->sfxCb->addItems(files);
-    checkComboBoxForError(ui->sfxCb, "soundfx/inventory folder is empty. Place some sound files in it.");
 
     QDir pathLootAnim(modPath + "animations" + QDir::separator() + "loot");
     files = pathLootAnim.entryList(QDir::Files);
     ui->lootAnimList->addItems(files);
-    checkComboBoxForError(ui->lootAnimList, "animations/loot folder is empty. Place some loot animation files in it.");
 
     QDir pathGfx(modPath + "animations" + QDir::separator() + "avatar" + QDir::separator() + "male");
     files = pathGfx.entryList(QDir::Files);
@@ -678,13 +745,15 @@ void ItemsHandler::collectFileLists(const std::string &path)
         files[i].remove(files[i].size() - 4, 4);
     }
     ui->equipAnimList->addItems(files);
+
+    checkComboBoxForError(ui->sfxCb, "soundfx/inventory folder is empty. Place some sound files in it.");
+    checkComboBoxForError(ui->lootAnimList, "animations/loot folder is empty. Place some loot animation files in it.");
     checkComboBoxForError(ui->equipAnimList, "animations/avatar/male folder is empty. Place some equip animation files in it.");
 */
 }
 
 QString ItemsHandler::qString(std::string value)
 {
-
     return QString::fromUtf8(value.data(), value.size());
 }
 

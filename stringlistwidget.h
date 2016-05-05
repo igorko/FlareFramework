@@ -17,6 +17,8 @@ public:
 
     void clear();
 
+    void setValues(QVector<QString> values);
+
 private:
     Ui::StringListWidget *ui;
 };

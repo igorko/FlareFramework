@@ -16,6 +16,5 @@ IconChooser::~IconChooser()
 
 void IconChooser::setActiveIcon(int value)
 {
-
     ui->iconsView->setActiveIcon(value);
 }

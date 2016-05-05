@@ -3,6 +3,13 @@
 
 #include <QFrame>
 
+struct QAnimation
+{
+    QString name;
+    int low;
+    int high;
+};
+
 namespace Ui {
 class LootAnimationWidget;
 }
@@ -16,6 +23,8 @@ public:
     ~LootAnimationWidget();
 
     void clear();
+
+    void setValues(QVector<QAnimation> values);
 
     Ui::LootAnimationWidget *ui;
 };

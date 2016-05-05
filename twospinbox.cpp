@@ -16,8 +16,12 @@ TwoSpinBox::~TwoSpinBox()
     delete ui;
 }
 
-void TwoSpinBox::setValue(int value)
+void TwoSpinBox::setValue1(int value)
 {
     ui->spinBox->setValue(value);
+}
+
+void TwoSpinBox::setValue2(int value)
+{
     ui->spinBox_2->setValue(value);
 }

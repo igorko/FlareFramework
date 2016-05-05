@@ -17,6 +17,8 @@ public:
 
     void clear();
 
+    void setValues(QVector< QPair<QString, QString> > values);
+
 private:
     Ui::TwoStringLists *ui;
 };

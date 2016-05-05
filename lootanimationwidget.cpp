@@ -23,3 +23,13 @@ void LootAnimationWidget::clear()
     ui->animations->clear();
 
 }
+
+void LootAnimationWidget::setValues(QVector<QAnimation> values)
+{
+    for (unsigned int i = 0; i < values.size(); i++)
+    {
+        ui->animations->appendPlainText(values[i].name);
+        ui->animationMin->appendPlainText(QString::number(values[i].low));
+        ui->animationMax->appendPlainText(QString::number(values[i].high));
+    }
+}

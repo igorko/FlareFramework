@@ -20,3 +20,8 @@ void LineEdit::clear()
 {
     ui->lineEdit->clear();
 }
+
+void LineEdit::setText(QString text)
+{
+    ui->lineEdit->setText(text);
+}

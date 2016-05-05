@@ -21,3 +21,11 @@ void StringListWidget::clear()
     ui->List->clear();
     ui->Selector->setCurrentIndex(0);
 }
+
+void StringListWidget::setValues(QVector<QString> values)
+{
+    for (unsigned int i = 0; i < values.size(); i++)
+    {
+        ui->List->appendPlainText(values[i]);
+    }
+}
