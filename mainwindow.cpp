@@ -20,6 +20,7 @@
 #include "combobox.h"
 #include "elementslist.h"
 #include "controlframe.h"
+#include "comboboxkeyvaluelist.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -348,12 +349,17 @@ void MainWindow::BuildUI()
                 layout->addWidget(new TwoStringLists(attribute, attributes[attribute].second),
                                   rowOnTab, columnOntab, Qt::AlignLeft | Qt::AlignTop);
             }
-            else if (attrType == "filename")
+            else if (attrType == "filename" || attrType == "predefined_string")
             {
                 layout->addWidget(new ComboBox(attribute, attributes[attribute].second),
                                   rowOnTab, columnOntab, Qt::AlignLeft | Qt::AlignTop);
             }
-            else if (attrType == "filename (string), min quantity (int), max quantity (int)")
+            else if (attrType == "list(predefined_string,integer)")
+            {
+                layout->addWidget(new ComboBoxKeyValueList(attribute, attributes[attribute].second),
+                                  rowOnTab, columnOntab, Qt::AlignLeft | Qt::AlignTop);
+            }
+            else if (attrType == "filename,integer,integer")
             {
                 layout->addWidget(new LootAnimationWidget(attribute),
                                   rowOnTab, columnOntab, Qt::AlignLeft | Qt::AlignTop);
