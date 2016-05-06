@@ -319,7 +319,7 @@
 		  <attribute name="name" type="string">Item name displayed on long and short tooltips.</attribute>
 		  <attribute name="flavor" type="string">A description of the item.</attribute>
 		  <attribute name="level" type="integer">The item's level. Has no gameplay impact. (Deprecated?)</attribute>
-		  <attribute name="icon" type="integer">An id for the icon to display for this item.</attribute>
+		  <attribute name="icon" type="icon_id">An id for the icon to display for this item.</attribute>
 		  <attribute name="book" type="string">A book file to open when this item is activated.</attribute>
 		  <attribute name="quality" type="predefined_string" srcfile="items/qualities.txt">Item quality matching an id in items/qualities.txt</attribute>
 		  <attribute name="item_type" type="predefined_string" srcfile="items/types.txt">Equipment slot [artifact, head, chest, hands, legs, feets, main, off, ring] or base item type [gem, consumable]</attribute>
