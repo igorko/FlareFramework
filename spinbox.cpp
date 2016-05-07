@@ -3,12 +3,20 @@
 
 SpinBox::SpinBox(QString name, QString description, QWidget *parent) :
     QFrame(parent),
-    ui(new Ui::SpinBox)
+    ui(new Ui::SpinBox),
+    editedStyle("background-color:#66FF99;")
 {
     ui->setupUi(this);
     ui->label->setText(name);
     ui->label->setToolTip(description);
     setAccessibleName(name);
+    defaultValue = 0;
+
+    if (name == "max_quantity")
+        defaultValue = 1;
+
+    connect(ui->spinBox, SIGNAL(valueChanged(int)),
+        SLOT(markNotDefaultSpinBox(int value)));
 }
 
 SpinBox::~SpinBox()
@@ -19,4 +27,16 @@ SpinBox::~SpinBox()
 void SpinBox::setValue(int value)
 {
     ui->spinBox->setValue(value);
+}
+
+void SpinBox::markNotDefaultSpinBox(int value)
+{
+    if (value != defaultValue)
+    {
+        ui->spinBox->setStyleSheet(editedStyle);
+    }
+    else
+    {
+        ui->spinBox->setStyleSheet("");
+    }
 }

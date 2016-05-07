@@ -836,32 +836,6 @@ void ItemsHandler::checkComboBoxForError(QComboBox *widget, const QString &error
     }
 }
 
-void ItemsHandler::markNotEmptyLineEdit(QLineEdit *widget, const QString& text)
-{
-    if (text != "")
-    {
-        widget->setStyleSheet(editedStyle);
-    }
-    else
-    {
-        widget->setStyleSheet("");
-    }
-}
-
-void ItemsHandler::markNotEmptyPlainTextEdit(QPlainTextEdit *widget)
-{
-    QTextDocument* doc = widget->document();
-
-    if (doc->lineCount() >= 1 && !doc->findBlockByLineNumber(0).text().isEmpty())
-    {
-        widget->setStyleSheet(editedStyle);
-    }
-    else
-    {
-        widget->setStyleSheet("");
-    }
-}
-
 void ItemsHandler::selectComboBoxItemByText(QComboBox *widget, const QString &text)
 {
     widget->setCurrentIndex(-1);
@@ -902,60 +876,7 @@ void ItemsHandler::setupConnections()
         }
     }
 /*
-
-    connect(ui->absorbMin, SIGNAL(valueChanged(int)), SLOT(absorbMin(int)));
-
-    connect(ui->absorbMax, SIGNAL(valueChanged(int)), SLOT(absorbMax(int)));
-
-    connect(ui->power, SIGNAL(valueChanged(int)), SLOT(power(int)));
-
-    connect(ui->itemFlavor, SIGNAL(textChanged(const QString&)), SLOT(itemFlavor(const QString&)));
-
-    connect(ui->itemBook, SIGNAL(textChanged(const QString&)), SLOT(itemBook(const QString&)));
-
-    connect(ui->meleeMin, SIGNAL(valueChanged(int)), SLOT(meleeMin(int)));
-
-    connect(ui->meleeMax, SIGNAL(valueChanged(int)), SLOT(meleeMax(int)));
-
-    connect(ui->rangMin, SIGNAL(valueChanged(int)), SLOT(rangMin(int)));
-
-    connect(ui->rangMax, SIGNAL(valueChanged(int)), SLOT(rangMax(int)));
-
-    connect(ui->mentalMin, SIGNAL(valueChanged(int)), SLOT(mentalMin(int)));
-
-    connect(ui->mentalMax, SIGNAL(valueChanged(int)), SLOT(mentalMax(int)));
-
-    connect(ui->replacePowerFrom, SIGNAL(textChanged()), SLOT(replacePowerFrom()));
-
-    connect(ui->replacePowerTo, SIGNAL(textChanged()), SLOT(replacePowerTo()));
-
-    connect(ui->disableSlots, SIGNAL(textChanged()), SLOT(disableSlots()));
-
-    connect(ui->reqPhys, SIGNAL(valueChanged(int)), SLOT(reqPhys(int)));
-
-    connect(ui->reqMent, SIGNAL(valueChanged(int)), SLOT(reqMent(int)));
-
-    connect(ui->reqOff, SIGNAL(valueChanged(int)), SLOT(reqOff(int)));
-
-    connect(ui->reqDef, SIGNAL(valueChanged(int)), SLOT(reqDef(int)));
-
-    connect(ui->price, SIGNAL(valueChanged(int)), SLOT(price(int)));
-
-    connect(ui->sellPrice, SIGNAL(valueChanged(int)), SLOT(sellPrice(int)));
-
-    connect(ui->maxQuantity, SIGNAL(valueChanged(int)), SLOT(maxQuantity(int)));
-
-    connect(ui->pickupStatus, SIGNAL(textChanged(const QString&)), SLOT(pickupStatus(const QString&)));
-
-    connect(ui->powerDesc, SIGNAL(textChanged(const QString&)), SLOT(powerDesc(const QString&)));
-
     connect(ui->itemName, SIGNAL(textChanged(const QString&)), SLOT(itemName(const QString&)));
-
-    connect(ui->equipFlags, SIGNAL(textChanged()), SLOT(equipFlags()));
-
-    connect(ui->bonusName, SIGNAL(textChanged()), SLOT(bonusName()));
-
-    connect(ui->bonusValue, SIGNAL(textChanged()), SLOT(bonusValue()));
 
     connect(ui->addDisableSlot, SIGNAL(clicked()), SLOT(addDisableSlot()));
 
@@ -964,12 +885,6 @@ void ItemsHandler::setupConnections()
     connect(ui->addBonus, SIGNAL(clicked()), SLOT(addBonus()));
 
     connect(ui->lootAnimAdd, SIGNAL(clicked()), SLOT(lootAnimAdd()));
-
-    connect(ui->animations, SIGNAL(textChanged()), SLOT(animations()));
-
-    connect(ui->animationMin, SIGNAL(textChanged()), SLOT(animationMin()));
-
-    connect(ui->animationMax, SIGNAL(textChanged()), SLOT(animationMax()));
     */
 }
 
@@ -1024,18 +939,6 @@ void ItemsHandler::requestIconAdd()
     }
 }
 
-void ItemsHandler::markNotDefaultSpinBox(QSpinBox *widget, int value, int defaultValue)
-{
-    if (value != defaultValue)
-    {
-        widget->setStyleSheet(editedStyle);
-    }
-    else
-    {
-        widget->setStyleSheet("");
-    }
-}
-
 void ItemsHandler::lootAnimAdd()
 {
     for (int i = 0; i < itemsLayout->count(); i++)
@@ -1049,136 +952,6 @@ void ItemsHandler::lootAnimAdd()
             break;
         }
     }
-}
-
-void ItemsHandler::animations()
-{
-    //markNotEmptyPlainTextEdit(ui->animations);
-}
-
-void ItemsHandler::animationMin()
-{
-    //markNotEmptyPlainTextEdit(ui->animationMin);
-}
-
-void ItemsHandler::animationMax()
-{
-    //markNotEmptyPlainTextEdit(ui->animationMax);
-}
-
-void ItemsHandler::absorbMin(int arg1)
-{
-    //markNotDefaultSpinBox(ui->absorbMin, arg1, 0);
-}
-
-void ItemsHandler::absorbMax(int arg1)
-{
-    //markNotDefaultSpinBox(ui->absorbMax, arg1, 0);
-}
-
-void ItemsHandler::power(int arg1)
-{
-    //markNotDefaultSpinBox(ui->power, arg1, 0);
-}
-
-void ItemsHandler::itemFlavor(const QString &arg1)
-{
-    //markNotEmptyLineEdit(ui->itemFlavor, arg1);
-}
-
-void ItemsHandler::itemBook(const QString &arg1)
-{
-    //markNotEmptyLineEdit(ui->itemBook, arg1);
-}
-
-void ItemsHandler::meleeMin(int arg1)
-{
-    //markNotDefaultSpinBox(ui->meleeMin, arg1, 0);
-}
-
-void ItemsHandler::meleeMax(int arg1)
-{
-    //markNotDefaultSpinBox(ui->meleeMax, arg1, 0);
-}
-
-void ItemsHandler::rangMin(int arg1)
-{
-    //markNotDefaultSpinBox(ui->rangMin, arg1, 0);
-}
-
-void ItemsHandler::rangMax(int arg1)
-{
-    //markNotDefaultSpinBox(ui->rangMax, arg1, 0);
-}
-
-void ItemsHandler::mentalMin(int arg1)
-{
-    //markNotDefaultSpinBox(ui->mentalMin, arg1, 0);
-}
-
-void ItemsHandler::mentalMax(int arg1)
-{
-    //markNotDefaultSpinBox(ui->mentalMax, arg1, 0);
-}
-
-void ItemsHandler::replacePowerFrom()
-{
-    //markNotEmptyPlainTextEdit(ui->replacePowerFrom);
-}
-
-void ItemsHandler::replacePowerTo()
-{
-    //markNotEmptyPlainTextEdit(ui->replacePowerTo);
-}
-
-void ItemsHandler::disableSlots()
-{
-    //markNotEmptyPlainTextEdit(ui->disableSlots);
-}
-
-void ItemsHandler::reqPhys(int arg1)
-{
-    //markNotDefaultSpinBox(ui->reqPhys, arg1, 0);
-}
-
-void ItemsHandler::reqMent(int arg1)
-{
-    //markNotDefaultSpinBox(ui->reqMent, arg1, 0);
-}
-
-void ItemsHandler::reqOff(int arg1)
-{
-    //markNotDefaultSpinBox(ui->reqOff, arg1, 0);
-}
-
-void ItemsHandler::reqDef(int arg1)
-{
-    //markNotDefaultSpinBox(ui->reqDef, arg1, 0);
-}
-
-void ItemsHandler::price(int arg1)
-{
-    //markNotDefaultSpinBox(ui->price, arg1, 0);
-}
-
-void ItemsHandler::sellPrice(int arg1)
-{
-    //markNotDefaultSpinBox(ui->sellPrice, arg1, 0);
-}
-
-void ItemsHandler::maxQuantity(int arg1)
-{
-    //markNotDefaultSpinBox(ui->maxQuantity, arg1, 1);
-}
-
-void ItemsHandler::pickupStatus(const QString &arg1)
-{
-    //markNotEmptyLineEdit(ui->pickupStatus, arg1);
-}
-
-void ItemsHandler::powerDesc(const QString &arg1)
-{
-    //markNotEmptyLineEdit(ui->powerDesc, arg1);
 }
 
 void ItemsHandler::itemName(const QString &arg1)
@@ -1195,21 +968,6 @@ void ItemsHandler::itemName(const QString &arg1)
         ui->itemName->setToolTip("Item name should be not empty");
     }
     */
-}
-
-void ItemsHandler::equipFlags()
-{
-   //markNotEmptyPlainTextEdit(ui->equipFlags);
-}
-
-void ItemsHandler::bonusName()
-{
-    //markNotEmptyPlainTextEdit(ui->bonusName);
-}
-
-void ItemsHandler::bonusValue()
-{
-    //markNotEmptyPlainTextEdit(ui->bonusValue);
 }
 
 void ItemsHandler::addDisableSlot()

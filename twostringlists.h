@@ -19,8 +19,13 @@ public:
 
     void setValues(QVector< QPair<QString, QString> > values);
 
+public slots:
+    void markNotEmptyPlainTextEdits();
+
 private:
     Ui::TwoStringLists *ui;
+
+    QString editedStyle;
 };
 
 #endif // TWOSTRINGLISTS_H

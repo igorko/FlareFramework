@@ -17,8 +17,14 @@ public:
 
     void setValue(double value);
 
+public slots:
+    void markNotDefaultSpinBox(int value);
+
 private:
     Ui::DoubleSpinBox *ui;
+
+    QString editedStyle;
+    int defaultValue;
 };
 
 #endif // DOUBLESPINBOX_H

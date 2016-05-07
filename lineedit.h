@@ -19,8 +19,13 @@ public:
 
     void setText(QString text);
 
+public slots:
+    void markNotEmptyLineEdit(const QString& text);
+
 private:
     Ui::LineEdit *ui;
+
+    QString editedStyle;
 };
 
 #endif // LINEEDIT_H

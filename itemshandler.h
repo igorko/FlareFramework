@@ -50,59 +50,7 @@ public slots:
 private slots:
     void requestIconAdd();
 
-    void absorbMin(int arg1);
-
-    void absorbMax(int arg1);
-
-    void power(int arg1);
-
-    void itemFlavor(const QString &arg1);
-
-    void itemBook(const QString &arg1);
-
-    void meleeMin(int arg1);
-
-    void meleeMax(int arg1);
-
-    void rangMin(int arg1);
-
-    void rangMax(int arg1);
-
-    void mentalMin(int arg1);
-
-    void mentalMax(int arg1);
-
-    void replacePowerFrom();
-
-    void replacePowerTo();
-
-    void disableSlots();
-
-    void reqPhys(int arg1);
-
-    void reqMent(int arg1);
-
-    void reqOff(int arg1);
-
-    void reqDef(int arg1);
-
-    void price(int arg1);
-
-    void sellPrice(int arg1);
-
-    void maxQuantity(int arg1);
-
-    void pickupStatus(const QString &arg1);
-
-    void powerDesc(const QString &arg1);
-
     void itemName(const QString &arg1);
-
-    void equipFlags();
-
-    void bonusName();
-
-    void bonusValue();
 
     void addDisableSlot();
 
@@ -112,21 +60,11 @@ private slots:
 
     void lootAnimAdd();
 
-    void animations();
-
-    void animationMin();
-
-    void animationMax();
-
 private:
     void collectFileLists(const std::string& path);
 
     void checkComboBoxForError(ComboBox* widget, const QString& errorText);
     void checkComboBoxForError(QComboBox* widget, const QString& errorText);
-    void markNotDefaultSpinBox(QSpinBox* widget, int value, int defaultValue);
-
-    void markNotEmptyLineEdit(QLineEdit* widget, const QString& text);
-    void markNotEmptyPlainTextEdit(QPlainTextEdit* widget);
 
     void selectComboBoxItemByText(QComboBox* widget, const QString& text);
     void setupConnections();
