@@ -309,14 +309,9 @@ void MainWindow::BuildUI()
         {
             QString attribute = attrIt.key();
             QString attrType = attrIt.value().first;
-            if (attrType == "integer" || attrType == "duration" || attrType == "power_id")
+            if (attrType == "integer" || attrType == "duration")
             {
                 layout->addWidget(new SpinBox(attribute, attributes[attribute].second),
-                                  rowOnTab, columnOntab, Qt::AlignLeft | Qt::AlignTop);
-            }
-            else if (attrType == "icon_id")
-            {
-                layout->addWidget(new IconChooser(attribute),
                                   rowOnTab, columnOntab, Qt::AlignLeft | Qt::AlignTop);
             }
             else if (attrType == "float")
@@ -334,7 +329,7 @@ void MainWindow::BuildUI()
                 layout->addWidget(new LineEdit(attribute, attributes[attribute].second),
                                   rowOnTab, columnOntab, Qt::AlignLeft | Qt::AlignTop);
             }
-            else if (attrType == "stringlist")
+            else if (attrType == "list(predefined_string)")
             {
                 layout->addWidget(new StringListWidget(attribute, attributes[attribute].second),
                                   rowOnTab, columnOntab, Qt::AlignLeft | Qt::AlignTop);
@@ -354,14 +349,20 @@ void MainWindow::BuildUI()
                 layout->addWidget(new ComboBox(attribute, attributes[attribute].second),
                                   rowOnTab, columnOntab, Qt::AlignLeft | Qt::AlignTop);
             }
-            else if (attrType == "list(predefined_string,integer)")
+            else if (attrType == "list(predefined_string,integer)" || attrType == "repeatable(predefined_string,integer)")
             {
                 layout->addWidget(new ComboBoxKeyValueList(attribute, attributes[attribute].second),
                                   rowOnTab, columnOntab, Qt::AlignLeft | Qt::AlignTop);
             }
+            // item specific
             else if (attrType == "filename,integer,integer")
             {
                 layout->addWidget(new LootAnimationWidget(attribute),
+                                  rowOnTab, columnOntab, Qt::AlignLeft | Qt::AlignTop);
+            }
+            else if (attrType == "icon_id")
+            {
+                layout->addWidget(new IconChooser(attribute),
                                   rowOnTab, columnOntab, Qt::AlignLeft | Qt::AlignTop);
             }
             else

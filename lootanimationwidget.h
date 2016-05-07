@@ -26,6 +26,8 @@ public:
 
     void setValues(QVector<QAnimation> values);
 
+    void addItems(QStringList values);
+
     Ui::LootAnimationWidget *ui;
 };
 

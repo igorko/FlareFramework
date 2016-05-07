@@ -17,8 +17,9 @@ public:
 
     void setCurrentIndex(int index);
     void clear();
+    void addItem(QString value);
+    void addItems(QStringList values);
 
-private:
     Ui::ComboBox *ui;
 };
 

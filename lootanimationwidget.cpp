@@ -33,3 +33,8 @@ void LootAnimationWidget::setValues(QVector<QAnimation> values)
         ui->animationMax->appendPlainText(QString::number(values[i].high));
     }
 }
+
+void LootAnimationWidget::addItems(QStringList values)
+{
+    ui->lootAnimList->addItems(values);
+}

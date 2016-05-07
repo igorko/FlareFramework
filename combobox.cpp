@@ -25,3 +25,13 @@ void ComboBox::clear()
 {
     ui->comboBox->clear();
 }
+
+void ComboBox::addItem(QString value)
+{
+    ui->comboBox->addItem(value);
+}
+
+void ComboBox::addItems(QStringList values)
+{
+    ui->comboBox->addItems(values);
+}

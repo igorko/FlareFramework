@@ -22,6 +22,9 @@
 #include "controlframe.h"
 #include "ui_controlframe.h"
 
+#include "combobox.h"
+#include "ui_combobox.h"
+
 #include "EditorItemManager.h"
 #include "API/Stats.h"
 #include "API/AnimationSet.h"
@@ -36,7 +39,6 @@
 #include "lootanimationwidget.h"
 #include "twospinbox.h"
 #include "twostringlists.h"
-#include "combobox.h"
 
 ItemsHandler::ItemsHandler(MainWindow * _mainWindow, QObject *parent) :
     mainWindow(_mainWindow),
@@ -625,24 +627,36 @@ void ItemsHandler::selectItem(QListWidgetItem *_item)
                 //timer->start();
             }
         }
+        else if (widget->accessibleName() == "replace_power")
+        {
+            QVector< QPair<QString, QString> > powers;
+            for (unsigned int i = 0; i < item.replace_power.size(); i++)
+            {
+                powers.append(qMakePair(QString::number(item.replace_power[i].x),
+                    QString::number(item.replace_power[i].y)));
+            }
+            dynamic_cast<TwoStringLists*>(widget)->setValues(powers);
+        }
+        else if (widget->accessibleName() == "disable_slots")
+        {
+            QVector<QString> values;
+            for (unsigned int i = 0; i < item.disable_slots.size(); i++)
+            {
+                values.append(qString(item.disable_slots[i]));
+            }
+            dynamic_cast<StringListWidget*>(widget)->setValues(values);
+        }
+        else if (widget->accessibleName() == "equip_flags")
+        {
+            QVector<QString> values;
+            for (unsigned int i = 0; i < item.equip_flags.size(); i++)
+            {
+                values.append(qString(item.equip_flags[i]));
+            }
+            dynamic_cast<StringListWidget*>(widget)->setValues(values);
+        }
     }
     /*
-    for (unsigned int i = 0; i < items->items[index].replace_power.size(); i++)
-    {
-        ui->replacePowerFrom->appendPlainText(QString::number(items->items[index].replace_power[i].x));
-        ui->replacePowerTo->appendPlainText(QString::number(items->items[index].replace_power[i].y));
-    }
-
-    for (unsigned int i = 0; i < items->items[index].disable_slots.size(); i++)
-    {
-        ui->disableSlots->appendPlainText(qString(items->items[index].disable_slots[i]));
-    }
-
-    for (unsigned int i = 0; i < items->items[index].equip_flags.size(); i++)
-    {
-        ui->equipFlags->appendPlainText(qString(items->items[index].equip_flags[i]));
-    }
-
     for (unsigned int i = 0; i < items->items[index].bonus.size(); i++)
     {
         int stat_index     = items->items[index].bonus[i].stat_index;
@@ -725,31 +739,50 @@ void ItemsHandler::selectItem(QListWidgetItem *_item)
 
 void ItemsHandler::collectFileLists(const std::string &path)
 {
-    /*
-    ui->sfxCb->addItem("");
-    ui->equipAnimList->addItem("");
-
     QString modPath = qString(path);
-    QDir pathSfx(modPath + "soundfx" + QDir::separator() + "inventory");
-    QStringList files = pathSfx.entryList(QDir::Files);
-    ui->sfxCb->addItems(files);
+    QStringList files;
 
-    QDir pathLootAnim(modPath + "animations" + QDir::separator() + "loot");
-    files = pathLootAnim.entryList(QDir::Files);
-    ui->lootAnimList->addItems(files);
-
-    QDir pathGfx(modPath + "animations" + QDir::separator() + "avatar" + QDir::separator() + "male");
-    files = pathGfx.entryList(QDir::Files);
-    for (int i = 0; i < files.size(); i++)
+    for (int i = 0; i < itemsLayout->count(); i++)
     {
-        files[i].remove(files[i].size() - 4, 4);
-    }
-    ui->equipAnimList->addItems(files);
+        QWidget * widget = itemsLayout->itemAt(i)->widget();
+        if (widget == NULL)
+        {
+            continue;
+        }
+        if (widget->accessibleName() == "soundfx")
+        {
+            QDir pathSfx(modPath + "soundfx" + QDir::separator() + "inventory");
+            files = pathSfx.entryList(QDir::Files);
+            dynamic_cast<ComboBox*>(widget)->addItem("");
+            dynamic_cast<ComboBox*>(widget)->addItems(files);
 
-    checkComboBoxForError(ui->sfxCb, "soundfx/inventory folder is empty. Place some sound files in it.");
-    checkComboBoxForError(ui->lootAnimList, "animations/loot folder is empty. Place some loot animation files in it.");
-    checkComboBoxForError(ui->equipAnimList, "animations/avatar/male folder is empty. Place some equip animation files in it.");
-*/
+            checkComboBoxForError(dynamic_cast<ComboBox*>(widget),
+                "soundfx/inventory folder is empty. Place some sound files in it.");
+        }
+        else if (widget->accessibleName() == "gfx")
+        {
+            dynamic_cast<ComboBox*>(widget)->addItem("");
+            QDir pathGfx(modPath + "animations" + QDir::separator() + "avatar" + QDir::separator() + "male");
+            files = pathGfx.entryList(QDir::Files);
+            for (int i = 0; i < files.size(); i++)
+            {
+                files[i].remove(files[i].size() - 4, 4);
+            }
+            dynamic_cast<ComboBox*>(widget)->addItems(files);
+            checkComboBoxForError(dynamic_cast<ComboBox*>(widget),
+                "animations/avatar/male folder is empty. Place some equip animation files in it.");
+
+        }
+        else if (widget->accessibleName() == "loot_animation")
+        {
+            QDir pathLootAnim(modPath + "animations" + QDir::separator() + "loot");
+            files = pathLootAnim.entryList(QDir::Files);
+            dynamic_cast<LootAnimationWidget*>(widget)->addItems(files);
+
+            checkComboBoxForError(dynamic_cast<LootAnimationWidget*>(widget)->ui->lootAnimList,
+                "animations/loot folder is empty. Place some loot animation files in it.");
+        }
+    }
 }
 
 QString ItemsHandler::qString(std::string value)
@@ -772,6 +805,20 @@ QObject *ItemsHandler::CloseButton()
         {
             return dynamic_cast<ControlFrame*>(widget)->ui->itemClose;
         }
+    }
+}
+
+void ItemsHandler::checkComboBoxForError(ComboBox *widget, const QString &errorText)
+{
+    if (widget->ui->comboBox->count() == 0)
+    {
+        widget->ui->comboBox->setStyleSheet(invalidStyle);
+        widget->ui->comboBox->setToolTip(errorText);
+    }
+    else
+    {
+        widget->ui->comboBox->setStyleSheet("");
+        widget->ui->comboBox->setToolTip("");
     }
 }
 

@@ -4,6 +4,7 @@
 #include <QObject>
 
 class EditorItemManager;
+class ComboBox;
 class MainWindow;
 class QGridLayout;
 class QListWidgetItem;
@@ -120,6 +121,7 @@ private slots:
 private:
     void collectFileLists(const std::string& path);
 
+    void checkComboBoxForError(ComboBox* widget, const QString& errorText);
     void checkComboBoxForError(QComboBox* widget, const QString& errorText);
     void markNotDefaultSpinBox(QSpinBox* widget, int value, int defaultValue);
 
