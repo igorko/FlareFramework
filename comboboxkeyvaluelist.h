@@ -15,11 +15,10 @@ public:
     explicit ComboBoxKeyValueList(QString name, QString description, QWidget *parent = 0);
     ~ComboBoxKeyValueList();
 
+    Ui::ComboBoxKeyValueList *ui;
+
 public slots:
     void addItem();
-
-private:
-    Ui::ComboBoxKeyValueList *ui;
 };
 
 #endif // COMBOBOXKEYVALUELIST_H

@@ -19,6 +19,7 @@ public:
     void clear();
     void addItem(QString value);
     void addItems(QStringList values);
+    void selectComboBoxItemByText(const QString &text);
 
     Ui::ComboBox *ui;
 };

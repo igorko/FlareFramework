@@ -19,11 +19,10 @@ public:
 
     void setValues(QVector<QString> values);
 
+    Ui::StringListWidget *ui;
+
 public slots:
     void addItem();
-
-private:
-    Ui::StringListWidget *ui;
 };
 
 #endif // STRINGLISTWIDGET_H

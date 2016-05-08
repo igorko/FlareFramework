@@ -35,3 +35,16 @@ void ComboBox::addItems(QStringList values)
 {
     ui->comboBox->addItems(values);
 }
+
+void ComboBox::selectComboBoxItemByText(const QString &text)
+{
+    ui->comboBox->setCurrentIndex(-1);
+    for (int i = 0; i < ui->comboBox->count(); i++)
+    {
+        if (ui->comboBox->itemText(i) == text)
+        {
+            ui->comboBox->setCurrentIndex(i);
+            break;
+        }
+    }
+}

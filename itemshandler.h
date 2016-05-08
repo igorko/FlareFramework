@@ -56,7 +56,6 @@ private:
     void checkComboBoxForError(ComboBox* widget, const QString& errorText);
     void checkComboBoxForError(QComboBox* widget, const QString& errorText);
 
-    void selectComboBoxItemByText(QComboBox* widget, const QString& text);
     void setupConnections();
 
     MainWindow * mainWindow;

@@ -25,6 +25,12 @@
 #include "combobox.h"
 #include "ui_combobox.h"
 
+#include "stringlistwidget.h"
+#include "ui_stringlistwidget.h"
+
+#include "comboboxkeyvaluelist.h"
+#include "ui_comboboxkeyvaluelist.h"
+
 #include "EditorItemManager.h"
 #include "API/Stats.h"
 #include "API/AnimationSet.h"
@@ -35,7 +41,6 @@
 #include "doublespinbox.h"
 #include "checkbox.h"
 #include "iconchooser.h"
-#include "stringlistwidget.h"
 #include "lootanimationwidget.h"
 #include "twospinbox.h"
 #include "twostringlists.h"
@@ -161,37 +166,58 @@ void ItemsHandler::loadItems(const std::string &path)
                     "engine/classes.txt is missing or incorrect. Copy it from base mod.");
             }
         }
-    }
-    /*
-    for (unsigned i = 0; i<items->EQUIP_FLAGS.size(); i++)
-    {
-        ui->equipList->addItem(qString(items->EQUIP_FLAGS[i].id));
-    }
+        else if (QString(widget->metaObject()->className()) == "StringListWidget")
+        {
+            if (widget->accessibleName() == "equip_flags")
+            {
+                for (unsigned i = 0; i<items->EQUIP_FLAGS.size(); i++)
+                {
+                    dynamic_cast<StringListWidget*>(widget)->ui->selector->addItem(qString(items->EQUIP_FLAGS[i].id));
+                }
+                checkComboBoxForError(dynamic_cast<StringListWidget*>(widget)->ui->selector,
+                    "engine/equip_flags.txt is missing or incorrect. Copy it from base mod.");
+            }
+            else if (widget->accessibleName() == "disable_slots")
+            {
+                for (unsigned i = 0; i<items->slot_type.size(); i++)
+                {
+                    dynamic_cast<StringListWidget*>(widget)->ui->selector->addItem(qString(items->slot_type[i]));
+                }
+                checkComboBoxForError(dynamic_cast<StringListWidget*>(widget)->ui->selector,
+                    "menus/inventory.txt is missing or incorrect. Copy it from base mod.");
+            }
+        }
+        else if (QString(widget->metaObject()->className()) == "ComboBoxKeyValueList")
+        {
+            ComboBoxKeyValueList * listWidget = dynamic_cast<ComboBoxKeyValueList*>(widget);
+            if (listWidget->accessibleName() == "bonus")
+            {
+                for (unsigned i = 0; i<items->ELEMENTS.size(); i++)
+                {
+                    listWidget->ui->list->addItem(qString(items->ELEMENTS[i].id) + "_resist");
+                }
 
-    for (unsigned i = 0; i<items->slot_type.size(); i++)
-    {
-        ui->slotsList->addItem(qString(items->slot_type[i]));
+                listWidget->ui->list->addItem("speed");
+                listWidget->ui->list->addItem("physical");
+                listWidget->ui->list->addItem("mental");
+                listWidget->ui->list->addItem("offense");
+                listWidget->ui->list->addItem("defense");
+                for (unsigned i = 0; i<STAT_COUNT; i++)
+                {
+                    listWidget->ui->list->addItem(qString(STAT_KEY[i]));
+                }
+                checkComboBoxForError(listWidget->ui->list,
+                    "engine/elements.txt is missing or incorrect. Copy it from base mod.");
+            }
+            else if (listWidget->accessibleName() == "requires_stat")
+            {
+                listWidget->ui->list->addItem("physical");
+                listWidget->ui->list->addItem("mental");
+                listWidget->ui->list->addItem("offense");
+                listWidget->ui->list->addItem("defense");
+            }
+        }
     }
-
-    for (unsigned i = 0; i<items->ELEMENTS.size(); i++)
-    {
-        ui->bonusList->addItem(qString(items->ELEMENTS[i].id) + "_resist");
-    }
-
-    ui->bonusList->addItem("speed");
-    ui->bonusList->addItem("physical");
-    ui->bonusList->addItem("mental");
-    ui->bonusList->addItem("offense");
-    ui->bonusList->addItem("defense");
-    for (unsigned i = 0; i<STAT_COUNT; i++)
-    {
-        ui->bonusList->addItem(qString(STAT_KEY[i]));
-    }
-
-    checkComboBoxForError(ui->equipList, "engine/equip_flags.txt is missing or incorrect. Copy it from base mod.");
-    checkComboBoxForError(ui->slotsList, "menus/inventory.txt is missing or incorrect. Copy it from base mod.");
-    checkComboBoxForError(ui->bonusList, "engine/elements.txt is missing or incorrect. Copy it from base mod.");
-    */
 
     for (int i = 0; i < itemsLayout->count(); i++)
     {
@@ -494,12 +520,11 @@ void ItemsHandler::selectItem(QListWidgetItem *_item)
     {
         QWidget * widget = itemsLayout->itemAt(i)->widget();
 
-        //fixme crash
-        /*if (widget && widget->accessibleName() == "item_type")
+        if (widget && widget->accessibleName() == "item_type")
         {
             dynamic_cast<ComboBox*>(widget)->setCurrentIndex(-1);
         }
-        else */if (widget && widget->accessibleName() == "controlframe")
+        else if (widget && widget->accessibleName() == "controlframe")
         {
             dynamic_cast<ControlFrame*>(widget)->ui->pushBtn->setEnabled(true);
         }
@@ -668,86 +693,106 @@ void ItemsHandler::selectItem(QListWidgetItem *_item)
             }
             dynamic_cast<StringListWidget*>(widget)->setValues(values);
         }
+        else if (widget->accessibleName() == "item_type")
+        {
+            QString type = qString(item.type);
+            int listSize = dynamic_cast<ComboBox*>(widget)->ui->comboBox->count();
+            for (int i = 0; i < listSize; i++)
+            {
+                if (dynamic_cast<ComboBox*>(widget)->ui->comboBox->itemData(i) == type)
+                {
+                    dynamic_cast<ComboBox*>(widget)->ui->comboBox->setCurrentIndex(i);
+                    break;
+                }
+            }
+        }
+        else if (widget->accessibleName() == "quality")
+        {
+            QString quality = qString(item.quality);
+            dynamic_cast<ComboBox*>(widget)->selectComboBoxItemByText(quality);
+        }
+        else if (widget->accessibleName() == "requires_class")
+        {
+            QString className = qString(item.requires_class);
+            dynamic_cast<ComboBox*>(widget)->selectComboBoxItemByText(className);
+        }
+        else if (widget->accessibleName() == "soundfx")
+        {
+            QString soundfx = qString(item.sfx);
+            dynamic_cast<ComboBox*>(widget)->selectComboBoxItemByText(QFileInfo(soundfx).fileName());
+        }
+        else if (widget->accessibleName() == "stepfx")
+        {
+            QString stepfx = qString(item.stepfx);
+            dynamic_cast<ComboBox*>(widget)->selectComboBoxItemByText(stepfx);
+        }
+        else if (widget->accessibleName() == "gfx")
+        {
+            QString gfx = qString(item.gfx);
+            dynamic_cast<ComboBox*>(widget)->selectComboBoxItemByText(gfx);
+        }
+        else if (widget->accessibleName() == "bonus")
+        {
+            ComboBoxKeyValueList * listWidget = dynamic_cast<ComboBoxKeyValueList*>(widget);
+            for (unsigned int i = 0; i < item.bonus.size(); i++)
+            {
+                int stat_index     = item.bonus[i].stat_index;
+                int base_index     = item.bonus[i].base_index;
+                int resist_index   = item.bonus[i].resist_index;
+                bool is_speed      = item.bonus[i].is_speed;
+
+                if (stat_index != -1)
+                {
+                    listWidget->ui->keys->appendPlainText(qString(STAT_KEY[stat_index]));
+                }
+                else if (resist_index != -1)
+                {
+                    listWidget->ui->keys->appendPlainText(qString(items->ELEMENTS[resist_index].id) + "_resist");
+                }
+                else if (is_speed)
+                {
+                    listWidget->ui->keys->appendPlainText(QString("speed"));
+                }
+                else if (base_index != -1)
+                {
+                    QString bonus_str;
+                    if (base_index == 0)
+                        bonus_str = "physical";
+                    else if (base_index == 1)
+                       bonus_str = "mental";
+                    else if (base_index == 2)
+                        bonus_str = "offense";
+                    else if (base_index == 3)
+                        bonus_str = "defense";
+
+                    listWidget->ui->keys->appendPlainText(bonus_str);
+                }
+                listWidget->ui->values->appendPlainText(QString::number(item.bonus[i].value));
+            }
+        }
+        else if (widget->accessibleName() == "requires_stat")
+        {
+            ComboBoxKeyValueList * listWidget = dynamic_cast<ComboBoxKeyValueList*>(widget);
+            for (unsigned int i = 0; i < item.req_stat.size(); i++)
+            {
+                int value = item.req_val[i];
+
+                if (item.req_stat[i] == REQUIRES_PHYS)
+                    listWidget->ui->keys->appendPlainText("physical");
+
+                else if (item.req_stat[i] == REQUIRES_MENT)
+                    listWidget->ui->keys->appendPlainText("mental");
+
+                else if (item.req_stat[i] == REQUIRES_OFF)
+                    listWidget->ui->keys->appendPlainText("offense");
+
+                else if (item.req_stat[i] == REQUIRES_DEF)
+                    listWidget->ui->values->appendPlainText("defense");
+
+                listWidget->ui->values->appendPlainText(QString::number(value));
+            }
+        }
     }
-    /*
-    for (unsigned int i = 0; i < items->items[index].bonus.size(); i++)
-    {
-        int stat_index     = items->items[index].bonus[i].stat_index;
-        int base_index     = items->items[index].bonus[i].base_index;
-        int resist_index   = items->items[index].bonus[i].resist_index;
-        bool is_speed      = items->items[index].bonus[i].is_speed;
-
-        if (stat_index != -1)
-        {
-            ui->bonusName->appendPlainText(qString(STAT_KEY[stat_index]));
-        }
-        else if (resist_index != -1)
-        {
-            ui->bonusName->appendPlainText(qString(items->ELEMENTS[resist_index].id) + "_resist");
-        }
-        else if (is_speed)
-        {
-            ui->bonusName->appendPlainText(QString("speed"));
-        }
-        else if (base_index != -1)
-        {
-            QString bonus_str;
-            if (base_index == 0)
-                bonus_str = "physical";
-            else if (base_index == 1)
-               bonus_str = "mental";
-            else if (base_index == 2)
-                bonus_str = "offense";
-            else if (base_index == 3)
-                bonus_str = "defense";
-
-            ui->bonusName->appendPlainText(bonus_str);
-        }
-        ui->bonusValue->appendPlainText(QString::number(items->items[index].bonus[i].value));
-    }
-
-    // comboBoxes
-    QString type = qString(items->items[index].type);
-    for (int i = 0; i < ui->itemTypeCB->count(); i++)
-    {
-        if (ui->itemTypeCB->itemData(i) == type)
-        {
-            ui->itemTypeCB->setCurrentIndex(i);
-            break;
-        }
-    }
-    QString quality = qString(items->items[index].quality);
-    selectComboBoxItemByText(ui->itemQualityCB, quality);
-
-    type = qString(items->items[index].requires_class);
-    selectComboBoxItemByText(ui->classList, type);
-
-    QString soundfx = qString(items->items[index].sfx);
-    selectComboBoxItemByText(ui->sfxCb, QFileInfo(soundfx).fileName());
-
-    QString stepfx = qString(items->items[index].stepfx);
-    selectComboBoxItemByText(ui->stepSoundList, stepfx);
-
-    QString gfx = qString(items->items[index].gfx);
-    selectComboBoxItemByText(ui->equipAnimList, gfx);
-
-    for (unsigned int i = 0; i < items->items[index].req_stat.size(); i++)
-    {
-        int value = items->items[index].req_val[i];
-
-        if (items->items[index].req_stat[i] == REQUIRES_PHYS)
-            ui->reqPhys->setValue(value);
-
-        else if (items->items[index].req_stat[i] == REQUIRES_MENT)
-            ui->reqMent->setValue(value);
-
-        else if (items->items[index].req_stat[i] == REQUIRES_OFF)
-            ui->reqOff->setValue(value);
-
-        else if (items->items[index].req_stat[i] == REQUIRES_DEF)
-            ui->reqDef->setValue(value);
-    }
-    */
 }
 
 void ItemsHandler::collectFileLists(const std::string &path)
@@ -846,19 +891,6 @@ void ItemsHandler::checkComboBoxForError(QComboBox *widget, const QString &error
     {
         widget->setStyleSheet("");
         widget->setToolTip("");
-    }
-}
-
-void ItemsHandler::selectComboBoxItemByText(QComboBox *widget, const QString &text)
-{
-    widget->setCurrentIndex(-1);
-    for (int i = 0; i < widget->count(); i++)
-    {
-        if (widget->itemText(i) == text)
-        {
-            widget->setCurrentIndex(i);
-            break;
-        }
     }
 }
 
