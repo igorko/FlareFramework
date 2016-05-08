@@ -9,9 +9,16 @@ ComboBoxKeyValueList::ComboBoxKeyValueList(QString name, QString description, QW
     ui->label->setText(name);
     ui->label->setToolTip(description);
     setAccessibleName(name);
+
+    connect(ui->add, SIGNAL(clicked()), SLOT(addItem()));
 }
 
 ComboBoxKeyValueList::~ComboBoxKeyValueList()
 {
     delete ui;
+}
+
+void ComboBoxKeyValueList::addItem()
+{
+    ui->keys->appendPlainText(ui->list->currentText());
 }

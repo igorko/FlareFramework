@@ -18,7 +18,7 @@ public:
     void setValue(double value);
 
 public slots:
-    void markNotDefaultSpinBox(int value);
+    void markNotDefaultSpinBox(double value);
 
 private:
     Ui::DoubleSpinBox *ui;

@@ -16,7 +16,7 @@ SpinBox::SpinBox(QString name, QString description, QWidget *parent) :
         defaultValue = 1;
 
     connect(ui->spinBox, SIGNAL(valueChanged(int)),
-        SLOT(markNotDefaultSpinBox(int value)));
+        SLOT(markNotDefaultSpinBox(int)));
 }
 
 SpinBox::~SpinBox()

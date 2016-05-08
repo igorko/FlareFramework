@@ -10,10 +10,10 @@ DoubleSpinBox::DoubleSpinBox(QString name, QString description, QWidget *parent)
     ui->label->setText(name);
     ui->label->setToolTip(description);
     setAccessibleName(name);
-    defaultValue = 0;
+    defaultValue = 0.0;
 
-    connect(ui->doubleSpinBox, SIGNAL(valueChanged(int)),
-        SLOT(markNotDefaultSpinBox(int value)));
+    connect(ui->doubleSpinBox, SIGNAL(valueChanged(double)),
+        SLOT(markNotDefaultSpinBox(double)));
 }
 
 DoubleSpinBox::~DoubleSpinBox()
@@ -26,7 +26,7 @@ void DoubleSpinBox::setValue(double value)
     ui->doubleSpinBox->setValue(value);
 }
 
-void DoubleSpinBox::markNotDefaultSpinBox(int value)
+void DoubleSpinBox::markNotDefaultSpinBox(double value)
 {
     if (value != defaultValue)
     {

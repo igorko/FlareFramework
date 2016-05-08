@@ -50,16 +50,6 @@ public slots:
 private slots:
     void requestIconAdd();
 
-    void itemName(const QString &arg1);
-
-    void addDisableSlot();
-
-    void addEquipFlag();
-
-    void addBonus();
-
-    void lootAnimAdd();
-
 private:
     void collectFileLists(const std::string& path);
 

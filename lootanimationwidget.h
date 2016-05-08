@@ -29,6 +29,13 @@ public:
     void addItems(QStringList values);
 
     Ui::LootAnimationWidget *ui;
+
+public slots:
+    void markNotEmptyPlainTextEdits();
+    void lootAnimAdd();
+
+private:
+    QString editedStyle;
 };
 
 #endif // LOOTANIMATIONWIDGET_H

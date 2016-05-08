@@ -41,9 +41,9 @@
 #include "twostringlists.h"
 
 ItemsHandler::ItemsHandler(MainWindow * _mainWindow, QObject *parent) :
+    QObject(parent),
     mainWindow(_mainWindow),
     itemsLayout(NULL),
-    QObject(parent),
     items(NULL),
     itemsEdited(false),
     editedStyle("background-color:#66FF99;"),
@@ -115,27 +115,54 @@ void ItemsHandler::loadItems(const std::string &path)
     {
         QWidget * widget = itemsLayout->itemAt(i)->widget();
 
-        if (widget && widget->metaObject()->className() == "ComboBox")
+        if (widget == NULL)
+        {
+            continue;
+        }
+        if (QString(widget->metaObject()->className()) == "ComboBox")
         {
             dynamic_cast<ComboBox*>(widget)->clear();
+            dynamic_cast<ComboBox*>(widget)->addItem("");
+
+            if (widget->accessibleName() == "item_type")
+            {
+                for (unsigned i = 0; i<items->item_types.size(); i++)
+                {
+                    dynamic_cast<ComboBox*>(widget)->ui->comboBox->addItem(qString(items->item_types[i].name), qString(items->item_types[i].id));
+                }
+                checkComboBoxForError(dynamic_cast<ComboBox*>(widget)->ui->comboBox,
+                    "items/types.txt is missing or incorrect. Copy it from base mod.");
+            }
+            else if (widget->accessibleName() == "quality")
+            {
+                for (unsigned i = 0; i<items->item_qualities.size(); i++)
+                {
+                    dynamic_cast<ComboBox*>(widget)->ui->comboBox->addItem(qString(items->item_qualities[i].id));
+                }
+                checkComboBoxForError(dynamic_cast<ComboBox*>(widget)->ui->comboBox,
+                    "items/qualities.txt is missing or incorrect. Copy it from base mod.");
+            }
+            else if (widget->accessibleName() == "stepfx")
+            {
+                for (unsigned int i = 0; i<items->step_def.size(); i++)
+                {
+                    dynamic_cast<ComboBox*>(widget)->ui->comboBox->addItem(qString(items->step_def[i].id));
+                }
+                checkComboBoxForError(dynamic_cast<ComboBox*>(widget)->ui->comboBox,
+                    "items/step_sounds.txt is missing or incorrect. Copy it from base mod.");
+            }
+            else if (widget->accessibleName() == "requires_class")
+            {
+                for (unsigned i = 0; i<items->HERO_CLASSES.size(); i++)
+                {
+                    dynamic_cast<ComboBox*>(widget)->ui->comboBox->addItem(qString(items->HERO_CLASSES[i].name));
+                }
+                checkComboBoxForError(dynamic_cast<ComboBox*>(widget)->ui->comboBox,
+                    "engine/classes.txt is missing or incorrect. Copy it from base mod.");
+            }
         }
     }
     /*
-    ui->itemTypeCB->addItem("");
-    ui->itemQualityCB->addItem("");
-    ui->stepSoundList->addItem("");
-    ui->classList->addItem("");
-
-    for (unsigned i = 0; i<items->item_types.size(); i++)
-    {
-        ui->itemTypeCB->addItem(qString(items->item_types[i].name), qString(items->item_types[i].id));
-    }
-
-    for (unsigned i = 0; i<items->item_qualities.size(); i++)
-    {
-        ui->itemQualityCB->addItem(qString(items->item_qualities[i].id));
-    }
-
     for (unsigned i = 0; i<items->EQUIP_FLAGS.size(); i++)
     {
         ui->equipList->addItem(qString(items->EQUIP_FLAGS[i].id));
@@ -161,23 +188,9 @@ void ItemsHandler::loadItems(const std::string &path)
         ui->bonusList->addItem(qString(STAT_KEY[i]));
     }
 
-    for (unsigned int i = 0; i<items->step_def.size(); i++)
-    {
-        ui->stepSoundList->addItem(qString(items->step_def[i].id));
-    }
-
-    for (unsigned i = 0; i<items->HERO_CLASSES.size(); i++)
-    {
-        ui->classList->addItem(qString(items->HERO_CLASSES[i].name));
-    }
-
-    checkComboBoxForError(ui->itemTypeCB, "items/types.txt is missing or incorrect. Copy it from base mod.");
-    checkComboBoxForError(ui->itemTypeCB, "items/qualities.txt is missing or incorrect. Copy it from base mod.");
     checkComboBoxForError(ui->equipList, "engine/equip_flags.txt is missing or incorrect. Copy it from base mod.");
     checkComboBoxForError(ui->slotsList, "menus/inventory.txt is missing or incorrect. Copy it from base mod.");
     checkComboBoxForError(ui->bonusList, "engine/elements.txt is missing or incorrect. Copy it from base mod.");
-    checkComboBoxForError(ui->stepSoundList, "items/step_sounds.txt is missing or incorrect. Copy it from base mod.");
-
     */
 
     for (int i = 0; i < itemsLayout->count(); i++)
@@ -753,7 +766,6 @@ void ItemsHandler::collectFileLists(const std::string &path)
         {
             QDir pathSfx(modPath + "soundfx" + QDir::separator() + "inventory");
             files = pathSfx.entryList(QDir::Files);
-            dynamic_cast<ComboBox*>(widget)->addItem("");
             dynamic_cast<ComboBox*>(widget)->addItems(files);
 
             checkComboBoxForError(dynamic_cast<ComboBox*>(widget),
@@ -761,7 +773,6 @@ void ItemsHandler::collectFileLists(const std::string &path)
         }
         else if (widget->accessibleName() == "gfx")
         {
-            dynamic_cast<ComboBox*>(widget)->addItem("");
             QDir pathGfx(modPath + "animations" + QDir::separator() + "avatar" + QDir::separator() + "male");
             files = pathGfx.entryList(QDir::Files);
             for (int i = 0; i < files.size(); i++)
@@ -806,6 +817,8 @@ QObject *ItemsHandler::CloseButton()
             return dynamic_cast<ControlFrame*>(widget)->ui->itemClose;
         }
     }
+
+    return NULL;
 }
 
 void ItemsHandler::checkComboBoxForError(ComboBox *widget, const QString &errorText)
@@ -875,17 +888,6 @@ void ItemsHandler::setupConnections()
             connect(elementsList->ui->itemsList, SIGNAL(itemClicked(QListWidgetItem*)), SLOT(selectItem(QListWidgetItem*)));
         }
     }
-/*
-    connect(ui->itemName, SIGNAL(textChanged(const QString&)), SLOT(itemName(const QString&)));
-
-    connect(ui->addDisableSlot, SIGNAL(clicked()), SLOT(addDisableSlot()));
-
-    connect(ui->addEquipFlag, SIGNAL(clicked()), SLOT(addEquipFlag()));
-
-    connect(ui->addBonus, SIGNAL(clicked()), SLOT(addBonus()));
-
-    connect(ui->lootAnimAdd, SIGNAL(clicked()), SLOT(lootAnimAdd()));
-    */
 }
 
 void ItemsHandler::finishIconAdd()
@@ -937,50 +939,4 @@ void ItemsHandler::requestIconAdd()
             }
         }
     }
-}
-
-void ItemsHandler::lootAnimAdd()
-{
-    for (int i = 0; i < itemsLayout->count(); i++)
-    {
-        QWidget * widget = itemsLayout->itemAt(i)->widget();
-
-        if (widget && widget->accessibleName() == "loot_animation")
-        {
-            dynamic_cast<LootAnimationWidget*>(widget)->ui->animations->appendPlainText(
-                dynamic_cast<LootAnimationWidget*>(widget)->ui->lootAnimList->currentText());
-            break;
-        }
-    }
-}
-
-void ItemsHandler::itemName(const QString &arg1)
-{
-    /*
-    if (arg1 != "")
-    {
-        ui->itemName->setStyleSheet("");
-        ui->itemName->setToolTip("");
-    }
-    else
-    {
-        ui->itemName->setStyleSheet(invalidStyle);
-        ui->itemName->setToolTip("Item name should be not empty");
-    }
-    */
-}
-
-void ItemsHandler::addDisableSlot()
-{
-    //ui->disableSlots->appendPlainText(ui->slotsList->currentText());
-}
-
-void ItemsHandler::addEquipFlag()
-{
-    //ui->equipFlags->appendPlainText(ui->equipList->currentText());
-}
-
-void ItemsHandler::addBonus()
-{
-    //ui->bonusName->appendPlainText(ui->bonusList->currentText());
 }

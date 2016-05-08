@@ -19,6 +19,9 @@ public:
 
     void setValues(QVector<QString> values);
 
+public slots:
+    void addItem();
+
 private:
     Ui::StringListWidget *ui;
 };

@@ -12,7 +12,7 @@ LineEdit::LineEdit(QString name, QString description, QWidget *parent) :
     setAccessibleName(name);
 
     connect(ui->lineEdit, SIGNAL(textChanged(const QString&)),
-        SLOT(markNotEmptyLineEdit(const QString& text)));
+        SLOT(markNotEmptyLineEdit(const QString&)));
 }
 
 LineEdit::~LineEdit()
@@ -40,4 +40,16 @@ void LineEdit::markNotEmptyLineEdit(const QString &text)
     {
         ui->lineEdit->setStyleSheet("");
     }
+    /*
+    if (text != "")
+    {
+        ui->itemName->setStyleSheet("");
+        ui->itemName->setToolTip("");
+    }
+    else
+    {
+        ui->itemName->setStyleSheet(invalidStyle);
+        ui->itemName->setToolTip("Item name should be not empty");
+    }
+    */
 }

@@ -330,7 +330,7 @@
 		  <attribute name="abs" type="integer,integer">Defines the item absorb value, if only min is specified the absorb value is fixed.</attribute>
 		  <attribute name="requires_level" type="integer">The hero's level must match or exceed this value in order to equip this item.</attribute>
 		  <attribute name="requires_stat" type="repeatable(predefined_string,integer)">Make item require specific stat level ex. requires_stat=physical,6 will require hero to have level 6 in physical stats</attribute>
-		  <attribute name="requires_class" type="string">The hero's base class (engine/classes.txt) must match for this item to be equipped.</attribute>
+		  <attribute name="requires_class" type="predefined_string">The hero's base class (engine/classes.txt) must match for this item to be equipped.</attribute>
 		  <attribute name="bonus" type="repeatable(predefined_string,integer)">Adds a bonus to the item power_tag being a uniq tag of a power definition, e.: bonus=HP regen, 50</attribute>
 		  <attribute name="soundfx" type="filename">Sound effect filename to play for the specific item. Commonly located in soundfx/inventory/</attribute>
 		  <attribute name="gfx" type="filename">Filename of an animation set to display when the item is equipped. Commonly located in animations/avatar/</attribute>

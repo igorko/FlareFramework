@@ -15,6 +15,9 @@ public:
     explicit ComboBoxKeyValueList(QString name, QString description, QWidget *parent = 0);
     ~ComboBoxKeyValueList();
 
+public slots:
+    void addItem();
+
 private:
     Ui::ComboBoxKeyValueList *ui;
 };

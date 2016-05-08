@@ -6,9 +6,11 @@ StringListWidget::StringListWidget(QString name, QString description, QWidget *p
     ui(new Ui::StringListWidget)
 {
     ui->setupUi(this);
-    ui->Label->setText(name);
-    ui->Label->setToolTip(description);
+    ui->label->setText(name);
+    ui->label->setToolTip(description);
     setAccessibleName(name);
+
+    connect(ui->addButton, SIGNAL(clicked()), SLOT(addItem()));
 }
 
 StringListWidget::~StringListWidget()
@@ -18,14 +20,20 @@ StringListWidget::~StringListWidget()
 
 void StringListWidget::clear()
 {
-    ui->List->clear();
-    ui->Selector->setCurrentIndex(0);
+    ui->list->clear();
+    ui->selector->setCurrentIndex(0);
 }
 
 void StringListWidget::setValues(QVector<QString> values)
 {
-    for (unsigned int i = 0; i < values.size(); i++)
+    for (int i = 0; i < values.size(); i++)
     {
-        ui->List->appendPlainText(values[i]);
+        ui->list->appendPlainText(values[i]);
     }
 }
+
+void StringListWidget::addItem()
+{
+    ui->list->appendPlainText(ui->selector->currentText());
+}
+
