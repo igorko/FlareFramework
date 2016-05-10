@@ -164,6 +164,40 @@ private:
     Q_DISABLE_COPY(Item)
 
 public:
+
+    Q_PROPERTY(std::string                name MEMBER name)
+    Q_PROPERTY(std::string                flavor MEMBER flavor)
+    Q_PROPERTY(int                        level MEMBER level)
+    Q_PROPERTY(int                        set MEMBER set)
+    Q_PROPERTY(std::string                quality MEMBER quality)
+    Q_PROPERTY(std::string                type MEMBER type)
+    Q_PROPERTY(std::vector<std::string>   equip_flags MEMBER equip_flags)
+    Q_PROPERTY(int                        icon MEMBER icon)
+    Q_PROPERTY(std::string                book MEMBER book)
+    Q_PROPERTY(int                        dmg_melee_min MEMBER dmg_melee_min)
+    Q_PROPERTY(int                        dmg_ranged_min MEMBER dmg_ranged_min)
+    Q_PROPERTY(int                        dmg_ranged_max MEMBER dmg_ranged_max)
+    Q_PROPERTY(int                        dmg_ment_min MEMBER dmg_ment_min)
+    Q_PROPERTY(int                        dmg_ment_max MEMBER dmg_ment_max)
+    Q_PROPERTY(int                        abs_min MEMBER abs_min)
+    Q_PROPERTY(int                        abs_max MEMBER abs_max)
+    Q_PROPERTY(std::vector<int>           req_stat MEMBER req_stat)
+    Q_PROPERTY(std::vector<int>           req_val MEMBER req_val)
+    Q_PROPERTY(std::string                requires_class MEMBER requires_class)
+    //Q_PROPERTY(std::vector<BonusData>     bonus MEMBER bonus)
+    Q_PROPERTY(std::string                sfx MEMBER sfx)
+    Q_PROPERTY(std::string                gfx MEMBER gfx)
+    //Q_PROPERTY(std::vector<LootAnimation> loot_animation MEMBER loot_animation)
+    Q_PROPERTY(int                        power MEMBER power)
+    //Q_PROPERTY(std::vector<Point>         replace_power MEMBER replace_power)
+    Q_PROPERTY(std::string                power_desc MEMBER power_desc)
+    Q_PROPERTY(int                        price MEMBER price)
+    Q_PROPERTY(int                        price_sell MEMBER price_sell)
+    Q_PROPERTY(int                        max_quantity MEMBER max_quantity)
+    Q_PROPERTY(std::string                pickup_status MEMBER pickup_status)
+    Q_PROPERTY(std::string                stepfx MEMBER stepfx)
+    Q_PROPERTY(std::vector<std::string>   disable_slots MEMBER disable_slots)
+
 	std::string name;     // item name displayed on long and short tool tips
 #endif
 
@@ -342,6 +376,8 @@ public:
 	std::vector<ItemSet> item_sets;
 	std::vector<ItemQuality> item_qualities;
 };
+
+#include <QMetaType>
 
 Q_DECLARE_METATYPE(Item*)
 

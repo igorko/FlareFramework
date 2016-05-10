@@ -25,14 +25,9 @@ FLARE.  If not, see http://www.gnu.org/licenses/
 #include "API/ItemManager.h"
 
 class EditorItemManager : public ItemManager {
-    Q_OBJECT
-
-private:
-    Q_DISABLE_COPY(EditorItemManager)
 
 public:
-
-    explicit EditorItemManager(const std::string& modpath);
+    EditorItemManager(const std::string& modpath);
     ~EditorItemManager();
     
     void shrinkItems();
