@@ -56,6 +56,23 @@ static inline void ensureFitsId(std::vector<Ty_>& vec, int id) {
 		vec.resize(id+1);
 }
 
+#if EDITOR
+static inline void ensureFitsId(QVector<Item*>& vec, int id) {
+    // id's are always greater or equal 1;
+    if (id < 1) return;
+
+    int oldSize = vec.size();
+    if (vec.size() <= id+1)
+    {
+        vec.resize(id+1);
+        for (int i = oldSize; i < id+1; i++)
+        {
+            vec[i] = new Item();
+        }
+    }
+}
+#endif
+
 /**
  * Trims vector allocated memory to its size.
  *
@@ -67,6 +84,13 @@ static inline void shrinkVecToFit(std::vector<Ty_>& vec) {
 	if (vec.capacity() != vec.size())
 		std::vector<Ty_>(vec).swap(vec);
 }
+
+#if EDITOR
+static inline void shrinkVecToFit(QVector<Item*>& vec) {
+    if (vec.capacity() != vec.size())
+        vec.swap(vec);
+}
+#endif
 
 ItemManager::ItemManager()
 #ifndef EDITOR
@@ -159,180 +183,180 @@ void ItemManager::loadItems(const std::string& filename, bool locateFileName) {
 #ifndef EDITOR
 		if (infile.key == "name")
 			// @ATTR name|string|Item name displayed on long and short tooltips.
-			items[id].name = msg->get(infile.val);
+            items[id]->name = msg->get(infile.val);
 		else if (infile.key == "flavor")
 			// @ATTR flavor|string|A description of the item.
-			items[id].flavor = msg->get(infile.val);
+            items[id]->flavor = msg->get(infile.val);
 #else
 		if (infile.key == "name")
 			// @ATTR name|string|Item name displayed on long and short tooltips.
-			items[id].name = infile.val;
+            items[id]->name = infile.val;
 		else if (infile.key == "flavor")
 			// @ATTR flavor|string|A description of the item.
-			items[id].flavor = infile.val;
+            items[id]->flavor = infile.val;
 #endif
 		else if (infile.key == "level")
 			// @ATTR level|integer|The item's level. Has no gameplay impact. (Deprecated?)
-			items[id].level = toInt(infile.val);
+            items[id]->level = toInt(infile.val);
 		else if (infile.key == "icon") {
 			// @ATTR icon|integer|An id for the icon to display for this item.
-			items[id].icon = toInt(infile.nextValue());
+            items[id]->icon = toInt(infile.nextValue());
 		}
 		else if (infile.key == "book") {
 			// @ATTR book|string|A book file to open when this item is activated.
-			items[id].book = infile.val;
+            items[id]->book = infile.val;
 		}
 		else if (infile.key == "quality") {
 			// @ATTR quality|string|Item quality matching an id in items/qualities.txt
-			items[id].quality = infile.val;
+            items[id]->quality = infile.val;
 		}
 		else if (infile.key == "item_type") {
 			// @ATTR item_type|string|Equipment slot [artifact, head, chest, hands, legs, feets, main, off, ring] or base item type [gem, consumable]
-			items[id].type = infile.val;
+            items[id]->type = infile.val;
 		}
 		else if (infile.key == "equip_flags") {
 			// @ATTR equip_flags|flag (string), ...|A comma separated list of flags to set when this item is equipped. See engine/equip_flags.txt.
-			items[id].equip_flags.clear();
+            items[id]->equip_flags.clear();
 			std::string flag = popFirstString(infile.val);
 
 			while (flag != "") {
-				items[id].equip_flags.push_back(flag);
+                items[id]->equip_flags.push_back(flag);
 				flag = popFirstString(infile.val);
 			}
 		}
 		else if (infile.key == "dmg_melee") {
 			// @ATTR dmg_melee|[min (integer), max (integer)]|Defines the item melee damage, if only min is specified the melee damage is fixed.
-			items[id].dmg_melee_min = toInt(infile.nextValue());
+            items[id]->dmg_melee_min = toInt(infile.nextValue());
 			if (infile.val.length() > 0)
-				items[id].dmg_melee_max = toInt(infile.nextValue());
+                items[id]->dmg_melee_max = toInt(infile.nextValue());
 			else
-				items[id].dmg_melee_max = items[id].dmg_melee_min;
+                items[id]->dmg_melee_max = items[id]->dmg_melee_min;
 		}
 		else if (infile.key == "dmg_ranged") {
 			// @ATTR dmg_ranged|[min (integer), max (integer)]|Defines the item ranged damage, if only min is specified the ranged damage is fixed.
-			items[id].dmg_ranged_min = toInt(infile.nextValue());
+            items[id]->dmg_ranged_min = toInt(infile.nextValue());
 			if (infile.val.length() > 0)
-				items[id].dmg_ranged_max = toInt(infile.nextValue());
+                items[id]->dmg_ranged_max = toInt(infile.nextValue());
 			else
-				items[id].dmg_ranged_max = items[id].dmg_ranged_min;
+                items[id]->dmg_ranged_max = items[id]->dmg_ranged_min;
 		}
-		else if (infile.key == "dmg_ment") {
+        else if (infile.key == "dmg_ment") {
 			// @ATTR dmg_ment|[min (integer), max (integer)]|Defines the item mental damage, if only min is specified the ranged damage is fixed.
-			items[id].dmg_ment_min = toInt(infile.nextValue());
+            items[id]->dmg_ment_min = toInt(infile.nextValue());
 			if (infile.val.length() > 0)
-				items[id].dmg_ment_max = toInt(infile.nextValue());
+                items[id]->dmg_ment_max = toInt(infile.nextValue());
 			else
-				items[id].dmg_ment_max = items[id].dmg_ment_min;
+                items[id]->dmg_ment_max = items[id]->dmg_ment_min;
 		}
 		else if (infile.key == "abs") {
 			// @ATTR abs|[min (integer), max (integer)]|Defines the item absorb value, if only min is specified the absorb value is fixed.
-			items[id].abs_min = toInt(infile.nextValue());
+            items[id]->abs_min = toInt(infile.nextValue());
 			if (infile.val.length() > 0)
-				items[id].abs_max = toInt(infile.nextValue());
+                items[id]->abs_max = toInt(infile.nextValue());
 			else
-				items[id].abs_max = items[id].abs_min;
+                items[id]->abs_max = items[id]->abs_min;
 		}
 		else if (infile.key == "requires_stat") {
 			// @ATTR requires_stat|[ [physical:mental:offense:defense], amount (integer) ]|Make item require specific stat level ex. requires_stat=physical,6 will require hero to have level 6 in physical stats
 			if (clear_req_stat) {
-				items[id].req_stat.clear();
-				items[id].req_val.clear();
+                items[id]->req_stat.clear();
+                items[id]->req_val.clear();
 				clear_req_stat = false;
 			}
 			std::string s = infile.nextValue();
 			if (s == "physical")
-				items[id].req_stat.push_back(REQUIRES_PHYS);
+                items[id]->req_stat.push_back(REQUIRES_PHYS);
 			else if (s == "mental")
-				items[id].req_stat.push_back(REQUIRES_MENT);
+                items[id]->req_stat.push_back(REQUIRES_MENT);
 			else if (s == "offense")
-				items[id].req_stat.push_back(REQUIRES_OFF);
+                items[id]->req_stat.push_back(REQUIRES_OFF);
 			else if (s == "defense")
-				items[id].req_stat.push_back(REQUIRES_DEF);
+                items[id]->req_stat.push_back(REQUIRES_DEF);
 			else
 				infile.error("%s unrecognized at; requires_stat must be one of [physical:mental:offense:defense]", s.c_str());
-			items[id].req_val.push_back(toInt(infile.nextValue()));
+            items[id]->req_val.push_back(toInt(infile.nextValue()));
 		}
 		else if (infile.key == "requires_class") {
 			// @ATTR requires_class|string|The hero's base class (engine/classes.txt) must match for this item to be equipped.
-			items[id].requires_class = infile.val;
+            items[id]->requires_class = infile.val;
 		}
 		else if (infile.key == "bonus") {
 			// @ATTR bonus|[stat_name (string), amount (integer)]|Adds a bonus to the item power_tag being a uniq tag of a power definition, e.: bonus=HP regen, 50
 			if (clear_bonus) {
-				items[id].bonus.clear();
+                items[id]->bonus.clear();
 				clear_bonus = false;
 			}
 			BonusData bdata;
 			parseBonus(bdata, infile);
-			items[id].bonus.push_back(bdata);
+            items[id]->bonus.push_back(bdata);
 		}
 		else if (infile.key == "soundfx") {
 			// @ATTR soundfx|string|Sound effect filename to play for the specific item.
-			items[id].sfx = infile.val;
+            items[id]->sfx = infile.val;
 #ifndef EDITOR
-			items[id].sfx_id = snd->load(items[id].sfx, "ItemManager");
+            items[id]->sfx_id = snd->load(items[id]->sfx, "ItemManager");
 #endif
 		}
 		else if (infile.key == "gfx")
 			// @ATTR gfx|string|Filename of an animation set to display when the item is equipped.
-			items[id].gfx = infile.val;
+            items[id]->gfx = infile.val;
 		else if (infile.key == "loot_animation") {
 			// @ATTR loot_animation|filename (string), min quantity (int), max quantity (int)|Specifies the loot animation file for the item. The max quantity, or both quantity values, may be omitted.
 			if (clear_loot_anim) {
-				items[id].loot_animation.clear();
+                items[id]->loot_animation.clear();
 				clear_loot_anim = false;
 			}
 			LootAnimation la;
 			la.name = popFirstString(infile.val);
 			la.low = popFirstInt(infile.val);
 			la.high = popFirstInt(infile.val);
-			items[id].loot_animation.push_back(la);
+            items[id]->loot_animation.push_back(la);
 		}
 		else if (infile.key == "power") {
 			// @ATTR power|power_id|Adds a specific power to the item which makes it usable as a power and can be placed in action bar.
 			if (toInt(infile.val) > 0)
-				items[id].power = toInt(infile.val);
+                items[id]->power = toInt(infile.val);
 			else
 				infile.error("ItemManager: Power index out of bounds 1-%d, skipping power.", INT_MAX);
 		}
 		else if (infile.key == "replace_power") {
 			// @ATTR replace_power|old (integer), new (integer)|Replaces the old power id with the new power id in the action bar when equipped.
 			if (clear_replace_power) {
-				items[id].replace_power.clear();
+                items[id]->replace_power.clear();
 				clear_replace_power = false;
 			}
 			Point power_ids = toPoint(infile.val);
-			items[id].replace_power.push_back(power_ids);
+            items[id]->replace_power.push_back(power_ids);
 		}
 		else if (infile.key == "power_desc")
 			// @ATTR power_desc|string|A string describing the additional power.
 #ifndef EDITOR
-			items[id].power_desc = msg->get(infile.val);
+            items[id]->power_desc = msg->get(infile.val);
 #else
-			items[id].power_desc = infile.val;
+            items[id]->power_desc = infile.val;
 #endif
 		else if (infile.key == "price")
 			// @ATTR price|integer|The amount of currency the item costs, if set to 0 the item cannot be sold.
-			items[id].price = toInt(infile.val);
+            items[id]->price = toInt(infile.val);
 		else if (infile.key == "price_sell")
 			// @ATTR price_sell|integer|The amount of currency the item is sold for, if set to 0 the sell prices is prices*vendor_ratio.
-			items[id].price_sell = toInt(infile.val);
+            items[id]->price_sell = toInt(infile.val);
 		else if (infile.key == "max_quantity")
 			// @ATTR max_quantity|integer|Max item count per stack.
-			items[id].max_quantity = toInt(infile.val);
+            items[id]->max_quantity = toInt(infile.val);
 		else if (infile.key == "pickup_status")
 			// @ATTR pickup_status|string|Set a campaign status when item is picked up, this is used for quest items.
-			items[id].pickup_status = infile.val;
+            items[id]->pickup_status = infile.val;
 		else if (infile.key == "stepfx")
 			// @ATTR stepfx|string|Sound effect when walking, this applies only to armors.
-			items[id].stepfx = infile.val;
+            items[id]->stepfx = infile.val;
 		else if (infile.key == "disable_slots") {
 			// @ATTR disable_slots|type (string), ...|A comma separated list of equip slot types to disable when this item is equipped.
-			items[id].disable_slots.clear();
+            items[id]->disable_slots.clear();
 			std::string slot_type = popFirstString(infile.val);
 
 			while (slot_type != "") {
-				items[id].disable_slots.push_back(slot_type);
+                items[id]->disable_slots.push_back(slot_type);
 				slot_type = popFirstString(infile.val);
 			}
 		}
@@ -437,16 +461,16 @@ std::string ItemManager::getItemName(unsigned id) {
 #ifndef EDITOR
 	if (id >= items.size()) return msg->get("Unknown Item");
 
-	if (items[id].name == "")
-		items[id].name = msg->get("Unknown Item");
+    if (items[id]->name == "")
+        items[id]->name = msg->get("Unknown Item");
 #else
 	if (id >= items.size()) return "Unknown Item";
 
-	if (items[id].name == "")
-		items[id].name = "Unknown Item";
+    if (items[id]->name == "")
+        items[id]->name = "Unknown Item";
 #endif
 
-	return items[id].name;
+    return items[id]->name;
 }
 
 std::string ItemManager::getItemType(std::string _type) {
@@ -512,7 +536,7 @@ void ItemManager::loadSets(const std::string& filename, bool locateFileName) {
 			while (item_id != "") {
 				int temp_id = toInt(item_id);
 				if (temp_id > 0 && temp_id < static_cast<int>(items.size())) {
-					items[temp_id].set = id;
+					items[temp_id]->set = id;
 					item_sets[id].items.push_back(temp_id);
 				}
 				else {

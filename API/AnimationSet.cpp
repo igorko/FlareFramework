@@ -29,7 +29,7 @@ FLARE.  If not, see http://www.gnu.org/licenses/
 #include "Settings.h"
 #else
 #include "mainwindow.h"
-#include "itemswidget.h"
+#include "itemshandler.h"
 #include <QDir>
 #endif
 #include "Utils.h"
@@ -125,7 +125,7 @@ void AnimationSet::load() {
 #else
 				exit(128);
 			}
-			std::string path = ItemsWidget::stdString(MainWindow::modPath + QDir::separator() + ItemsWidget::qString(parser.val));
+            std::string path = ItemsHandler::stdString(MainWindow::modPath + QDir::separator() + ItemsHandler::qString(parser.val));
 			sprite = new QImage(path.c_str());
 #endif
 		}

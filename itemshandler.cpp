@@ -4,6 +4,7 @@
 #include <QTextBlock>
 #include <QLineEdit>
 #include <QSpinBox>
+#include <QMetaProperty>
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
@@ -99,9 +100,9 @@ void ItemsHandler::loadItems(const std::string &path)
     items = new EditorItemManager(path);
     for (unsigned i = 0; i<items->items.size(); i++)
     {
-        if (items->items[i].name != "")
+        if (items->items[i]->name != "")
         {
-            QListWidgetItem* item = new QListWidgetItem(qString(items->items[i].name));
+            QListWidgetItem* item = new QListWidgetItem(qString(items->items[i]->name));
             item->setData(Qt::UserRole, i);
             for (int i = 0; i < itemsLayout->count(); i++)
             {
@@ -280,7 +281,7 @@ void ItemsHandler::addNewItem()
 {
 	items->items.resize(items->items.size() + 1);
     int index = items->items.size() - 1;
-    items->items[index].name = "newItem";
+    items->items[index]->name = "newItem";
 
     QListWidgetItem* item = new QListWidgetItem("newItem");
     item->setData(Qt::UserRole, index);
@@ -352,16 +353,43 @@ void ItemsHandler::clearBtn()
 
 void ItemsHandler::pushBtn()
 {
-    /*
-    int index = ui->itemsList->currentItem()->data(Qt::UserRole).toInt();
+    int index = -1;
+    for (int i = 0; i < itemsLayout->count(); i++)
+    {
+        QWidget * widget = itemsLayout->itemAt(i)->widget();
+        if (widget == NULL)
+        {
+            continue;
+        }
+        if (widget->accessibleName() == "elementslist")
+        {
+            index = dynamic_cast<ElementsList*>(widget)->ui->itemsList->currentItem()->data(Qt::UserRole).toInt();
+            break;
+        }
+    }
+    Item * item = items->items[index];
 
-    // TextEdits
-    items->items[index].name = stdString(ui->itemName->text());
-    items->items[index].flavor = stdString(ui->itemFlavor->text());
-    items->items[index].pickup_status = stdString(ui->pickupStatus->text());
-    items->items[index].power_desc = stdString(ui->powerDesc->text());
-    items->items[index].book = stdString(ui->itemBook->text());
-
+    const QMetaObject* metaObject = item->metaObject();
+    QStringList properties;
+    for(int i = metaObject->propertyOffset(); i < metaObject->propertyCount(); ++i)
+    {
+        properties << QString::fromLatin1(metaObject->property(i).name());
+/*
+        for (int i = 0; i < itemsLayout->count(); i++)
+        {
+            QWidget * widget = itemsLayout->itemAt(i)->widget();
+            if (widget == NULL)
+            {
+                continue;
+            }
+            //item->name = stdString(ui->itemName->text());
+            //item->flavor = stdString(ui->itemFlavor->text());
+            //item->pickup_status = stdString(ui->pickupStatus->text());
+            //item->power_desc = stdString(ui->powerDesc->text());
+            //item->book = stdString(ui->itemBook->text());
+        }*/
+    }
+/*
     QTextDocument* docFrom = ui->replacePowerFrom->document();
     QTextDocument* docTo   = ui->replacePowerTo->document();
     items->items[index].replace_power.clear();
@@ -531,7 +559,7 @@ void ItemsHandler::selectItem(QListWidgetItem *_item)
     }
 
     int index = _item->data(Qt::UserRole).toInt();
-    Item item = items->items[index];
+    Item* item = items->items[index];
 
     for (int i = 0; i < itemsLayout->count(); i++)
     {
@@ -545,86 +573,86 @@ void ItemsHandler::selectItem(QListWidgetItem *_item)
         {
             if (widget->accessibleName() == "name")
             {
-                dynamic_cast<LineEdit*>(widget)->setText(qString(item.name));
+                dynamic_cast<LineEdit*>(widget)->setText(qString(item->name));
             }
             else if (widget->accessibleName() == "pickup_status")
             {
-                dynamic_cast<LineEdit*>(widget)->setText(qString(item.pickup_status));
+                dynamic_cast<LineEdit*>(widget)->setText(qString(item->pickup_status));
             }
             else if (widget->accessibleName() == "power_desc")
             {
-                dynamic_cast<LineEdit*>(widget)->setText(qString(item.power_desc));
+                dynamic_cast<LineEdit*>(widget)->setText(qString(item->power_desc));
             }
             else if (widget->accessibleName() == "flavor")
             {
-                dynamic_cast<LineEdit*>(widget)->setText(qString(item.flavor));
+                dynamic_cast<LineEdit*>(widget)->setText(qString(item->flavor));
             }
             else if (widget->accessibleName() == "book")
             {
-                dynamic_cast<LineEdit*>(widget)->setText(qString(item.book));
+                dynamic_cast<LineEdit*>(widget)->setText(qString(item->book));
             }
         }
         else if (name == "SpinBox")
         {
             if (widget->accessibleName() == "level")
             {
-                dynamic_cast<SpinBox*>(widget)->setValue(item.level);
+                dynamic_cast<SpinBox*>(widget)->setValue(item->level);
             }
             else if (widget->accessibleName() == "price")
             {
-                dynamic_cast<SpinBox*>(widget)->setValue(item.price);
+                dynamic_cast<SpinBox*>(widget)->setValue(item->price);
             }
             else if (widget->accessibleName() == "price_sell")
             {
-                dynamic_cast<SpinBox*>(widget)->setValue(item.price_sell);
+                dynamic_cast<SpinBox*>(widget)->setValue(item->price_sell);
             }
             else if (widget->accessibleName() == "max_quantity")
             {
-                dynamic_cast<SpinBox*>(widget)->setValue(item.max_quantity);
+                dynamic_cast<SpinBox*>(widget)->setValue(item->max_quantity);
             }
             else if (widget->accessibleName() == "power")
             {
-                dynamic_cast<SpinBox*>(widget)->setValue(item.power);
+                dynamic_cast<SpinBox*>(widget)->setValue(item->power);
             }
         }
         else if (name == "TwoSpinBox")
         {
             if (widget->accessibleName() == "abs")
             {
-                dynamic_cast<TwoSpinBox*>(widget)->setValue1(item.abs_min);
-                dynamic_cast<TwoSpinBox*>(widget)->setValue2(item.abs_max);
+                dynamic_cast<TwoSpinBox*>(widget)->setValue1(item->abs_min);
+                dynamic_cast<TwoSpinBox*>(widget)->setValue2(item->abs_max);
             }
             else if (widget->accessibleName() == "dmg_melee")
             {
-                dynamic_cast<TwoSpinBox*>(widget)->setValue1(item.dmg_melee_min);
-                dynamic_cast<TwoSpinBox*>(widget)->setValue2(item.dmg_melee_max);
+                dynamic_cast<TwoSpinBox*>(widget)->setValue1(item->dmg_melee_min);
+                dynamic_cast<TwoSpinBox*>(widget)->setValue2(item->dmg_melee_max);
             }
             else if (widget->accessibleName() == "dmg_ment")
             {
-                dynamic_cast<TwoSpinBox*>(widget)->setValue1(item.dmg_ment_min);
-                dynamic_cast<TwoSpinBox*>(widget)->setValue2(item.dmg_ment_max);
+                dynamic_cast<TwoSpinBox*>(widget)->setValue1(item->dmg_ment_min);
+                dynamic_cast<TwoSpinBox*>(widget)->setValue2(item->dmg_ment_max);
             }
             else if (widget->accessibleName() == "dmg_ranged")
             {
-                dynamic_cast<TwoSpinBox*>(widget)->setValue1(item.dmg_ranged_min);
-                dynamic_cast<TwoSpinBox*>(widget)->setValue2(item.dmg_ranged_max);
+                dynamic_cast<TwoSpinBox*>(widget)->setValue1(item->dmg_ranged_min);
+                dynamic_cast<TwoSpinBox*>(widget)->setValue2(item->dmg_ranged_max);
             }
         }
         else if (widget->accessibleName() == "icon")
         {
-            dynamic_cast<IconChooser*>(widget)->ui->iconsView->setActiveIcon(item.icon);
+            dynamic_cast<IconChooser*>(widget)->ui->iconsView->setActiveIcon(item->icon);
         }
         else if (widget->accessibleName() == "loot_animation")
         {
             LootAnimationWidget * lootAnim = dynamic_cast<LootAnimationWidget*>(widget);
 
             QVector<QAnimation> animations_v;
-            for (unsigned int i = 0; i < item.loot_animation.size(); i++)
+            for (unsigned int i = 0; i < item->loot_animation.size(); i++)
             {
                 QAnimation anm;
-                anm.name = qString(item.loot_animation[i].name);
-                anm.low = item.loot_animation[i].low;
-                anm.high = item.loot_animation[i].high;
+                anm.name = qString(item->loot_animation[i].name);
+                anm.low = item->loot_animation[i].low;
+                anm.high = item->loot_animation[i].high;
                 animations_v.append(anm);
             }
             lootAnim->setValues(animations_v);
@@ -632,9 +660,9 @@ void ItemsHandler::selectItem(QListWidgetItem *_item)
             // load item animation if available
             if (lootAnim->ui->graphicsView->scene() != 0)
                 lootAnim->ui->graphicsView->scene()->clear();
-            if (item.loot_animation.size() > 0)
+            if (item->loot_animation.size() > 0)
             {
-                AnimationSet* animat = new AnimationSet(items->items[index].loot_animation[0].name);
+                AnimationSet* animat = new AnimationSet(item->loot_animation[0].name);
                 int count = animat->getAnimationFrames("power");
 
                 //QImage frame = *animat->sprite;
@@ -668,34 +696,34 @@ void ItemsHandler::selectItem(QListWidgetItem *_item)
         else if (widget->accessibleName() == "replace_power")
         {
             QVector< QPair<QString, QString> > powers;
-            for (unsigned int i = 0; i < item.replace_power.size(); i++)
+            for (unsigned int i = 0; i < item->replace_power.size(); i++)
             {
-                powers.append(qMakePair(QString::number(item.replace_power[i].x),
-                    QString::number(item.replace_power[i].y)));
+                powers.append(qMakePair(QString::number(item->replace_power[i].x),
+                    QString::number(item->replace_power[i].y)));
             }
             dynamic_cast<TwoStringLists*>(widget)->setValues(powers);
         }
         else if (widget->accessibleName() == "disable_slots")
         {
             QVector<QString> values;
-            for (unsigned int i = 0; i < item.disable_slots.size(); i++)
+            for (unsigned int i = 0; i < item->disable_slots.size(); i++)
             {
-                values.append(qString(item.disable_slots[i]));
+                values.append(qString(item->disable_slots[i]));
             }
             dynamic_cast<StringListWidget*>(widget)->setValues(values);
         }
         else if (widget->accessibleName() == "equip_flags")
         {
             QVector<QString> values;
-            for (unsigned int i = 0; i < item.equip_flags.size(); i++)
+            for (unsigned int i = 0; i < item->equip_flags.size(); i++)
             {
-                values.append(qString(item.equip_flags[i]));
+                values.append(qString(item->equip_flags[i]));
             }
             dynamic_cast<StringListWidget*>(widget)->setValues(values);
         }
         else if (widget->accessibleName() == "item_type")
         {
-            QString type = qString(item.type);
+            QString type = qString(item->type);
             int listSize = dynamic_cast<ComboBox*>(widget)->ui->comboBox->count();
             for (int i = 0; i < listSize; i++)
             {
@@ -708,38 +736,38 @@ void ItemsHandler::selectItem(QListWidgetItem *_item)
         }
         else if (widget->accessibleName() == "quality")
         {
-            QString quality = qString(item.quality);
+            QString quality = qString(item->quality);
             dynamic_cast<ComboBox*>(widget)->selectComboBoxItemByText(quality);
         }
         else if (widget->accessibleName() == "requires_class")
         {
-            QString className = qString(item.requires_class);
+            QString className = qString(item->requires_class);
             dynamic_cast<ComboBox*>(widget)->selectComboBoxItemByText(className);
         }
         else if (widget->accessibleName() == "soundfx")
         {
-            QString soundfx = qString(item.sfx);
+            QString soundfx = qString(item->sfx);
             dynamic_cast<ComboBox*>(widget)->selectComboBoxItemByText(QFileInfo(soundfx).fileName());
         }
         else if (widget->accessibleName() == "stepfx")
         {
-            QString stepfx = qString(item.stepfx);
+            QString stepfx = qString(item->stepfx);
             dynamic_cast<ComboBox*>(widget)->selectComboBoxItemByText(stepfx);
         }
         else if (widget->accessibleName() == "gfx")
         {
-            QString gfx = qString(item.gfx);
+            QString gfx = qString(item->gfx);
             dynamic_cast<ComboBox*>(widget)->selectComboBoxItemByText(gfx);
         }
         else if (widget->accessibleName() == "bonus")
         {
             ComboBoxKeyValueList * listWidget = dynamic_cast<ComboBoxKeyValueList*>(widget);
-            for (unsigned int i = 0; i < item.bonus.size(); i++)
+            for (unsigned int i = 0; i < item->bonus.size(); i++)
             {
-                int stat_index     = item.bonus[i].stat_index;
-                int base_index     = item.bonus[i].base_index;
-                int resist_index   = item.bonus[i].resist_index;
-                bool is_speed      = item.bonus[i].is_speed;
+                int stat_index     = item->bonus[i].stat_index;
+                int base_index     = item->bonus[i].base_index;
+                int resist_index   = item->bonus[i].resist_index;
+                bool is_speed      = item->bonus[i].is_speed;
 
                 if (stat_index != -1)
                 {
@@ -767,26 +795,26 @@ void ItemsHandler::selectItem(QListWidgetItem *_item)
 
                     listWidget->ui->keys->appendPlainText(bonus_str);
                 }
-                listWidget->ui->values->appendPlainText(QString::number(item.bonus[i].value));
+                listWidget->ui->values->appendPlainText(QString::number(item->bonus[i].value));
             }
         }
         else if (widget->accessibleName() == "requires_stat")
         {
             ComboBoxKeyValueList * listWidget = dynamic_cast<ComboBoxKeyValueList*>(widget);
-            for (unsigned int i = 0; i < item.req_stat.size(); i++)
+            for (unsigned int i = 0; i < item->req_stat.size(); i++)
             {
-                int value = item.req_val[i];
+                int value = item->req_val[i];
 
-                if (item.req_stat[i] == REQUIRES_PHYS)
+                if (item->req_stat[i] == REQUIRES_PHYS)
                     listWidget->ui->keys->appendPlainText("physical");
 
-                else if (item.req_stat[i] == REQUIRES_MENT)
+                else if (item->req_stat[i] == REQUIRES_MENT)
                     listWidget->ui->keys->appendPlainText("mental");
 
-                else if (item.req_stat[i] == REQUIRES_OFF)
+                else if (item->req_stat[i] == REQUIRES_OFF)
                     listWidget->ui->keys->appendPlainText("offense");
 
-                else if (item.req_stat[i] == REQUIRES_DEF)
+                else if (item->req_stat[i] == REQUIRES_DEF)
                     listWidget->ui->values->appendPlainText("defense");
 
                 listWidget->ui->values->appendPlainText(QString::number(value));

@@ -25,20 +25,25 @@ FLARE.  If not, see http://www.gnu.org/licenses/
 #include "API/ItemManager.h"
 
 class EditorItemManager : public ItemManager {
+    Q_OBJECT
+
+private:
+    Q_DISABLE_COPY(EditorItemManager)
+
 public:
 
-	EditorItemManager(const std::string& modpath);
-	~EditorItemManager();
-	
-	void shrinkItems();
+    explicit EditorItemManager(const std::string& modpath);
+    ~EditorItemManager();
+    
+    void shrinkItems();
 
-	void save(const std::string& filename);
+    void save(const std::string& filename);
 
     std::vector<std::string> slot_type;
     std::vector<Step_sfx> step_def;
 
 private:
-	void loadMiscTypes();
+    void loadMiscTypes();
 };
 
 #endif

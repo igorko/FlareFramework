@@ -13,17 +13,16 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp \
-        EditorItemManager.cpp \
-        API/FileParser.cpp \
-        API/ItemManager.cpp \
+    mainwindow.cpp \
+    EditorItemManager.cpp \
+    API/FileParser.cpp \
+    API/ItemManager.cpp \
 	API/Stats.cpp \
-        API/Utils.cpp \
-        API/UtilsFileSystem.cpp \
-        API/UtilsParsing.cpp \
-	API/Animation.cpp \
-	API/AnimationSet.cpp \
-    itemswidget.cpp \
+    API/Utils.cpp \
+    API/UtilsFileSystem.cpp \
+    API/UtilsParsing.cpp \
+    API/Animation.cpp \
+    API/AnimationSet.cpp \
     iconview.cpp \
     iconwidget.cpp \
     iconselector.cpp \
@@ -60,10 +59,18 @@ HEADERS  += mainwindow.h \
     elementslist.h \
     itemshandler.h \
     controlframe.h \
-    comboboxkeyvaluelist.h
+    comboboxkeyvaluelist.h \
+    API/Animation.h \
+    API/AnimationSet.h \
+    API/CommonIncludes.h \
+    API/FileParser.h \
+    API/ItemManager.h \
+    API/Stats.h \
+    API/Utils.h \
+    API/UtilsFileSystem.h \
+    API/UtilsParsing.h
 
 FORMS    += mainwindow.ui \
-    itemswidget.ui \
     iconselector.ui \
     spinbox.ui \
     checkbox.ui \

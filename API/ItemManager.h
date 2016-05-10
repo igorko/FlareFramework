@@ -32,6 +32,10 @@ FLARE.  If not, see http://www.gnu.org/licenses/
 #else
 #include "Utils.h"
 
+#include <QObject>
+#include <QVector>
+#include <QMetaType>
+
 class Element {
 public:
 	std::string id;
@@ -147,12 +151,18 @@ public:
 #endif
 };
 
-class Item {
 #ifndef EDITOR
+class Item {
 private:
 	std::string name;     // item name displayed on long and short tool tips
 	friend class ItemManager;
 #else
+class Item : public QObject {
+    Q_OBJECT
+
+private:
+    Q_DISABLE_COPY(Item)
+
 public:
 	std::string name;     // item name displayed on long and short tool tips
 #endif
@@ -195,9 +205,14 @@ public:
 	std::vector<std::string> disable_slots; // if this item is equipped, it will disable slots that match the types in the list
 
 	int getSellPrice();
-
+#ifndef EDITOR
 	Item()
 		: name("")
+#else
+	explicit Item(QObject * parent = NULL)
+		: QObject(parent)
+		, name("")
+#endif
 		, flavor("")
 		, level(0)
 		, set(0)
@@ -318,10 +333,16 @@ public:
 	void addUnknownItem(unsigned id);
 	bool requirementsMet(const StatBlock *stats, int item);
 
+#ifndef EDITOR
 	std::vector<Item> items;
+#else
+	QVector<Item*> items;
+#endif
 	std::vector<ItemType> item_types;
 	std::vector<ItemSet> item_sets;
 	std::vector<ItemQuality> item_qualities;
 };
+
+Q_DECLARE_METATYPE(Item*)
 
 #endif
