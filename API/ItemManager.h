@@ -175,6 +175,7 @@ public:
     Q_PROPERTY(int                        icon MEMBER icon)
     Q_PROPERTY(std::string                book MEMBER book)
     Q_PROPERTY(int                        dmg_melee_min MEMBER dmg_melee_min)
+    Q_PROPERTY(int                        dmg_melee_max MEMBER dmg_melee_max)
     Q_PROPERTY(int                        dmg_ranged_min MEMBER dmg_ranged_min)
     Q_PROPERTY(int                        dmg_ranged_max MEMBER dmg_ranged_max)
     Q_PROPERTY(int                        dmg_ment_min MEMBER dmg_ment_min)

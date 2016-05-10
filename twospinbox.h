@@ -18,8 +18,9 @@ public:
     void setValue1(int value);
     void setValue2(int value);
 
-private:
     Ui::TwoSpinBox *ui;
+
+private:
 };
 
 #endif // TWOSPINBOX_H

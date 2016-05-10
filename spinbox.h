@@ -17,11 +17,12 @@ public:
 
     void setValue(int value);
 
+    Ui::SpinBox *ui;
+
 public slots:
     void markNotDefaultSpinBox(int value);
 
 private:
-    Ui::SpinBox *ui;
 
     QString editedStyle;
     int defaultValue;
