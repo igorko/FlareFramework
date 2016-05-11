@@ -165,15 +165,16 @@ private:
 
 public:
 
-    Q_PROPERTY(std::string                name MEMBER name)
-    Q_PROPERTY(std::string                flavor MEMBER flavor)
+    // Qt4 doesn't support MEMBER. Write macro to add set/get
+    Q_PROPERTY(QString                    name MEMBER name)
+    Q_PROPERTY(QString                    flavor MEMBER flavor)
     Q_PROPERTY(int                        level MEMBER level)
     Q_PROPERTY(int                        set MEMBER set)
-    Q_PROPERTY(std::string                quality MEMBER quality)
-    Q_PROPERTY(std::string                type MEMBER type)
-    Q_PROPERTY(std::vector<std::string>   equip_flags MEMBER equip_flags)
+    Q_PROPERTY(QString                    quality MEMBER quality)
+    Q_PROPERTY(QString                    type MEMBER type)
+    Q_PROPERTY(QVector<QString>           equip_flags MEMBER equip_flags)
     Q_PROPERTY(int                        icon MEMBER icon)
-    Q_PROPERTY(std::string                book MEMBER book)
+    Q_PROPERTY(QString                    book MEMBER book)
     Q_PROPERTY(int                        dmg_melee_min MEMBER dmg_melee_min)
     Q_PROPERTY(int                        dmg_melee_max MEMBER dmg_melee_max)
     Q_PROPERTY(int                        dmg_ranged_min MEMBER dmg_ranged_min)
@@ -182,35 +183,35 @@ public:
     Q_PROPERTY(int                        dmg_ment_max MEMBER dmg_ment_max)
     Q_PROPERTY(int                        abs_min MEMBER abs_min)
     Q_PROPERTY(int                        abs_max MEMBER abs_max)
-    Q_PROPERTY(std::vector<int>           req_stat MEMBER req_stat)
-    Q_PROPERTY(std::vector<int>           req_val MEMBER req_val)
-    Q_PROPERTY(std::string                requires_class MEMBER requires_class)
+    Q_PROPERTY(QVector<int>               req_stat MEMBER req_stat)
+    Q_PROPERTY(QVector<int>               req_val MEMBER req_val)
+    Q_PROPERTY(QString                    requires_class MEMBER requires_class)
     //Q_PROPERTY(std::vector<BonusData>     bonus MEMBER bonus)
-    Q_PROPERTY(std::string                sfx MEMBER sfx)
-    Q_PROPERTY(std::string                gfx MEMBER gfx)
+    Q_PROPERTY(QString                    sfx MEMBER sfx)
+    Q_PROPERTY(QString                    gfx MEMBER gfx)
     //Q_PROPERTY(std::vector<LootAnimation> loot_animation MEMBER loot_animation)
     Q_PROPERTY(int                        power MEMBER power)
-    //Q_PROPERTY(std::vector<Point>         replace_power MEMBER replace_power)
-    Q_PROPERTY(std::string                power_desc MEMBER power_desc)
+    Q_PROPERTY(QVector<QPoint>            replace_power MEMBER replace_power)
+    Q_PROPERTY(QString                    power_desc MEMBER power_desc)
     Q_PROPERTY(int                        price MEMBER price)
     Q_PROPERTY(int                        price_sell MEMBER price_sell)
     Q_PROPERTY(int                        max_quantity MEMBER max_quantity)
-    Q_PROPERTY(std::string                pickup_status MEMBER pickup_status)
-    Q_PROPERTY(std::string                stepfx MEMBER stepfx)
-    Q_PROPERTY(std::vector<std::string>   disable_slots MEMBER disable_slots)
+    Q_PROPERTY(QString                    pickup_status MEMBER pickup_status)
+    Q_PROPERTY(QString                    stepfx MEMBER stepfx)
+    Q_PROPERTY(QVector<QString>           disable_slots MEMBER disable_slots)
 
-	std::string name;     // item name displayed on long and short tool tips
+    QString name;     // item name displayed on long and short tool tips
 #endif
 
 public:
-	std::string flavor;   // optional flavor text describing the item
+    QString flavor;   // optional flavor text describing the item
 	int level;            // rough estimate of quality, used in the loot algorithm
 	int set;              // item can be attached to item set
-	std::string quality;  // should match an id from items/qualities.txt
-	std::string type;     // equipment slot or base item type
-	std::vector<std::string> equip_flags;   // common values include: melee, ranged, mental, shield
+    QString quality;  // should match an id from items/qualities.txt
+    QString type;     // equipment slot or base item type
+    QVector<QString> equip_flags;   // common values include: melee, ranged, mental, shield
 	int icon;             // icon index on small pixel sheet
-	std::string book;     // book file location
+    QString book;     // book file location
 	int dmg_melee_min;    // minimum damage amount (melee)
 	int dmg_melee_max;    // maximum damage amount (melee)
 	int dmg_ranged_min;   // minimum damage amount (ranged)
@@ -219,25 +220,25 @@ public:
 	int dmg_ment_max;     // maximum damage amount (mental)
 	int abs_min;          // minimum absorb amount
 	int abs_max;          // maximum absorb amount
-	std::vector<int> req_stat;         // physical, mental, offense, defense
-	std::vector<int> req_val;          // 1-5 (used with req_stat)
-	std::string requires_class;
-	std::vector<BonusData> bonus;   // stat to increase/decrease e.g. hp, accuracy, speed
-	std::string sfx;           // the item sound when it hits the floor or inventory, etc
+    QVector<int> req_stat;         // physical, mental, offense, defense
+    QVector<int> req_val;          // 1-5 (used with req_stat)
+    QString requires_class;
+    QVector<BonusData> bonus;   // stat to increase/decrease e.g. hp, accuracy, speed
+    QString sfx;           // the item sound when it hits the floor or inventory, etc
 #ifndef EDITOR
 	SoundManager::SoundID sfx_id;
 #endif
-	std::string gfx;           // the sprite layer shown when this item is equipped
-	std::vector<LootAnimation> loot_animation;// the flying loot animation for this item
+    QString gfx;           // the sprite layer shown when this item is equipped
+    QVector<LootAnimation> loot_animation;// the flying loot animation for this item
 	int power;            // this item can be dragged to the action bar and used as a power
-	std::vector<Point> replace_power;        // alter powers when this item is equipped. Power id 'x' is replaced with id 'y'
-	std::string power_desc;    // shows up in green text on the tooltip
+    QVector<QPoint> replace_power;        // alter powers when this item is equipped. Power id 'x' is replaced with id 'y'
+    QString power_desc;    // shows up in green text on the tooltip
 	int price;            // if price = 0 the item cannot be sold
 	int price_sell;       // if price_sell = 0, the sell price is price*vendor_ratio
 	int max_quantity;     // max count per stack
-	std::string pickup_status; // when this item is picked up, set a campaign state (usually for quest items)
-	std::string stepfx;        // sound effect played when walking (armors only)
-	std::vector<std::string> disable_slots; // if this item is equipped, it will disable slots that match the types in the list
+    QString pickup_status; // when this item is picked up, set a campaign state (usually for quest items)
+    QString stepfx;        // sound effect played when walking (armors only)
+    QVector<QString> disable_slots; // if this item is equipped, it will disable slots that match the types in the list
 
 	int getSellPrice();
 #ifndef EDITOR

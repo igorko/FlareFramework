@@ -190,10 +190,10 @@ void ItemManager::loadItems(const std::string& filename, bool locateFileName) {
 #else
 		if (infile.key == "name")
 			// @ATTR name|string|Item name displayed on long and short tooltips.
-            items[id]->name = infile.val;
+            items[id]->name = QString::fromStdString(infile.val);
 		else if (infile.key == "flavor")
 			// @ATTR flavor|string|A description of the item.
-            items[id]->flavor = infile.val;
+            items[id]->flavor = QString::fromStdString(infile.val);
 #endif
 		else if (infile.key == "level")
 			// @ATTR level|integer|The item's level. Has no gameplay impact. (Deprecated?)
@@ -204,15 +204,15 @@ void ItemManager::loadItems(const std::string& filename, bool locateFileName) {
 		}
 		else if (infile.key == "book") {
 			// @ATTR book|string|A book file to open when this item is activated.
-            items[id]->book = infile.val;
+            items[id]->book = QString::fromStdString(infile.val);
 		}
 		else if (infile.key == "quality") {
 			// @ATTR quality|string|Item quality matching an id in items/qualities.txt
-            items[id]->quality = infile.val;
+            items[id]->quality = QString::fromStdString(infile.val);
 		}
 		else if (infile.key == "item_type") {
 			// @ATTR item_type|string|Equipment slot [artifact, head, chest, hands, legs, feets, main, off, ring] or base item type [gem, consumable]
-            items[id]->type = infile.val;
+            items[id]->type = QString::fromStdString(infile.val);
 		}
 		else if (infile.key == "equip_flags") {
 			// @ATTR equip_flags|flag (string), ...|A comma separated list of flags to set when this item is equipped. See engine/equip_flags.txt.
@@ -220,7 +220,7 @@ void ItemManager::loadItems(const std::string& filename, bool locateFileName) {
 			std::string flag = popFirstString(infile.val);
 
 			while (flag != "") {
-                items[id]->equip_flags.push_back(flag);
+                items[id]->equip_flags.push_back(QString::fromStdString(flag));
 				flag = popFirstString(infile.val);
 			}
 		}
@@ -278,7 +278,7 @@ void ItemManager::loadItems(const std::string& filename, bool locateFileName) {
 		}
 		else if (infile.key == "requires_class") {
 			// @ATTR requires_class|string|The hero's base class (engine/classes.txt) must match for this item to be equipped.
-            items[id]->requires_class = infile.val;
+            items[id]->requires_class = QString::fromStdString(infile.val);
 		}
 		else if (infile.key == "bonus") {
 			// @ATTR bonus|[stat_name (string), amount (integer)]|Adds a bonus to the item power_tag being a uniq tag of a power definition, e.: bonus=HP regen, 50
@@ -292,14 +292,14 @@ void ItemManager::loadItems(const std::string& filename, bool locateFileName) {
 		}
 		else if (infile.key == "soundfx") {
 			// @ATTR soundfx|string|Sound effect filename to play for the specific item.
-            items[id]->sfx = infile.val;
+            items[id]->sfx = QString::fromStdString(infile.val);
 #ifndef EDITOR
             items[id]->sfx_id = snd->load(items[id]->sfx, "ItemManager");
 #endif
 		}
 		else if (infile.key == "gfx")
 			// @ATTR gfx|string|Filename of an animation set to display when the item is equipped.
-            items[id]->gfx = infile.val;
+            items[id]->gfx = QString::fromStdString(infile.val);
 		else if (infile.key == "loot_animation") {
 			// @ATTR loot_animation|filename (string), min quantity (int), max quantity (int)|Specifies the loot animation file for the item. The max quantity, or both quantity values, may be omitted.
 			if (clear_loot_anim) {
@@ -326,14 +326,14 @@ void ItemManager::loadItems(const std::string& filename, bool locateFileName) {
 				clear_replace_power = false;
 			}
 			Point power_ids = toPoint(infile.val);
-            items[id]->replace_power.push_back(power_ids);
+            items[id]->replace_power.push_back(QPoint(power_ids.x, power_ids.y));
 		}
 		else if (infile.key == "power_desc")
 			// @ATTR power_desc|string|A string describing the additional power.
 #ifndef EDITOR
             items[id]->power_desc = msg->get(infile.val);
 #else
-            items[id]->power_desc = infile.val;
+            items[id]->power_desc = QString::fromStdString(infile.val);
 #endif
 		else if (infile.key == "price")
 			// @ATTR price|integer|The amount of currency the item costs, if set to 0 the item cannot be sold.
@@ -346,17 +346,17 @@ void ItemManager::loadItems(const std::string& filename, bool locateFileName) {
             items[id]->max_quantity = toInt(infile.val);
 		else if (infile.key == "pickup_status")
 			// @ATTR pickup_status|string|Set a campaign status when item is picked up, this is used for quest items.
-            items[id]->pickup_status = infile.val;
+            items[id]->pickup_status = QString::fromStdString(infile.val);
 		else if (infile.key == "stepfx")
 			// @ATTR stepfx|string|Sound effect when walking, this applies only to armors.
-            items[id]->stepfx = infile.val;
+            items[id]->stepfx = QString::fromStdString(infile.val);
 		else if (infile.key == "disable_slots") {
 			// @ATTR disable_slots|type (string), ...|A comma separated list of equip slot types to disable when this item is equipped.
             items[id]->disable_slots.clear();
 			std::string slot_type = popFirstString(infile.val);
 
 			while (slot_type != "") {
-                items[id]->disable_slots.push_back(slot_type);
+                items[id]->disable_slots.push_back(QString::fromStdString(slot_type));
 				slot_type = popFirstString(infile.val);
 			}
 		}
@@ -470,7 +470,7 @@ std::string ItemManager::getItemName(unsigned id) {
         items[id]->name = "Unknown Item";
 #endif
 
-    return items[id]->name;
+    return items[id]->name.toStdString();
 }
 
 std::string ItemManager::getItemType(std::string _type) {

@@ -17,7 +17,7 @@ SOURCES += main.cpp\
     EditorItemManager.cpp \
     API/FileParser.cpp \
     API/ItemManager.cpp \
-	API/Stats.cpp \
+    API/Stats.cpp \
     API/Utils.cpp \
     API/UtilsFileSystem.cpp \
     API/UtilsParsing.cpp \
@@ -42,7 +42,6 @@ SOURCES += main.cpp\
     comboboxkeyvaluelist.cpp
 
 HEADERS  += mainwindow.h \
-    itemswidget.h \
     iconview.h \
     iconwidget.h \
     iconselector.h \
