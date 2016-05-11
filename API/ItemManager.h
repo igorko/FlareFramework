@@ -176,7 +176,6 @@ private:
 
 public:
 
-    // Qt4 doesn't support MEMBER. Write macro to add set/get
     Property(QString, name)
     Property(QString, flavor)
     Property(int, level)
