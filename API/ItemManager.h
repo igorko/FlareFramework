@@ -151,6 +151,17 @@ public:
 #endif
 };
 
+#include <QtGlobal>
+#if QT_VERSION >= 0x050000
+#define Property(Type, Name) \
+    Q_PROPERTY(Type Name MEMBER Name)
+#else
+#define Property(Type, Name) \
+    Q_PROPERTY(Type Name READ get##Name WRITE set##Name); \
+    Type get##Name() {return Name;}; \
+    void set##Name(Type value) {Name = value;};
+#endif
+
 #ifndef EDITOR
 class Item {
 private:
@@ -166,39 +177,39 @@ private:
 public:
 
     // Qt4 doesn't support MEMBER. Write macro to add set/get
-    Q_PROPERTY(QString                    name MEMBER name)
-    Q_PROPERTY(QString                    flavor MEMBER flavor)
-    Q_PROPERTY(int                        level MEMBER level)
-    Q_PROPERTY(int                        set MEMBER set)
-    Q_PROPERTY(QString                    quality MEMBER quality)
-    Q_PROPERTY(QString                    type MEMBER type)
-    Q_PROPERTY(QVector<QString>           equip_flags MEMBER equip_flags)
-    Q_PROPERTY(int                        icon MEMBER icon)
-    Q_PROPERTY(QString                    book MEMBER book)
-    Q_PROPERTY(int                        dmg_melee_min MEMBER dmg_melee_min)
-    Q_PROPERTY(int                        dmg_melee_max MEMBER dmg_melee_max)
-    Q_PROPERTY(int                        dmg_ranged_min MEMBER dmg_ranged_min)
-    Q_PROPERTY(int                        dmg_ranged_max MEMBER dmg_ranged_max)
-    Q_PROPERTY(int                        dmg_ment_min MEMBER dmg_ment_min)
-    Q_PROPERTY(int                        dmg_ment_max MEMBER dmg_ment_max)
-    Q_PROPERTY(int                        abs_min MEMBER abs_min)
-    Q_PROPERTY(int                        abs_max MEMBER abs_max)
-    Q_PROPERTY(QVector<int>               req_stat MEMBER req_stat)
-    Q_PROPERTY(QVector<int>               req_val MEMBER req_val)
-    Q_PROPERTY(QString                    requires_class MEMBER requires_class)
-    //Q_PROPERTY(std::vector<BonusData>     bonus MEMBER bonus)
-    Q_PROPERTY(QString                    sfx MEMBER sfx)
-    Q_PROPERTY(QString                    gfx MEMBER gfx)
-    //Q_PROPERTY(std::vector<LootAnimation> loot_animation MEMBER loot_animation)
-    Q_PROPERTY(int                        power MEMBER power)
-    Q_PROPERTY(QVector<QPoint>            replace_power MEMBER replace_power)
-    Q_PROPERTY(QString                    power_desc MEMBER power_desc)
-    Q_PROPERTY(int                        price MEMBER price)
-    Q_PROPERTY(int                        price_sell MEMBER price_sell)
-    Q_PROPERTY(int                        max_quantity MEMBER max_quantity)
-    Q_PROPERTY(QString                    pickup_status MEMBER pickup_status)
-    Q_PROPERTY(QString                    stepfx MEMBER stepfx)
-    Q_PROPERTY(QVector<QString>           disable_slots MEMBER disable_slots)
+    Property(QString, name)
+    Property(QString, flavor)
+    Property(int, level)
+    Property(int, set)
+    Property(QString, quality)
+    Property(QString, type)
+    Property(QVector<QString>, equip_flags)
+    Property(int, icon)
+    Property(QString, book)
+    Property(int, dmg_melee_min)
+    Property(int, dmg_melee_max)
+    Property(int, dmg_ranged_min)
+    Property(int, dmg_ranged_max)
+    Property(int, dmg_ment_min)
+    Property(int, dmg_ment_max)
+    Property(int, abs_min)
+    Property(int, abs_max)
+    Property(QVector<int>, req_stat)
+    Property(QVector<int>, req_val)
+    Property(QString, requires_class)
+    //Property(QVector<BonusData>, bonus)
+    Property(QString, sfx)
+    Property(QString, gfx)
+    //Property(QVector<LootAnimation>, loot_animation)
+    Property(int, power)
+    Property(QVector<QPoint>, replace_power)
+    Property(QString, power_desc)
+    Property(int, price)
+    Property(int, price_sell)
+    Property(int, max_quantity)
+    Property(QString, pickup_status)
+    Property(QString, stepfx)
+    Property(QVector<QString>, disable_slots)
 
     QString name;     // item name displayed on long and short tool tips
 #endif
