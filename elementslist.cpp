@@ -13,3 +13,8 @@ ElementsList::~ElementsList()
 {
     delete ui;
 }
+
+void ElementsList::clear()
+{
+    ui->itemsList->clear();
+}

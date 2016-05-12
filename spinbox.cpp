@@ -29,6 +29,11 @@ void SpinBox::setValue(int value)
     ui->spinBox->setValue(value);
 }
 
+int SpinBox::value()
+{
+    return ui->spinBox->value();
+}
+
 void SpinBox::markNotDefaultSpinBox(int value)
 {
     if (value != defaultValue)

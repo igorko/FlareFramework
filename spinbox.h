@@ -17,6 +17,8 @@ public:
 
     void setValue(int value);
 
+    int value();
+
     Ui::SpinBox *ui;
 
 public slots:

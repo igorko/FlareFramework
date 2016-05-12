@@ -30,6 +30,11 @@ void LineEdit::setText(QString text)
     ui->lineEdit->setText(text);
 }
 
+QString LineEdit::text()
+{
+    return ui->lineEdit->text();
+}
+
 void LineEdit::markNotEmptyLineEdit(const QString &text)
 {
     if (text != "")

@@ -16,6 +16,7 @@ public:
     ~CheckBox();
 
     void setChecked(bool check);
+    bool isChecked();
 
     Ui::CheckBox *ui;
 };

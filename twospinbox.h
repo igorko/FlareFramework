@@ -18,6 +18,8 @@ public:
     void setValue1(int value);
     void setValue2(int value);
 
+    int value1();
+    int value2();
     Ui::TwoSpinBox *ui;
 
 private:

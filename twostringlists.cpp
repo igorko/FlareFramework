@@ -41,6 +41,16 @@ void TwoStringLists::setValues(QVector<QPair<QString, QString> > values)
     }
 }
 
+QTextDocument *TwoStringLists::doc1()
+{
+    return ui->edit_1->document();
+}
+
+QTextDocument *TwoStringLists::doc2()
+{
+    return ui->edit_2->document();
+}
+
 void TwoStringLists::markNotEmptyPlainTextEdits()
 {
     QTextDocument* doc1 = ui->edit_1->document();

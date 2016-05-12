@@ -19,6 +19,8 @@ public:
 
     void setText(QString text);
 
+    QString text();
+
     Ui::LineEdit *ui;
 
 public slots:

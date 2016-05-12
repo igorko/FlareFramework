@@ -2,6 +2,7 @@
 #define STRINGLISTWIDGET_H
 
 #include <QFrame>
+#include <QTextDocument>
 
 namespace Ui {
 class StringListWidget;
@@ -18,6 +19,8 @@ public:
     void clear();
 
     void setValues(QVector<QString> values);
+
+    QTextDocument* doc();
 
     Ui::StringListWidget *ui;
 

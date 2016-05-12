@@ -18,8 +18,13 @@ public:
     void setCurrentIndex(int index);
     void clear();
     void addItem(QString value);
+    void addItem(QString text, const QVariant & data);
     void addItems(QStringList values);
     void selectComboBoxItemByText(const QString &text);
+
+    int count();
+    void setStyleSheet(QString text);
+    void setToolTip(QString text);
 
     Ui::ComboBox *ui;
 };

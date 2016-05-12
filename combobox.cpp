@@ -31,6 +31,11 @@ void ComboBox::addItem(QString value)
     ui->comboBox->addItem(value);
 }
 
+void ComboBox::addItem(QString text, const QVariant & data)
+{
+    ui->comboBox->addItem(text, data);
+}
+
 void ComboBox::addItems(QStringList values)
 {
     ui->comboBox->addItems(values);
@@ -47,4 +52,19 @@ void ComboBox::selectComboBoxItemByText(const QString &text)
             break;
         }
     }
+}
+
+int ComboBox::count()
+{
+    return ui->comboBox->count();
+}
+
+void ComboBox::setStyleSheet(QString text)
+{
+    ui->comboBox->setStyleSheet(text);
+}
+
+void ComboBox::setToolTip(QString text)
+{
+    ui->comboBox->setToolTip(text);
 }

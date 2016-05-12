@@ -33,6 +33,11 @@ void StringListWidget::setValues(QVector<QString> values)
     }
 }
 
+QTextDocument *StringListWidget::doc()
+{
+    return ui->list->document();
+}
+
 void StringListWidget::addItem()
 {
     ui->list->appendPlainText(ui->selector->currentText());

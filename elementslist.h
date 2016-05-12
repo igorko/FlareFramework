@@ -15,6 +15,8 @@ public:
     explicit ElementsList(QWidget *parent = 0);
     ~ElementsList();
 
+    void clear();
+
     Ui::ElementsList *ui;
 };
 

@@ -1,49 +1,26 @@
 #include "entityhandler.h"
 
+#include <QMetaProperty>
+#include <QTextBlock>
+#include <QGridLayout>
+#include <QComboBox>
+
 #include "mainwindow.h"
-#include "ui_mainwindow.h"
-
-#include "iconchooser.h"
-#include "ui_iconchooser.h"
-
-#include "elementslist.h"
-#include "ui_elementslist.h"
-
-#include "lootanimationwidget.h"
-#include "ui_lootanimationwidget.h"
+#include "combobox.h"
+#include "stringlistwidget.h"
+#include "comboboxkeyvaluelist.h"
+#include "lineedit.h"
+#include "spinbox.h"
+#include "twospinbox.h"
+#include "checkbox.h"
+#include "twostringlists.h"
+#include "doublespinbox.h"
 
 #include "controlframe.h"
 #include "ui_controlframe.h"
 
-#include "combobox.h"
-#include "ui_combobox.h"
-
-#include "stringlistwidget.h"
-#include "ui_stringlistwidget.h"
-
-#include "comboboxkeyvaluelist.h"
-#include "ui_comboboxkeyvaluelist.h"
-
-#include "lineedit.h"
-#include "ui_lineedit.h"
-
-#include "spinbox.h"
-#include "ui_spinbox.h"
-
-#include "doublespinbox.h"
-#include "ui_doublespinbox.h"
-
-#include "twospinbox.h"
-#include "ui_twospinbox.h"
-
-#include "checkbox.h"
-#include "ui_checkbox.h"
-
-#include "twostringlists.h"
-#include "ui_twostringlists.h"
-
-#include <QMetaProperty>
-#include <QTextBlock>
+#include "elementslist.h"
+#include "ui_elementslist.h"
 
 EntityHandler::EntityHandler(MainWindow * _mainWindow, QObject *parent) :
     mainWindow(_mainWindow),
@@ -65,7 +42,7 @@ void EntityHandler::clearItemsList()
 
         if (widget && widget->accessibleName() == "elementslist")
         {
-            dynamic_cast<ElementsList*>(widget)->ui->itemsList->clear();
+            dynamic_cast<ElementsList*>(widget)->clear();
             break;
         }
     }
@@ -74,15 +51,15 @@ void EntityHandler::clearItemsList()
 
 void EntityHandler::checkComboBoxForError(ComboBox *widget, const QString &errorText)
 {
-    if (widget->ui->comboBox->count() == 0)
+    if (widget->count() == 0)
     {
-        widget->ui->comboBox->setStyleSheet(invalidStyle);
-        widget->ui->comboBox->setToolTip(errorText);
+        widget->setStyleSheet(invalidStyle);
+        widget->setToolTip(errorText);
     }
     else
     {
-        widget->ui->comboBox->setStyleSheet("");
-        widget->ui->comboBox->setToolTip("");
+        widget->setStyleSheet("");
+        widget->setToolTip("");
     }
 }
 
@@ -187,22 +164,22 @@ void EntityHandler::pushBtn()
                 if (QString(widget->metaObject()->className()) == "LineEdit")
                 {
                     entity->setProperty(propertyName.toStdString().c_str(),
-                        dynamic_cast<LineEdit*>(widget)->ui->lineEdit->text());
+                        dynamic_cast<LineEdit*>(widget)->text());
                 }
                 else if (QString(widget->metaObject()->className()) == "SpinBox")
                 {
                     entity->setProperty(propertyName.toStdString().c_str(),
-                        dynamic_cast<SpinBox*>(widget)->ui->spinBox->value());
+                        dynamic_cast<SpinBox*>(widget)->value());
                 }
                 else if (QString(widget->metaObject()->className()) == "CheckBox")
                 {
                     entity->setProperty(propertyName.toStdString().c_str(),
-                        dynamic_cast<CheckBox*>(widget)->ui->checkBox->isChecked());
+                        dynamic_cast<CheckBox*>(widget)->isChecked());
                 }
                 else if (QString(widget->metaObject()->className()) == "TwoStringLists")
                 {
-                    QTextDocument* from = dynamic_cast<TwoStringLists*>(widget)->ui->edit_1->document();
-                    QTextDocument* to   = dynamic_cast<TwoStringLists*>(widget)->ui->edit_2->document();
+                    QTextDocument* from = dynamic_cast<TwoStringLists*>(widget)->doc1();
+                    QTextDocument* to   = dynamic_cast<TwoStringLists*>(widget)->doc2();
 
                     QList<QVariant> values;
                     for (int i = 0; i < from->lineCount(); i++)
@@ -217,7 +194,7 @@ void EntityHandler::pushBtn()
                 }
                 else if (QString(widget->metaObject()->className()) == "StringListWidget")
                 {
-                    QTextDocument* list = dynamic_cast<StringListWidget*>(widget)->ui->list->document();
+                    QTextDocument* list = dynamic_cast<StringListWidget*>(widget)->doc();
 
                     QList<QVariant> values;
                     for (int i = 0; i < list->lineCount(); i++)
@@ -315,7 +292,7 @@ void EntityHandler::selectElementFromList(QListWidgetItem *_item)
             {
                 if (className == "LineEdit")
                 {
-                    dynamic_cast<LineEdit*>(widget)->ui->lineEdit->setText(entity->property(propertyName.toStdString().c_str()).toString());
+                    dynamic_cast<LineEdit*>(widget)->setText(entity->property(propertyName.toStdString().c_str()).toString());
                 }
                 else if (className == "SpinBox")
                 {

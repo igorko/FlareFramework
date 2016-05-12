@@ -2,6 +2,7 @@
 #define TWOSTRINGLISTS_H
 
 #include <QFrame>
+#include <QTextDocument>
 
 namespace Ui {
 class TwoStringLists;
@@ -18,6 +19,9 @@ public:
     void clear();
 
     void setValues(QVector< QPair<QString, QString> > values);
+
+    QTextDocument* doc1();
+    QTextDocument* doc2();
 
     Ui::TwoStringLists *ui;
 

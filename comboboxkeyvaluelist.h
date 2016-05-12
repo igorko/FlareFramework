@@ -2,6 +2,7 @@
 #define COMBOBOXKEYVALUELIST_H
 
 #include <QFrame>
+#include <QComboBox>
 
 namespace Ui {
 class ComboBoxKeyValueList;
@@ -15,6 +16,7 @@ public:
     explicit ComboBoxKeyValueList(QString name, QString description, QWidget *parent = 0);
     ~ComboBoxKeyValueList();
 
+    QComboBox * comboBox();
     Ui::ComboBoxKeyValueList *ui;
 
 public slots:

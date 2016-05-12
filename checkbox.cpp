@@ -18,5 +18,10 @@ CheckBox::~CheckBox()
 
 void CheckBox::setChecked(bool check)
 {
-ui->checkBox->setChecked(check);
+    ui->checkBox->setChecked(check);
+}
+
+bool CheckBox::isChecked()
+{
+    return ui->checkBox->isChecked();
 }

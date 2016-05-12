@@ -18,6 +18,11 @@ ComboBoxKeyValueList::~ComboBoxKeyValueList()
     delete ui;
 }
 
+QComboBox *ComboBoxKeyValueList::comboBox()
+{
+    return ui->list;
+}
+
 void ComboBoxKeyValueList::addItem()
 {
     ui->keys->appendPlainText(ui->list->currentText());

@@ -4,9 +4,6 @@
 #include "entityhandler.h"
 
 class EditorItemManager;
-class QSpinBox;
-class QLineEdit;
-class QPlainTextEdit;
 
 class ItemsHandler : public EntityHandler
 {

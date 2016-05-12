@@ -5,9 +5,26 @@
 #include <QLineEdit>
 #include <QSpinBox>
 #include <QMetaProperty>
+#include <QScrollArea>
+#include <QListWidgetItem>
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+
+#include "combobox.h"
+#include "stringlistwidget.h"
+#include "comboboxkeyvaluelist.h"
+#include "lineedit.h"
+#include "spinbox.h"
+#include "twospinbox.h"
+#include "checkbox.h"
+#include "twostringlists.h"
+#include "doublespinbox.h"
+
+#include "EditorItemManager.h"
+#include "API/Stats.h"
+#include "API/AnimationSet.h"
+#include "API/Animation.h"
 
 #include "iconchooser.h"
 #include "ui_iconchooser.h"
@@ -15,45 +32,14 @@
 #include "elementslist.h"
 #include "ui_elementslist.h"
 
+#include "iconselector.h"
+#include "lootanimationwidget.h"
+
 #include "lootanimationwidget.h"
 #include "ui_lootanimationwidget.h"
 
 #include "controlframe.h"
 #include "ui_controlframe.h"
-
-#include "combobox.h"
-#include "ui_combobox.h"
-
-#include "stringlistwidget.h"
-#include "ui_stringlistwidget.h"
-
-#include "comboboxkeyvaluelist.h"
-#include "ui_comboboxkeyvaluelist.h"
-
-#include "lineedit.h"
-#include "ui_lineedit.h"
-
-#include "spinbox.h"
-#include "ui_spinbox.h"
-
-#include "twospinbox.h"
-#include "ui_twospinbox.h"
-
-#include "checkbox.h"
-#include "ui_checkbox.h"
-
-#include "twostringlists.h"
-#include "ui_twostringlists.h"
-
-#include "EditorItemManager.h"
-#include "API/Stats.h"
-#include "API/AnimationSet.h"
-#include "API/Animation.h"
-
-#include "doublespinbox.h"
-
-#include "iconselector.h"
-#include "lootanimationwidget.h"
 
 ItemsHandler::ItemsHandler(MainWindow * _mainWindow, QObject *parent) :
     EntityHandler(_mainWindow, parent),
@@ -138,36 +124,36 @@ void ItemsHandler::loadEntityList(const std::string &path)
             {
                 for (unsigned i = 0; i<items->item_types.size(); i++)
                 {
-                    dynamic_cast<ComboBox*>(widget)->ui->comboBox->addItem(qString(items->item_types[i].name), qString(items->item_types[i].id));
+                    dynamic_cast<ComboBox*>(widget)->addItem(qString(items->item_types[i].name), qString(items->item_types[i].id));
                 }
-                checkComboBoxForError(dynamic_cast<ComboBox*>(widget)->ui->comboBox,
+                checkComboBoxForError(dynamic_cast<ComboBox*>(widget),
                     "items/types.txt is missing or incorrect. Copy it from base mod.");
             }
             else if (widget->accessibleName() == "quality")
             {
                 for (unsigned i = 0; i<items->item_qualities.size(); i++)
                 {
-                    dynamic_cast<ComboBox*>(widget)->ui->comboBox->addItem(qString(items->item_qualities[i].id));
+                    dynamic_cast<ComboBox*>(widget)->addItem(qString(items->item_qualities[i].id));
                 }
-                checkComboBoxForError(dynamic_cast<ComboBox*>(widget)->ui->comboBox,
+                checkComboBoxForError(dynamic_cast<ComboBox*>(widget),
                     "items/qualities.txt is missing or incorrect. Copy it from base mod.");
             }
             else if (widget->accessibleName() == "stepfx")
             {
                 for (unsigned int i = 0; i<items->step_def.size(); i++)
                 {
-                    dynamic_cast<ComboBox*>(widget)->ui->comboBox->addItem(qString(items->step_def[i].id));
+                    dynamic_cast<ComboBox*>(widget)->addItem(qString(items->step_def[i].id));
                 }
-                checkComboBoxForError(dynamic_cast<ComboBox*>(widget)->ui->comboBox,
+                checkComboBoxForError(dynamic_cast<ComboBox*>(widget),
                     "items/step_sounds.txt is missing or incorrect. Copy it from base mod.");
             }
             else if (widget->accessibleName() == "requires_class")
             {
                 for (unsigned i = 0; i<items->HERO_CLASSES.size(); i++)
                 {
-                    dynamic_cast<ComboBox*>(widget)->ui->comboBox->addItem(qString(items->HERO_CLASSES[i].name));
+                    dynamic_cast<ComboBox*>(widget)->addItem(qString(items->HERO_CLASSES[i].name));
                 }
-                checkComboBoxForError(dynamic_cast<ComboBox*>(widget)->ui->comboBox,
+                checkComboBoxForError(dynamic_cast<ComboBox*>(widget),
                     "engine/classes.txt is missing or incorrect. Copy it from base mod.");
             }
         }
@@ -199,27 +185,27 @@ void ItemsHandler::loadEntityList(const std::string &path)
             {
                 for (unsigned i = 0; i<items->ELEMENTS.size(); i++)
                 {
-                    listWidget->ui->list->addItem(qString(items->ELEMENTS[i].id) + "_resist");
+                    listWidget->comboBox()->addItem(qString(items->ELEMENTS[i].id) + "_resist");
                 }
 
-                listWidget->ui->list->addItem("speed");
-                listWidget->ui->list->addItem("physical");
-                listWidget->ui->list->addItem("mental");
-                listWidget->ui->list->addItem("offense");
-                listWidget->ui->list->addItem("defense");
+                listWidget->comboBox()->addItem("speed");
+                listWidget->comboBox()->addItem("physical");
+                listWidget->comboBox()->addItem("mental");
+                listWidget->comboBox()->addItem("offense");
+                listWidget->comboBox()->addItem("defense");
                 for (unsigned i = 0; i<STAT_COUNT; i++)
                 {
-                    listWidget->ui->list->addItem(qString(STAT_KEY[i]));
+                    listWidget->comboBox()->addItem(qString(STAT_KEY[i]));
                 }
                 checkComboBoxForError(listWidget->ui->list,
                     "engine/elements.txt is missing or incorrect. Copy it from base mod.");
             }
             else if (listWidget->accessibleName() == "requires_stat")
             {
-                listWidget->ui->list->addItem("physical");
-                listWidget->ui->list->addItem("mental");
-                listWidget->ui->list->addItem("offense");
-                listWidget->ui->list->addItem("defense");
+                listWidget->comboBox()->addItem("physical");
+                listWidget->comboBox()->addItem("mental");
+                listWidget->comboBox()->addItem("offense");
+                listWidget->comboBox()->addItem("defense");
             }
         }
     }
@@ -336,22 +322,22 @@ void ItemsHandler::pushBtn()
                 if (QString(widget->metaObject()->className()) == "LineEdit")
                 {
                     item->setProperty(propertyName.toStdString().c_str(),
-                        dynamic_cast<LineEdit*>(widget)->ui->lineEdit->text());
+                        dynamic_cast<LineEdit*>(widget)->text());
                 }
                 else if (QString(widget->metaObject()->className()) == "SpinBox")
                 {
                     item->setProperty(propertyName.toStdString().c_str(),
-                        dynamic_cast<SpinBox*>(widget)->ui->spinBox->value());
+                        dynamic_cast<SpinBox*>(widget)->value());
                 }
                 else if (QString(widget->metaObject()->className()) == "CheckBox")
                 {
                     item->setProperty(propertyName.toStdString().c_str(),
-                        dynamic_cast<CheckBox*>(widget)->ui->checkBox->isChecked());
+                        dynamic_cast<CheckBox*>(widget)->isChecked());
                 }
                 else if (QString(widget->metaObject()->className()) == "TwoStringLists")
                 {
-                    QTextDocument* from = dynamic_cast<TwoStringLists*>(widget)->ui->edit_1->document();
-                    QTextDocument* to   = dynamic_cast<TwoStringLists*>(widget)->ui->edit_2->document();
+                    QTextDocument* from = dynamic_cast<TwoStringLists*>(widget)->doc1();
+                    QTextDocument* to   = dynamic_cast<TwoStringLists*>(widget)->doc2();
 
                     QList<QVariant> values;
                     for (int i = 0; i < from->lineCount(); i++)
@@ -366,7 +352,7 @@ void ItemsHandler::pushBtn()
                 }
                 else if (QString(widget->metaObject()->className()) == "StringListWidget")
                 {
-                    QTextDocument* list = dynamic_cast<StringListWidget*>(widget)->ui->list->document();
+                    QTextDocument* list = dynamic_cast<StringListWidget*>(widget)->doc();
 
                     QList<QVariant> values;
                     for (int i = 0; i < list->lineCount(); i++)
@@ -489,7 +475,7 @@ void ItemsHandler::pushBtn()
                 if (QString(widget->metaObject()->className()) == "TwoSpinBox")
                 {
                     item->setProperty(propertyName.toStdString().c_str(),
-                        dynamic_cast<TwoSpinBox*>(widget)->ui->spinBox->value());
+                        dynamic_cast<TwoSpinBox*>(widget)->value1());
                 }
             }
             else if (widget->accessibleName() + "_max" == propertyName)
@@ -497,7 +483,7 @@ void ItemsHandler::pushBtn()
                 if (QString(widget->metaObject()->className()) == "TwoSpinBox")
                 {
                     item->setProperty(propertyName.toStdString().c_str(),
-                        dynamic_cast<TwoSpinBox*>(widget)->ui->spinBox_2->value());
+                        dynamic_cast<TwoSpinBox*>(widget)->value2());
                 }
             }
         }

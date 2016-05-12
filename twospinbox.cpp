@@ -25,3 +25,13 @@ void TwoSpinBox::setValue2(int value)
 {
     ui->spinBox_2->setValue(value);
 }
+
+int TwoSpinBox::value1()
+{
+    return ui->spinBox->value();
+}
+
+int TwoSpinBox::value2()
+{
+    return ui->spinBox_2->value();
+}
