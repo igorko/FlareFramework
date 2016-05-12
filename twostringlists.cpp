@@ -31,6 +31,9 @@ void TwoStringLists::clear()
 
 void TwoStringLists::setValues(QVector<QPair<QString, QString> > values)
 {
+    ui->edit_1->clear();
+    ui->edit_2->clear();
+
     for (int i = 0; i < values.size(); i++)
     {
         ui->edit_1->appendPlainText(values[i].first);

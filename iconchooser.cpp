@@ -7,6 +7,8 @@ IconChooser::IconChooser(QString name, QWidget *parent) :
 {
     ui->setupUi(this);
     setAccessibleName(name);
+
+    // fix icon selection for poly
 }
 
 IconChooser::~IconChooser()

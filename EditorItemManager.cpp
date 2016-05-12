@@ -28,6 +28,7 @@ EditorItemManager::EditorItemManager(const std::string& modpath)
     items = QVector<Item*>();
     setStatNames();
     loadMiscTypes();
+    // fix whem file not found and loading failed
     loadItems(modpath + "items/items.txt", false);
     if (!items.empty()) shrinkItems();
     else items.resize(1);
@@ -246,10 +247,10 @@ void EditorItemManager::save(const std::string& filename) {
 
             outfile << "id=" << i << "\n";
 
-            outfile << "name=" << items[i]->name.toStdString() << "\n";
+            outfile << "name=" << items[i]->name << "\n";
 
             if (items[i]->flavor != "")
-                outfile << "flavor=" << items[i]->flavor.toStdString() << "\n";
+                outfile << "flavor=" << items[i]->flavor << "\n";
 
             if (items[i]->level > 0)
                 outfile << "level=" << items[i]->level << "\n";
@@ -258,19 +259,19 @@ void EditorItemManager::save(const std::string& filename) {
                 outfile << "icon=" << items[i]->icon << "\n";
 
             if (items[i]->book != "")
-                outfile << "book=" << items[i]->book.toStdString() << "\n";
+                outfile << "book=" << items[i]->book << "\n";
 
             if (items[i]->quality != "") {
-                outfile << "quality=" << items[i]->quality.toStdString() << "\n";
+                outfile << "quality=" << items[i]->quality << "\n";
             }
 
-            outfile << "item_type=" << items[i]->type.toStdString() << "\n";
+            outfile << "item_type=" << items[i]->type << "\n";
 
             if (items[i]->equip_flags.size() > 0)
             {
                 outfile << "equip_flags=";
                 for (int k = 0;k < items[i]->equip_flags.size(); k++) {
-                    outfile << items[i]->equip_flags[k].toStdString();
+                    outfile << items[i]->equip_flags[k];
 
                     if (items[i]->equip_flags.size() > 1 && k != items[i]->equip_flags.size() - 1)
                         outfile << ",";
@@ -306,7 +307,7 @@ void EditorItemManager::save(const std::string& filename) {
             }
 
             if (items[i]->requires_class != "")
-                outfile << "requires_class=" << items[i]->requires_class.toStdString() << "\n";
+                outfile << "requires_class=" << items[i]->requires_class << "\n";
 
             for (int k = 0;k < items[i]->bonus.size(); k++) {
                 std::string bonus_str;
@@ -337,10 +338,10 @@ void EditorItemManager::save(const std::string& filename) {
             }
 
             if (items[i]->sfx != "")
-                outfile << "soundfx=" << items[i]->sfx.toStdString() << "\n";
+                outfile << "soundfx=" << items[i]->sfx << "\n";
 
             if (items[i]->gfx != "")
-                outfile << "gfx=" << items[i]->gfx.toStdString() << "\n";
+                outfile << "gfx=" << items[i]->gfx << "\n";
 
             for (int k = 0;k < items[i]->loot_animation.size(); k++) {
                 outfile << "loot_animation=" << items[i]->loot_animation[k].name;
@@ -357,11 +358,11 @@ void EditorItemManager::save(const std::string& filename) {
                 outfile << "power=" << items[i]->power << "\n";
 
             for (int k = 0;k < items[i]->replace_power.size(); k++) {
-                outfile << "replace_power=" << items[i]->replace_power[k].x() << "," << items[i]->replace_power[k].y() << "\n";
+                outfile << "replace_power=" << items[i]->replace_power[k].x << "," << items[i]->replace_power[k].y << "\n";
             }
 
             if (items[i]->power_desc != "")
-                outfile << "power_desc=" << items[i]->power_desc.toStdString() << "\n";
+                outfile << "power_desc=" << items[i]->power_desc << "\n";
 
             if (items[i]->price > 0)
                 outfile << "price=" << items[i]->price << "\n";
@@ -373,16 +374,16 @@ void EditorItemManager::save(const std::string& filename) {
                 outfile << "max_quantity=" << items[i]->max_quantity << "\n";
 
             if (items[i]->pickup_status != "")
-                outfile << "pickup_status=" << items[i]->pickup_status.toStdString() << "\n";
+                outfile << "pickup_status=" << items[i]->pickup_status << "\n";
 
             if (items[i]->stepfx != "")
-                outfile << "stepfx=" << items[i]->stepfx.toStdString() << "\n";
+                outfile << "stepfx=" << items[i]->stepfx << "\n";
 
             if (items[i]->disable_slots.size() > 0)
             {
                 outfile << "disable_slots=";
                 for (int k = 0;k < items[i]->disable_slots.size(); k++) {
-                    outfile << items[i]->disable_slots[k].toStdString();
+                    outfile << items[i]->disable_slots[k];
 
                     if (items[i]->disable_slots.size() > 1 && k != items[i]->disable_slots.size() - 1)
                         outfile << ",";

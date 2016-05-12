@@ -35,6 +35,8 @@ FLARE.  If not, see http://www.gnu.org/licenses/
 #include <QObject>
 #include <QVector>
 #include <QMetaType>
+#include <QPair>
+#include <QStringList>
 
 class Element {
 public:
@@ -151,17 +153,6 @@ public:
 #endif
 };
 
-#include <QtGlobal>
-#if QT_VERSION >= 0x050000
-#define Property(Type, Name) \
-    Q_PROPERTY(Type Name MEMBER Name)
-#else
-#define Property(Type, Name) \
-    Q_PROPERTY(Type Name READ get##Name WRITE set##Name); \
-    Type get##Name() {return Name;}; \
-    void set##Name(Type value) {Name = value;};
-#endif
-
 #ifndef EDITOR
 class Item {
 private:
@@ -176,80 +167,265 @@ private:
 
 public:
 
-    Property(QString, name)
-    Property(QString, flavor)
-    Property(int, level)
-    Property(int, set)
-    Property(QString, quality)
-    Property(QString, type)
-    Property(QVector<QString>, equip_flags)
-    Property(int, icon)
-    Property(QString, book)
-    Property(int, dmg_melee_min)
-    Property(int, dmg_melee_max)
-    Property(int, dmg_ranged_min)
-    Property(int, dmg_ranged_max)
-    Property(int, dmg_ment_min)
-    Property(int, dmg_ment_max)
-    Property(int, abs_min)
-    Property(int, abs_max)
-    Property(QVector<int>, req_stat)
-    Property(QVector<int>, req_val)
-    Property(QString, requires_class)
-    //Property(QVector<BonusData>, bonus)
-    Property(QString, sfx)
-    Property(QString, gfx)
-    //Property(QVector<LootAnimation>, loot_animation)
-    Property(int, power)
-    Property(QVector<QPoint>, replace_power)
-    Property(QString, power_desc)
-    Property(int, price)
-    Property(int, price_sell)
-    Property(int, max_quantity)
-    Property(QString, pickup_status)
-    Property(QString, stepfx)
-    Property(QVector<QString>, disable_slots)
-
-    QString name;     // item name displayed on long and short tool tips
+    std::string name;     // item name displayed on long and short tool tips
 #endif
 
 public:
-    QString flavor;   // optional flavor text describing the item
-	int level;            // rough estimate of quality, used in the loot algorithm
-	int set;              // item can be attached to item set
-    QString quality;  // should match an id from items/qualities.txt
-    QString type;     // equipment slot or base item type
-    QVector<QString> equip_flags;   // common values include: melee, ranged, mental, shield
-	int icon;             // icon index on small pixel sheet
-    QString book;     // book file location
-	int dmg_melee_min;    // minimum damage amount (melee)
-	int dmg_melee_max;    // maximum damage amount (melee)
-	int dmg_ranged_min;   // minimum damage amount (ranged)
-	int dmg_ranged_max;   // maximum damage amount (ranged)
-	int dmg_ment_min;     // minimum damage amount (mental)
-	int dmg_ment_max;     // maximum damage amount (mental)
-	int abs_min;          // minimum absorb amount
-	int abs_max;          // maximum absorb amount
-    QVector<int> req_stat;         // physical, mental, offense, defense
-    QVector<int> req_val;          // 1-5 (used with req_stat)
-    QString requires_class;
-    QVector<BonusData> bonus;   // stat to increase/decrease e.g. hp, accuracy, speed
-    QString sfx;           // the item sound when it hits the floor or inventory, etc
+    std::string flavor;   // optional flavor text describing the item
+    int level;            // rough estimate of quality, used in the loot algorithm
+    int set;              // item can be attached to item set
+    std::string quality;  // should match an id from items/qualities.txt
+    std::string type;     // equipment slot or base item type
+    std::vector<std::string> equip_flags;   // common values include: melee, ranged, mental, shield
+    int icon;             // icon index on small pixel sheet
+    std::string book;     // book file location
+    int dmg_melee_min;    // minimum damage amount (melee)
+    int dmg_melee_max;    // maximum damage amount (melee)
+    int dmg_ranged_min;   // minimum damage amount (ranged)
+    int dmg_ranged_max;   // maximum damage amount (ranged)
+    int dmg_ment_min;     // minimum damage amount (mental)
+    int dmg_ment_max;     // maximum damage amount (mental)
+    int abs_min;          // minimum absorb amount
+    int abs_max;          // maximum absorb amount
+    std::vector<int> req_stat;         // physical, mental, offense, defense
+    std::vector<int> req_val;          // 1-5 (used with req_stat)
+    std::string requires_class;
+    std::vector<BonusData> bonus;   // stat to increase/decrease e.g. hp, accuracy, speed
+    std::string sfx;           // the item sound when it hits the floor or inventory, etc
 #ifndef EDITOR
 	SoundManager::SoundID sfx_id;
 #endif
-    QString gfx;           // the sprite layer shown when this item is equipped
-    QVector<LootAnimation> loot_animation;// the flying loot animation for this item
-	int power;            // this item can be dragged to the action bar and used as a power
-    QVector<QPoint> replace_power;        // alter powers when this item is equipped. Power id 'x' is replaced with id 'y'
-    QString power_desc;    // shows up in green text on the tooltip
-	int price;            // if price = 0 the item cannot be sold
-	int price_sell;       // if price_sell = 0, the sell price is price*vendor_ratio
-	int max_quantity;     // max count per stack
-    QString pickup_status; // when this item is picked up, set a campaign state (usually for quest items)
-    QString stepfx;        // sound effect played when walking (armors only)
-    QVector<QString> disable_slots; // if this item is equipped, it will disable slots that match the types in the list
+    std::string gfx;           // the sprite layer shown when this item is equipped
+    std::vector<LootAnimation> loot_animation;// the flying loot animation for this item
+    int power;            // this item can be dragged to the action bar and used as a power
+    std::vector<Point> replace_power;        // alter powers when this item is equipped. Power id 'x' is replaced with id 'y'
+    std::string power_desc;    // shows up in green text on the tooltip
+    int price;            // if price = 0 the item cannot be sold
+    int price_sell;       // if price_sell = 0, the sell price is price*vendor_ratio
+    int max_quantity;     // max count per stack
+    std::string pickup_status; // when this item is picked up, set a campaign state (usually for quest items)
+    std::string stepfx;        // sound effect played when walking (armors only)
+    std::vector<std::string> disable_slots; // if this item is equipped, it will disable slots that match the types in the list
 
+#if EDITOR
+
+public:
+    Q_PROPERTY(QString name READ getName WRITE setName)
+
+    QString getName() {return QString::fromStdString(name);}
+    void setName(QString value) {name = value.toStdString();}
+
+    Q_PROPERTY(QString flavor READ getFlavor WRITE setFlavor)
+
+    QString getFlavor() {return QString::fromStdString(flavor);}
+    void setFlavor(QString value) {flavor = value.toStdString();}
+
+    Q_PROPERTY(int level READ getLevel WRITE setLevel)
+
+    int getLevel() {return level;}
+    void setLevel(int value) {level = value;}
+
+    Q_PROPERTY(int set READ getSet WRITE setSet)
+
+    int getSet() {return set;}
+    void setSet(int value) {set = value;}
+
+    Q_PROPERTY(QString quality READ getQuality WRITE setQuality)
+
+    QString getQuality() {return QString::fromStdString(quality);}
+    void setQuality(QString value) {quality = value.toStdString();}
+
+    Q_PROPERTY(QString type READ getType WRITE setType)
+
+    QString getType() {return QString::fromStdString(type);}
+    void setType(QString value) {type = value.toStdString();}
+
+    Q_PROPERTY(QList<QString> equip_flags READ getEquipFlags WRITE setEquipFlags)
+
+    QList<QString> getEquipFlags()
+    {
+        QList<std::string> list = QList<std::string>::fromVector(QVector<std::string>::fromStdVector(equip_flags));
+        QList<QString> result;
+        for (int i = 0; i < list.size(); i++)
+        {
+            result.push_back(QString::fromStdString(list[i]));
+        }
+        return result;
+    }
+    void setEquipFlags(QList<QString> value)
+    {
+        equip_flags.clear();
+        for (int i = 0; i < value.size(); i++)
+        {
+            equip_flags.push_back(value[i].toStdString());
+        }
+    }
+
+    Q_PROPERTY(int icon READ getIcon WRITE setIcon)
+
+    int getIcon() {return icon;}
+    void setIcon(int value) {icon = value;}
+
+    Q_PROPERTY(QString book READ getBook WRITE setBook)
+
+    QString getBook() {return QString::fromStdString(book);}
+    void setBook(QString value) {book = value.toStdString();}
+
+    Q_PROPERTY(int dmg_melee_min READ getDmgMeleeMin WRITE setDmgMeleeMin)
+
+    int getDmgMeleeMin() {return dmg_melee_min;}
+    void setDmgMeleeMin(int value) {dmg_melee_min = value;}
+
+    Q_PROPERTY(int dmg_melee_max READ getDmgMeleeMax WRITE setDmgMeleeMax)
+
+    int getDmgMeleeMax() {return dmg_melee_max;}
+    void setDmgMeleeMax(int value) {dmg_melee_max = value;}
+
+    Q_PROPERTY(int dmg_ranged_min READ getDmgRangedMin WRITE setDmgRangedMin)
+
+    int getDmgRangedMin() {return dmg_ranged_min;}
+    void setDmgRangedMin(int value) {dmg_ranged_min = value;}
+
+    Q_PROPERTY(int dmg_ranged_max READ getDmgRangedMax WRITE setDmgRangedMax)
+
+    int getDmgRangedMax() {return dmg_ranged_max;}
+    void setDmgRangedMax(int value) {dmg_ranged_max = value;}
+
+    Q_PROPERTY(int dmg_ment_min READ getDmgMentMin WRITE setDmgMentMin)
+
+    int getDmgMentMin() {return dmg_ment_min;}
+    void setDmgMentMin(int value) {dmg_ment_min = value;}
+
+    Q_PROPERTY(int dmg_ment_max READ getDmgMentMax WRITE setDmgMentMax)
+
+    int getDmgMentMax() {return dmg_ment_max;}
+    void setDmgMentMax(int value) {dmg_ment_max = value;}
+
+    Q_PROPERTY(int abs_min READ getAbsMin WRITE setAbsMin)
+
+    int getAbsMin() {return abs_min;}
+    void setAbsMin(int value) {abs_min = value;}
+
+    Q_PROPERTY(int abs_max READ getAbsMax WRITE setAbsMax)
+
+    int getAbsMax() {return abs_max;}
+    void setAbsMax(int value) {abs_max = value;}
+
+    Q_PROPERTY(QList<int> req_stat READ getReqStat WRITE setReqStat)
+
+    QList<int> getReqStat() {return QList<int>::fromVector(QVector<int>::fromStdVector(req_stat));}
+    void setReqStat(QList<int> value) {req_stat = value.toVector().toStdVector();}
+
+    Q_PROPERTY(QList<int> req_val READ getReqVal WRITE setReqVal)
+
+    QList<int> getReqVal() {return QList<int>::fromVector(QVector<int>::fromStdVector(req_val));}
+    void setReqVal(QList<int> value) {req_val = value.toVector().toStdVector();}
+
+    Q_PROPERTY(QString requires_class READ getRequiresClass WRITE setRequiresClass)
+
+    QString getRequiresClass() {return QString::fromStdString(requires_class);}
+    void setRequiresClass(QString value) {requires_class = value.toStdString();}
+
+    //Q_PROPERTY(QList<BonusData> bonus READ getBonus WRITE setBonus)
+    //QList<BonusData> getBonus() {return bonus;};
+    //void setBonus(QList<BonusData> value) {bonus = value;};
+
+    Q_PROPERTY(QString sfx READ getSfx WRITE setSfx)
+
+    QString getSfx() {return QString::fromStdString(sfx);}
+    void setSfx(QString value) {sfx = value.toStdString();}
+
+    Q_PROPERTY(QString gfx READ getGfx WRITE setGfx)
+
+    QString getGfx() {return QString::fromStdString(gfx);}
+    void setGfx(QString value) {gfx = value.toStdString();}
+
+    //Q_PROPERTY(QList<LootAnimation> loot_animation  READ getLootAnimation WRITE setLootAnimation)
+    //QList<LootAnimation> getLootAnimation() {return loot_animation;};
+    //void setLootAnimation(QList<LootAnimation> value) {loot_animation = value;};
+
+    Q_PROPERTY(int power READ getPower WRITE setPower)
+
+    int getPower() {return power;}
+    void setPower(int value) {power = value;}
+
+    Q_PROPERTY(QList<QStringList> replace_power READ getReplacePower WRITE setReplacePower)
+
+    QList<QStringList> getReplacePower()
+    {
+        QList<Point> list = QList<Point>::fromVector(QVector<Point>::fromStdVector(replace_power));
+        QList<QStringList> result;
+        for (int i = 0; i < list.size(); i++)
+        {
+            QStringList tmp;
+            tmp << QString::number(list[i].x) << QString::number(list[i].y);
+            result.push_back(tmp);
+        }
+        return result;
+    }
+    void setReplacePower(QList<QStringList> value)
+    {
+        replace_power.clear();
+        for (int i = 0; i < value.size(); i++)
+        {
+            replace_power.push_back(Point(value[i][0].toInt(), value[i][1].toInt()));
+        }
+    }
+
+    Q_PROPERTY(QString power_desc READ getPowerDesc WRITE setPowerDesc)
+
+    QString getPowerDesc() {return QString::fromStdString(power_desc);}
+    void setPowerDesc(QString value) {power_desc = value.toStdString();}
+
+    Q_PROPERTY(int price READ getPrice WRITE setPrice)
+
+    int getPrice() {return price;}
+    void setPrice(int value) {price = value;}
+
+    Q_PROPERTY(int price_sell READ getPriceSell WRITE setPriceSell)
+
+    int getPriceSell() {return price_sell;}
+    void setPriceSell(int value) {price_sell = value;}
+
+    Q_PROPERTY(int max_quantity READ getQuantity WRITE setQuantity)
+
+    int getQuantity() {return max_quantity;}
+    void setQuantity(int value) {max_quantity = value;}
+
+    Q_PROPERTY(QString pickup_status READ getPickupStatus WRITE setPickupStatus)
+
+    QString getPickupStatus() {return QString::fromStdString(pickup_status);}
+    void setPickupStatus(QString value) {pickup_status = value.toStdString();}
+
+    Q_PROPERTY(QString stepfx READ getStepFX WRITE setStepFX)
+
+    QString getStepFX() {return QString::fromStdString(stepfx);}
+    void setStepFX(QString value) {stepfx = value.toStdString();}
+
+    Q_PROPERTY(QList<QString> disable_slots READ getDisableSlots WRITE setDisableSlots)
+
+    QList<QString> getDisableSlots()
+    {
+        QList<std::string> list = QList<std::string>::fromVector(QVector<std::string>::fromStdVector(disable_slots));
+        QList<QString> result;
+        for (int i = 0; i < list.size(); i++)
+        {
+            result.push_back(QString::fromStdString(list[i]));
+        }
+        return result;
+    }
+    void setDisableSlots(QList<QString> value)
+    {
+        disable_slots.clear();
+        for (int i = 0; i < value.size(); i++)
+        {
+            disable_slots.push_back(value[i].toStdString());
+        }
+    }
+
+#endif
+
+public:
 	int getSellPrice();
 #ifndef EDITOR
 	Item()
@@ -257,35 +433,35 @@ public:
 #else
 	explicit Item(QObject * parent = NULL)
 		: QObject(parent)
-		, name("")
+        , name("")
 #endif
-		, flavor("")
-		, level(0)
-		, set(0)
-		, quality("")
-		, type("")
-		, icon(0)
-		, dmg_melee_min(0)
-		, dmg_melee_max(0)
-		, dmg_ranged_min(0)
-		, dmg_ranged_max(0)
-		, dmg_ment_min(0)
-		, dmg_ment_max(0)
-		, abs_min(0)
+        , flavor("")
+        , level(0)
+        , set(0)
+        , quality("")
+        , type("")
+        , icon(0)
+        , dmg_melee_min(0)
+        , dmg_melee_max(0)
+        , dmg_ranged_min(0)
+        , dmg_ranged_max(0)
+        , dmg_ment_min(0)
+        , dmg_ment_max(0)
+        , abs_min(0)
 		, abs_max(0)
-		, requires_class("")
-		, sfx("")
+        , requires_class("")
+        , sfx("")
 #ifndef EDITOR
 		, sfx_id(0)
 #endif
-		, gfx("")
-		, power(0)
-		, power_desc("")
-		, price(0)
-		, price_sell(0)
-		, max_quantity(1)
-		, pickup_status("")
-		, stepfx("") {
+        , gfx("")
+        , power(0)
+        , power_desc("")
+        , price(0)
+        , price_sell(0)
+        , max_quantity(1)
+        , pickup_status("")
+        , stepfx("") {
 	}
 
 	~Item() {

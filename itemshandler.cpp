@@ -111,7 +111,7 @@ void ItemsHandler::loadItems(const std::string &path)
     {
         if (items->items[i]->name != "")
         {
-            QListWidgetItem* item = new QListWidgetItem(items->items[i]->name);
+            QListWidgetItem* item = new QListWidgetItem(qString(items->items[i]->name));
             item->setData(Qt::UserRole, i);
             for (int i = 0; i < itemsLayout->count(); i++)
             {
@@ -411,30 +411,30 @@ void ItemsHandler::pushBtn()
                 {
                     QTextDocument* from = dynamic_cast<TwoStringLists*>(widget)->ui->edit_1->document();
                     QTextDocument* to   = dynamic_cast<TwoStringLists*>(widget)->ui->edit_2->document();
-                    //item->replace_power.clear();
 
+                    QList<QVariant> values;
                     for (int i = 0; i < from->lineCount(); i++)
                     {
                         if (from->findBlockByLineNumber(i).text().isEmpty() || to->findBlockByLineNumber(i).text().isEmpty())
-                            continue;
-                        //item->replace_power.push_back(Point(
-                        //    from->findBlockByLineNumber(i).text().toInt(),
-                        //    to->findBlockByLineNumber(i).text().toInt()));
+                            break;
+                        QStringList list;
+                        list << from->findBlockByLineNumber(i).text() << to->findBlockByLineNumber(i).text();
+                        values.append(list);
                     }
+                    item->setProperty(propertyName.toStdString().c_str(), values);
                 }
                 else if (QString(widget->metaObject()->className()) == "StringListWidget")
                 {
                     QTextDocument* list = dynamic_cast<StringListWidget*>(widget)->ui->list->document();
-                    //item->disable_slots.clear();
-                    //item->equip_flags.clear();
 
+                    QList<QVariant> values;
                     for (int i = 0; i < list->lineCount(); i++)
                     {
                         if (list->findBlockByLineNumber(i).text().isEmpty())
-                            continue;
-                        //item->disable_slots.push_back(stdString(list->findBlockByLineNumber(i).text()));
-                        //item->equip_flags.push_back(stdString(list->findBlockByLineNumber(i).text()));
+                            break;
+                        values.append(list->findBlockByLineNumber(i).text());
                     }
+                    item->setProperty(propertyName.toStdString().c_str(), values);
                 }
                 else if (QString(widget->metaObject()->className()) == "ComboBoxKeyValueList")
                 {
@@ -572,7 +572,7 @@ void ItemsHandler::pushBtn()
         }
         if (widget->accessibleName() == "elementslist")
         {
-            dynamic_cast<ElementsList*>(widget)->ui->itemsList->currentItem()->setData(Qt::DisplayRole, item->name);
+            dynamic_cast<ElementsList*>(widget)->ui->itemsList->currentItem()->setData(Qt::DisplayRole, qString(item->name));
             break;
         }
     }
@@ -600,6 +600,68 @@ void ItemsHandler::selectItem(QListWidgetItem *_item)
     int index = _item->data(Qt::UserRole).toInt();
     Item* item = items->items[index];
 
+    const QMetaObject* metaObject = item->metaObject();
+    for(int i = metaObject->propertyOffset(); i < metaObject->propertyCount(); ++i)
+    {
+        QString propertyName = QString::fromLatin1(metaObject->property(i).name());
+
+        for (int i = 0; i < itemsLayout->count(); i++)
+        {
+            QWidget * widget = itemsLayout->itemAt(i)->widget();
+            if (widget == NULL)
+            {
+                continue;
+            }
+            QString className = QString(widget->metaObject()->className());
+            if (widget->accessibleName() == propertyName)
+            {
+                if (className == "LineEdit")
+                {
+                    dynamic_cast<LineEdit*>(widget)->ui->lineEdit->setText(item->property(propertyName.toStdString().c_str()).toString());
+                }
+                else if (className == "SpinBox")
+                {
+                    dynamic_cast<SpinBox*>(widget)->setValue(item->property(propertyName.toStdString().c_str()).toInt());
+                }
+                else if (className == "TwoSpinBox")
+                {
+                    if (propertyName.endsWith("_min"))
+                    {
+                        dynamic_cast<TwoSpinBox*>(widget)->setValue1(item->property(propertyName.toStdString().c_str()).toInt());
+                    }
+                    else if (propertyName.endsWith("_max"))
+                    {
+                        dynamic_cast<TwoSpinBox*>(widget)->setValue2(item->property(propertyName.toStdString().c_str()).toInt());
+                    }
+                }
+                else if (className == "TwoStringLists")
+                {
+                    QList<QVariant> values = item->property(propertyName.toStdString().c_str()).toList();
+                    QVector< QPair<QString,QString> > vector;
+                    for(int i = 0; i < values.size(); i++)
+                    {
+                        vector.append(qMakePair(values[i].toStringList()[0], values[i].toStringList()[1]));
+                    }
+                    dynamic_cast<TwoStringLists*>(widget)->setValues(vector);
+                }
+                else if (className == "StringListWidget")
+                {
+                    QList<QVariant> values = item->property(propertyName.toStdString().c_str()).toList();
+                    QVector<QString> vector;
+                    for(int i = 0; i < values.size(); i++)
+                    {
+                        vector.append(values[i].toString());
+                    }
+                    dynamic_cast<StringListWidget*>(widget)->setValues(vector);
+                }
+                else if (className == "ComboBox")
+                {
+                    dynamic_cast<ComboBox*>(widget)->selectComboBoxItemByText(item->property(propertyName.toStdString().c_str()).toString());
+                }
+            }
+        }
+    }
+
     for (int i = 0; i < itemsLayout->count(); i++)
     {
         QWidget * widget = itemsLayout->itemAt(i)->widget();
@@ -608,73 +670,25 @@ void ItemsHandler::selectItem(QListWidgetItem *_item)
             continue;
         }
         QString name = QString(widget->metaObject()->className());
-        if (name == "LineEdit")
+        if (name == "ComboBox")
         {
-            if (widget->accessibleName() == "name")
+            if (widget->accessibleName() == "item_type")
             {
-                dynamic_cast<LineEdit*>(widget)->setText(item->name);
+                QString type = qString(item->type);
+                int listSize = dynamic_cast<ComboBox*>(widget)->ui->comboBox->count();
+                for (int i = 0; i < listSize; i++)
+                {
+                    if (dynamic_cast<ComboBox*>(widget)->ui->comboBox->itemData(i) == type)
+                    {
+                        dynamic_cast<ComboBox*>(widget)->ui->comboBox->setCurrentIndex(i);
+                        break;
+                    }
+                }
             }
-            else if (widget->accessibleName() == "pickup_status")
+            else if (widget->accessibleName() == "soundfx")
             {
-                dynamic_cast<LineEdit*>(widget)->setText(item->pickup_status);
-            }
-            else if (widget->accessibleName() == "power_desc")
-            {
-                dynamic_cast<LineEdit*>(widget)->setText(item->power_desc);
-            }
-            else if (widget->accessibleName() == "flavor")
-            {
-                dynamic_cast<LineEdit*>(widget)->setText(item->flavor);
-            }
-            else if (widget->accessibleName() == "book")
-            {
-                dynamic_cast<LineEdit*>(widget)->setText(item->book);
-            }
-        }
-        else if (name == "SpinBox")
-        {
-            if (widget->accessibleName() == "level")
-            {
-                dynamic_cast<SpinBox*>(widget)->setValue(item->level);
-            }
-            else if (widget->accessibleName() == "price")
-            {
-                dynamic_cast<SpinBox*>(widget)->setValue(item->price);
-            }
-            else if (widget->accessibleName() == "price_sell")
-            {
-                dynamic_cast<SpinBox*>(widget)->setValue(item->price_sell);
-            }
-            else if (widget->accessibleName() == "max_quantity")
-            {
-                dynamic_cast<SpinBox*>(widget)->setValue(item->max_quantity);
-            }
-            else if (widget->accessibleName() == "power")
-            {
-                dynamic_cast<SpinBox*>(widget)->setValue(item->power);
-            }
-        }
-        else if (name == "TwoSpinBox")
-        {
-            if (widget->accessibleName() == "abs")
-            {
-                dynamic_cast<TwoSpinBox*>(widget)->setValue1(item->abs_min);
-                dynamic_cast<TwoSpinBox*>(widget)->setValue2(item->abs_max);
-            }
-            else if (widget->accessibleName() == "dmg_melee")
-            {
-                dynamic_cast<TwoSpinBox*>(widget)->setValue1(item->dmg_melee_min);
-                dynamic_cast<TwoSpinBox*>(widget)->setValue2(item->dmg_melee_max);
-            }
-            else if (widget->accessibleName() == "dmg_ment")
-            {
-                dynamic_cast<TwoSpinBox*>(widget)->setValue1(item->dmg_ment_min);
-                dynamic_cast<TwoSpinBox*>(widget)->setValue2(item->dmg_ment_max);
-            }
-            else if (widget->accessibleName() == "dmg_ranged")
-            {
-                dynamic_cast<TwoSpinBox*>(widget)->setValue1(item->dmg_ranged_min);
-                dynamic_cast<TwoSpinBox*>(widget)->setValue2(item->dmg_ranged_max);
+                QString soundfx = qString(item->sfx);
+                dynamic_cast<ComboBox*>(widget)->selectComboBoxItemByText(QFileInfo(soundfx).fileName());
             }
         }
         else if (widget->accessibleName() == "icon")
@@ -732,75 +746,11 @@ void ItemsHandler::selectItem(QListWidgetItem *_item)
                 //timer->start();
             }
         }
-        else if (widget->accessibleName() == "replace_power")
-        {
-            QVector< QPair<QString, QString> > powers;
-            for (int i = 0; i < item->replace_power.size(); i++)
-            {
-                powers.append(qMakePair(QString::number(item->replace_power[i].x()),
-                    QString::number(item->replace_power[i].y())));
-            }
-            dynamic_cast<TwoStringLists*>(widget)->setValues(powers);
-        }
-        else if (widget->accessibleName() == "disable_slots")
-        {
-            QVector<QString> values;
-            for (int i = 0; i < item->disable_slots.size(); i++)
-            {
-                values.append(item->disable_slots[i]);
-            }
-            dynamic_cast<StringListWidget*>(widget)->setValues(values);
-        }
-        else if (widget->accessibleName() == "equip_flags")
-        {
-            QVector<QString> values;
-            for (int i = 0; i < item->equip_flags.size(); i++)
-            {
-                values.append(item->equip_flags[i]);
-            }
-            dynamic_cast<StringListWidget*>(widget)->setValues(values);
-        }
-        else if (widget->accessibleName() == "item_type")
-        {
-            QString type = item->type;
-            int listSize = dynamic_cast<ComboBox*>(widget)->ui->comboBox->count();
-            for (int i = 0; i < listSize; i++)
-            {
-                if (dynamic_cast<ComboBox*>(widget)->ui->comboBox->itemData(i) == type)
-                {
-                    dynamic_cast<ComboBox*>(widget)->ui->comboBox->setCurrentIndex(i);
-                    break;
-                }
-            }
-        }
-        else if (widget->accessibleName() == "quality")
-        {
-            QString quality = item->quality;
-            dynamic_cast<ComboBox*>(widget)->selectComboBoxItemByText(quality);
-        }
-        else if (widget->accessibleName() == "requires_class")
-        {
-            QString className = item->requires_class;
-            dynamic_cast<ComboBox*>(widget)->selectComboBoxItemByText(className);
-        }
-        else if (widget->accessibleName() == "soundfx")
-        {
-            QString soundfx = item->sfx;
-            dynamic_cast<ComboBox*>(widget)->selectComboBoxItemByText(QFileInfo(soundfx).fileName());
-        }
-        else if (widget->accessibleName() == "stepfx")
-        {
-            QString stepfx = item->stepfx;
-            dynamic_cast<ComboBox*>(widget)->selectComboBoxItemByText(stepfx);
-        }
-        else if (widget->accessibleName() == "gfx")
-        {
-            QString gfx = item->gfx;
-            dynamic_cast<ComboBox*>(widget)->selectComboBoxItemByText(gfx);
-        }
         else if (widget->accessibleName() == "bonus")
         {
             ComboBoxKeyValueList * listWidget = dynamic_cast<ComboBoxKeyValueList*>(widget);
+            listWidget->ui->keys->clear();
+            listWidget->ui->values->clear();
             for (int i = 0; i < item->bonus.size(); i++)
             {
                 int stat_index     = item->bonus[i].stat_index;
@@ -840,6 +790,8 @@ void ItemsHandler::selectItem(QListWidgetItem *_item)
         else if (widget->accessibleName() == "requires_stat")
         {
             ComboBoxKeyValueList * listWidget = dynamic_cast<ComboBoxKeyValueList*>(widget);
+            listWidget->ui->keys->clear();
+            listWidget->ui->values->clear();
             for (int i = 0; i < item->req_stat.size(); i++)
             {
                 int value = item->req_val[i];
@@ -854,7 +806,7 @@ void ItemsHandler::selectItem(QListWidgetItem *_item)
                     listWidget->ui->keys->appendPlainText("offense");
 
                 else if (item->req_stat[i] == REQUIRES_DEF)
-                    listWidget->ui->values->appendPlainText("defense");
+                    listWidget->ui->keys->appendPlainText("defense");
 
                 listWidget->ui->values->appendPlainText(QString::number(value));
             }

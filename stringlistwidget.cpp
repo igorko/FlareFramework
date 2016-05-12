@@ -26,6 +26,7 @@ void StringListWidget::clear()
 
 void StringListWidget::setValues(QVector<QString> values)
 {
+    ui->list->clear();
     for (int i = 0; i < values.size(); i++)
     {
         ui->list->appendPlainText(values[i]);
