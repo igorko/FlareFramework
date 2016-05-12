@@ -3,6 +3,7 @@
 
 #include <QFrame>
 #include <QTextDocument>
+#include <QComboBox>
 
 namespace Ui {
 class StringListWidget;
@@ -20,12 +21,17 @@ public:
 
     void setValues(QVector<QString> values);
 
+    void addItemToComboBox(QString text);
+
     QTextDocument* doc();
 
-    Ui::StringListWidget *ui;
+    QComboBox * comboBox();
 
 public slots:
     void addItem();
+
+private:
+    Ui::StringListWidget *ui;
 };
 
 #endif // STRINGLISTWIDGET_H

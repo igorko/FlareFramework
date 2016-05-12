@@ -11,37 +11,35 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#include "checkbox.h"
 #include "combobox.h"
 #include "comboboxkeyvaluelist.h"
+#include "doublespinbox.h"
 #include "lineedit.h"
 #include "spinbox.h"
+#include "stringlistwidget.h"
 #include "twospinbox.h"
-#include "checkbox.h"
 #include "twostringlists.h"
-#include "doublespinbox.h"
 
 #include "EditorItemManager.h"
 #include "API/Stats.h"
 #include "API/AnimationSet.h"
 #include "API/Animation.h"
 
-#include "stringlistwidget.h"
-#include "ui_stringlistwidget.h"
-
-#include "iconchooser.h"
-#include "ui_iconchooser.h"
+#include "controlframe.h"
+#include "ui_controlframe.h"
 
 #include "elementslist.h"
 #include "ui_elementslist.h"
+
+#include "iconchooser.h"
+#include "ui_iconchooser.h"
 
 #include "iconselector.h"
 #include "lootanimationwidget.h"
 
 #include "lootanimationwidget.h"
 #include "ui_lootanimationwidget.h"
-
-#include "controlframe.h"
-#include "ui_controlframe.h"
 
 ItemsHandler::ItemsHandler(MainWindow * _mainWindow, QObject *parent) :
     EntityHandler(_mainWindow, parent),
@@ -165,19 +163,19 @@ void ItemsHandler::loadEntityList(const std::string &path)
             {
                 for (unsigned i = 0; i<items->EQUIP_FLAGS.size(); i++)
                 {
-                    dynamic_cast<StringListWidget*>(widget)->ui->selector->addItem(qString(items->EQUIP_FLAGS[i].id));
+                    dynamic_cast<StringListWidget*>(widget)->addItemToComboBox(qString(items->EQUIP_FLAGS[i].id));
                 }
-                checkComboBoxForError(dynamic_cast<StringListWidget*>(widget)->ui->selector,
-                    "engine/equip_flags.txt is missing or incorrect. Copy it from base mod.");
+                //checkComboBoxForError(dynamic_cast<StringListWidget*>(widget)->comboBox(),
+                //    "engine/equip_flags.txt is missing or incorrect. Copy it from base mod.");
             }
             else if (widget->accessibleName() == "disable_slots")
             {
                 for (unsigned i = 0; i<items->slot_type.size(); i++)
                 {
-                    dynamic_cast<StringListWidget*>(widget)->ui->selector->addItem(qString(items->slot_type[i]));
+                    dynamic_cast<StringListWidget*>(widget)->addItemToComboBox(qString(items->slot_type[i]));
                 }
-                checkComboBoxForError(dynamic_cast<StringListWidget*>(widget)->ui->selector,
-                    "menus/inventory.txt is missing or incorrect. Copy it from base mod.");
+                //checkComboBoxForError(dynamic_cast<StringListWidget*>(widget)->comboBox(),
+                //    "menus/inventory.txt is missing or incorrect. Copy it from base mod.");
             }
         }
         else if (QString(widget->metaObject()->className()) == "ComboBoxKeyValueList")
@@ -249,6 +247,7 @@ void ItemsHandler::addNewItem()
 {
 	items->items.resize(items->items.size() + 1);
     int index = items->items.size() - 1;
+    items->items[index] = new Item;
     items->items[index]->name = "newItem";
 
     QListWidgetItem* item = new QListWidgetItem("newItem");
@@ -306,6 +305,7 @@ void ItemsHandler::pushBtn()
     }
     Item * item = items->items[index];
     entity = items->items[index];
+    EntityHandler::pushBtn();
 
     const QMetaObject* metaObject = item->metaObject();
     for(int i = metaObject->propertyOffset(); i < metaObject->propertyCount(); ++i)
@@ -321,150 +321,25 @@ void ItemsHandler::pushBtn()
             }
             if (widget->accessibleName() == propertyName)
             {
-                if (QString(widget->metaObject()->className()) == "LineEdit")
+                if (QString(widget->metaObject()->className()) == "LootAnimationWidget")
                 {
-                    item->setProperty(propertyName.toStdString().c_str(),
-                        dynamic_cast<LineEdit*>(widget)->text());
-                }
-                else if (QString(widget->metaObject()->className()) == "SpinBox")
-                {
-                    item->setProperty(propertyName.toStdString().c_str(),
-                        dynamic_cast<SpinBox*>(widget)->value());
-                }
-                else if (QString(widget->metaObject()->className()) == "CheckBox")
-                {
-                    item->setProperty(propertyName.toStdString().c_str(),
-                        dynamic_cast<CheckBox*>(widget)->isChecked());
-                }
-                else if (QString(widget->metaObject()->className()) == "TwoStringLists")
-                {
-                    QTextDocument* from = dynamic_cast<TwoStringLists*>(widget)->doc1();
-                    QTextDocument* to   = dynamic_cast<TwoStringLists*>(widget)->doc2();
+                    LootAnimationWidget * lootWidget = dynamic_cast<LootAnimationWidget*>(widget);
 
-                    QList<QVariant> values;
-                    for (int i = 0; i < from->lineCount(); i++)
-                    {
-                        if (from->findBlockByLineNumber(i).text().isEmpty() || to->findBlockByLineNumber(i).text().isEmpty())
-                            break;
-                        QStringList list;
-                        list << from->findBlockByLineNumber(i).text() << to->findBlockByLineNumber(i).text();
-                        values.append(list);
-                    }
-                    item->setProperty(propertyName.toStdString().c_str(), values);
-                }
-                else if (QString(widget->metaObject()->className()) == "StringListWidget")
-                {
-                    QTextDocument* list = dynamic_cast<StringListWidget*>(widget)->doc();
+                    QTextDocument* loot = lootWidget->ui->animations->document();
+                    QTextDocument* lootMin = lootWidget->ui->animationMin->document();
+                    QTextDocument* lootmax = lootWidget->ui->animationMax->document();
+                    item->loot_animation.clear();
 
-                    QList<QVariant> values;
-                    for (int i = 0; i < list->lineCount(); i++)
+                    for (int i = 0; i < loot->lineCount(); i++)
                     {
-                        if (list->findBlockByLineNumber(i).text().isEmpty())
-                            break;
-                        values.append(list->findBlockByLineNumber(i).text());
-                    }
-                    item->setProperty(propertyName.toStdString().c_str(), values);
-                }
-                else if (QString(widget->metaObject()->className()) == "ComboBoxKeyValueList")
-                {
-                    QTextDocument* keysList = dynamic_cast<ComboBoxKeyValueList*>(widget)->keys();
-                    QTextDocument* valuesList = dynamic_cast<ComboBoxKeyValueList*>(widget)->values();
-                    //item->bonus.clear();
-
-                    for (int i = 0; i < keysList->lineCount(); i++)
-                    {
-                        if (keysList->findBlockByLineNumber(i).text().isEmpty() || valuesList->findBlockByLineNumber(i).text().isEmpty())
+                        if (loot->findBlockByLineNumber(i).text().isEmpty())
                             continue;
-                        /*
-                        item->bonus.push_back(BonusData());
+                        item->loot_animation.push_back(LootAnimation());
 
-                        QString bonus_str = bonusName->findBlockByLineNumber(i).text();
-
-                        if (bonus_str == "speed") {
-                            item->bonus.back().is_speed = true;
-                        }
-                        else if (bonus_str == "physical") {
-                            item->bonus.back().base_index = 0;
-                        }
-                        else if (bonus_str == "mental") {
-                            item->bonus.back().base_index = 1;
-                        }
-                        else if (bonus_str == "offense") {
-                            item->bonus.back().base_index = 2;
-                        }
-                        else if (bonus_str == "defense") {
-                            item->bonus.back().base_index = 3;
-                        }
-
-                        for (unsigned k=0; k<items->ELEMENTS.size(); ++k) {
-                            if (bonus_str == qString(items->ELEMENTS[k].id) + "_resist")
-                            {
-                                item->bonus.back().resist_index = k;
-                                break;
-                            }
-                        }
-                        for (unsigned k=0; k<STAT_COUNT; ++k) {
-                            if (bonus_str == qString(STAT_KEY[k])) {
-                                item->bonus.back().stat_index = (STAT)k;
-                                break;
-                            }
-                        }
-
-                        item->bonus.back().value = valuesList->findBlockByLineNumber(i).text().toInt();
-                        */
+                        item->loot_animation.back().name = stdString(loot->findBlockByLineNumber(i).text());
+                        item->loot_animation.back().low  = lootMin->findBlockByLineNumber(i).text().toInt();
+                        item->loot_animation.back().high = lootmax->findBlockByLineNumber(i).text().toInt();
                     }
-                    /*
-                    // requires stat
-                    item->req_stat.clear();
-                    item->req_val.clear();
-
-                    if (ui->reqPhys->value() > 0)
-                    {
-                        item->req_stat.push_back(REQUIRES_PHYS);
-                        item->req_val.push_back(ui->reqPhys->value());
-                    }
-                    if (ui->reqMent->value() > 0)
-                    {
-                        item->req_stat.push_back(REQUIRES_MENT);
-                        item->req_val.push_back(ui->reqMent->value());
-                    }
-                    if (ui->reqOff->value() > 0)
-                    {
-                        item->req_stat.push_back(REQUIRES_OFF);
-                        item->req_val.push_back(ui->reqOff->value());
-                    }
-                    if (ui->reqDef->value() > 0)
-                    {
-                        item->req_stat.push_back(REQUIRES_DEF);
-                        item->req_val.push_back(ui->reqDef->value());
-                    }
-                    */
-                }
-/*
-                // Loot
-                QTextDocument* loot = ui->animations->document();
-                QTextDocument* lootMin = ui->animationMin->document();
-                QTextDocument* lootmax = ui->animationMax->document();
-                items->items[index].loot_animation.clear();
-
-                for (int i = 0; i < loot->lineCount(); i++)
-                {
-                    if (loot->findBlockByLineNumber(i).text().isEmpty())
-                        continue;
-                    items->items[index].loot_animation.push_back(LootAnimation());
-
-                    items->items[index].loot_animation.back().name = stdString(loot->findBlockByLineNumber(i).text());
-                    items->items[index].loot_animation.back().low  = lootMin->findBlockByLineNumber(i).text().toInt();
-                    items->items[index].loot_animation.back().high = lootmax->findBlockByLineNumber(i).text().toInt();
-                }
-*/
-                else if (QString(widget->metaObject()->className()) == "ComboBox")
-                {
-                    item->setProperty(propertyName.toStdString().c_str(),
-                        dynamic_cast<ComboBox*>(widget)->currentText());
-
-                    //items->items[index].type  = stdString(ui->itemTypeCB->itemData(ui->itemTypeCB->currentIndex()).toString());
-                    //items->items[index].sfx = std::string("soundfx/inventory/") + stdString(ui->sfxCb->currentText());
                 }
                 else if (QString(widget->metaObject()->className()) == "IconChooser")
                 {
@@ -472,26 +347,9 @@ void ItemsHandler::pushBtn()
                         dynamic_cast<IconChooser*>(widget)->ui->iconsView->getActiveIcon());
                 }
             }
-            else if (widget->accessibleName() + "_min" == propertyName)
-            {
-                if (QString(widget->metaObject()->className()) == "TwoSpinBox")
-                {
-                    item->setProperty(propertyName.toStdString().c_str(),
-                        dynamic_cast<TwoSpinBox*>(widget)->value1());
-                }
-            }
-            else if (widget->accessibleName() + "_max" == propertyName)
-            {
-                if (QString(widget->metaObject()->className()) == "TwoSpinBox")
-                {
-                    item->setProperty(propertyName.toStdString().c_str(),
-                        dynamic_cast<TwoSpinBox*>(widget)->value2());
-                }
-            }
         }
     }
 
-    //Update ListBox
     for (int i = 0; i < entityLayout->count(); i++)
     {
         QWidget * widget = entityLayout->itemAt(i)->widget();
@@ -502,10 +360,100 @@ void ItemsHandler::pushBtn()
         if (widget->accessibleName() == "elementslist")
         {
             dynamic_cast<ElementsList*>(widget)->ui->itemsList->currentItem()->setData(Qt::DisplayRole, qString(item->name));
-            break;
+        }
+        else if (widget->accessibleName() == "item_type")
+        {
+            item->type = stdString(dynamic_cast<ComboBox*>(widget)->itemData(dynamic_cast<ComboBox*>(widget)->currentIndex()).toString());
+        }
+        else if (widget->accessibleName() == "soundfx")
+        {
+            item->sfx = std::string("soundfx/inventory/") + stdString(dynamic_cast<ComboBox*>(widget)->currentText());
+        }
+        else if (widget->accessibleName() == "bonus")
+        {
+            QTextDocument* keysList = dynamic_cast<ComboBoxKeyValueList*>(widget)->keys();
+            QTextDocument* valuesList = dynamic_cast<ComboBoxKeyValueList*>(widget)->values();
+            item->bonus.clear();
+
+            for (int i = 0; i < keysList->lineCount(); i++)
+            {
+                if (keysList->findBlockByLineNumber(i).text().isEmpty() || valuesList->findBlockByLineNumber(i).text().isEmpty())
+                    continue;
+
+                item->bonus.push_back(BonusData());
+
+                QString bonus_str = keysList->findBlockByLineNumber(i).text();
+
+                if (bonus_str == "speed") {
+                    item->bonus.back().is_speed = true;
+                }
+                else if (bonus_str == "physical") {
+                    item->bonus.back().base_index = 0;
+                }
+                else if (bonus_str == "mental") {
+                    item->bonus.back().base_index = 1;
+                }
+                else if (bonus_str == "offense") {
+                    item->bonus.back().base_index = 2;
+                }
+                else if (bonus_str == "defense") {
+                    item->bonus.back().base_index = 3;
+                }
+
+                for (unsigned k=0; k<items->ELEMENTS.size(); ++k) {
+                    if (bonus_str == qString(items->ELEMENTS[k].id) + "_resist")
+                    {
+                        item->bonus.back().resist_index = k;
+                        break;
+                    }
+                }
+                for (unsigned k=0; k<STAT_COUNT; ++k) {
+                    if (bonus_str == qString(STAT_KEY[k])) {
+                        item->bonus.back().stat_index = (STAT)k;
+                        break;
+                    }
+                }
+                item->bonus.back().value = valuesList->findBlockByLineNumber(i).text().toInt();
+            }
+        }
+        else if (widget->accessibleName() == "requires_stat")
+        {
+            item->req_stat.clear();
+            item->req_val.clear();
+
+            QTextDocument* keysList = dynamic_cast<ComboBoxKeyValueList*>(widget)->keys();
+            QTextDocument* valuesList = dynamic_cast<ComboBoxKeyValueList*>(widget)->values();
+
+            for (int i = 0; i < keysList->lineCount(); i++)
+            {
+                if (keysList->findBlockByLineNumber(i).text().isEmpty() || valuesList->findBlockByLineNumber(i).text().isEmpty())
+                    continue;
+
+                QString stat = keysList->findBlockByLineNumber(i).text();
+                QString val = valuesList->findBlockByLineNumber(i).text();
+                if (val.toInt() > 0)
+                {
+                    if (stat == "physical")
+                    {
+                        item->req_stat.push_back(REQUIRES_PHYS);
+                    }
+                    else if (stat == "mental")
+                    {
+                        item->req_stat.push_back(REQUIRES_MENT);
+                    }
+                    else if (stat == "offense")
+                    {
+                        item->req_stat.push_back(REQUIRES_OFF);
+                    }
+                    else if (stat == "defense")
+                    {
+                        item->req_stat.push_back(REQUIRES_DEF);
+                    }
+                    item->req_val.push_back(val.toInt());
+                }
+            }
         }
     }
-    EntityHandler::pushBtn();
     entity = NULL;
 }
 

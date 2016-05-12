@@ -23,15 +23,16 @@ FLARE.  If not, see http://www.gnu.org/licenses/
 #include "API/UtilsParsing.h"
 #include "API/Stats.h"
 
+#include <QFile>
+
 EditorItemManager::EditorItemManager(const std::string& modpath)
 {
     items = QVector<Item*>();
     setStatNames();
     loadMiscTypes();
-    // fix whem file not found and loading failed
     loadItems(modpath + "items/items.txt", false);
-    if (!items.empty()) shrinkItems();
-    else items.resize(1);
+    if (!items.empty())
+        shrinkItems();
 
     loadTypes(modpath + "items/types.txt", false);
     loadQualities(modpath + "items/qualities.txt", false);

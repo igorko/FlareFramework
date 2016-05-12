@@ -205,6 +205,43 @@ void EntityHandler::pushBtn()
                     }
                     entity->setProperty(propertyName.toStdString().c_str(), values);
                 }
+                else if (QString(widget->metaObject()->className()) == "ComboBox")
+                {
+                    entity->setProperty(propertyName.toStdString().c_str(),
+                        dynamic_cast<ComboBox*>(widget)->currentText());
+                }
+                else if (QString(widget->metaObject()->className()) == "ComboBoxKeyValueList")
+                {
+                    QTextDocument* keysList = dynamic_cast<ComboBoxKeyValueList*>(widget)->keys();
+                    QTextDocument* valuesList = dynamic_cast<ComboBoxKeyValueList*>(widget)->values();
+
+                    QList<QVariant> values;
+                    for (int i = 0; i < keysList->lineCount(); i++)
+                    {
+                        if (keysList->findBlockByLineNumber(i).text().isEmpty() || valuesList->findBlockByLineNumber(i).text().isEmpty())
+                            break;
+                        QStringList list;
+                        list << keysList->findBlockByLineNumber(i).text() << valuesList->findBlockByLineNumber(i).text();
+                        values.append(list);
+                    }
+                    entity->setProperty(propertyName.toStdString().c_str(), values);
+                }
+            }
+            else if (widget->accessibleName() + "_min" == propertyName)
+            {
+                if (QString(widget->metaObject()->className()) == "TwoSpinBox")
+                {
+                    entity->setProperty(propertyName.toStdString().c_str(),
+                        dynamic_cast<TwoSpinBox*>(widget)->value1());
+                }
+            }
+            else if (widget->accessibleName() + "_max" == propertyName)
+            {
+                if (QString(widget->metaObject()->className()) == "TwoSpinBox")
+                {
+                    entity->setProperty(propertyName.toStdString().c_str(),
+                        dynamic_cast<TwoSpinBox*>(widget)->value2());
+                }
             }
         }
     }

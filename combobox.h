@@ -18,6 +18,7 @@ public:
     void setCurrentIndex(int index);
     void clear();
     QVariant itemData(int index);
+    int currentIndex();
 
     void addItem(QString value);
     void addItem(QString text, const QVariant & data);

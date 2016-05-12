@@ -33,9 +33,19 @@ void StringListWidget::setValues(QVector<QString> values)
     }
 }
 
+void StringListWidget::addItemToComboBox(QString text)
+{
+    ui->selector->addItem(text);
+}
+
 QTextDocument *StringListWidget::doc()
 {
     return ui->list->document();
+}
+
+QComboBox *StringListWidget::comboBox()
+{
+    ui->selector;
 }
 
 void StringListWidget::addItem()
