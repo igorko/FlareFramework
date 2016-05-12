@@ -50,8 +50,8 @@ void MainWindow::setupConnections()
 {
     connect(itemsHandler->CloseButton(), SIGNAL(clicked()), SLOT(itemClose()));
 
-    connect(itemsHandler, SIGNAL(itemsNotEdited()), this, SLOT(disableSaving()));
-    connect(itemsHandler, SIGNAL(itemsWereEdited()), this, SLOT(enableSaving()));
+    connect(itemsHandler, SIGNAL(entityNotEdited()), this, SLOT(disableSaving()));
+    connect(itemsHandler, SIGNAL(entityWasEdited()), this, SLOT(enableSaving()));
 
     connect(ui->actionClose_Mod, SIGNAL(triggered()), SLOT(Close_Mod()));
 
@@ -134,13 +134,13 @@ void MainWindow::setMenusEnabled(bool state)
 void MainWindow::Close_Mod()
 {
     if (modPath == "") return;
-    if (itemsHandler->itemsAreEdited())
+    if (itemsHandler->entityEdited())
     {
         QMessageBox::StandardButton reply = QMessageBox::question(this, "Save mod", "Save mod before closing?", QMessageBox::Yes|QMessageBox::No);
 
         if (reply == QMessageBox::Yes)
         {
-            itemsHandler->saveItems(modPath);
+            itemsHandler->saveEntityList(modPath);
         }
     }
     modPath = "";
@@ -233,14 +233,13 @@ void MainWindow::Add_Item()
     //    itemsFile.Create();
 
     std::string path = (modPath + QDir::separator()).toUtf8().constData();
-    itemsHandler->loadItems(path);
-    itemsHandler->loadItems(path);
+    itemsHandler->loadEntityList(path);
 }
 
 void MainWindow::Save_Mod()
 {
     QString filename = modPath + QDir::separator() + "items" + QDir::separator() + "items.txt";
-    itemsHandler->saveItems(filename.toUtf8().constData());
+    itemsHandler->saveEntityList(filename.toUtf8().constData());
     //ToDo
 
 }

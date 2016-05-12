@@ -39,7 +39,8 @@ SOURCES += main.cpp\
     elementslist.cpp \
     itemshandler.cpp \
     controlframe.cpp \
-    comboboxkeyvaluelist.cpp
+    comboboxkeyvaluelist.cpp \
+    entityhandler.cpp
 
 HEADERS  += mainwindow.h \
     iconview.h \
@@ -67,7 +68,8 @@ HEADERS  += mainwindow.h \
     API/Stats.h \
     API/Utils.h \
     API/UtilsFileSystem.h \
-    API/UtilsParsing.h
+    API/UtilsParsing.h \
+    entityhandler.h
 
 FORMS    += mainwindow.ui \
     iconselector.ui \

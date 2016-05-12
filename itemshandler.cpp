@@ -56,19 +56,14 @@
 #include "lootanimationwidget.h"
 
 ItemsHandler::ItemsHandler(MainWindow * _mainWindow, QObject *parent) :
-    QObject(parent),
-    mainWindow(_mainWindow),
-    itemsLayout(NULL),
-    items(NULL),
-    itemsEdited(false),
-    editedStyle("background-color:#66FF99;"),
-    invalidStyle("background-color:#FF3333;")
+    EntityHandler(_mainWindow, parent),
+    items(NULL)
 {
     QScrollArea * itemsTab = dynamic_cast<QScrollArea *>(mainWindow->ui->tabWidget->widget(mainWindow->predefinedNameTypeElements[ITEMS]));
-    itemsLayout = dynamic_cast<QGridLayout *>(itemsTab->widget()->layout());
-    for (int i = 0; i < itemsLayout->count(); i++)
+    entityLayout = dynamic_cast<QGridLayout *>(itemsTab->widget()->layout());
+    for (int i = 0; i < entityLayout->count(); i++)
     {
-        QWidget * widget = itemsLayout->itemAt(i)->widget();
+        QWidget * widget = entityLayout->itemAt(i)->widget();
 
         if (widget && widget->accessibleName() == "icon")
         {
@@ -84,15 +79,15 @@ ItemsHandler::~ItemsHandler()
     delete items;
 }
 
-void ItemsHandler::saveItems(const QString &path)
+void ItemsHandler::saveEntityList(const QString &path)
 {
     QString filename = path + QDir::separator() + "items" + QDir::separator() + "items.txt";
     if (items != NULL) items->save(filename.toUtf8().constData());
 
     filename = path + QDir::separator() + "images" + QDir::separator() + "icons" + QDir::separator() + "icons.png";
-    for (int i = 0; i < itemsLayout->count(); i++)
+    for (int i = 0; i < entityLayout->count(); i++)
     {
-        QWidget * widget = itemsLayout->itemAt(i)->widget();
+        QWidget * widget = entityLayout->itemAt(i)->widget();
 
         if (widget && widget->accessibleName() == "icon")
         {
@@ -101,10 +96,10 @@ void ItemsHandler::saveItems(const QString &path)
         }
     }
 
-    setItemsAreEdited(false);
+    setEntityEdited(false);
 }
 
-void ItemsHandler::loadItems(const std::string &path)
+void ItemsHandler::loadEntityList(const std::string &path)
 {
     items = new EditorItemManager(path);
     for (int i = 0; i<items->items.size(); i++)
@@ -113,9 +108,9 @@ void ItemsHandler::loadItems(const std::string &path)
         {
             QListWidgetItem* item = new QListWidgetItem(qString(items->items[i]->name));
             item->setData(Qt::UserRole, i);
-            for (int i = 0; i < itemsLayout->count(); i++)
+            for (int i = 0; i < entityLayout->count(); i++)
             {
-                QWidget * widget = itemsLayout->itemAt(i)->widget();
+                QWidget * widget = entityLayout->itemAt(i)->widget();
 
                 if (widget && widget->accessibleName() == "elementslist")
                 {
@@ -126,9 +121,9 @@ void ItemsHandler::loadItems(const std::string &path)
         }
     }
 
-    for (int i = 0; i < itemsLayout->count(); i++)
+    for (int i = 0; i < entityLayout->count(); i++)
     {
-        QWidget * widget = itemsLayout->itemAt(i)->widget();
+        QWidget * widget = entityLayout->itemAt(i)->widget();
 
         if (widget == NULL)
         {
@@ -229,9 +224,9 @@ void ItemsHandler::loadItems(const std::string &path)
         }
     }
 
-    for (int i = 0; i < itemsLayout->count(); i++)
+    for (int i = 0; i < entityLayout->count(); i++)
     {
-        QWidget * widget = itemsLayout->itemAt(i)->widget();
+        QWidget * widget = entityLayout->itemAt(i)->widget();
 
         if (widget && widget->accessibleName() == "controlframe")
         {
@@ -241,9 +236,9 @@ void ItemsHandler::loadItems(const std::string &path)
     }
 
     collectFileLists(path);
-    for (int i = 0; i < itemsLayout->count(); i++)
+    for (int i = 0; i < entityLayout->count(); i++)
     {
-        QWidget * widget = itemsLayout->itemAt(i)->widget();
+        QWidget * widget = entityLayout->itemAt(i)->widget();
 
         if (widget && widget->accessibleName() == "icon")
         {
@@ -257,33 +252,9 @@ void ItemsHandler::loadItems(const std::string &path)
 
 void ItemsHandler::clearItemsList()
 {
-    for (int i = 0; i < itemsLayout->count(); i++)
-    {
-        QWidget * widget = itemsLayout->itemAt(i)->widget();
-
-        if (widget && widget->accessibleName() == "elementslist")
-        {
-            dynamic_cast<ElementsList*>(widget)->ui->itemsList->clear();
-            break;
-        }
-    }
-    setItemsAreEdited(false);
+    EntityHandler::clearItemsList();
     delete items;
     items = NULL;
-}
-
-bool ItemsHandler::itemsAreEdited()
-{
-    return itemsEdited;
-}
-
-void ItemsHandler::setItemsAreEdited(bool state)
-{
-    if (state)
-        emit itemsWereEdited();
-    else
-        emit itemsNotEdited();
-    itemsEdited = state;
 }
 
 void ItemsHandler::addNewItem()
@@ -294,9 +265,9 @@ void ItemsHandler::addNewItem()
 
     QListWidgetItem* item = new QListWidgetItem("newItem");
     item->setData(Qt::UserRole, index);
-    for (int i = 0; i < itemsLayout->count(); i++)
+    for (int i = 0; i < entityLayout->count(); i++)
     {
-        QWidget * widget = itemsLayout->itemAt(i)->widget();
+        QWidget * widget = entityLayout->itemAt(i)->widget();
 
         if (widget && widget->accessibleName() == "elementslist")
         {
@@ -308,44 +279,17 @@ void ItemsHandler::addNewItem()
 
 void ItemsHandler::clearBtn()
 {
-    for (int i = 0; i < itemsLayout->count(); i++)
+    EntityHandler::clearBtn();
+
+    for (int i = 0; i < entityLayout->count(); i++)
     {
-        QWidget * widget = itemsLayout->itemAt(i)->widget();
+        QWidget * widget = entityLayout->itemAt(i)->widget();
         if (widget == NULL)
         {
             continue;
         }
         QString name = QString(widget->metaObject()->className());
-        if (name == "ComboBox")
-        {
-            dynamic_cast<ComboBox*>(widget)->setCurrentIndex(0);
-        }
-        else if (name == "SpinBox")
-        {
-            dynamic_cast<SpinBox*>(widget)->setValue(0);
-        }
-        else if (name == "DoubleSpinBox")
-        {
-            dynamic_cast<DoubleSpinBox*>(widget)->setValue(0.0);
-        }
-        else if (name == "LineEdit")
-        {
-            dynamic_cast<LineEdit*>(widget)->clear();
-        }
-        else if (name == "StringListWidget")
-        {
-            dynamic_cast<StringListWidget*>(widget)->clear();
-        }
-        else if (name == "TwoSpinBox")
-        {
-            dynamic_cast<TwoSpinBox*>(widget)->setValue1(0);
-            dynamic_cast<TwoSpinBox*>(widget)->setValue2(0);
-        }
-        else if (name == "TwoStringLists")
-        {
-            dynamic_cast<TwoStringLists*>(widget)->clear();
-        }
-        else if (name == "LootAnimationWidget")
+        if (name == "LootAnimationWidget")
         {
             dynamic_cast<LootAnimationWidget*>(widget)->clear();
         }
@@ -353,19 +297,15 @@ void ItemsHandler::clearBtn()
         {
             dynamic_cast<IconChooser*>(widget)->setActiveIcon(0);
         }
-        else if (name == "CheckBox")
-        {
-            dynamic_cast<CheckBox*>(widget)->setChecked(false);
-        }
     }
 }
 
 void ItemsHandler::pushBtn()
 {
     int index = -1;
-    for (int i = 0; i < itemsLayout->count(); i++)
+    for (int i = 0; i < entityLayout->count(); i++)
     {
-        QWidget * widget = itemsLayout->itemAt(i)->widget();
+        QWidget * widget = entityLayout->itemAt(i)->widget();
         if (widget == NULL)
         {
             continue;
@@ -377,15 +317,16 @@ void ItemsHandler::pushBtn()
         }
     }
     Item * item = items->items[index];
+    entity = items->items[index];
 
     const QMetaObject* metaObject = item->metaObject();
     for(int i = metaObject->propertyOffset(); i < metaObject->propertyCount(); ++i)
     {
         QString propertyName = QString::fromLatin1(metaObject->property(i).name());
 
-        for (int i = 0; i < itemsLayout->count(); i++)
+        for (int i = 0; i < entityLayout->count(); i++)
         {
-            QWidget * widget = itemsLayout->itemAt(i)->widget();
+            QWidget * widget = entityLayout->itemAt(i)->widget();
             if (widget == NULL)
             {
                 continue;
@@ -563,9 +504,9 @@ void ItemsHandler::pushBtn()
     }
 
     //Update ListBox
-    for (int i = 0; i < itemsLayout->count(); i++)
+    for (int i = 0; i < entityLayout->count(); i++)
     {
-        QWidget * widget = itemsLayout->itemAt(i)->widget();
+        QWidget * widget = entityLayout->itemAt(i)->widget();
         if (widget == NULL)
         {
             continue;
@@ -576,95 +517,29 @@ void ItemsHandler::pushBtn()
             break;
         }
     }
-    setItemsAreEdited(true);
+    EntityHandler::pushBtn();
+    entity = NULL;
 }
 
-void ItemsHandler::selectItem(QListWidgetItem *_item)
+void ItemsHandler::selectElementFromList(QListWidgetItem *_item)
 {
-    clearBtn();
-
-    for (int i = 0; i < itemsLayout->count(); i++)
+    for (int i = 0; i < entityLayout->count(); i++)
     {
-        QWidget * widget = itemsLayout->itemAt(i)->widget();
-
+        QWidget * widget = entityLayout->itemAt(i)->widget();
         if (widget && widget->accessibleName() == "item_type")
         {
             dynamic_cast<ComboBox*>(widget)->setCurrentIndex(-1);
-        }
-        else if (widget && widget->accessibleName() == "controlframe")
-        {
-            dynamic_cast<ControlFrame*>(widget)->ui->pushBtn->setEnabled(true);
         }
     }
 
     int index = _item->data(Qt::UserRole).toInt();
     Item* item = items->items[index];
+    entity = items->items[index];
+    EntityHandler::selectElementFromList(_item);
 
-    const QMetaObject* metaObject = item->metaObject();
-    for(int i = metaObject->propertyOffset(); i < metaObject->propertyCount(); ++i)
+    for (int i = 0; i < entityLayout->count(); i++)
     {
-        QString propertyName = QString::fromLatin1(metaObject->property(i).name());
-
-        for (int i = 0; i < itemsLayout->count(); i++)
-        {
-            QWidget * widget = itemsLayout->itemAt(i)->widget();
-            if (widget == NULL)
-            {
-                continue;
-            }
-            QString className = QString(widget->metaObject()->className());
-            if (widget->accessibleName() == propertyName)
-            {
-                if (className == "LineEdit")
-                {
-                    dynamic_cast<LineEdit*>(widget)->ui->lineEdit->setText(item->property(propertyName.toStdString().c_str()).toString());
-                }
-                else if (className == "SpinBox")
-                {
-                    dynamic_cast<SpinBox*>(widget)->setValue(item->property(propertyName.toStdString().c_str()).toInt());
-                }
-                else if (className == "TwoSpinBox")
-                {
-                    if (propertyName.endsWith("_min"))
-                    {
-                        dynamic_cast<TwoSpinBox*>(widget)->setValue1(item->property(propertyName.toStdString().c_str()).toInt());
-                    }
-                    else if (propertyName.endsWith("_max"))
-                    {
-                        dynamic_cast<TwoSpinBox*>(widget)->setValue2(item->property(propertyName.toStdString().c_str()).toInt());
-                    }
-                }
-                else if (className == "TwoStringLists")
-                {
-                    QList<QVariant> values = item->property(propertyName.toStdString().c_str()).toList();
-                    QVector< QPair<QString,QString> > vector;
-                    for(int i = 0; i < values.size(); i++)
-                    {
-                        vector.append(qMakePair(values[i].toStringList()[0], values[i].toStringList()[1]));
-                    }
-                    dynamic_cast<TwoStringLists*>(widget)->setValues(vector);
-                }
-                else if (className == "StringListWidget")
-                {
-                    QList<QVariant> values = item->property(propertyName.toStdString().c_str()).toList();
-                    QVector<QString> vector;
-                    for(int i = 0; i < values.size(); i++)
-                    {
-                        vector.append(values[i].toString());
-                    }
-                    dynamic_cast<StringListWidget*>(widget)->setValues(vector);
-                }
-                else if (className == "ComboBox")
-                {
-                    dynamic_cast<ComboBox*>(widget)->selectComboBoxItemByText(item->property(propertyName.toStdString().c_str()).toString());
-                }
-            }
-        }
-    }
-
-    for (int i = 0; i < itemsLayout->count(); i++)
-    {
-        QWidget * widget = itemsLayout->itemAt(i)->widget();
+        QWidget * widget = entityLayout->itemAt(i)->widget();
         if (widget == NULL)
         {
             continue;
@@ -812,6 +687,7 @@ void ItemsHandler::selectItem(QListWidgetItem *_item)
             }
         }
     }
+    entity = NULL;
 }
 
 void ItemsHandler::collectFileLists(const std::string &path)
@@ -819,9 +695,9 @@ void ItemsHandler::collectFileLists(const std::string &path)
     QString modPath = qString(path);
     QStringList files;
 
-    for (int i = 0; i < itemsLayout->count(); i++)
+    for (int i = 0; i < entityLayout->count(); i++)
     {
-        QWidget * widget = itemsLayout->itemAt(i)->widget();
+        QWidget * widget = entityLayout->itemAt(i)->widget();
         if (widget == NULL)
         {
             continue;
@@ -860,92 +736,29 @@ void ItemsHandler::collectFileLists(const std::string &path)
     }
 }
 
-QString ItemsHandler::qString(std::string value)
-{
-    return QString::fromUtf8(value.data(), value.size());
-}
-
-std::string ItemsHandler::stdString(QString value)
-{
-    return value.toUtf8().constData();
-}
-
-QObject *ItemsHandler::CloseButton()
-{
-    for (int i = 0; i < itemsLayout->count(); i++)
-    {
-        QWidget * widget = itemsLayout->itemAt(i)->widget();
-
-        if (widget && widget->accessibleName() == "controlframe")
-        {
-            return dynamic_cast<ControlFrame*>(widget)->ui->itemClose;
-        }
-    }
-
-    return NULL;
-}
-
-void ItemsHandler::checkComboBoxForError(ComboBox *widget, const QString &errorText)
-{
-    if (widget->ui->comboBox->count() == 0)
-    {
-        widget->ui->comboBox->setStyleSheet(invalidStyle);
-        widget->ui->comboBox->setToolTip(errorText);
-    }
-    else
-    {
-        widget->ui->comboBox->setStyleSheet("");
-        widget->ui->comboBox->setToolTip("");
-    }
-}
-
-void ItemsHandler::checkComboBoxForError(QComboBox *widget, const QString &errorText)
-{
-    if (widget->count() == 0)
-    {
-        widget->setStyleSheet(invalidStyle);
-        widget->setToolTip(errorText);
-    }
-    else
-    {
-        widget->setStyleSheet("");
-        widget->setToolTip("");
-    }
-}
-
 void ItemsHandler::setupConnections()
 {
-    for (int i = 0; i < itemsLayout->count(); i++)
-    {
-        QWidget * widget = itemsLayout->itemAt(i)->widget();
+    EntityHandler::setupConnections();
 
-        if (widget && widget->accessibleName() == "controlframe")
-        {
-            ControlFrame * controlFrame = dynamic_cast<ControlFrame*>(widget);
-            connect(controlFrame->ui->addNewItem, SIGNAL(clicked()), SLOT(addNewItem()));
-            connect(controlFrame->ui->clearBtn, SIGNAL(clicked()), SLOT(clearBtn()));
-            connect(controlFrame->ui->pushBtn, SIGNAL(clicked()), SLOT(pushBtn()));
-        }
-        else if (widget && widget->accessibleName() == "icon")
+    for (int i = 0; i < entityLayout->count(); i++)
+    {
+        QWidget * widget = entityLayout->itemAt(i)->widget();
+
+        if (widget && widget->accessibleName() == "icon")
         {
             IconChooser * iconChooser = dynamic_cast<IconChooser*>(widget);
             connect(iconChooser->ui->assignIconBtn, SIGNAL(clicked()), SLOT(requestIconAdd()));
             connect(iconChooser->ui->iconsView, SIGNAL(iconPlaced()), SLOT(finishIconAdd()));
             connect(iconChooser->ui->iconsView, SIGNAL(iconSkipped()), SLOT(skipIconAdd()));
         }
-        else if (widget && widget->accessibleName() == "elementslist")
-        {
-            ElementsList * elementsList = dynamic_cast<ElementsList*>(widget);
-            connect(elementsList->ui->itemsList, SIGNAL(itemClicked(QListWidgetItem*)), SLOT(selectItem(QListWidgetItem*)));
-        }
     }
 }
 
 void ItemsHandler::finishIconAdd()
 {
-    for (int i = 0; i < itemsLayout->count(); i++)
+    for (int i = 0; i < entityLayout->count(); i++)
     {
-        QWidget * widget = itemsLayout->itemAt(i)->widget();
+        QWidget * widget = entityLayout->itemAt(i)->widget();
 
         if (widget && widget->accessibleName() == "icon")
         {
@@ -953,15 +766,15 @@ void ItemsHandler::finishIconAdd()
             break;
         }
     }
-    setItemsAreEdited(true);
+    setEntityEdited(true);
 
 }
 
 void ItemsHandler::skipIconAdd()
 {
-    for (int i = 0; i < itemsLayout->count(); i++)
+    for (int i = 0; i < entityLayout->count(); i++)
     {
-        QWidget * widget = itemsLayout->itemAt(i)->widget();
+        QWidget * widget = entityLayout->itemAt(i)->widget();
 
         if (widget && widget->accessibleName() == "icon")
         {
@@ -978,9 +791,9 @@ void ItemsHandler::requestIconAdd()
     if (ret == QDialog::Accepted)
     {
         QImage newIcon = dialog->getSelection();
-        for (int i = 0; i < itemsLayout->count(); i++)
+        for (int i = 0; i < entityLayout->count(); i++)
         {
-            QWidget * widget = itemsLayout->itemAt(i)->widget();
+            QWidget * widget = entityLayout->itemAt(i)->widget();
 
             if (widget && widget->accessibleName() == "icon")
             {
