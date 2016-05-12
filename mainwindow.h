@@ -8,17 +8,7 @@
 #include "itemshandler.h"
 
 const int TAB_MAIN = 0;
-const int TAB_ITEMS = 1;
-const int TAB_POWERS = 2;
-const int TAB_ENEMIES = 3;
-const int TAB_NPCS = 4;
-const int TAB_QUESTS = 5;
-
 const int MENU_FILE = 0;
-const int MENU_CREATURES = 1;
-const int MENU_MENUS = 2;
-const int MENU_STUFF = 3;
-const int MENU_STORY = 5;
 
 #define ITEM_TYPES      "ItemManager: Types"
 #define ITEMS           "ItemManager: Items"
@@ -63,6 +53,7 @@ private slots:
     void Close_Mod();
 
     void Add_Item();
+    void loadTab(int index);
 
     void Save_Mod();
 
@@ -75,7 +66,8 @@ private slots:
     void New_Mod();
 
 private:
-    void disableAllTabsExceptIndex(int index);
+    void disableAllTabs();
+    void enableAllTabs();
     void setMenusEnabled(bool state);
     void setupConnections();
     void CloseAll();

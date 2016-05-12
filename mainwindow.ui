@@ -30,31 +30,11 @@
        <string/>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="Main">
        <attribute name="title">
         <string>Main</string>
-       </attribute>
-      </widget>
-      <widget class="QWidget" name="Powers">
-       <attribute name="title">
-        <string>Powers</string>
-       </attribute>
-      </widget>
-      <widget class="QWidget" name="Enemies">
-       <attribute name="title">
-        <string>Enemies</string>
-       </attribute>
-      </widget>
-      <widget class="QWidget" name="NPCs">
-       <attribute name="title">
-        <string>NPCs</string>
-       </attribute>
-      </widget>
-      <widget class="QWidget" name="Quests">
-       <attribute name="title">
-        <string>Quests</string>
        </attribute>
       </widget>
      </widget>
@@ -67,7 +47,7 @@
      <x>0</x>
      <y>0</y>
      <width>1022</width>
-     <height>26</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -80,62 +60,6 @@
     <addaction name="actionClose_Mod"/>
     <addaction name="actionQuit"/>
    </widget>
-   <widget class="QMenu" name="menuCreatures">
-    <property name="title">
-     <string>Creatures</string>
-    </property>
-    <addaction name="actionAdd_NPC"/>
-    <addaction name="actionAdd_Enemy"/>
-   </widget>
-   <widget class="QMenu" name="menuMenus">
-    <property name="title">
-     <string>Menus</string>
-    </property>
-    <widget class="QMenu" name="menuInterface_Menus">
-     <property name="title">
-      <string>Interface Menus</string>
-     </property>
-     <addaction name="actionLoad_Game"/>
-     <addaction name="actionNew_Game"/>
-     <addaction name="actionSettings_Menu"/>
-    </widget>
-    <widget class="QMenu" name="menuInGame">
-     <property name="title">
-      <string>InGame</string>
-     </property>
-     <addaction name="actionInventory"/>
-     <addaction name="actionCharacter"/>
-     <addaction name="actionPowers"/>
-     <addaction name="actionLog"/>
-     <addaction name="actionXP_Bar"/>
-     <addaction name="actionMana_Bar"/>
-     <addaction name="actionHP_Bar"/>
-     <addaction name="actionEnemy_Bar"/>
-     <addaction name="actionMiniMap"/>
-    </widget>
-    <addaction name="menuInGame"/>
-    <addaction name="menuInterface_Menus"/>
-   </widget>
-   <widget class="QMenu" name="menuStuff">
-    <property name="title">
-     <string>Stuff</string>
-    </property>
-    <addaction name="actionAdd_Power"/>
-    <addaction name="actionAdd_Item"/>
-   </widget>
-   <widget class="QMenu" name="menuMaps">
-    <property name="title">
-     <string>Maps</string>
-    </property>
-    <addaction name="actionCreate_Map"/>
-    <addaction name="actionOpen_Map"/>
-   </widget>
-   <widget class="QMenu" name="menuStory">
-    <property name="title">
-     <string>Story</string>
-    </property>
-    <addaction name="actionAdd_Quest"/>
-   </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
      <string>Help</string>
@@ -143,11 +67,6 @@
     <addaction name="actionAbout"/>
    </widget>
    <addaction name="menuFile"/>
-   <addaction name="menuCreatures"/>
-   <addaction name="menuMenus"/>
-   <addaction name="menuStuff"/>
-   <addaction name="menuMaps"/>
-   <addaction name="menuStory"/>
    <addaction name="menuHelp"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">

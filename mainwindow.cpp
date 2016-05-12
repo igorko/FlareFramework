@@ -55,8 +55,6 @@ void MainWindow::setupConnections()
 
     connect(ui->actionClose_Mod, SIGNAL(triggered()), SLOT(Close_Mod()));
 
-    connect(ui->actionAdd_Item, SIGNAL(triggered()), SLOT(Add_Item()));
-
     connect(ui->actionSave_Mod, SIGNAL(triggered()), SLOT(Save_Mod()));
 
     connect(ui->actionQuit, SIGNAL(triggered()), SLOT(Quit()));
@@ -87,20 +85,22 @@ void MainWindow::disableSaving()
 
 void MainWindow::itemClose()
 {
-    disableAllTabsExceptIndex(TAB_MAIN);
     itemsHandler->clearItemsList();
 }
 
-void MainWindow::disableAllTabsExceptIndex(int index)
+void MainWindow::disableAllTabs()
 {
     for (int i = 0; i < ui->tabWidget->count(); i++)
     {
         ui->tabWidget->setTabEnabled(i, false);
     }
-    if (index >= 0 && index < ui->tabWidget->count())
+}
+
+void MainWindow::enableAllTabs()
+{
+    for (int i = 0; i < ui->tabWidget->count(); i++)
     {
-        ui->tabWidget->setTabEnabled(index, true);
-        ui->tabWidget->setCurrentIndex(index);
+        ui->tabWidget->setTabEnabled(i, true);
     }
 }
 
@@ -112,23 +112,6 @@ void MainWindow::setMenusEnabled(bool state)
     actions.at(MENU_FILE)->menu()->actions().at(1)->setEnabled(!state);
     actions.at(MENU_FILE)->menu()->actions().at(2)->setEnabled(state);
     actions.at(MENU_FILE)->menu()->actions().at(3)->setEnabled(state);
-
-    actions.at(MENU_CREATURES)->menu()->actions().at(0)->setEnabled(state);
-    actions.at(MENU_CREATURES)->menu()->actions().at(1)->setEnabled(state);
-
-    for (int i = 0; i < 9; i++)
-    {
-        actions.at(MENU_MENUS)->menu()->actions().at(0)->menu()->actions().at(i)->setEnabled(state);
-    }
-
-    actions.at(MENU_MENUS)->menu()->actions().at(1)->menu()->actions().at(0)->setEnabled(state);
-    actions.at(MENU_MENUS)->menu()->actions().at(1)->menu()->actions().at(1)->setEnabled(state);
-    actions.at(MENU_MENUS)->menu()->actions().at(1)->menu()->actions().at(2)->setEnabled(state);
-
-    actions.at(MENU_STUFF)->menu()->actions().at(0)->setEnabled(state);
-    actions.at(MENU_STUFF)->menu()->actions().at(1)->setEnabled(state);
-
-    actions.at(MENU_STORY)->menu()->actions().at(0)->setEnabled(state);
 }
 
 void MainWindow::Close_Mod()
@@ -152,7 +135,7 @@ void MainWindow::Close_Mod()
 
 void MainWindow::CloseAll()
 {
-    disableAllTabsExceptIndex(TAB_MAIN);
+    disableAllTabs();
     //ToDo
 }
 
@@ -223,8 +206,6 @@ bool MainWindow::ParseAttributesXML()
 
 void MainWindow::Add_Item()
 {
-    disableAllTabsExceptIndex(TAB_ITEMS);
-
     if (!QDir(modPath + QDir::separator() + "items").exists())
         QDir().mkdir(modPath + QDir::separator() + "items");
 
@@ -234,6 +215,14 @@ void MainWindow::Add_Item()
 
     std::string path = (modPath + QDir::separator()).toUtf8().constData();
     itemsHandler->loadEntityList(path);
+}
+
+void MainWindow::loadTab(int index)
+{
+    if (ui->tabWidget->tabText(index) == ITEMS)
+    {
+        Add_Item();
+    }
 }
 
 void MainWindow::Save_Mod()
@@ -267,6 +256,7 @@ void MainWindow::Open_Mod()
         setMenusEnabled(true);
         disableSaving();
     }
+    enableAllTabs();
 }
 
 void MainWindow::New_Mod()
@@ -278,6 +268,7 @@ void MainWindow::New_Mod()
         setMenusEnabled(true);
         disableSaving();
     }
+    enableAllTabs();
 }
 
 void MainWindow::BuildUI()
@@ -382,15 +373,8 @@ void MainWindow::BuildUI()
             }
         }
         int tabIndex = -1;
-        // temporary solution before refactor
-        if (widgetTabName == ITEMS)
-        {
-            tabIndex = ui->tabWidget->insertTab(TAB_ITEMS, tab, widgetTabName);
-        }
-        else
-        {
-            tabIndex = ui->tabWidget->addTab(tab, widgetTabName);
-        }
+        tabIndex = ui->tabWidget->addTab(tab, widgetTabName);
+
         ui->tabWidget->setTabToolTip(tabIndex, m_nameTypeElementDescriptions[widgetTabName]);
         predefinedNameTypeElements[widgetTabName] = tabIndex;
 
@@ -399,5 +383,8 @@ void MainWindow::BuildUI()
 
     itemsHandler = new ItemsHandler(this);
     setupConnections();
-    disableAllTabsExceptIndex(0);
+    disableAllTabs();
+
+    connect(ui->tabWidget, SIGNAL(currentChanged(int)), SLOT(loadTab(int)));
+
 }
