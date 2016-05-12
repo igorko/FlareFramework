@@ -26,6 +26,11 @@ void ComboBox::clear()
     ui->comboBox->clear();
 }
 
+QVariant ComboBox::itemData(int index)
+{
+    return ui->comboBox->itemData(index);
+}
+
 void ComboBox::addItem(QString value)
 {
     ui->comboBox->addItem(value);
@@ -67,4 +72,9 @@ void ComboBox::setStyleSheet(QString text)
 void ComboBox::setToolTip(QString text)
 {
     ui->comboBox->setToolTip(text);
+}
+
+QString ComboBox::currentText()
+{
+    return ui->comboBox->currentText();
 }

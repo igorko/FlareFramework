@@ -21,12 +21,11 @@ public:
 
     QString text();
 
-    Ui::LineEdit *ui;
-
 public slots:
     void markNotEmptyLineEdit(const QString& text);
 
 private:
+    Ui::LineEdit *ui;
     QString editedStyle;
 };
 

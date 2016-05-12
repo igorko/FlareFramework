@@ -23,6 +23,32 @@ QComboBox *ComboBoxKeyValueList::comboBox()
     return ui->list;
 }
 
+QTextDocument *ComboBoxKeyValueList::keys()
+{
+    ui->keys->document();
+}
+
+QTextDocument *ComboBoxKeyValueList::values()
+{
+    ui->values->document();
+}
+
+void ComboBoxKeyValueList::appendKey(QString text)
+{
+    ui->keys->appendPlainText(text);
+}
+
+void ComboBoxKeyValueList::appendValue(QString text)
+{
+    ui->values->appendPlainText(text);
+}
+
+void ComboBoxKeyValueList::clear()
+{
+    ui->keys->clear();
+    ui->values->clear();
+}
+
 void ComboBoxKeyValueList::addItem()
 {
     ui->keys->appendPlainText(ui->list->currentText());

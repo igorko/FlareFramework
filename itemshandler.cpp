@@ -12,7 +12,6 @@
 #include "ui_mainwindow.h"
 
 #include "combobox.h"
-#include "stringlistwidget.h"
 #include "comboboxkeyvaluelist.h"
 #include "lineedit.h"
 #include "spinbox.h"
@@ -25,6 +24,9 @@
 #include "API/Stats.h"
 #include "API/AnimationSet.h"
 #include "API/Animation.h"
+
+#include "stringlistwidget.h"
+#include "ui_stringlistwidget.h"
 
 #include "iconchooser.h"
 #include "ui_iconchooser.h"
@@ -197,7 +199,7 @@ void ItemsHandler::loadEntityList(const std::string &path)
                 {
                     listWidget->comboBox()->addItem(qString(STAT_KEY[i]));
                 }
-                checkComboBoxForError(listWidget->ui->list,
+                checkComboBoxForError(listWidget->comboBox(),
                     "engine/elements.txt is missing or incorrect. Copy it from base mod.");
             }
             else if (listWidget->accessibleName() == "requires_stat")
@@ -365,8 +367,8 @@ void ItemsHandler::pushBtn()
                 }
                 else if (QString(widget->metaObject()->className()) == "ComboBoxKeyValueList")
                 {
-                    QTextDocument* keysList = dynamic_cast<ComboBoxKeyValueList*>(widget)->ui->keys->document();
-                    QTextDocument* valuesList = dynamic_cast<ComboBoxKeyValueList*>(widget)->ui->values->document();
+                    QTextDocument* keysList = dynamic_cast<ComboBoxKeyValueList*>(widget)->keys();
+                    QTextDocument* valuesList = dynamic_cast<ComboBoxKeyValueList*>(widget)->values();
                     //item->bonus.clear();
 
                     for (int i = 0; i < keysList->lineCount(); i++)
@@ -459,7 +461,7 @@ void ItemsHandler::pushBtn()
                 else if (QString(widget->metaObject()->className()) == "ComboBox")
                 {
                     item->setProperty(propertyName.toStdString().c_str(),
-                        dynamic_cast<ComboBox*>(widget)->ui->comboBox->currentText());
+                        dynamic_cast<ComboBox*>(widget)->currentText());
 
                     //items->items[index].type  = stdString(ui->itemTypeCB->itemData(ui->itemTypeCB->currentIndex()).toString());
                     //items->items[index].sfx = std::string("soundfx/inventory/") + stdString(ui->sfxCb->currentText());
@@ -536,12 +538,12 @@ void ItemsHandler::selectElementFromList(QListWidgetItem *_item)
             if (widget->accessibleName() == "item_type")
             {
                 QString type = qString(item->type);
-                int listSize = dynamic_cast<ComboBox*>(widget)->ui->comboBox->count();
+                int listSize = dynamic_cast<ComboBox*>(widget)->count();
                 for (int i = 0; i < listSize; i++)
                 {
-                    if (dynamic_cast<ComboBox*>(widget)->ui->comboBox->itemData(i) == type)
+                    if (dynamic_cast<ComboBox*>(widget)->itemData(i) == type)
                     {
-                        dynamic_cast<ComboBox*>(widget)->ui->comboBox->setCurrentIndex(i);
+                        dynamic_cast<ComboBox*>(widget)->setCurrentIndex(i);
                         break;
                     }
                 }
@@ -610,8 +612,7 @@ void ItemsHandler::selectElementFromList(QListWidgetItem *_item)
         else if (widget->accessibleName() == "bonus")
         {
             ComboBoxKeyValueList * listWidget = dynamic_cast<ComboBoxKeyValueList*>(widget);
-            listWidget->ui->keys->clear();
-            listWidget->ui->values->clear();
+            listWidget->clear();
             for (int i = 0; i < item->bonus.size(); i++)
             {
                 int stat_index     = item->bonus[i].stat_index;
@@ -621,15 +622,15 @@ void ItemsHandler::selectElementFromList(QListWidgetItem *_item)
 
                 if (stat_index != -1)
                 {
-                    listWidget->ui->keys->appendPlainText(qString(STAT_KEY[stat_index]));
+                    listWidget->appendKey(qString(STAT_KEY[stat_index]));
                 }
                 else if (resist_index != -1)
                 {
-                    listWidget->ui->keys->appendPlainText(qString(items->ELEMENTS[resist_index].id) + "_resist");
+                    listWidget->appendKey(qString(items->ELEMENTS[resist_index].id) + "_resist");
                 }
                 else if (is_speed)
                 {
-                    listWidget->ui->keys->appendPlainText(QString("speed"));
+                    listWidget->appendKey(QString("speed"));
                 }
                 else if (base_index != -1)
                 {
@@ -643,33 +644,32 @@ void ItemsHandler::selectElementFromList(QListWidgetItem *_item)
                     else if (base_index == 3)
                         bonus_str = "defense";
 
-                    listWidget->ui->keys->appendPlainText(bonus_str);
+                    listWidget->appendKey(bonus_str);
                 }
-                listWidget->ui->values->appendPlainText(QString::number(item->bonus[i].value));
+                listWidget->appendValue(QString::number(item->bonus[i].value));
             }
         }
         else if (widget->accessibleName() == "requires_stat")
         {
             ComboBoxKeyValueList * listWidget = dynamic_cast<ComboBoxKeyValueList*>(widget);
-            listWidget->ui->keys->clear();
-            listWidget->ui->values->clear();
+            listWidget->clear();
             for (int i = 0; i < item->req_stat.size(); i++)
             {
                 int value = item->req_val[i];
 
                 if (item->req_stat[i] == REQUIRES_PHYS)
-                    listWidget->ui->keys->appendPlainText("physical");
+                    listWidget->appendKey("physical");
 
                 else if (item->req_stat[i] == REQUIRES_MENT)
-                    listWidget->ui->keys->appendPlainText("mental");
+                    listWidget->appendKey("mental");
 
                 else if (item->req_stat[i] == REQUIRES_OFF)
-                    listWidget->ui->keys->appendPlainText("offense");
+                    listWidget->appendKey("offense");
 
                 else if (item->req_stat[i] == REQUIRES_DEF)
-                    listWidget->ui->keys->appendPlainText("defense");
+                    listWidget->appendKey("defense");
 
-                listWidget->ui->values->appendPlainText(QString::number(value));
+                listWidget->appendValue(QString::number(value));
             }
         }
     }

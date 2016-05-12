@@ -3,6 +3,7 @@
 
 #include <QFrame>
 #include <QComboBox>
+#include <QTextDocument>
 
 namespace Ui {
 class ComboBoxKeyValueList;
@@ -17,10 +18,20 @@ public:
     ~ComboBoxKeyValueList();
 
     QComboBox * comboBox();
-    Ui::ComboBoxKeyValueList *ui;
+
+    QTextDocument * keys();
+    QTextDocument * values();
+
+    void appendKey(QString text);
+    void appendValue(QString text);
+
+    void clear();
 
 public slots:
     void addItem();
+
+private:
+    Ui::ComboBoxKeyValueList *ui;
 };
 
 #endif // COMBOBOXKEYVALUELIST_H

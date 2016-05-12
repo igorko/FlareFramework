@@ -20,9 +20,10 @@ public:
 
     int value1();
     int value2();
-    Ui::TwoSpinBox *ui;
 
 private:
+    Ui::TwoSpinBox *ui;
+
 };
 
 #endif // TWOSPINBOX_H
