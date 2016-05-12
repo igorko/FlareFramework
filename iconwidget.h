@@ -3,7 +3,6 @@
 
 #include <QLabel>
 
-#define ICONS_IN_ROW 8
 #define ICON_SIZE 32
 
 class IconWidget : public QLabel
@@ -11,6 +10,7 @@ class IconWidget : public QLabel
     Q_OBJECT
 public:
     explicit IconWidget(QWidget *parent = 0);
+    void init();
 
     void setIconNumber(int icon);
     int getIconNumber();
@@ -37,6 +37,7 @@ private:
     bool iconPlacingRequested;
     QImage newIcon;
     bool iconsEdited;
+    int iconsInRow;
 
 };
 

@@ -558,7 +558,7 @@ public:
 #ifndef EDITOR
 	std::vector<Item> items;
 #else
-	QVector<Item*> items;
+    QVector<Item*> items;
 #endif
 	std::vector<ItemType> item_types;
 	std::vector<ItemSet> item_sets;

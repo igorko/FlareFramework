@@ -8,7 +8,7 @@
 #include "iconwidget.h"
 
 IconView::IconView(QWidget *parent) :
-    QScrollArea(parent)
+    QScrollArea(parent), iconsInRow(0)
 {
 }
 
@@ -20,6 +20,8 @@ void IconView::init(const QString &path)
 
     icons = QPixmap(path + "images/icons/icons.png");
     imageLabel->setPixmap(icons);
+    iconsInRow = icons.width() / ICON_SIZE;
+    imageLabel->init();
     this->setWidget(imageLabel);
 }
 
@@ -43,8 +45,8 @@ void IconView::updateSelection(int x, int y)
 void IconView::setActiveIcon(int icon)
 {
     dynamic_cast<IconWidget*>(this->widget())->setIconNumber(icon);
-    horizontalScrollBar()->setValue(ICON_SIZE * (icon % ICONS_IN_ROW) );
-    verticalScrollBar()->setValue(ICON_SIZE * (icon / ICONS_IN_ROW) );
+    horizontalScrollBar()->setValue(ICON_SIZE * (icon % iconsInRow) );
+    verticalScrollBar()->setValue(ICON_SIZE * (icon / iconsInRow) );
     this->widget()->update();
 }
 

@@ -4,14 +4,19 @@
 #include <QMouseEvent>
 
 IconWidget::IconWidget(QWidget *parent) :
-    QLabel(parent), iconNumber(0), iconPlacingRequested(false), iconsEdited(false)
+    QLabel(parent), iconNumber(0), iconPlacingRequested(false), iconsEdited(false), iconsInRow(0)
 {
+}
+
+void IconWidget::init()
+{
+    iconsInRow = pixmap()->width() / ICON_SIZE;
 }
 
 void IconWidget::setIconNumber(int icon)
 {
     iconNumber = icon;
-    selection = QPoint(icon % ICONS_IN_ROW, icon / ICONS_IN_ROW);
+    selection = QPoint(icon % iconsInRow, icon / iconsInRow);
 }
 
 int IconWidget::getIconNumber()
@@ -77,7 +82,7 @@ void IconWidget::mousePressEvent(QMouseEvent *event)
         if (point.x() >= 0 && point.x() <= this->width() && point.y() >= 0 && point.y() <= this->height())
         {
             selection = QPoint(point.x() / ICON_SIZE, point.y() / ICON_SIZE);
-            iconNumber = ICONS_IN_ROW * selection.y() + selection.x();
+            iconNumber = iconsInRow * selection.y() + selection.x();
             update();
         }
     }

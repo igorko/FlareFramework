@@ -29,6 +29,7 @@ private:
     void updateSelection(int x, int y);
 
     QPixmap icons;
+    int iconsInRow;
 
 };
 

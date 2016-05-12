@@ -924,6 +924,11 @@ bool ItemManager::requirementsMet(const StatBlock *stats, int item) {
 }
 
 ItemManager::~ItemManager() {
+    for (int i = 0; i < items.size(); i++)
+    {
+        delete items[i];
+        items[i] = NULL;
+    }
 }
 
 /**
