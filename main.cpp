@@ -6,8 +6,8 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-    qRegisterMetaType<QList<QString>>("QList<QString>");
-    qRegisterMetaType<QList<QStringList>>("QList<QStringList>");
+    qRegisterMetaType< QList<QString> >("QList<QString>");
+    qRegisterMetaType< QList<QStringList> >("QList<QStringList>");
 
     MainWindow w;
     w.BuildUI();
