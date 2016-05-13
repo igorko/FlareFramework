@@ -41,11 +41,11 @@
 #include "lootanimationwidget.h"
 #include "ui_lootanimationwidget.h"
 
-ItemsHandler::ItemsHandler(MainWindow * _mainWindow, QObject *parent) :
+ItemsHandler::ItemsHandler(MainWindow * _mainWindow, int tabIndex, QObject *parent) :
     EntityHandler(_mainWindow, parent),
     items(NULL)
 {
-    QScrollArea * itemsTab = dynamic_cast<QScrollArea *>(mainWindow->ui->tabWidget->widget(mainWindow->predefinedNameTypeElements[ITEMS]));
+    QScrollArea * itemsTab = dynamic_cast<QScrollArea *>(mainWindow->ui->tabWidget->widget(tabIndex));
     entityLayout = dynamic_cast<QGridLayout *>(itemsTab->widget()->layout());
     for (int i = 0; i < entityLayout->count(); i++)
     {
@@ -165,8 +165,8 @@ void ItemsHandler::loadEntityList(const std::string &path)
                 {
                     dynamic_cast<StringListWidget*>(widget)->addItemToComboBox(qString(items->EQUIP_FLAGS[i].id));
                 }
-                //checkComboBoxForError(dynamic_cast<StringListWidget*>(widget)->comboBox(),
-                //    "engine/equip_flags.txt is missing or incorrect. Copy it from base mod.");
+                checkComboBoxForError(dynamic_cast<StringListWidget*>(widget)->comboBox(),
+                    "engine/equip_flags.txt is missing or incorrect. Copy it from base mod.");
             }
             else if (widget->accessibleName() == "disable_slots")
             {
@@ -174,8 +174,8 @@ void ItemsHandler::loadEntityList(const std::string &path)
                 {
                     dynamic_cast<StringListWidget*>(widget)->addItemToComboBox(qString(items->slot_type[i]));
                 }
-                //checkComboBoxForError(dynamic_cast<StringListWidget*>(widget)->comboBox(),
-                //    "menus/inventory.txt is missing or incorrect. Copy it from base mod.");
+                checkComboBoxForError(dynamic_cast<StringListWidget*>(widget)->comboBox(),
+                    "menus/inventory.txt is missing or incorrect. Copy it from base mod.");
             }
         }
         else if (QString(widget->metaObject()->className()) == "ComboBoxKeyValueList")
@@ -464,7 +464,8 @@ void ItemsHandler::selectElementFromList(QListWidgetItem *_item)
         QWidget * widget = entityLayout->itemAt(i)->widget();
         if (widget && widget->accessibleName() == "item_type")
         {
-            dynamic_cast<ComboBox*>(widget)->setCurrentIndex(-1);
+            // FIXME: setting -1 crashes in some cases
+            //dynamic_cast<ComboBox*>(widget)->setCurrentIndex(-1);
         }
     }
 

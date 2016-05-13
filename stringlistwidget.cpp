@@ -45,7 +45,7 @@ QTextDocument *StringListWidget::doc()
 
 QComboBox *StringListWidget::comboBox()
 {
-    ui->selector;
+    return ui->selector;
 }
 
 void StringListWidget::addItem()

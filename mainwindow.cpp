@@ -29,16 +29,6 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     menuBar()->setNativeMenuBar(false);
 
-    predefinedNameTypeElements[ITEM_TYPES] = -1;
-    predefinedNameTypeElements[ITEMS] = -1;
-    predefinedNameTypeElements[ITEM_QUALITIES] = -1;
-    predefinedNameTypeElements[ITEM_SETS] = -1;
-    predefinedNameTypeElements[EFFECTS] = -1;
-    predefinedNameTypeElements[POWERS] = -1;
-    predefinedNameTypeElements[QUEST_LOG] = -1;
-    predefinedNameTypeElements[CUTSCENE] = -1;
-    predefinedNameTypeElements[NPC] = -1;
-
     ParseAttributesXML();
 
     setMenusEnabled(false);
@@ -141,26 +131,38 @@ void MainWindow::CloseAll()
 
 void MainWindow::ReadNameTypeElementAttributes(QString elementName)
 {
+    bool skipElement = false;
+
     NameTypeElementAttributes elementAttributes;
     while(xml.readNext())
     {
         if(xml.isEndElement() && xml.name() == "class")
         {
-            m_nameTypeElements.insert(elementName, elementAttributes);
+            if (!skipElement)
+            {
+                m_nameTypeElements.insert(elementName, elementAttributes);
+            }
             break;
         }
-        else if(xml.isStartElement() && xml.name() == "description")
+        else if(xml.isStartElement() && xml.name() == "description" && !skipElement)
         {
             m_nameTypeElementDescriptions[elementName] = xml.readElementText();
         }
-        else if(xml.isStartElement())
+        else if(xml.isStartElement() && !skipElement)
         {
             QXmlStreamAttributes attributes = xml.attributes();
             if (!attributes.empty())
             {
-                QString description = xml.readElementText();
-                elementAttributes.insert(attributes.value("name").toString(),
-                    qMakePair(attributes.value("type").toString(), description));
+                if (xml.name() != "attribute")
+                {
+                    skipElement = true;
+                }
+                else
+                {
+                    QString description = xml.readElementText();
+                    elementAttributes.insert(attributes.value("name").toString(),
+                        qMakePair(attributes.value("type").toString(), description));
+                }
             }
         }
     }
@@ -183,9 +185,7 @@ bool MainWindow::ParseAttributesXML()
         {
             while(xml.readNextStartElement())
             {
-                if (xml.name() == "class" && xml.attributes().hasAttribute("name")
-                    && predefinedNameTypeElements.contains(xml.attributes().value("name").toString())
-                   )
+                if (xml.name() == "class" && xml.attributes().hasAttribute("name"))
                 {
                     ReadNameTypeElementAttributes(xml.attributes().value("name").toString());
                 }
@@ -271,6 +271,27 @@ void MainWindow::New_Mod()
     enableAllTabs();
 }
 
+void MainWindow::selectWidgetWithPredefinedString(QGridLayout * layout, int row, int column,
+    QString widgetName, QString widgetDescription, QString attrType, QString valuesList)
+{
+    // parse list and add to widget constructor to set combobox values
+    if (attrType == "predefined_string")
+    {
+        layout->addWidget(new ComboBox(widgetName, widgetDescription),
+                          row, column, Qt::AlignLeft | Qt::AlignTop);
+    }
+    else if (attrType == "list(predefined_string)")
+    {
+        layout->addWidget(new StringListWidget(widgetName, widgetDescription),
+                          row, column, Qt::AlignLeft | Qt::AlignTop);
+    }
+    else if (attrType == "list(predefined_string, int)" || attrType == "repeatable(predefined_string, int)")
+    {
+        layout->addWidget(new ComboBoxKeyValueList(widgetName, widgetDescription),
+                          row, column, Qt::AlignLeft | Qt::AlignTop);
+    }
+}
+
 void MainWindow::BuildUI()
 {
     QMap<QString, NameTypeElementAttributes>::iterator end = m_nameTypeElements.end();
@@ -299,7 +320,7 @@ void MainWindow::BuildUI()
         {
             QString attribute = attrIt.key();
             QString attrType = attrIt.value().first;
-            if (attrType == "integer" || attrType == "duration")
+            if (attrType == "int" || attrType == "duration" || attrType == "item_id" || attrType == "power_id")
             {
                 layout->addWidget(new SpinBox(attribute, attributes[attribute].second),
                                   rowOnTab, columnOntab, Qt::AlignLeft | Qt::AlignTop);
@@ -319,33 +340,35 @@ void MainWindow::BuildUI()
                 layout->addWidget(new LineEdit(attribute, attributes[attribute].second),
                                   rowOnTab, columnOntab, Qt::AlignLeft | Qt::AlignTop);
             }
-            else if (attrType == "list(predefined_string)")
+            //else if (attrType == "list(predefined_string)")
+            else if (attrType == "list(string)")
             {
                 layout->addWidget(new StringListWidget(attribute, attributes[attribute].second),
                                   rowOnTab, columnOntab, Qt::AlignLeft | Qt::AlignTop);
             }
-            else if (attrType == "integer,integer")
+            else if (attrType == "int, int")
             {
                 layout->addWidget(new TwoSpinBox(attribute, attributes[attribute].second),
                                   rowOnTab, columnOntab, Qt::AlignLeft | Qt::AlignTop);
             }
-            else if (attrType == "repeatable(integer,integer)")
+            else if (attrType == "repeatable(int, int)")
             {
                 layout->addWidget(new TwoStringLists(attribute, attributes[attribute].second),
                                   rowOnTab, columnOntab, Qt::AlignLeft | Qt::AlignTop);
             }
-            else if (attrType == "filename" || attrType == "predefined_string")
+            else if (attrType == "filename")// || attrType == "predefined_string")
             {
                 layout->addWidget(new ComboBox(attribute, attributes[attribute].second),
                                   rowOnTab, columnOntab, Qt::AlignLeft | Qt::AlignTop);
             }
-            else if (attrType == "list(predefined_string,integer)" || attrType == "repeatable(predefined_string,integer)")
+            //else if (attrType == "list(predefined_string, int)" || attrType == "repeatable(predefined_string, int)")
+            else if (attrType == "list(string, int)" || attrType == "repeatable(string, int)")
             {
                 layout->addWidget(new ComboBoxKeyValueList(attribute, attributes[attribute].second),
                                   rowOnTab, columnOntab, Qt::AlignLeft | Qt::AlignTop);
             }
             // item specific
-            else if (attrType == "filename,integer,integer")
+            else if (attrType == "repeatable(filename, int, int)")
             {
                 layout->addWidget(new LootAnimationWidget(attribute),
                                   rowOnTab, columnOntab, Qt::AlignLeft | Qt::AlignTop);
@@ -354,6 +377,18 @@ void MainWindow::BuildUI()
             {
                 layout->addWidget(new IconChooser(attribute),
                                   rowOnTab, columnOntab, Qt::AlignLeft | Qt::AlignTop);
+            }
+            else if (attrType.contains("[") &&  attrType.contains("]"))
+            {
+                // parse predefined stringlist inside [...]
+                int start = attrType.indexOf("[");
+                int end = attrType.lastIndexOf("]");
+                int size = end - start + 1;
+                QString list = attrType.mid(start, size);
+                attrType.replace(start, size, "predefined_string");
+
+                selectWidgetWithPredefinedString(layout, rowOnTab, columnOntab, attribute,
+                                                 attributes[attribute].second, attrType, list);
             }
             else
             {
@@ -376,12 +411,14 @@ void MainWindow::BuildUI()
         tabIndex = ui->tabWidget->addTab(tab, widgetTabName);
 
         ui->tabWidget->setTabToolTip(tabIndex, m_nameTypeElementDescriptions[widgetTabName]);
-        predefinedNameTypeElements[widgetTabName] = tabIndex;
+        if (widgetTabName == ITEMS)
+        {
+            itemsHandler = new ItemsHandler(this, tabIndex);
+        }
 
         layout->addWidget(new ControlFrame("controlframe"), rowOnTab, columnOntab, Qt::AlignLeft | Qt::AlignTop);
     }
 
-    itemsHandler = new ItemsHandler(this);
     setupConnections();
     disableAllTabs();
 

@@ -25,12 +25,12 @@ QComboBox *ComboBoxKeyValueList::comboBox()
 
 QTextDocument *ComboBoxKeyValueList::keys()
 {
-    ui->keys->document();
+    return ui->keys->document();
 }
 
 QTextDocument *ComboBoxKeyValueList::values()
 {
-    ui->values->document();
+    return ui->values->document();
 }
 
 void ComboBoxKeyValueList::appendKey(QString text)

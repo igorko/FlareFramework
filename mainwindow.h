@@ -41,8 +41,6 @@ public:
 
     Ui::MainWindow *ui;
 
-    QMap<QString, int> predefinedNameTypeElements;
-
 public slots:
     void enableSaving();
     void disableSaving();
@@ -74,6 +72,8 @@ private:
 
     bool ParseAttributesXML();
     void ReadNameTypeElementAttributes(QString elementName);
+    void selectWidgetWithPredefinedString(QGridLayout *layout, int row, int column,
+        QString widgetName, QString widgetDescription, QString attrType, QString valuesList);
 
 private:
     bool newMod;

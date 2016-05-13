@@ -9,7 +9,7 @@ class ItemsHandler : public EntityHandler
 {
 	Q_OBJECT
 public:
-    explicit ItemsHandler(MainWindow * _mainWindow, QObject *parent = 0);
+    explicit ItemsHandler(MainWindow * _mainWindow, int tabIndex, QObject *parent = 0);
     ~ItemsHandler();
     virtual void saveEntityList(const QString& path);
     virtual void loadEntityList(const std::string& path);

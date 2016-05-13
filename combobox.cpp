@@ -33,7 +33,7 @@ QVariant ComboBox::itemData(int index)
 
 int ComboBox::currentIndex()
 {
-    ui->comboBox->currentIndex();
+    return ui->comboBox->currentIndex();
 }
 
 void ComboBox::addItem(QString value)
