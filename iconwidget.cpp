@@ -8,15 +8,18 @@ IconWidget::IconWidget(QWidget *parent) :
 {
 }
 
-void IconWidget::init()
+void IconWidget::init(int _iconsInRow)
 {
-    iconsInRow = pixmap()->width() / ICON_SIZE;
+    iconsInRow = _iconsInRow;
 }
 
 void IconWidget::setIconNumber(int icon)
 {
     iconNumber = icon;
-    selection = QPoint(icon % iconsInRow, icon / iconsInRow);
+    if (iconsInRow != 0)
+    {
+        selection = QPoint(icon % iconsInRow, icon / iconsInRow);
+    }
 }
 
 int IconWidget::getIconNumber()

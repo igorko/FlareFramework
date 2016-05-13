@@ -14,7 +14,8 @@ class StringListWidget : public QFrame
     Q_OBJECT
 
 public:
-    explicit StringListWidget(QString name, QString description, QWidget *parent = 0);
+    explicit StringListWidget(QString name, QString description,
+                              QStringList comboBoxValues, QWidget *parent = 0);
     ~StringListWidget();
 
     void clear();

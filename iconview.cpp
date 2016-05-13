@@ -4,6 +4,7 @@
 #include <QLabel>
 #include <QMouseEvent>
 #include <QScrollBar>
+#include <QDir>
 
 #include "iconwidget.h"
 
@@ -18,11 +19,16 @@ void IconView::init(const QString &path)
     connect(imageLabel, SIGNAL(iconPlaced()), this, SIGNAL(iconPlaced()));
     connect(imageLabel, SIGNAL(iconSkipped()), this, SIGNAL(iconSkipped()));
 
-    icons = QPixmap(path + "images/icons/icons.png");
-    imageLabel->setPixmap(icons);
-    iconsInRow = icons.width() / ICON_SIZE;
-    imageLabel->init();
-    this->setWidget(imageLabel);
+    QDir iconsDir(path + "images/icons/");
+    QStringList files = iconsDir.entryList(QDir::Files);
+    if (files.size() > 0)
+    {
+        icons = QPixmap(iconsDir.absoluteFilePath(files[0]));
+        imageLabel->setPixmap(icons);
+        iconsInRow = icons.width() / ICON_SIZE;
+        imageLabel->init(iconsInRow);
+        this->setWidget(imageLabel);
+    }
 }
 
 void IconView::mouseMoveEvent(QMouseEvent *event)
@@ -44,31 +50,47 @@ void IconView::updateSelection(int x, int y)
 
 void IconView::setActiveIcon(int icon)
 {
-    dynamic_cast<IconWidget*>(this->widget())->setIconNumber(icon);
-    horizontalScrollBar()->setValue(ICON_SIZE * (icon % iconsInRow) );
-    verticalScrollBar()->setValue(ICON_SIZE * (icon / iconsInRow) );
-    this->widget()->update();
+    if (iconsInRow != 0 && widget() != NULL)
+    {
+        dynamic_cast<IconWidget*>(this->widget())->setIconNumber(icon);
+        horizontalScrollBar()->setValue(ICON_SIZE * (icon % iconsInRow) );
+        verticalScrollBar()->setValue(ICON_SIZE * (icon / iconsInRow) );
+        this->widget()->update();
+    }
 }
 
 int IconView::getActiveIcon()
 {
-    return dynamic_cast<IconWidget*>(this->widget())->getIconNumber();
+    if (widget() != NULL)
+    {
+        return dynamic_cast<IconWidget*>(this->widget())->getIconNumber();
+    }
+    else
+    {
+        return 0;
+    }
 }
 
 void IconView::appendIcon(QImage newIcon)
 {
-    IconWidget* widget = dynamic_cast<IconWidget*>(this->widget());
+    if (widget() != NULL)
+    {
+        IconWidget* widget = dynamic_cast<IconWidget*>(this->widget());
 
-    widget->requestIconAppend(newIcon);
+        widget->requestIconAppend(newIcon);
+    }
 }
 
 void IconView::saveIcons(const QString& path)
 {
-    IconWidget* widget = dynamic_cast<IconWidget*>(this->widget());
-
-    if (widget->iconsWereEdited())
+    if (widget() != NULL)
     {
-        QImage icons = widget->pixmap()->toImage();
-        icons.save(path);
+        IconWidget* widget = dynamic_cast<IconWidget*>(this->widget());
+
+        if (widget->iconsWereEdited())
+        {
+            QImage icons = widget->pixmap()->toImage();
+            icons.save(path);
+        }
     }
 }

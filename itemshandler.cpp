@@ -200,13 +200,6 @@ void ItemsHandler::loadEntityList(const std::string &path)
                 checkComboBoxForError(listWidget->comboBox(),
                     "engine/elements.txt is missing or incorrect. Copy it from base mod.");
             }
-            else if (listWidget->accessibleName() == "requires_stat")
-            {
-                listWidget->comboBox()->addItem("physical");
-                listWidget->comboBox()->addItem("mental");
-                listWidget->comboBox()->addItem("offense");
-                listWidget->comboBox()->addItem("defense");
-            }
         }
     }
 
@@ -605,19 +598,7 @@ void ItemsHandler::selectElementFromList(QListWidgetItem *_item)
             for (int i = 0; i < item->req_stat.size(); i++)
             {
                 int value = item->req_val[i];
-
-                if (item->req_stat[i] == REQUIRES_PHYS)
-                    listWidget->appendKey("physical");
-
-                else if (item->req_stat[i] == REQUIRES_MENT)
-                    listWidget->appendKey("mental");
-
-                else if (item->req_stat[i] == REQUIRES_OFF)
-                    listWidget->appendKey("offense");
-
-                else if (item->req_stat[i] == REQUIRES_DEF)
-                    listWidget->appendKey("defense");
-
+                listWidget->comboBox()->itemData(item->req_stat[i]).toString();
                 listWidget->appendValue(QString::number(value));
             }
         }

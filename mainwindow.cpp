@@ -274,20 +274,28 @@ void MainWindow::New_Mod()
 void MainWindow::selectWidgetWithPredefinedString(QGridLayout * layout, int row, int column,
     QString widgetName, QString widgetDescription, QString attrType, QString valuesList)
 {
-    // parse list and add to widget constructor to set combobox values
+    QStringList values = valuesList.split(", ");
+    for (int i = 0; i < values.size(); i++)
+    {
+        QString value = values[i];
+        if (value.startsWith("\"") && value.endsWith("\""))
+        {
+            values[i] = value.mid(1, value.size() - 2);
+        }
+    }
     if (attrType == "predefined_string")
     {
-        layout->addWidget(new ComboBox(widgetName, widgetDescription),
+        layout->addWidget(new ComboBox(widgetName, widgetDescription, values),
                           row, column, Qt::AlignLeft | Qt::AlignTop);
     }
     else if (attrType == "list(predefined_string)")
     {
-        layout->addWidget(new StringListWidget(widgetName, widgetDescription),
+        layout->addWidget(new StringListWidget(widgetName, widgetDescription, values),
                           row, column, Qt::AlignLeft | Qt::AlignTop);
     }
     else if (attrType == "list(predefined_string, int)" || attrType == "repeatable(predefined_string, int)")
     {
-        layout->addWidget(new ComboBoxKeyValueList(widgetName, widgetDescription),
+        layout->addWidget(new ComboBoxKeyValueList(widgetName, widgetDescription, values),
                           row, column, Qt::AlignLeft | Qt::AlignTop);
     }
 }
@@ -340,10 +348,10 @@ void MainWindow::BuildUI()
                 layout->addWidget(new LineEdit(attribute, attributes[attribute].second),
                                   rowOnTab, columnOntab, Qt::AlignLeft | Qt::AlignTop);
             }
-            //else if (attrType == "list(predefined_string)")
-            else if (attrType == "list(string)")
+            else if (attrType == "list(predefined_string)")
             {
-                layout->addWidget(new StringListWidget(attribute, attributes[attribute].second),
+                layout->addWidget(new StringListWidget(attribute, attributes[attribute].second,
+                                                       QStringList()),
                                   rowOnTab, columnOntab, Qt::AlignLeft | Qt::AlignTop);
             }
             else if (attrType == "int, int")
@@ -356,15 +364,16 @@ void MainWindow::BuildUI()
                 layout->addWidget(new TwoStringLists(attribute, attributes[attribute].second),
                                   rowOnTab, columnOntab, Qt::AlignLeft | Qt::AlignTop);
             }
-            else if (attrType == "filename")// || attrType == "predefined_string")
+            else if (attrType == "filename" || attrType == "predefined_string")
             {
-                layout->addWidget(new ComboBox(attribute, attributes[attribute].second),
+                layout->addWidget(new ComboBox(attribute, attributes[attribute].second,
+                                               QStringList()),
                                   rowOnTab, columnOntab, Qt::AlignLeft | Qt::AlignTop);
             }
-            //else if (attrType == "list(predefined_string, int)" || attrType == "repeatable(predefined_string, int)")
-            else if (attrType == "list(string, int)" || attrType == "repeatable(string, int)")
+            else if (attrType == "list(predefined_string, int)" || attrType == "repeatable(predefined_string, int)")
             {
-                layout->addWidget(new ComboBoxKeyValueList(attribute, attributes[attribute].second),
+                layout->addWidget(new ComboBoxKeyValueList(attribute, attributes[attribute].second,
+                                                           QStringList()),
                                   rowOnTab, columnOntab, Qt::AlignLeft | Qt::AlignTop);
             }
             // item specific
@@ -384,7 +393,7 @@ void MainWindow::BuildUI()
                 int start = attrType.indexOf("[");
                 int end = attrType.lastIndexOf("]");
                 int size = end - start + 1;
-                QString list = attrType.mid(start, size);
+                QString list = attrType.mid(start + 1, size - 2);
                 attrType.replace(start, size, "predefined_string");
 
                 selectWidgetWithPredefinedString(layout, rowOnTab, columnOntab, attribute,

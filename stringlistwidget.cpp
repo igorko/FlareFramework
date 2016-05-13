@@ -1,7 +1,7 @@
 #include "stringlistwidget.h"
 #include "ui_stringlistwidget.h"
 
-StringListWidget::StringListWidget(QString name, QString description, QWidget *parent) :
+StringListWidget::StringListWidget(QString name, QString description, QStringList comboBoxValues, QWidget *parent) :
     QFrame(parent),
     ui(new Ui::StringListWidget)
 {
@@ -9,6 +9,7 @@ StringListWidget::StringListWidget(QString name, QString description, QWidget *p
     ui->label->setText(name);
     ui->label->setToolTip(description);
     setAccessibleName(name);
+    ui->selector->addItems(comboBoxValues);
 
     connect(ui->addButton, SIGNAL(clicked()), SLOT(addItem()));
 }

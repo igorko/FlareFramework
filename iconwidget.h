@@ -10,7 +10,7 @@ class IconWidget : public QLabel
     Q_OBJECT
 public:
     explicit IconWidget(QWidget *parent = 0);
-    void init();
+    void init(int _iconsInRow);
 
     void setIconNumber(int icon);
     int getIconNumber();

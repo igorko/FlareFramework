@@ -14,7 +14,8 @@ class ComboBoxKeyValueList : public QFrame
     Q_OBJECT
 
 public:
-    explicit ComboBoxKeyValueList(QString name, QString description, QWidget *parent = 0);
+    explicit ComboBoxKeyValueList(QString name, QString description,
+                                  QStringList comboBoxValues, QWidget *parent = 0);
     ~ComboBoxKeyValueList();
 
     QComboBox * comboBox();

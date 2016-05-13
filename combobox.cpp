@@ -1,7 +1,7 @@
 #include "combobox.h"
 #include "ui_combobox.h"
 
-ComboBox::ComboBox(QString name, QString description, QWidget *parent) :
+ComboBox::ComboBox(QString name, QString description, QStringList comboBoxValues, QWidget *parent) :
     QFrame(parent),
     ui(new Ui::ComboBox)
 {
@@ -9,6 +9,7 @@ ComboBox::ComboBox(QString name, QString description, QWidget *parent) :
     ui->label->setText(name);
     ui->label->setToolTip(description);
     setAccessibleName(name);
+    ui->comboBox->addItems(comboBoxValues);
 }
 
 ComboBox::~ComboBox()

@@ -12,7 +12,8 @@ class ComboBox : public QFrame
     Q_OBJECT
 
 public:
-    explicit ComboBox(QString name, QString description, QWidget *parent = 0);
+    explicit ComboBox(QString name, QString description,
+                      QStringList comboBoxValues, QWidget *parent = 0);
     ~ComboBox();
 
     void setCurrentIndex(int index);

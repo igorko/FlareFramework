@@ -1,7 +1,8 @@
 #include "comboboxkeyvaluelist.h"
 #include "ui_comboboxkeyvaluelist.h"
 
-ComboBoxKeyValueList::ComboBoxKeyValueList(QString name, QString description, QWidget *parent) :
+ComboBoxKeyValueList::ComboBoxKeyValueList(QString name, QString description,
+                                           QStringList comboBoxValues, QWidget *parent) :
     QFrame(parent),
     ui(new Ui::ComboBoxKeyValueList)
 {
@@ -9,6 +10,7 @@ ComboBoxKeyValueList::ComboBoxKeyValueList(QString name, QString description, QW
     ui->label->setText(name);
     ui->label->setToolTip(description);
     setAccessibleName(name);
+    ui->list->addItems(comboBoxValues);
 
     connect(ui->add, SIGNAL(clicked()), SLOT(addItem()));
 }

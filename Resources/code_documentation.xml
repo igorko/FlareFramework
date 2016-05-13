@@ -83,7 +83,7 @@
 	  <attributes>
 		  <attribute name="level" type="int" vars="">Level of the enemy</attribute>
 		  <attribute name="rarity" type="[&quot;common&quot;, &quot;uncommon&quot;, &quot;rare&quot;]" vars="">Enemy rarity</attribute>
-		  <attribute name="categories" type="list(string)" vars="">Comma separated list of enemy categories</attribute>
+		  <attribute name="categories" type="list(predefined_string)" vars="">Comma separated list of enemy categories</attribute>
 	  </attributes>
 	</class>
 	<class name="EventManager">
@@ -100,7 +100,7 @@
 		  <attribute name="event.power_damage" type="int, int" vars="Min, Max">Range of power damage</attribute>
 		  <attribute name="event.intermap" type="filename, int, int" vars="Map file, X, Y">Jump to specific map at location specified.</attribute>
 		  <attribute name="event.intramap" type="int, int" vars="X, Y">Jump to specific position within current map.</attribute>
-		  <attribute name="event.mapmod" type="list(string, int, int, int)" vars="Layer, X, Y, Tile ID">Modify map tiles</attribute>
+		  <attribute name="event.mapmod" type="list(predefined_string, int, int, int)" vars="Layer, X, Y, Tile ID">Modify map tiles</attribute>
 		  <attribute name="event.soundfx" type="filename, int, int, bool" vars="Sound file, X, Y, loop">Filename of a sound to play. Optionally, it can be played at a specific location and/or looped.</attribute>
 		  <attribute name="event.loot" type="list(loot)" vars="">Add loot to the event.</attribute>
 		  <attribute name="event.loot_count" type="int, int" vars="Min, Max">Sets the minimum (and optionally, the maximum) amount of loot this event can drop. Overrides the global drop_max setting.</attribute>
@@ -114,8 +114,8 @@
 		  <attribute name="event.requires_not_currency" type="int" vars="">Event requires no more than this much currency</attribute>
 		  <attribute name="event.requires_item" type="list(item_id)" vars="">Event requires specific item (not equipped)</attribute>
 		  <attribute name="event.requires_not_item" type="list(item_id)" vars="">Event requires not having a specific item (not equipped)</attribute>
-		  <attribute name="event.requires_class" type="string" vars="">Event requires this base class</attribute>
-		  <attribute name="event.requires_not_class" type="string" vars="">Event requires not this base class</attribute>
+		  <attribute name="event.requires_class" type="predefined_string" vars="">Event requires this base class</attribute>
+		  <attribute name="event.requires_not_class" type="predefined_string" vars="">Event requires not this base class</attribute>
 		  <attribute name="event.set_status" type="list(string)" vars="">Sets specified statuses</attribute>
 		  <attribute name="event.unset_status" type="list(string)" vars="">Unsets specified statuses</attribute>
 		  <attribute name="event.remove_currency" type="int" vars="">Removes specified amount of currency from hero inventory</attribute>
@@ -125,7 +125,7 @@
 		  <attribute name="event.reward_item" type="item_id, int" vars="Item, Quantity">Reward hero with y number of item x.</attribute>
 		  <attribute name="event.restore" type="[&quot;hp&quot;, &quot;mp&quot;, &quot;hpmp&quot;, &quot;status&quot;, &quot;all&quot;]" vars="">Restore the hero's HP, MP, and/or status.</attribute>
 		  <attribute name="event.power" type="power_id" vars="">Specify power coupled with event.</attribute>
-		  <attribute name="event.spawn" type="list(string, int, int)" vars="Enemy category, X, Y">Spawn an enemy from this category at location</attribute>
+		  <attribute name="event.spawn" type="list(predefined_string, int, int)" vars="Enemy category, X, Y">Spawn an enemy from this category at location</attribute>
 		  <attribute name="event.stash" type="bool" vars="">If true, the Stash menu if opened.</attribute>
 		  <attribute name="event.npc" type="filename" vars="">Filename of an NPC to start dialog with.</attribute>
 		  <attribute name="event.music" type="filename" vars="">Change background music to specified file.</attribute>
@@ -321,17 +321,17 @@
 		  <attribute name="level" type="int" vars="">The item's level. Has no gameplay impact. (Deprecated?)</attribute>
 		  <attribute name="icon" type="icon_id" vars="">An id for the icon to display for this item.</attribute>
 		  <attribute name="book" type="filename" vars="">A book file to open when this item is activated.</attribute>
-		  <attribute name="quality" type="string" vars="">Item quality matching an id in items/qualities.txt</attribute>
-		  <attribute name="item_type" type="string" vars="">Equipment slot matching an id in items/types.txt</attribute>
-		  <attribute name="equip_flags" type="list(string)" vars="">A comma separated list of flags to set when this item is equipped. See engine/equip_flags.txt.</attribute>
+		  <attribute name="quality" type="predefined_string" vars="">Item quality matching an id in items/qualities.txt</attribute>
+		  <attribute name="item_type" type="predefined_string" vars="">Equipment slot matching an id in items/types.txt</attribute>
+		  <attribute name="equip_flags" type="list(predefined_string)" vars="">A comma separated list of flags to set when this item is equipped. See engine/equip_flags.txt.</attribute>
 		  <attribute name="dmg_melee" type="int, int" vars="Min, Max">Defines the item melee damage, if only min is specified the melee damage is fixed.</attribute>
 		  <attribute name="dmg_ranged" type="int, int" vars="Min, Max">Defines the item ranged damage, if only min is specified the ranged damage is fixed.</attribute>
 		  <attribute name="dmg_ment" type="int, int" vars="Min, Max">Defines the item mental damage, if only min is specified the ranged damage is fixed.</attribute>
 		  <attribute name="abs" type="int, int" vars="Min, Max">Defines the item absorb value, if only min is specified the absorb value is fixed.</attribute>
 		  <attribute name="requires_level" type="int" vars="">The hero's level must match or exceed this value in order to equip this item.</attribute>
 		  <attribute name="requires_stat" type="repeatable([&quot;physical&quot;, &quot;mental&quot;, &quot;offense&quot;, &quot;defense&quot;], int)" vars="Primary stat name, Value">Make item require specific stat level ex. requires_stat=physical,6 will require hero to have level 6 in physical stats</attribute>
-		  <attribute name="requires_class" type="string" vars="">The hero's base class (engine/classes.txt) must match for this item to be equipped.</attribute>
-		  <attribute name="bonus" type="repeatable(string, int)" vars="Stat name, Value">Adds a bonus to the item by stat name, example  bonus=hp, 50</attribute>
+		  <attribute name="requires_class" type="predefined_string" vars="">The hero's base class (engine/classes.txt) must match for this item to be equipped.</attribute>
+		  <attribute name="bonus" type="repeatable(predefined_string, int)" vars="Stat name, Value">Adds a bonus to the item by stat name, example  bonus=hp, 50</attribute>
 		  <attribute name="soundfx" type="filename" vars="">Sound effect filename to play for the specific item.</attribute>
 		  <attribute name="gfx" type="filename" vars="">Filename of an animation set to display when the item is equipped.</attribute>
 		  <attribute name="loot_animation" type="repeatable(filename, int, int)" vars="Loot image, Min quantity, Max quantity">Specifies the loot animation file for the item. The max quantity, or both quantity values, may be omitted.</attribute>
@@ -343,8 +343,8 @@
 		  <attribute name="price_sell" type="int" vars="">The amount of currency the item is sold for, if set to 0 the sell prices is prices*vendor_ratio.</attribute>
 		  <attribute name="max_quantity" type="int" vars="">Max item count per stack.</attribute>
 		  <attribute name="pickup_status" type="string" vars="">Set a campaign status when item is picked up, this is used for quest items.</attribute>
-		  <attribute name="stepfx" type="string" vars="">Sound effect when walking, this applies only to armors.</attribute>
-		  <attribute name="disable_slots" type="list(string)" vars="">A comma separated list of equip slot types to disable when this item is equipped.</attribute>
+		  <attribute name="stepfx" type="predefined_string" vars="">Sound effect when walking, this applies only to armors.</attribute>
+		  <attribute name="disable_slots" type="list(predefined_string)" vars="">A comma separated list of equip slot types to disable when this item is equipped.</attribute>
 		  <attribute name="quest_item" type="bool" vars="">If true, this item is a quest item and can not be dropped, stashed, or sold.</attribute>
 	  </attributes>
 	</class>
@@ -400,7 +400,7 @@
 		  <attribute name="layer.format" type="string" vars="">Format for map layer, must be 'dec'</attribute>
 		  <attribute name="layer.data" type="raw" vars="">Raw map layer data</attribute>
 		  <attribute name="enemygroup.type" type="string" vars="">(IGNORED BY ENGINE) The &quot;type&quot; field, as used by Tiled and other mapping tools.</attribute>
-		  <attribute name="enemygroup.category" type="string" vars="">The category of enemies that will spawn in this group.</attribute>
+		  <attribute name="enemygroup.category" type="predefined_string" vars="">The category of enemies that will spawn in this group.</attribute>
 		  <attribute name="enemygroup.level" type="int, int" vars="Min, Max">Defines the level range of enemies in group. If only one number is given, it's the exact level.</attribute>
 		  <attribute name="enemygroup.location" type="rectangle" vars="">Location area for enemygroup</attribute>
 		  <attribute name="enemygroup.number" type="int, int" vars="Min, Max">Defines the range of enemies in group. If only one number is given, it's the exact amount.</attribute>
@@ -640,8 +640,8 @@
 		  <attribute name="text_offset" type="point" vars="">Margins for the left/right and top/bottom of the dialog text.</attribute>
 		  <attribute name="portrait_he" type="rectangle" vars="">Position and dimensions of the NPC portrait graphics.</attribute>
 		  <attribute name="portrait_you" type="rectangle" vars="">Position and dimensions of the player's portrait graphics.</attribute>
-		  <attribute name="font_who" type="string" vars="">Font style to use for the name of the currently talking person.</attribute>
-		  <attribute name="font_dialog" type="string" vars="">Font style to use for the dialog text.</attribute>
+		  <attribute name="font_who" type="predefined_string" vars="">Font style to use for the name of the currently talking person.</attribute>
+		  <attribute name="font_dialog" type="predefined_string" vars="">Font style to use for the dialog text.</attribute>
 	  </attributes>
 	</class>
 	<class name="MenuVendor">
@@ -695,7 +695,7 @@
 		  <attribute name="power.name" type="string" vars="">The name of the power</attribute>
 		  <attribute name="power.description" type="string" vars="">Description of the power</attribute>
 		  <attribute name="power.icon" type="icon_id" vars="">The icon to visually represent the power eg. in skill tree or action bar.</attribute>
-		  <attribute name="power.new_state" type="string" vars="">When power is used, hero or enemy will change to this state. Must be one of the states [&quot;instant&quot;, user defined]</attribute>
+		  <attribute name="power.new_state" type="predefined_string" vars="">When power is used, hero or enemy will change to this state. Must be one of the states [&quot;instant&quot;, user defined]</attribute>
 		  <attribute name="power.state_duration" type="duration" vars="">Sets the length of time the caster is in their state animation. A time longer than the animation length will cause the animation to pause on the last frame. Times shorter than the state animation length will have no effect.</attribute>
 		  <attribute name="power.face" type="bool" vars="">Power will make hero or enemy to face the target location.</attribute>
 		  <attribute name="power.source_type" type="[&quot;hero&quot;, &quot;neutral&quot;, &quot;enemy&quot;]" vars="">Determines which entities the power can effect.</attribute>
@@ -704,7 +704,7 @@
 		  <attribute name="power.passive" type="bool" vars="">If power is unlocked when the hero or enemy spawns it will be automatically activated.</attribute>
 		  <attribute name="power.passive_trigger" type="[&quot;on_block&quot;, &quot;on_hit&quot;, &quot;on_halfdeath&quot;, &quot;on_joincombat&quot;, &quot;on_death&quot;]" vars="">This will only activate a passive power under a certain condition.</attribute>
 		  <attribute name="power.meta_power" type="bool" vars="">If true, this power can not be used on it's own. Instead, it should be replaced via an item with a replace_power entry.</attribute>
-		  <attribute name="power.requires_flags" type="list(string)" vars="">A comma separated list of equip flags that are required to use this power. See engine/equip_flags.txt</attribute>
+		  <attribute name="power.requires_flags" type="list(predefined_string)" vars="">A comma separated list of equip flags that are required to use this power. See engine/equip_flags.txt</attribute>
 		  <attribute name="power.requires_mp" type="int" vars="">Restrict power usage to a specified MP level.</attribute>
 		  <attribute name="power.requires_hp" type="int" vars="">Restrict power usage to a specified HP level.</attribute>
 		  <attribute name="power.sacrifice" type="bool" vars="">If the power has requires_hp, allow it to kill the caster.</attribute>
@@ -738,8 +738,8 @@
 		  <attribute name="power.expire_with_caster" type="bool" vars="">If true, hazard will disappear when the caster dies.</attribute>
 		  <attribute name="power.trait_armor_penetration" type="bool" vars="">Ignores the target's Absorbtion stat</attribute>
 		  <attribute name="power.trait_avoidance_ignore" type="bool" vars="">Ignores the target's Avoidance stat</attribute>
-		  <attribute name="power.trait_crits_impaired" type="integer" vars="">Increases critical hit percentage for slowed/immobile targets</attribute>
-		  <attribute name="power.trait_elemental" type="string" vars="">Damage done is elemental. See engine/elements.txt</attribute>
+		  <attribute name="power.trait_crits_impaired" type="int" vars="">Increases critical hit percentage for slowed/immobile targets</attribute>
+		  <attribute name="power.trait_elemental" type="predefined_string" vars="">Damage done is elemental. See engine/elements.txt</attribute>
 		  <attribute name="power.target_range" type="float" vars="">The distance from the caster that the power can be activated</attribute>
 		  <attribute name="power.hp_steal" type="int" vars="">Percentage of damage to steal into HP</attribute>
 		  <attribute name="power.mp_steal" type="int" vars="">Percentage of damage to steal into MP</attribute>
@@ -755,15 +755,15 @@
 		  <attribute name="power.buff_teleport" type="bool" vars="">Power is a teleportation power.</attribute>
 		  <attribute name="power.buff_party" type="bool" vars="">Power is cast upon party members</attribute>
 		  <attribute name="power.buff_party_power_id" type="power_id" vars="">Buffs a power id for all party members</attribute>
-		  <attribute name="power.post_effect" type="string, int, duration" vars="Effect ID, Magnitude, Duration">Post effect. Duration is in 'ms' or 's'.</attribute>
+		  <attribute name="power.post_effect" type="predefined_string, int, duration" vars="Effect ID, Magnitude, Duration">Post effect. Duration is in 'ms' or 's'.</attribute>
 		  <attribute name="power.post_power" type="power_id" vars="">Trigger a power if the hazard did damage.</attribute>
 		  <attribute name="power.wall_power" type="power_id" vars="">Trigger a power if the hazard hit a wall.</attribute>
-		  <attribute name="power.spawn_type" type="string" vars="">For non-transform powers, an enemy is spawned from this category. For transform powers, the caster will transform into a creature from this category.</attribute>
+		  <attribute name="power.spawn_type" type="predefined_string" vars="">For non-transform powers, an enemy is spawned from this category. For transform powers, the caster will transform into a creature from this category.</attribute>
 		  <attribute name="power.target_neighbor" type="int" vars="">Target is changed to an adjacent tile within a radius.</attribute>
-		  <attribute name="power.spawn_limit" type="[&quot;fixed&quot;, &quot;stat&quot;, &quot;unlimited&quot;], [int, string]" vars="Mode, Value">The maximum number of creatures that can be spawned and alive from this power. &quot;fixed&quot; takes an integer. &quot;stat&quot; takes a primary stat as a string (e.g. &quot;physical&quot;).</attribute>
-		  <attribute name="power.spawn_limit" type="[&quot;default&quot;, &quot;fixed&quot;, &quot;stat&quot;, &quot;level&quot;], [int, string]" vars="Mode, Value">The level of spawned creatures. &quot;fixed&quot; and &quot;level&quot; take an integer. &quot;stat&quot; takes a primary stat as a string (e.g. &quot;physical&quot;).</attribute>
+		  <attribute name="power.spawn_limit" type="[&quot;fixed&quot;, &quot;stat&quot;, &quot;unlimited&quot;], [int, predefined_string]" vars="Mode, Value">The maximum number of creatures that can be spawned and alive from this power. &quot;fixed&quot; takes an integer. &quot;stat&quot; takes a primary stat as a string (e.g. &quot;physical&quot;).</attribute>
+		  <attribute name="power.spawn_limit" type="[&quot;default&quot;, &quot;fixed&quot;, &quot;stat&quot;, &quot;level&quot;], [int, predefined_string]" vars="Mode, Value">The level of spawned creatures. &quot;fixed&quot; and &quot;level&quot; take an integer. &quot;stat&quot; takes a primary stat as a string (e.g. &quot;physical&quot;).</attribute>
 		  <attribute name="power.target_party" type="bool" vars="">Hazard will only affect party members.</attribute>
-		  <attribute name="power.target_categories" type="list(string)" vars="">Hazard will only affect enemies in these categories.</attribute>
+		  <attribute name="power.target_categories" type="list(predefined_string)" vars="">Hazard will only affect enemies in these categories.</attribute>
 		  <attribute name="power.modifier_accuracy" type="[&quot;multiply&quot;, &quot;add&quot;, &quot;absolute&quot;], int" vars="Mode, Value">Changes this power's accuracy.</attribute>
 		  <attribute name="power.modifier_damage" type="[&quot;multiply&quot;, &quot;add&quot;, &quot;absolute&quot;], int, int" vars="Mode, Min, Max">Changes this power's damage. The &quot;Max&quot; value is ignored, except in the case of &quot;absolute&quot; modifiers.</attribute>
 		  <attribute name="power.modifier_critical" type="[&quot;multiply&quot;, &quot;add&quot;, &quot;absolute&quot;], int" vars="Mode, Value">Changes the chance that this power will land a critical hit.</attribute>
@@ -786,8 +786,8 @@
 		  <attribute name="quest.requires_not_currency" type="int" vars="">Quest requires no more than this much currency</attribute>
 		  <attribute name="quest.requires_item" type="list(item_id)" vars="">Quest requires specific item (not equipped)</attribute>
 		  <attribute name="quest.requires_not_item" type="list(item_id)" vars="">Quest requires not having a specific item (not equipped)</attribute>
-		  <attribute name="quest.requires_class" type="string" vars="">Quest requires this base class</attribute>
-		  <attribute name="quest.requires_not_class" type="string" vars="">Quest requires not this base class</attribute>
+		  <attribute name="quest.requires_class" type="predefined_string" vars="">Quest requires this base class</attribute>
+		  <attribute name="quest.requires_not_class" type="predefined_string" vars="">Quest requires not this base class</attribute>
 		  <attribute name="quest.quest_text" type="string" vars="">Text that gets displayed in the Quest log when this quest is active.</attribute>
 	  </attributes>
 	</class>
@@ -795,7 +795,7 @@
 	  <description>Description of engine/font_settings.txt</description>
 	  <attributes>
 		  <attribute name="font.id" type="string" vars="">An identifier used to reference this font.</attribute>
-		  <attribute name="font.style" type="repeatable([&quot;default&quot;, string], filename, int, bool)" vars="Language, Font file, Point size, Blending">Filename, point size, and blend mode of the font to use for this language. Language can be &quot;default&quot; or a 2-letter region code.</attribute>
+		  <attribute name="font.style" type="repeatable([&quot;default&quot;, predefined_string], filename, int, bool)" vars="Language, Font file, Point size, Blending">Filename, point size, and blend mode of the font to use for this language. Language can be &quot;default&quot; or a 2-letter region code.</attribute>
 		  <attribute name="menu_normal" type="color" vars="">Basic menu text color. Recommended  white.</attribute>
 		  <attribute name="menu_bonus" type="color" vars="">Positive menu text color. Recommended  green.</attribute>
 		  <attribute name="menu_penalty" type="color" vars="">Negative menu text color. Recommended  red.</attribute>
@@ -933,12 +933,12 @@
 		  <attribute name="cooldown" type="int" vars="">Cooldown between attacks in 'ms' or 's'.</attribute>
 		  <attribute name="cooldown_hit" type="duration" vars="">Duration of cooldown after being hit in 'ms' or 's'.</attribute>
 		  <attribute name="stat" type="string, int" vars="Stat name, Value">The starting value for this stat.</attribute>
-		  <attribute name="stat_per_level" type="string, int" vars="Stat name, Value">The value for this stat added per level.</attribute>
-		  <attribute name="stat_per_physical" type="string, int" vars="Stat name, Value">The value for this stat added per Physical.</attribute>
-		  <attribute name="stat_per_mental" type="string, int" vars="Stat name, Value">The value for this stat added per Mental.</attribute>
-		  <attribute name="stat_per_offense" type="string, int" vars="Stat name, Value">The value for this stat added per Offense.</attribute>
-		  <attribute name="stat_per_defense" type="string, int" vars="Stat name, Value">The value for this stat added per Defense.</attribute>
-		  <attribute name="vulnerable" type="string, int" vars="Element, Value">Percentage weakness to this element.</attribute>
+		  <attribute name="stat_per_level" type="predefined_string, int" vars="Stat name, Value">The value for this stat added per level.</attribute>
+		  <attribute name="stat_per_physical" type="predefined_string, int" vars="Stat name, Value">The value for this stat added per Physical.</attribute>
+		  <attribute name="stat_per_mental" type="predefined_string, int" vars="Stat name, Value">The value for this stat added per Mental.</attribute>
+		  <attribute name="stat_per_offense" type="predefined_string, int" vars="Stat name, Value">The value for this stat added per Offense.</attribute>
+		  <attribute name="stat_per_defense" type="predefined_string, int" vars="Stat name, Value">The value for this stat added per Defense.</attribute>
+		  <attribute name="vulnerable" type="predefined_string, int" vars="Element, Value">Percentage weakness to this element.</attribute>
 	  </attributes>
 	</class>
 	<class name="StatBlock: Sound effects">
@@ -964,7 +964,7 @@
 		  <attribute name="loot_count" type="int, int" vars="Min, Max">Sets the minimum (and optionally, the maximum) amount of loot this creature can drop. Overrides the global drop_max setting.</attribute>
 		  <attribute name="defeat_status" type="string" vars="">Campaign status to set upon death.</attribute>
 		  <attribute name="convert_status" type="string" vars="">Campaign status to set upon being converted to a player ally.</attribute>
-		  <attribute name="first_defeat_loot" type="int" vars="">Drops this item upon first death.</attribute>
+		  <attribute name="first_defeat_loot" type="item_id" vars="">Drops this item upon first death.</attribute>
 		  <attribute name="quest_loot" type="string, string, item_id" vars="Required status, Required not status, Item">Drops this item when campaign status is met.</attribute>
 		  <attribute name="flying" type="bool" vars="">Creature can move over gaps/water.</attribute>
 		  <attribute name="intangible" type="bool" vars="">Creature can move through walls.</attribute>
