@@ -1,51 +1,51 @@
 <?xml version="1.0"?>
 <classes>
-	<class name="Animation">
+	<class name="AnimationSet">
 	  <description>Description of animations in animations/</description>
 	  <attributes>
-		  <attribute name="image" type="string">Filename of sprite-sheet image.</attribute>
-		  <attribute name="position" type="integer">Number of frames to the right to use as the first frame. Unpacked animations only.</attribute>
-		  <attribute name="frames" type="integer">The total number of frames</attribute>
-		  <attribute name="duration" type="integer">The duration of the entire animation in 'ms' or 's'.</attribute>
-		  <attribute name="type" type="[play_once, back_forth, looped]">How to loop (or not loop) this animation.</attribute>
-		  <attribute name="render_size" type="w (integer), h (integer)">Width and height of animation.</attribute>
-		  <attribute name="render_offset" type="x (integer), y (integer)">Render x/y offset.</attribute>
-		  <attribute name="active_frame" type="[all:frame (integer), ...]">A list of frames marked as "active". Also, "all" can be used to mark all frames as active.</attribute>
-		  <attribute name="frame" type="index (integer), direction (integer), x (integer), y (integer), w (integer), h (integer), x offset (integer), y offset (integer)">A single frame of a compressed animation.</attribute>
+		  <attribute name="image" type="filename" vars="">Filename of sprite-sheet image.</attribute>
+		  <attribute name="position" type="int" vars="">Number of frames to the right to use as the first frame. Unpacked animations only.</attribute>
+		  <attribute name="frames" type="int" vars="">The total number of frames</attribute>
+		  <attribute name="duration" type="duration" vars="">The duration of the entire animation in 'ms' or 's'.</attribute>
+		  <attribute name="type" type="[&quot;play_once&quot;, &quot;back_forth&quot;, &quot;looped&quot;]" vars="">How to loop (or not loop) this animation.</attribute>
+		  <attribute name="render_size" type="int, int" vars="Width, Height">Width and height of animation.</attribute>
+		  <attribute name="render_offset" type="int, int" vars="X offset, Y offset">Render x/y offset.</attribute>
+		  <attribute name="active_frame" type="[list(int), &quot;all&quot;]" vars="">A list of frames marked as &quot;active&quot;. Also, &quot;all&quot; can be used to mark all frames as active.</attribute>
+		  <attribute name="frame" type="int, int, int, int, int, int, int, int" vars="Index, Direction, X, Y, Width, Height, X offset, Y offset">A single frame of a compressed animation.</attribute>
 	  </attributes>
 	</class>
 	<class name="Avatar: Step sounds">
 	  <description>Description of items/step_sounds.txt</description>
 	  <attributes>
-		  <attribute name="id" type="string">An identifier name for a set of step sounds.</attribute>
-		  <attribute name="step" type="string">Filename of a step sound effect.</attribute>
+		  <attribute name="id" type="string" vars="">An identifier name for a set of step sounds.</attribute>
+		  <attribute name="step" type="filename" vars="">Filename of a step sound effect.</attribute>
 	  </attributes>
 	</class>
 	<class name="Avatar: Hero layers">
 	  <description>Description of engine/hero_layers.txt</description>
 	  <attributes>
-		  <attribute name="layer" type="direction (integer), string, ...]">Defines the hero avatar sprite layer</attribute>
+		  <attribute name="layer" type="direction, list(string)" vars="Direction, Layer name(s)">Defines the hero avatar sprite layer</attribute>
 	  </attributes>
 	</class>
 	<class name="CombatText">
 	  <description>Description of engine/combat_text.txt</description>
 	  <attributes>
-		  <attribute name="duration" type="duration">Duration of the combat text in 'ms' or 's'.</attribute>
-		  <attribute name="speed" type="integer">Motion speed of the combat text.</attribute>
-		  <attribute name="offset" type="integer">The vertical offset for the combat text's starting position.</attribute>
+		  <attribute name="duration" type="duration" vars="">Duration of the combat text in 'ms' or 's'.</attribute>
+		  <attribute name="speed" type="int" vars="">Motion speed of the combat text.</attribute>
+		  <attribute name="offset" type="int" vars="">The vertical offset for the combat text's starting position.</attribute>
 	  </attributes>
 	</class>
 	<class name="CursorManager">
 	  <description>Description of engine/mouse_cursor.txt</description>
 	  <attributes>
-		  <attribute name="normal" type="string">Filename of an image for the normal cursor.</attribute>
-		  <attribute name="interact" type="string">Filename of an image for the object interaction cursor.</attribute>
-		  <attribute name="talk" type="string">Filename of an image for the NPC interaction cursor.</attribute>
-		  <attribute name="attack" type="string">Filename of an image for the cursor when attacking enemies.</attribute>
+		  <attribute name="normal" type="filename" vars="">Filename of an image for the normal cursor.</attribute>
+		  <attribute name="interact" type="filename" vars="">Filename of an image for the object interaction cursor.</attribute>
+		  <attribute name="talk" type="filename" vars="">Filename of an image for the NPC interaction cursor.</attribute>
+		  <attribute name="attack" type="filename" vars="">Filename of an image for the cursor when attacking enemies.</attribute>
 	  </attributes>
 	</class>
 	<class name="EffectManager">
-	  <description>Description of "type" in powers/effects.txt</description>
+	  <description>Description of &quot;type&quot; in powers/effects.txt</description>
 	  <attributes>
 		<type name="damage">Damage per second</type>
 		<type name="damage_percent">Damage per second (percentage of max HP)</type>
@@ -71,8 +71,8 @@
 		<type name="defense">Increase Defense stat.</type>
 		<type name="physical">Increase Physical stat.</type>
 		<type name="mental">Increase Mental stat.</type>
-		<type name="$STATNAME">Increases $STATNAME, where $STATNAME is any of the base stats. Examples: hp, dmg_melee_min, xp_gain</type>
-		<type name="$ELEMENT_resist">Increase Resistance % to $ELEMENT, where $ELEMENT is any found in engine/elements.txt. Example: fire_resist</type>
+		<type name="${STATNAME}">Increases ${STATNAME}, where ${STATNAME} is any of the base stats. Examples: hp, dmg_melee_min, xp_gain</type>
+		<type name="${ELEMENT}_resist">Increase Resistance % to ${ELEMENT}, where ${ELEMENT} is any found in engine/elements.txt. Example: fire_resist</type>
 		<type name="death_sentence">Causes sudden death at the end of the effect duration.</type>
 		<type name="shield">Create a damage absorbing barrier based on Mental damage stat. Duration is ignored.</type>
 		<type name="heal">Restore HP based on Mental damage stat.</type>
@@ -81,420 +81,422 @@
 	<class name="EnemyGroupManager">
 	  <description>Description of enemies in enemies/</description>
 	  <attributes>
-		  <attribute name="level" type="integer">Level of the enemy</attribute>
-		  <attribute name="rarity" type="[common,uncommon,rare]">Enemy rarity</attribute>
-		  <attribute name="categories" type="string,...">Comma separated list of enemy categories</attribute>
+		  <attribute name="level" type="int" vars="">Level of the enemy</attribute>
+		  <attribute name="rarity" type="[&quot;common&quot;, &quot;uncommon&quot;, &quot;rare&quot;]" vars="">Enemy rarity</attribute>
+		  <attribute name="categories" type="list(string)" vars="">Comma separated list of enemy categories</attribute>
 	  </attributes>
 	</class>
 	<class name="EventManager">
 	  <description>Description of events in maps/ and npcs/</description>
 	  <attributes>
-		  <attribute name="event.type" type="[on_trigger:on_mapexit:on_leave:on_load:on_clear]">Type of map event.</attribute>
-		  <attribute name="event.location" type="[x,y,w,h]">Defines the location area for the event.</attribute>
-		  <attribute name="event.hotspot" type="[ [x, y, w, h] : location ]">Event uses location as hotspot or defined by rect.</attribute>
-		  <attribute name="event.cooldown" type="duration">Duration for event cooldown in 'ms' or 's'.</attribute>
-		  <attribute name="event.reachable_from" type="[x,y,w,h]">If the hero is inside this rectangle, they can activate the event.</attribute>
-		  <attribute name="event.tooltip" type="string">Tooltip for event</attribute>
-		  <attribute name="event.power_path" type="[hero:[x,y]]">Event power path</attribute>
-		  <attribute name="event.power_damage" type="min(integer), max(integer)">Range of power damage</attribute>
-		  <attribute name="event.intermap" type="[map(string),x(integer),y(integer)]">Jump to specific map at location specified.</attribute>
-		  <attribute name="event.intramap" type="[x(integer),y(integer)]">Jump to specific position within current map.</attribute>
-		  <attribute name="event.mapmod" type="[string,int,int,int],..">Modify map tiles</attribute>
-		  <attribute name="event.soundfx" type="[soundfile(string),x(integer),y(integer),loop(boolean)]">Filename of a sound to play. Optionally, it can be played at a specific location and/or looped.</attribute>
-		  <attribute name="event.loot" type="[string,drop_chance([fixed:chance(integer)]),quantity_min(integer),quantity_max(integer)],...">Add loot to the event; either a filename or an inline definition.</attribute>
-		  <attribute name="event.loot_count" type="min (integer), max (integer)">Sets the minimum (and optionally, the maximum) amount of loot this event can drop. Overrides the global drop_max setting.</attribute>
-		  <attribute name="event.msg" type="string">Adds a message to be displayed for the event.</attribute>
-		  <attribute name="event.shakycam" type="duration">Makes the camera shake for this duration in 'ms' or 's'.</attribute>
-		  <attribute name="event.requires_status" type="string,...">Event requires list of statuses</attribute>
-		  <attribute name="event.requires_not_status" type="string,...">Event requires not list of statuses</attribute>
-		  <attribute name="event.requires_level" type="integer">Event requires hero level</attribute>
-		  <attribute name="event.requires_not_level" type="integer">Event requires not hero level</attribute>
-		  <attribute name="event.requires_currency" type="integer">Event requires atleast this much currency</attribute>
-		  <attribute name="event.requires_not_currency" type="integer">Event requires no more than this much currency</attribute>
-		  <attribute name="event.requires_item" type="integer,...">Event requires specific item (not equipped)</attribute>
-		  <attribute name="event.requires_not_item" type="integer,...">Event requires not having a specific item (not equipped)</attribute>
-		  <attribute name="event.requires_class" type="string">Event requires this base class</attribute>
-		  <attribute name="event.requires_not_class" type="string">Event requires not this base class</attribute>
-		  <attribute name="event.set_status" type="string,...">Sets specified statuses</attribute>
-		  <attribute name="event.unset_status" type="string,...">Unsets specified statuses</attribute>
-		  <attribute name="event.remove_currency" type="integer">Removes specified amount of currency from hero inventory</attribute>
-		  <attribute name="event.remove_item" type="integer,...">Removes specified item from hero inventory</attribute>
-		  <attribute name="event.reward_xp" type="integer">Reward hero with specified amount of experience points.</attribute>
-		  <attribute name="event.reward_currency" type="integer">Reward hero with specified amount of currency.</attribute>
-		  <attribute name="event.reward_item" type="x(integer),y(integer)">Reward hero with y number of item x.</attribute>
-		  <attribute name="event.restore" type="string">Restore the hero's HP, MP, and/or status.</attribute>
-		  <attribute name="event.power" type="power_id">Specify power coupled with event.</attribute>
-		  <attribute name="event.spawn" type="[string,x(integer),y(integer)], ...">Spawn an enemy from this category at location</attribute>
-		  <attribute name="event.stash" type="boolean">Opens the Stash menu.</attribute>
-		  <attribute name="event.npc" type="string">Filename of an NPC to start dialog with.</attribute>
-		  <attribute name="event.music" type="string">Change background music to specified file.</attribute>
-		  <attribute name="event.cutscene" type="string">Show specified cutscene by filename.</attribute>
-		  <attribute name="event.repeat" type="boolean">Allows the event to be triggered again.</attribute>
-		  <attribute name="event.save_game" type="boolean">Saves the game when the event is triggered. The respawn position is set to where the player is standing.</attribute>
-		  <attribute name="event.book" type="string">Opens a book by filename.</attribute>
+		  <attribute name="event.type" type="string" vars="">(IGNORED BY ENGINE) The &quot;type&quot; field, as used by Tiled and other mapping tools.</attribute>
+		  <attribute name="event.activate" type="[&quot;on_trigger&quot;, &quot;on_load&quot;, &quot;on_leave&quot;, &quot;on_mapexit&quot;, &quot;on_clear&quot;]" vars="">Set the state in which the event will be activated (map events only).</attribute>
+		  <attribute name="event.location" type="rectangle" vars="">Defines the location area for the event.</attribute>
+		  <attribute name="event.hotspot" type="[&quot;location&quot;, rectangle]" vars="">Event uses location as hotspot or defined by rect.</attribute>
+		  <attribute name="event.cooldown" type="duration" vars="">Duration for event cooldown in 'ms' or 's'.</attribute>
+		  <attribute name="event.reachable_from" type="rectangle" vars="">If the hero is inside this rectangle, they can activate the event.</attribute>
+		  <attribute name="event.tooltip" type="string" vars="">Tooltip for event</attribute>
+		  <attribute name="event.power_path" type="[&quot;hero&quot;, point]" vars="">Event power path</attribute>
+		  <attribute name="event.power_damage" type="int, int" vars="Min, Max">Range of power damage</attribute>
+		  <attribute name="event.intermap" type="filename, int, int" vars="Map file, X, Y">Jump to specific map at location specified.</attribute>
+		  <attribute name="event.intramap" type="int, int" vars="X, Y">Jump to specific position within current map.</attribute>
+		  <attribute name="event.mapmod" type="list(string, int, int, int)" vars="Layer, X, Y, Tile ID">Modify map tiles</attribute>
+		  <attribute name="event.soundfx" type="filename, int, int, bool" vars="Sound file, X, Y, loop">Filename of a sound to play. Optionally, it can be played at a specific location and/or looped.</attribute>
+		  <attribute name="event.loot" type="list(loot)" vars="">Add loot to the event.</attribute>
+		  <attribute name="event.loot_count" type="int, int" vars="Min, Max">Sets the minimum (and optionally, the maximum) amount of loot this event can drop. Overrides the global drop_max setting.</attribute>
+		  <attribute name="event.msg" type="string" vars="">Adds a message to be displayed for the event.</attribute>
+		  <attribute name="event.shakycam" type="duration" vars="">Makes the camera shake for this duration in 'ms' or 's'.</attribute>
+		  <attribute name="event.requires_status" type="list(string)" vars="">Event requires list of statuses</attribute>
+		  <attribute name="event.requires_not_status" type="list(string)" vars="">Event requires not list of statuses</attribute>
+		  <attribute name="event.requires_level" type="int" vars="">Event requires hero level</attribute>
+		  <attribute name="event.requires_not_level" type="int" vars="">Event requires not hero level</attribute>
+		  <attribute name="event.requires_currency" type="int" vars="">Event requires atleast this much currency</attribute>
+		  <attribute name="event.requires_not_currency" type="int" vars="">Event requires no more than this much currency</attribute>
+		  <attribute name="event.requires_item" type="list(item_id)" vars="">Event requires specific item (not equipped)</attribute>
+		  <attribute name="event.requires_not_item" type="list(item_id)" vars="">Event requires not having a specific item (not equipped)</attribute>
+		  <attribute name="event.requires_class" type="string" vars="">Event requires this base class</attribute>
+		  <attribute name="event.requires_not_class" type="string" vars="">Event requires not this base class</attribute>
+		  <attribute name="event.set_status" type="list(string)" vars="">Sets specified statuses</attribute>
+		  <attribute name="event.unset_status" type="list(string)" vars="">Unsets specified statuses</attribute>
+		  <attribute name="event.remove_currency" type="int" vars="">Removes specified amount of currency from hero inventory</attribute>
+		  <attribute name="event.remove_item" type="list(item_id)" vars="">Removes specified item from hero inventory</attribute>
+		  <attribute name="event.reward_xp" type="int" vars="">Reward hero with specified amount of experience points.</attribute>
+		  <attribute name="event.reward_currency" type="int" vars="">Reward hero with specified amount of currency.</attribute>
+		  <attribute name="event.reward_item" type="item_id, int" vars="Item, Quantity">Reward hero with y number of item x.</attribute>
+		  <attribute name="event.restore" type="[&quot;hp&quot;, &quot;mp&quot;, &quot;hpmp&quot;, &quot;status&quot;, &quot;all&quot;]" vars="">Restore the hero's HP, MP, and/or status.</attribute>
+		  <attribute name="event.power" type="power_id" vars="">Specify power coupled with event.</attribute>
+		  <attribute name="event.spawn" type="list(string, int, int)" vars="Enemy category, X, Y">Spawn an enemy from this category at location</attribute>
+		  <attribute name="event.stash" type="bool" vars="">If true, the Stash menu if opened.</attribute>
+		  <attribute name="event.npc" type="filename" vars="">Filename of an NPC to start dialog with.</attribute>
+		  <attribute name="event.music" type="filename" vars="">Change background music to specified file.</attribute>
+		  <attribute name="event.cutscene" type="filename" vars="">Show specified cutscene by filename.</attribute>
+		  <attribute name="event.repeat" type="bool" vars="">If true, the event to be triggered again.</attribute>
+		  <attribute name="event.save_game" type="bool" vars="">If true, the game is saved when the event is triggered. The respawn position is set to where the player is standing.</attribute>
+		  <attribute name="event.book" type="filename" vars="">Opens a book by filename.</attribute>
 	  </attributes>
 	</class>
 	<class name="GameStateConfigBase">
 	  <description>Description of menus/config.txt</description>
 	  <attributes>
-		  <attribute name="listbox_scrollbar_offset" type="integer">Horizontal offset from the right of listboxes (mods, languages, etc) to place the scrollbar.</attribute>
-		  <attribute name="music_volume" type="label x (integer), label y (integer), x (integer), y (integer)">Position of the "Music Volume" slider relative to the frame.</attribute>
-		  <attribute name="sound_volume" type="label x (integer), label y (integer), x (integer), y (integer)">Position of the "Sound Volume" slider relative to the frame.</attribute>
-		  <attribute name="language" type="label x (integer), label y (integer), x (integer), y (integer)">Position of the "Language" list box relative to the frame.</attribute>
-		  <attribute name="combat_text" type="label x (integer), label y (integer), x (integer), y (integer)">Position of the "Show combat text" checkbox relative to the frame.</attribute>
-		  <attribute name="show_fps" type="label x (integer), label y (integer), x (integer), y (integer)">Position of the "Show FPS" checkbox relative to the frame.</attribute>
-		  <attribute name="colorblind" type="label x (integer), label y (integer), x (integer), y (integer)">Position of the "Colorblind Mode" checkbox relative to the frame.</attribute>
-		  <attribute name="hardware_cursor" type="label x (integer), label y (integer), x (integer), y (integer)">Position of the "Hardware mouse cursor" checkbox relative to the frame.</attribute>
-		  <attribute name="dev_mode" type="label x (integer), label y (integer), x (integer), y (integer)">Position of the "Developer Mode" checkbox relative to the frame.</attribute>
-		  <attribute name="show_target" type="label x (integer), label y (integer), x (integer), y (integer)">Position of the "Show targeting animation" checkbox relative to the frame.</attribute>
-		  <attribute name="loot_tooltips" type="label x (integer), label y (integer), x (integer), y (integer)">Position of the "Always show loot labels" checkbox relative to the frame.</attribute>
-		  <attribute name="statbar_labels" type="label x (integer), label y (integer), x (integer), y (integer)">Position of the "Always show stat bar labels" checkbox relative to the frame.</attribute>
-		  <attribute name="auto_equip" type="label x (integer), label y (integer), x (integer), y (integer)">Position of the "Automatically equip items" checkbox relative to the frame.</attribute>
-		  <attribute name="activemods" type="label x (integer), label y (integer), x (integer), y (integer)">Position of the "Active Mods" list box relative to the frame.</attribute>
-		  <attribute name="inactivemods" type="label x (integer), label y (integer), x (integer), y (integer)">Position of the "Available Mods" list box relative to the frame.</attribute>
-		  <attribute name="activemods_shiftup" type="x (integer), y (integer)">Position of the button to shift mods up in "Active Mods" relative to the frame.</attribute>
-		  <attribute name="activemods_shiftdown" type="x (integer), y (integer)">Position of the button to shift mods down in "Active Mods" relative to the frame.</attribute>
-		  <attribute name="activemods_deactivate" type="x (integer), y (integer)">Position of the "Disable" button relative to the frame.</attribute>
-		  <attribute name="inactivemods_activate" type="x (integer), y (integer)">Position of the "Enable" button relative to the frame.</attribute>
+		  <attribute name="listbox_scrollbar_offset" type="int" vars="">Horizontal offset from the right of listboxes (mods, languages, etc) to place the scrollbar.</attribute>
+		  <attribute name="music_volume" type="int, int, int, int" vars="Label X, Label Y, Widget X, Widget Y">Position of the &quot;Music Volume&quot; slider relative to the frame.</attribute>
+		  <attribute name="sound_volume" type="int, int, int, int" vars="Label X, Label Y, Widget X, Widget Y">Position of the &quot;Sound Volume&quot; slider relative to the frame.</attribute>
+		  <attribute name="language" type="int, int, int, int" vars="Label X, Label Y, Widget X, Widget Y">Position of the &quot;Language&quot; list box relative to the frame.</attribute>
+		  <attribute name="combat_text" type="int, int, int, int" vars="Label X, Label Y, Widget X, Widget Y">Position of the &quot;Show combat text&quot; checkbox relative to the frame.</attribute>
+		  <attribute name="show_fps" type="int, int, int, int" vars="Label X, Label Y, Widget X, Widget Y">Position of the &quot;Show FPS&quot; checkbox relative to the frame.</attribute>
+		  <attribute name="colorblind" type="int, int, int, int" vars="Label X, Label Y, Widget X, Widget Y">Position of the &quot;Colorblind Mode&quot; checkbox relative to the frame.</attribute>
+		  <attribute name="hardware_cursor" type="int, int, int, int" vars="Label X, Label Y, Widget X, Widget Y">Position of the &quot;Hardware mouse cursor&quot; checkbox relative to the frame.</attribute>
+		  <attribute name="dev_mode" type="int, int, int, int" vars="Label X, Label Y, Widget X, Widget Y">Position of the &quot;Developer Mode&quot; checkbox relative to the frame.</attribute>
+		  <attribute name="show_target" type="int, int, int, int" vars="Label X, Label Y, Widget X, Widget Y">Position of the &quot;Show targeting animation&quot; checkbox relative to the frame.</attribute>
+		  <attribute name="loot_tooltips" type="int, int, int, int" vars="Label X, Label Y, Widget X, Widget Y">Position of the &quot;Always show loot labels&quot; checkbox relative to the frame.</attribute>
+		  <attribute name="statbar_labels" type="int, int, int, int" vars="Label X, Label Y, Widget X, Widget Y">Position of the &quot;Always show stat bar labels&quot; checkbox relative to the frame.</attribute>
+		  <attribute name="auto_equip" type="int, int, int, int" vars="Label X, Label Y, Widget X, Widget Y">Position of the &quot;Automatically equip items&quot; checkbox relative to the frame.</attribute>
+		  <attribute name="activemods" type="int, int, int, int" vars="Label X, Label Y, Widget X, Widget Y">Position of the &quot;Active Mods&quot; list box relative to the frame.</attribute>
+		  <attribute name="inactivemods" type="int, int, int, int" vars="Label X, Label Y, Widget X, Widget Y">Position of the &quot;Available Mods&quot; list box relative to the frame.</attribute>
+		  <attribute name="activemods_shiftup" type="point" vars="">Position of the button to shift mods up in &quot;Active Mods&quot; relative to the frame.</attribute>
+		  <attribute name="activemods_shiftdown" type="point" vars="">Position of the button to shift mods down in &quot;Active Mods&quot; relative to the frame.</attribute>
+		  <attribute name="activemods_deactivate" type="point" vars="">Position of the &quot;Disable&quot; button relative to the frame.</attribute>
+		  <attribute name="inactivemods_activate" type="point" vars="">Position of the &quot;Enable&quot; button relative to the frame.</attribute>
 	  </attributes>
 	</class>
 	<class name="GameStateConfigDesktop">
 	  <description>Description of menus/config.txt</description>
 	  <attributes>
-		  <attribute name="fullscreen" type="label x (integer), label y (integer), x (integer), y (integer)">Position of the "Full Screen Mode" checkbox relative to the frame.</attribute>
-		  <attribute name="mouse_move" type="label x (integer), label y (integer), x (integer), y (integer)">Position of the "Move hero using mouse" checkbox relative to the frame.</attribute>
-		  <attribute name="hwsurface" type="label x (integer), label y (integer), x (integer), y (integer)">Position of the "Hardware surfaces" checkbox relative to the frame.</attribute>
-		  <attribute name="vsync" type="label x (integer), label y (integer), x (integer), y (integer)">Position of the "V-Sync" checkbox relative to the frame.</attribute>
-		  <attribute name="texture_filter" type="label x (integer), label y (integer), x (integer), y (integer)">Position of the "Texture Filtering" checkbox relative to the frame.</attribute>
-		  <attribute name="change_gamma" type="label x (integer), label y (integer), x (integer), y (integer)">Position of the "Allow changing gamma" checkbox relative to the frame.</attribute>
-		  <attribute name="gamma" type="label x (integer), label y (integer), x (integer), y (integer)">Position of the "Gamma" slider relative to the frame.</attribute>
-		  <attribute name="hws_note" type="x (integer), y (integer)">Position of the "Disable for performance" label (next to Hardware surfaces) relative to the frame.</attribute>
-		  <attribute name="dbuf_note" type="x (integer), y (integer)">Position of the "Disable for performance" label (next to Double buffering) relative to the frame.</attribute>
-		  <attribute name="test_note" type="x (integer), y (integer)">Position of the "Experimental" label relative to the frame.</attribute>
-		  <attribute name="enable_joystick" type="label x (integer), label y (integer), x (integer), y (integer)">Position of the "Use joystick" checkbox relative to the frame.</attribute>
-		  <attribute name="joystick_device" type="label x (integer), label y (integer), x (integer), y (integer)">Position of the "Joystick" list box relative to the frame.</attribute>
-		  <attribute name="mouse_aim" type="label x (integer), label y (integer), x (integer), y (integer)">Position of the "Mouse aim" checkbox relative to the frame.</attribute>
-		  <attribute name="no_mouse" type="label x (integer), label y (integer), x (integer), y (integer)">Position of the "Do not use mouse" checkbox relative to the frame.</attribute>
-		  <attribute name="joystick_deadzone" type="label x (integer), label y (integer), x (integer), y (integer)">Position of the "Joystick Deadzone" slider relative to the frame.</attribute>
-		  <attribute name="handheld_note" type="x (integer), y (integer)">Position of the "For handheld devices" label relative to the frame.</attribute>
-		  <attribute name="secondary_offset" type="x (integer), y (integer)">Offset of the second (and third) columns of keybinds.</attribute>
-		  <attribute name="keybinds_bg_color" type="r (integer), g (integer), b (integer)">Background color for the keybindings scrollbox.</attribute>
-		  <attribute name="scrollpane" type="x (integer), y (integer), w (integer), h (integer)">Position of the keybinding scrollbox relative to the frame.</attribute>
-		  <attribute name="scrollpane_contents" type="integer">The vertical size of the keybinding scrollbox's contents.</attribute>
-		  <attribute name="cancel" type="label x (integer), label y (integer), x (integer), y (integer)">Position of the "Cancel" keybind relative to the keybinding scrollbox.</attribute>
-		  <attribute name="accept" type="label x (integer), label y (integer), x (integer), y (integer)">Position of the "Accept" keybind relative to the keybinding scrollbox.</attribute>
-		  <attribute name="up" type="label x (integer), label y (integer), x (integer), y (integer)">Position of the "Up" keybind relative to the keybinding scrollbox.</attribute>
-		  <attribute name="down" type="label x (integer), label y (integer), x (integer), y (integer)">Position of the "Down" keybind relative to the keybinding scrollbox.</attribute>
-		  <attribute name="left" type="label x (integer), label y (integer), x (integer), y (integer)">Position of the "Left" keybind relative to the keybinding scrollbox.</attribute>
-		  <attribute name="right" type="label x (integer), label y (integer), x (integer), y (integer)">Position of the "Right" keybind relative to the keybinding scrollbox.</attribute>
-		  <attribute name="bar1" type="label x (integer), label y (integer), x (integer), y (integer)">Position of the "Bar1" keybind relative to the keybinding scrollbox.</attribute>
-		  <attribute name="bar2" type="label x (integer), label y (integer), x (integer), y (integer)">Position of the "Bar2" keybind relative to the keybinding scrollbox.</attribute>
-		  <attribute name="bar3" type="label x (integer), label y (integer), x (integer), y (integer)">Position of the "Bar3" keybind relative to the keybinding scrollbox.</attribute>
-		  <attribute name="bar4" type="label x (integer), label y (integer), x (integer), y (integer)">Position of the "Bar4" keybind relative to the keybinding scrollbox.</attribute>
-		  <attribute name="bar5" type="label x (integer), label y (integer), x (integer), y (integer)">Position of the "Bar5" keybind relative to the keybinding scrollbox.</attribute>
-		  <attribute name="bar6" type="label x (integer), label y (integer), x (integer), y (integer)">Position of the "Bar6" keybind relative to the keybinding scrollbox.</attribute>
-		  <attribute name="bar7" type="label x (integer), label y (integer), x (integer), y (integer)">Position of the "Bar7" keybind relative to the keybinding scrollbox.</attribute>
-		  <attribute name="Bar8" type="label x (integer), label y (integer), x (integer), y (integer)">Position of the "Bar8" keybind relative to the keybinding scrollbox.</attribute>
-		  <attribute name="bar9" type="label x (integer), label y (integer), x (integer), y (integer)">Position of the "Bar9" keybind relative to the keybinding scrollbox.</attribute>
-		  <attribute name="bar0" type="label x (integer), label y (integer), x (integer), y (integer)">Position of the "Bar0" keybind relative to the keybinding scrollbox.</attribute>
-		  <attribute name="main1" type="label x (integer), label y (integer), x (integer), y (integer)">Position of the "Main1" keybind relative to the keybinding scrollbox.</attribute>
-		  <attribute name="main2" type="label x (integer), label y (integer), x (integer), y (integer)">Position of the "Main2" keybind relative to the keybinding scrollbox.</attribute>
-		  <attribute name="character" type="label x (integer), label y (integer), x (integer), y (integer)">Position of the "Character" keybind relative to the keybinding scrollbox.</attribute>
-		  <attribute name="inventory" type="label x (integer), label y (integer), x (integer), y (integer)">Position of the "Inventory" keybind relative to the keybinding scrollbox.</attribute>
-		  <attribute name="powers" type="label x (integer), label y (integer), x (integer), y (integer)">Position of the "Powers" keybind relative to the keybinding scrollbox.</attribute>
-		  <attribute name="log" type="label x (integer), label y (integer), x (integer), y (integer)">Position of the "Log" keybind relative to the keybinding scrollbox.</attribute>
-		  <attribute name="ctrl" type="label x (integer), label y (integer), x (integer), y (integer)">Position of the "Ctrl" keybind relative to the keybinding scrollbox.</attribute>
-		  <attribute name="shift" type="label x (integer), label y (integer), x (integer), y (integer)">Position of the "Shift" keybind relative to the keybinding scrollbox.</attribute>
-		  <attribute name="alt" type="label x (integer), label y (integer), x (integer), y (integer)">Position of the "Alt" keybind relative to the keybinding scrollbox.</attribute>
-		  <attribute name="delete" type="label x (integer), label y (integer), x (integer), y (integer)">Position of the "Delete" keybind relative to the keybinding scrollbox.</attribute>
-		  <attribute name="actionbar" type="label x (integer), label y (integer), x (integer), y (integer)">Position of the "ActionBar Accept" keybind relative to the keybinding scrollbox.</attribute>
-		  <attribute name="actionbar_back" type="label x (integer), label y (integer), x (integer), y (integer)">Position of the "ActionBar Left" keybind relative to the keybinding scrollbox.</attribute>
-		  <attribute name="actionbar_forward" type="label x (integer), label y (integer), x (integer), y (integer)">Position of the "ActionBar Right" keybind relative to the keybinding scrollbox.</attribute>
-		  <attribute name="actionbar_use" type="label x (integer), label y (integer), x (integer), y (integer)">Position of the "ActionBar Use" keybind relative to the keybinding scrollbox.</attribute>
-		  <attribute name="developer_menu" type="label x (integer), label y (integer), x (integer), y (integer)">Position of the "Developer Menu" keybind relative to the keybinding scrollbox.</attribute>
+		  <attribute name="fullscreen" type="int, int, int, int" vars="Label X, Label Y, Widget X, Widget Y">Position of the &quot;Full Screen Mode&quot; checkbox relative to the frame.</attribute>
+		  <attribute name="mouse_move" type="int, int, int, int" vars="Label X, Label Y, Widget X, Widget Y">Position of the &quot;Move hero using mouse&quot; checkbox relative to the frame.</attribute>
+		  <attribute name="hwsurface" type="int, int, int, int" vars="Label X, Label Y, Widget X, Widget Y">Position of the &quot;Hardware surfaces&quot; checkbox relative to the frame.</attribute>
+		  <attribute name="vsync" type="int, int, int, int" vars="Label X, Label Y, Widget X, Widget Y">Position of the &quot;V-Sync&quot; checkbox relative to the frame.</attribute>
+		  <attribute name="texture_filter" type="int, int, int, int" vars="Label X, Label Y, Widget X, Widget Y">Position of the &quot;Texture Filtering&quot; checkbox relative to the frame.</attribute>
+		  <attribute name="change_gamma" type="int, int, int, int" vars="Label X, Label Y, Widget X, Widget Y">Position of the &quot;Allow changing gamma&quot; checkbox relative to the frame.</attribute>
+		  <attribute name="gamma" type="int, int, int, int" vars="Label X, Label Y, Widget X, Widget Y">Position of the &quot;Gamma&quot; slider relative to the frame.</attribute>
+		  <attribute name="hws_note" type="point" vars="">Position of the &quot;Disable for performance&quot; label (next to Hardware surfaces) relative to the frame.</attribute>
+		  <attribute name="dbuf_note" type="point" vars="">Position of the &quot;Disable for performance&quot; label (next to Double buffering) relative to the frame.</attribute>
+		  <attribute name="test_note" type="point" vars="">Position of the &quot;Experimental&quot; label relative to the frame.</attribute>
+		  <attribute name="enable_joystick" type="int, int, int, int" vars="Label X, Label Y, Widget X, Widget Y">Position of the &quot;Use joystick&quot; checkbox relative to the frame.</attribute>
+		  <attribute name="joystick_device" type="int, int, int, int" vars="Label X, Label Y, Widget X, Widget Y">Position of the &quot;Joystick&quot; list box relative to the frame.</attribute>
+		  <attribute name="mouse_aim" type="int, int, int, int" vars="Label X, Label Y, Widget X, Widget Y">Position of the &quot;Mouse aim&quot; checkbox relative to the frame.</attribute>
+		  <attribute name="no_mouse" type="int, int, int, int" vars="Label X, Label Y, Widget X, Widget Y">Position of the &quot;Do not use mouse&quot; checkbox relative to the frame.</attribute>
+		  <attribute name="joystick_deadzone" type="int, int, int, int" vars="Label X, Label Y, Widget X, Widget Y">Position of the &quot;Joystick Deadzone&quot; slider relative to the frame.</attribute>
+		  <attribute name="handheld_note" type="point" vars="">Position of the &quot;For handheld devices&quot; label relative to the frame.</attribute>
+		  <attribute name="secondary_offset" type="point" vars="">Offset of the second (and third) columns of keybinds.</attribute>
+		  <attribute name="keybinds_bg_color" type="color" vars="">Background color for the keybindings scrollbox.</attribute>
+		  <attribute name="scrollpane" type="rectangle" vars="">Position of the keybinding scrollbox relative to the frame.</attribute>
+		  <attribute name="scrollpane_contents" type="int" vars="">The vertical size of the keybinding scrollbox's contents.</attribute>
+		  <attribute name="cancel" type="int, int, int, int" vars="Label X, Label Y, Widget X, Widget Y">Position of the &quot;Cancel&quot; keybind relative to the keybinding scrollbox.</attribute>
+		  <attribute name="accept" type="int, int, int, int" vars="Label X, Label Y, Widget X, Widget Y">Position of the &quot;Accept&quot; keybind relative to the keybinding scrollbox.</attribute>
+		  <attribute name="up" type="int, int, int, int" vars="Label X, Label Y, Widget X, Widget Y">Position of the &quot;Up&quot; keybind relative to the keybinding scrollbox.</attribute>
+		  <attribute name="down" type="int, int, int, int" vars="Label X, Label Y, Widget X, Widget Y">Position of the &quot;Down&quot; keybind relative to the keybinding scrollbox.</attribute>
+		  <attribute name="left" type="int, int, int, int" vars="Label X, Label Y, Widget X, Widget Y">Position of the &quot;Left&quot; keybind relative to the keybinding scrollbox.</attribute>
+		  <attribute name="right" type="int, int, int, int" vars="Label X, Label Y, Widget X, Widget Y">Position of the &quot;Right&quot; keybind relative to the keybinding scrollbox.</attribute>
+		  <attribute name="bar1" type="int, int, int, int" vars="Label X, Label Y, Widget X, Widget Y">Position of the &quot;Bar1&quot; keybind relative to the keybinding scrollbox.</attribute>
+		  <attribute name="bar2" type="int, int, int, int" vars="Label X, Label Y, Widget X, Widget Y">Position of the &quot;Bar2&quot; keybind relative to the keybinding scrollbox.</attribute>
+		  <attribute name="bar3" type="int, int, int, int" vars="Label X, Label Y, Widget X, Widget Y">Position of the &quot;Bar3&quot; keybind relative to the keybinding scrollbox.</attribute>
+		  <attribute name="bar4" type="int, int, int, int" vars="Label X, Label Y, Widget X, Widget Y">Position of the &quot;Bar4&quot; keybind relative to the keybinding scrollbox.</attribute>
+		  <attribute name="bar5" type="int, int, int, int" vars="Label X, Label Y, Widget X, Widget Y">Position of the &quot;Bar5&quot; keybind relative to the keybinding scrollbox.</attribute>
+		  <attribute name="bar6" type="int, int, int, int" vars="Label X, Label Y, Widget X, Widget Y">Position of the &quot;Bar6&quot; keybind relative to the keybinding scrollbox.</attribute>
+		  <attribute name="bar7" type="int, int, int, int" vars="Label X, Label Y, Widget X, Widget Y">Position of the &quot;Bar7&quot; keybind relative to the keybinding scrollbox.</attribute>
+		  <attribute name="Bar8" type="int, int, int, int" vars="Label X, Label Y, Widget X, Widget Y">Position of the &quot;Bar8&quot; keybind relative to the keybinding scrollbox.</attribute>
+		  <attribute name="bar9" type="int, int, int, int" vars="Label X, Label Y, Widget X, Widget Y">Position of the &quot;Bar9&quot; keybind relative to the keybinding scrollbox.</attribute>
+		  <attribute name="bar0" type="int, int, int, int" vars="Label X, Label Y, Widget X, Widget Y">Position of the &quot;Bar0&quot; keybind relative to the keybinding scrollbox.</attribute>
+		  <attribute name="main1" type="int, int, int, int" vars="Label X, Label Y, Widget X, Widget Y">Position of the &quot;Main1&quot; keybind relative to the keybinding scrollbox.</attribute>
+		  <attribute name="main2" type="int, int, int, int" vars="Label X, Label Y, Widget X, Widget Y">Position of the &quot;Main2&quot; keybind relative to the keybinding scrollbox.</attribute>
+		  <attribute name="character" type="int, int, int, int" vars="Label X, Label Y, Widget X, Widget Y">Position of the &quot;Character&quot; keybind relative to the keybinding scrollbox.</attribute>
+		  <attribute name="inventory" type="int, int, int, int" vars="Label X, Label Y, Widget X, Widget Y">Position of the &quot;Inventory&quot; keybind relative to the keybinding scrollbox.</attribute>
+		  <attribute name="powers" type="int, int, int, int" vars="Label X, Label Y, Widget X, Widget Y">Position of the &quot;Powers&quot; keybind relative to the keybinding scrollbox.</attribute>
+		  <attribute name="log" type="int, int, int, int" vars="Label X, Label Y, Widget X, Widget Y">Position of the &quot;Log&quot; keybind relative to the keybinding scrollbox.</attribute>
+		  <attribute name="ctrl" type="int, int, int, int" vars="Label X, Label Y, Widget X, Widget Y">Position of the &quot;Ctrl&quot; keybind relative to the keybinding scrollbox.</attribute>
+		  <attribute name="shift" type="int, int, int, int" vars="Label X, Label Y, Widget X, Widget Y">Position of the &quot;Shift&quot; keybind relative to the keybinding scrollbox.</attribute>
+		  <attribute name="alt" type="int, int, int, int" vars="Label X, Label Y, Widget X, Widget Y">Position of the &quot;Alt&quot; keybind relative to the keybinding scrollbox.</attribute>
+		  <attribute name="delete" type="int, int, int, int" vars="Label X, Label Y, Widget X, Widget Y">Position of the &quot;Delete&quot; keybind relative to the keybinding scrollbox.</attribute>
+		  <attribute name="actionbar" type="int, int, int, int" vars="Label X, Label Y, Widget X, Widget Y">Position of the &quot;ActionBar Accept&quot; keybind relative to the keybinding scrollbox.</attribute>
+		  <attribute name="actionbar_back" type="int, int, int, int" vars="Label X, Label Y, Widget X, Widget Y">Position of the &quot;ActionBar Left&quot; keybind relative to the keybinding scrollbox.</attribute>
+		  <attribute name="actionbar_forward" type="int, int, int, int" vars="Label X, Label Y, Widget X, Widget Y">Position of the &quot;ActionBar Right&quot; keybind relative to the keybinding scrollbox.</attribute>
+		  <attribute name="actionbar_use" type="int, int, int, int" vars="Label X, Label Y, Widget X, Widget Y">Position of the &quot;ActionBar Use&quot; keybind relative to the keybinding scrollbox.</attribute>
+		  <attribute name="developer_menu" type="int, int, int, int" vars="Label X, Label Y, Widget X, Widget Y">Position of the &quot;Developer Menu&quot; keybind relative to the keybinding scrollbox.</attribute>
 	  </attributes>
 	</class>
 	<class name="Cutscene">
 	  <description>Description of cutscenes in cutscenes/</description>
 	  <attributes>
-		  <attribute name="scale_gfx" type="bool">The graphics will be scaled to fit screen width</attribute>
-		  <attribute name="caption_margins" type="[x,y]">Percentage-based margins for the caption text based on screen size</attribute>
-		  <attribute name="menu_backgrounds" type="bool">This cutscene will use a random fullscreen background image, like the title screen does</attribute>
-		  <attribute name="scene.caption" type="string">A caption that will be shown.</attribute>
-		  <attribute name="scene.image" type="string">Filename of an image that will be shown.</attribute>
-		  <attribute name="scene.pause" type="duration">Pause before next component in 'ms' or 's'.</attribute>
-		  <attribute name="scene.soundfx" type="string">Filename of a sound that will be played</attribute>
+		  <attribute name="scale_gfx" type="bool" vars="">The graphics will be scaled to fit screen width</attribute>
+		  <attribute name="caption_margins" type="float, float" vars="X margin, Y margin">Percentage-based margins for the caption text based on screen size</attribute>
+		  <attribute name="menu_backgrounds" type="bool" vars="">This cutscene will use a random fullscreen background image, like the title screen does</attribute>
+		  <attribute name="scene.caption" type="string" vars="">A caption that will be shown.</attribute>
+		  <attribute name="scene.image" type="filename" vars="">Filename of an image that will be shown.</attribute>
+		  <attribute name="scene.pause" type="duration" vars="">Pause before next component in 'ms' or 's'.</attribute>
+		  <attribute name="scene.soundfx" type="filename" vars="">Filename of a sound that will be played</attribute>
 	  </attributes>
 	</class>
 	<class name="GameStateLoad">
 	  <description>Description of menus/gameload.txt</description>
 	  <attributes>
-		  <attribute name="button_new" type="x (integer), y (integer)">Position of the "New Game" button.</attribute>
-		  <attribute name="button_load" type="x (integer), y (integer)">Position of the "Load Game" button.</attribute>
-		  <attribute name="button_delete" type="x (integer), y (integer)">Position of the "Delete Save" button.</attribute>
-		  <attribute name="portrait" type="x (integer), y (integer), w (integer), h (integer)">Position and dimensions of the portrait image.</attribute>
-		  <attribute name="gameslot" type="x (integer), y (integer), w (integer), h (integer)">Position and dimensions of the first game slot.</attribute>
-		  <attribute name="preview" type="x (integer), y (integer), w (integer), h (integer)">Position and dimensions of the preview area in the first game slot. Only 'h' is used?</attribute>
-		  <attribute name="name" type="label">The label for the hero's name. Position is relative to game slot position.</attribute>
-		  <attribute name="level" type="label">The label for the hero's level. Position is relative to game slot position.</attribute>
-		  <attribute name="class" type="label">The label for the hero's class. Position is relative to game slot position.</attribute>
-		  <attribute name="map" type="label">The label for the hero's current location. Position is relative to game slot position.</attribute>
-		  <attribute name="loading_label" type="label">The label for the "Entering game world..."/"Loading saved game..." text.</attribute>
-		  <attribute name="sprite" type="x (integer), y (integer)">Position for the avatar preview image in each slot</attribute>
-		  <attribute name="visible_slots" type="integer">The maximum numbers of visible save slots.</attribute>
+		  <attribute name="button_new" type="point" vars="">Position of the &quot;New Game&quot; button.</attribute>
+		  <attribute name="button_load" type="point" vars="">Position of the &quot;Load Game&quot; button.</attribute>
+		  <attribute name="button_delete" type="point" vars="">Position of the &quot;Delete Save&quot; button.</attribute>
+		  <attribute name="portrait" type="rectangle" vars="">Position and dimensions of the portrait image.</attribute>
+		  <attribute name="gameslot" type="rectangle" vars="">Position and dimensions of the first game slot.</attribute>
+		  <attribute name="name" type="label" vars="">The label for the hero's name. Position is relative to game slot position.</attribute>
+		  <attribute name="level" type="label" vars="">The label for the hero's level. Position is relative to game slot position.</attribute>
+		  <attribute name="class" type="label" vars="">The label for the hero's class. Position is relative to game slot position.</attribute>
+		  <attribute name="map" type="label" vars="">The label for the hero's current location. Position is relative to game slot position.</attribute>
+		  <attribute name="loading_label" type="label" vars="">The label for the &quot;Entering game world...&quot;/&quot;Loading saved game...&quot; text.</attribute>
+		  <attribute name="sprite" type="point" vars="">Position for the avatar preview image in each slot</attribute>
+		  <attribute name="visible_slots" type="int" vars="">The maximum numbers of visible save slots.</attribute>
 	  </attributes>
 	</class>
 	<class name="GameStateNew: Layout">
 	  <description>Description of menus/gamenew.txt</description>
 	  <attributes>
-		  <attribute name="button_prev" type="x (integer), y (integer)">Position of button to choose the previous preset hero.</attribute>
-		  <attribute name="button_next" type="x (integer), y (integer)">Position of button to choose the next preset hero.</attribute>
-		  <attribute name="button_permadeath" type="x (integer), y (integer)">Position of checkbox for toggling permadeath.</attribute>
-		  <attribute name="name_input" type="x (integer), y (integer)">Position of the hero name textbox.</attribute>
-		  <attribute name="portrait_label" type="label">Label for the "Choose a Portrait" text.</attribute>
-		  <attribute name="name_label" type="label">Label for the "Choose a Name" text.</attribute>
-		  <attribute name="permadeath_label" type="label">Label for the "Permadeath?" text.</attribute>
-		  <attribute name="classlist_label" type="label">Label for the "Choose a Class" text.</attribute>
-		  <attribute name="portrait" type="x (integer), y (integer), w (integer), h (integer)">Position and dimensions of the portrait image.</attribute>
-		  <attribute name="class_list" type="x (integer), y (integer)">Position of the class list.</attribute>
-		  <attribute name="show_classlist" type="boolean">Allows hiding the class list.</attribute>
+		  <attribute name="button_prev" type="point" vars="">Position of button to choose the previous preset hero.</attribute>
+		  <attribute name="button_next" type="point" vars="">Position of button to choose the next preset hero.</attribute>
+		  <attribute name="button_permadeath" type="point" vars="">Position of checkbox for toggling permadeath.</attribute>
+		  <attribute name="name_input" type="point" vars="">Position of the hero name textbox.</attribute>
+		  <attribute name="portrait_label" type="label" vars="">Label for the &quot;Choose a Portrait&quot; text.</attribute>
+		  <attribute name="name_label" type="label" vars="">Label for the &quot;Choose a Name&quot; text.</attribute>
+		  <attribute name="permadeath_label" type="label" vars="">Label for the &quot;Permadeath?&quot; text.</attribute>
+		  <attribute name="classlist_label" type="label" vars="">Label for the &quot;Choose a Class&quot; text.</attribute>
+		  <attribute name="portrait" type="rectangle" vars="">Position and dimensions of the portrait image.</attribute>
+		  <attribute name="class_list" type="point" vars="">Position of the class list.</attribute>
+		  <attribute name="show_classlist" type="bool" vars="">Allows hiding the class list.</attribute>
 	  </attributes>
 	</class>
 	<class name="GameStateNew: Hero options">
 	  <description>Description of engine/hero_options.txt</description>
 	  <attributes>
-		  <attribute name="option" type="base (string), head (string), portrait (string), name (string)">A default body, head, portrait, and name for a hero.</attribute>
+		  <attribute name="option" type="string, string, filename, string" vars="Base, Head, Portrait, Name">A default body, head, portrait, and name for a hero.</attribute>
 	  </attributes>
 	</class>
 	<class name="GameStatePlay: Titles">
 	  <description>Description of engine/titles.txt</description>
 	  <attributes>
-		  <attribute name="title.title" type="string">The displayed title.</attribute>
-		  <attribute name="title.level" type="integer">Requires level.</attribute>
-		  <attribute name="title.power" type="integer">Requires power.</attribute>
-		  <attribute name="title.requires_status" type="string">Requires status.</attribute>
-		  <attribute name="title.requires_not_status" type="string">Requires not status.</attribute>
-		  <attribute name="title.primary_stat" type="[physical, mental, offense, defense, physoff, physment, physdef, mentoff, offdef, mentdef]">Required primary stat.</attribute>
+		  <attribute name="title.title" type="string" vars="">The displayed title.</attribute>
+		  <attribute name="title.level" type="int" vars="">Requires level.</attribute>
+		  <attribute name="title.power" type="power_id" vars="">Requires power.</attribute>
+		  <attribute name="title.requires_status" type="string" vars="">Requires status.</attribute>
+		  <attribute name="title.requires_not_status" type="string" vars="">Requires not status.</attribute>
+		  <attribute name="title.primary_stat" type="[&quot;physical&quot;, &quot;mental&quot;, &quot;offense&quot;, &quot;defense&quot;, &quot;physoff&quot;, &quot;physment&quot;, &quot;physdef&quot;, &quot;mentoff&quot;, &quot;offdef&quot;, &quot;mentdef&quot;]" vars="">Required primary stat.</attribute>
 	  </attributes>
 	</class>
 	<class name="GameStateTitle">
 	  <description>Description of menus/gametitle.txt</description>
 	  <attributes>
-		  <attribute name="logo" type="filename (string), x (integer), y (integer), align (alignment)">Filename and position of the main logo image.</attribute>
-		  <attribute name="play_pos" type="x (integer), y (integer), align (alignment)">Position of the "Play Game" button.</attribute>
-		  <attribute name="config_pos" type="x (integer), y (integer), align (alignment)">Position of the "Configuration" button.</attribute>
-		  <attribute name="credits_pos" type="x (integer), y (integer), align (alignment)">Position of the "Credits" button.</attribute>
-		  <attribute name="exit_pos" type="x (integer), y (integer), align (alignment)">Position of the "Exit Game" button.</attribute>
+		  <attribute name="logo" type="filename, int, int, alignment" vars="Image file, X, Y, Alignment">Filename and position of the main logo image.</attribute>
+		  <attribute name="play_pos" type="int, int, alignment" vars="X, Y, Alignment">Position of the &quot;Play Game&quot; button.</attribute>
+		  <attribute name="config_pos" type="int, int, alignment" vars="X, Y, Alignment">Position of the &quot;Configuration&quot; button.</attribute>
+		  <attribute name="credits_pos" type="int, int, alignment" vars="X, Y, Alignment">Position of the &quot;Credits&quot; button.</attribute>
+		  <attribute name="exit_pos" type="int, int, alignment" vars="X, Y, Alignment">Position of the &quot;Exit Game&quot; button.</attribute>
 	  </attributes>
 	</class>
 	<class name="GameSwitcher: Default music">
 	  <description>Description of engine/default_music.txt</description>
 	  <attributes>
-		  <attribute name="music" type="string">Filename of a music file to play during game states that don't already have music.</attribute>
+		  <attribute name="music" type="filename" vars="">Filename of a music file to play during game states that don't already have music.</attribute>
 	  </attributes>
 	</class>
 	<class name="GameSwitcher: Background images">
 	  <description>Description of engine/menu_backgrounds.txt</description>
 	  <attributes>
-		  <attribute name="background" type="string">Filename of a background image to be added to the pool of random menu backgrounds</attribute>
+		  <attribute name="background" type="repeatable(filename)" vars="">Filename of a background image to be added to the pool of random menu backgrounds</attribute>
 	  </attributes>
 	</class>
 	<class name="GameSwitcher: FPS counter">
 	  <description>Description of menus/fps.txt</description>
 	  <attributes>
-		  <attribute name="position" type="x (integer), y (integer), align (alignment)">Position of the fps counter.</attribute>
-		  <attribute name="color" type="r (integer), g (integer), b (integer)">Color of the fps counter text.</attribute>
+		  <attribute name="position" type="int, int, alignment" vars="X, Y, Alignment">Position of the fps counter.</attribute>
+		  <attribute name="color" type="color" vars="">Color of the fps counter text.</attribute>
 	  </attributes>
 	</class>
 	<class name="IconManager">
 	  <description>Description of engine/icons.txt</description>
 	  <attributes>
-		  <attribute name="icon_set" type="first_id (integer), filename (string)">Defines an icon graphics file to load, as well as the index of the first icon.</attribute>
+		  <attribute name="icon_set" type="repeatable(icon_id, filename)" vars="First ID, Image file">Defines an icon graphics file to load, as well as the index of the first icon.</attribute>
 	  </attributes>
 	</class>
 	<class name="ItemManager: Items">
 	  <description>Description about the class and it usage, items/items.txt...</description>
 	  <attributes>
-		  <attribute name="id" type="integer">An uniq id of the item used as reference from other classes.</attribute>
-		  <attribute name="name" type="string">Item name displayed on long and short tooltips.</attribute>
-		  <attribute name="flavor" type="string">A description of the item.</attribute>
-		  <attribute name="level" type="integer">The item's level. Has no gameplay impact. (Deprecated?)</attribute>
-		  <attribute name="icon" type="icon_id">An id for the icon to display for this item.</attribute>
-		  <attribute name="book" type="string">A book file to open when this item is activated.</attribute>
-		  <attribute name="quality" type="predefined_string">Item quality matching an id in items/qualities.txt</attribute>
-		  <attribute name="item_type" type="predefined_string">Should match the id in items/types.txt. Equipment slot [artifact, head, chest, hands, legs, feets, main, off, ring] or base item type [gem, consumable]</attribute>
-		  <attribute name="equip_flags" type="list(predefined_string)">A comma separated list of flags to set when this item is equipped. See engine/equip_flags.txt.</attribute>
-		  <attribute name="dmg_melee" type="integer,integer">Defines the item melee damage, if only min is specified the melee damage is fixed.</attribute>
-		  <attribute name="dmg_ranged" type="integer,integer">Defines the item ranged damage, if only min is specified the ranged damage is fixed.</attribute>
-		  <attribute name="dmg_ment" type="integer,integer">Defines the item mental damage, if only min is specified the ranged damage is fixed.</attribute>
-		  <attribute name="abs" type="integer,integer">Defines the item absorb value, if only min is specified the absorb value is fixed.</attribute>
-		  <attribute name="requires_level" type="integer">The hero's level must match or exceed this value in order to equip this item.</attribute>
-		  <attribute name="requires_stat" type="repeatable(predefined_string,integer)">Make item require specific stat level ex. requires_stat=physical,6 will require hero to have level 6 in physical stats</attribute>
-		  <attribute name="requires_class" type="predefined_string">The hero's base class (engine/classes.txt) must match for this item to be equipped.</attribute>
-		  <attribute name="bonus" type="repeatable(predefined_string,integer)">Adds a bonus to the item power_tag being a uniq tag of a power definition, e.: bonus=HP regen, 50</attribute>
-		  <attribute name="soundfx" type="filename">Sound effect filename to play for the specific item. Commonly located in soundfx/inventory/</attribute>
-		  <attribute name="gfx" type="filename">Filename of an animation set to display when the item is equipped. Commonly located in animations/avatar/</attribute>
-		  <attribute name="loot_animation" type="filename,integer,integer">Specifies the loot animation file for the item. Commonly located in animations/loot/. The max quantity, or both quantity values, may be omitted.</attribute>
-		  <attribute name="power" type="integer">Adds a specific power to the item which makes it usable as a power and can be placed in action bar.</attribute>
-		  <attribute name="replace_power" type="repeatable(integer,integer)">Replaces the old power id with the new power id in the action bar when equipped.</attribute>
-		  <attribute name="power_desc" type="string">A string describing the additional power.</attribute>
-		  <attribute name="price" type="integer">The amount of currency the item costs, if set to 0 the item cannot be sold.</attribute>
-		  <attribute name="price_per_level" type="integer">Additional price for each player level above 1</attribute>
-		  <attribute name="price_sell" type="integer">The amount of currency the item is sold for, if set to 0 the sell prices is prices*vendor_ratio.</attribute>
-		  <attribute name="max_quantity" type="integer">Max item count per stack.</attribute>
-		  <attribute name="pickup_status" type="string">Set a campaign status when item is picked up, this is used for quest items.</attribute>
-		  <attribute name="stepfx" type="predefined_string">Sound effect when walking, this applies only to armors. Should match an id in items/step_sounds.txt</attribute>
-		  <attribute name="disable_slots" type="list(predefined_string)">A comma separated list of equip slot types to disable when this item is equipped.</attribute>
-		  <attribute name="quest_item" type="bool">If true, this item is a quest item and can not be dropped, stashed, or sold.</attribute>
+		  <attribute name="id" type="item_id" vars="">An uniq id of the item used as reference from other classes.</attribute>
+		  <attribute name="name" type="string" vars="">Item name displayed on long and short tooltips.</attribute>
+		  <attribute name="flavor" type="string" vars="">A description of the item.</attribute>
+		  <attribute name="level" type="int" vars="">The item's level. Has no gameplay impact. (Deprecated?)</attribute>
+		  <attribute name="icon" type="icon_id" vars="">An id for the icon to display for this item.</attribute>
+		  <attribute name="book" type="filename" vars="">A book file to open when this item is activated.</attribute>
+		  <attribute name="quality" type="string" vars="">Item quality matching an id in items/qualities.txt</attribute>
+		  <attribute name="item_type" type="string" vars="">Equipment slot matching an id in items/types.txt</attribute>
+		  <attribute name="equip_flags" type="list(string)" vars="">A comma separated list of flags to set when this item is equipped. See engine/equip_flags.txt.</attribute>
+		  <attribute name="dmg_melee" type="int, int" vars="Min, Max">Defines the item melee damage, if only min is specified the melee damage is fixed.</attribute>
+		  <attribute name="dmg_ranged" type="int, int" vars="Min, Max">Defines the item ranged damage, if only min is specified the ranged damage is fixed.</attribute>
+		  <attribute name="dmg_ment" type="int, int" vars="Min, Max">Defines the item mental damage, if only min is specified the ranged damage is fixed.</attribute>
+		  <attribute name="abs" type="int, int" vars="Min, Max">Defines the item absorb value, if only min is specified the absorb value is fixed.</attribute>
+		  <attribute name="requires_level" type="int" vars="">The hero's level must match or exceed this value in order to equip this item.</attribute>
+		  <attribute name="requires_stat" type="repeatable([&quot;physical&quot;, &quot;mental&quot;, &quot;offense&quot;, &quot;defense&quot;], int)" vars="Primary stat name, Value">Make item require specific stat level ex. requires_stat=physical,6 will require hero to have level 6 in physical stats</attribute>
+		  <attribute name="requires_class" type="string" vars="">The hero's base class (engine/classes.txt) must match for this item to be equipped.</attribute>
+		  <attribute name="bonus" type="repeatable(string, int)" vars="Stat name, Value">Adds a bonus to the item by stat name, example  bonus=hp, 50</attribute>
+		  <attribute name="soundfx" type="filename" vars="">Sound effect filename to play for the specific item.</attribute>
+		  <attribute name="gfx" type="filename" vars="">Filename of an animation set to display when the item is equipped.</attribute>
+		  <attribute name="loot_animation" type="repeatable(filename, int, int)" vars="Loot image, Min quantity, Max quantity">Specifies the loot animation file for the item. The max quantity, or both quantity values, may be omitted.</attribute>
+		  <attribute name="power" type="power_id" vars="">Adds a specific power to the item which makes it usable as a power and can be placed in action bar.</attribute>
+		  <attribute name="replace_power" type="repeatable(int, int)" vars="Old power, New power">Replaces the old power id with the new power id in the action bar when equipped.</attribute>
+		  <attribute name="power_desc" type="string" vars="">A string describing the additional power.</attribute>
+		  <attribute name="price" type="int" vars="">The amount of currency the item costs, if set to 0 the item cannot be sold.</attribute>
+		  <attribute name="price_per_level" type="int" vars="">Additional price for each player level above 1</attribute>
+		  <attribute name="price_sell" type="int" vars="">The amount of currency the item is sold for, if set to 0 the sell prices is prices*vendor_ratio.</attribute>
+		  <attribute name="max_quantity" type="int" vars="">Max item count per stack.</attribute>
+		  <attribute name="pickup_status" type="string" vars="">Set a campaign status when item is picked up, this is used for quest items.</attribute>
+		  <attribute name="stepfx" type="string" vars="">Sound effect when walking, this applies only to armors.</attribute>
+		  <attribute name="disable_slots" type="list(string)" vars="">A comma separated list of equip slot types to disable when this item is equipped.</attribute>
+		  <attribute name="quest_item" type="bool" vars="">If true, this item is a quest item and can not be dropped, stashed, or sold.</attribute>
 	  </attributes>
 	</class>
 	<class name="ItemManager: Types">
 	  <description>Definition of a item types, items/types.txt...</description>
 	  <attributes>
-		  <attribute name="type.id" type="string">Item type identifier.</attribute>
-		  <attribute name="type.name" type="string">Item type name.</attribute>
+		  <attribute name="type.id" type="string" vars="">Item type identifier.</attribute>
+		  <attribute name="type.name" type="string" vars="">Item type name.</attribute>
 	  </attributes>
 	</class>
 	<class name="ItemManager: Qualities">
 	  <description>Definition of a item qualities, items/types.txt...</description>
 	  <attributes>
-		  <attribute name="quality.id" type="string">Item quality identifier.</attribute>
-		  <attribute name="quality.name" type="string">Item quality name.</attribute>
-		  <attribute name="quality.color" type="r (integer), g (integer), b (integer)">Item quality color.</attribute>
+		  <attribute name="quality.id" type="string" vars="">Item quality identifier.</attribute>
+		  <attribute name="quality.name" type="string" vars="">Item quality name.</attribute>
+		  <attribute name="quality.color" type="color" vars="">Item quality color.</attribute>
 	  </attributes>
 	</class>
 	<class name="ItemManager: Sets">
 	  <description>Definition of a item sets, items/sets.txt...</description>
 	  <attributes>
-		  <attribute name="id" type="integer">A uniq id for the item set.</attribute>
-		  <attribute name="name" type="string">Name of the item set.</attribute>
-		  <attribute name="items" type="[item_id,...]">List of item id's that is part of the set.</attribute>
-		  <attribute name="color" type="color">A specific of color for the set.</attribute>
-		  <attribute name="bonus" type="[requirements (integer), bonus stat (string), bonus (integer)]">Bonus to append to items in the set.</attribute>
+		  <attribute name="id" type="int" vars="">A uniq id for the item set.</attribute>
+		  <attribute name="name" type="string" vars="">Name of the item set.</attribute>
+		  <attribute name="items" type="list(item_id)" vars="">List of item id's that is part of the set.</attribute>
+		  <attribute name="color" type="color" vars="">A specific of color for the set.</attribute>
+		  <attribute name="bonus" type="repeatable(int, string, int)" vars="Required set item count, Stat name, Value">Bonus to append to items in the set.</attribute>
 	  </attributes>
 	</class>
 	<class name="Loot">
 	  <description>Description of engine/loot.txt</description>
 	  <attributes>
-		  <attribute name="tooltip_margin" type="integer">Vertical offset of the loot tooltip from the loot itself.</attribute>
-		  <attribute name="autopickup_currency" type="boolean">Enable autopickup for currency</attribute>
-		  <attribute name="autopickup_range" type="float">Minimum distance the player must be from loot to trigger autopickup.</attribute>
-		  <attribute name="vendor_ratio" type="integer">Prices ratio for vendors</attribute>
-		  <attribute name="sfx_loot" type="string">Filename of a sound effect to play for dropping loot.</attribute>
-		  <attribute name="drop_max" type="integer">The maximum number of random item stacks that can drop at once</attribute>
-		  <attribute name="drop_radius" type="integer">The distance (in tiles) away from the origin that loot can drop</attribute>
+		  <attribute name="tooltip_margin" type="int" vars="">Vertical offset of the loot tooltip from the loot itself.</attribute>
+		  <attribute name="autopickup_currency" type="bool" vars="">Enable autopickup for currency</attribute>
+		  <attribute name="autopickup_range" type="float" vars="">Minimum distance the player must be from loot to trigger autopickup.</attribute>
+		  <attribute name="vendor_ratio" type="int" vars="">Prices ratio for vendors</attribute>
+		  <attribute name="sfx_loot" type="filename" vars="">Filename of a sound effect to play for dropping loot.</attribute>
+		  <attribute name="drop_max" type="int" vars="">The maximum number of random item stacks that can drop at once</attribute>
+		  <attribute name="drop_radius" type="int" vars="">The distance (in tiles) away from the origin that loot can drop</attribute>
 	  </attributes>
 	</class>
 	<class name="Map">
 	  <description>Description of maps/</description>
 	  <attributes>
-		  <attribute name="title" type="string">Title of map</attribute>
-		  <attribute name="width" type="integer">Width of map</attribute>
-		  <attribute name="height" type="integer">Height of map</attribute>
-		  <attribute name="tileset" type="string">Filename of a tileset definition to use for map</attribute>
-		  <attribute name="music" type="string">Filename of background music to use for map</attribute>
-		  <attribute name="location" type="[x(integer), y(integer), direction(integer))">Spawn point location in map</attribute>
-		  <attribute name="tilewidth" type="integer">Inherited from Tiled map file. Unused by engine.</attribute>
-		  <attribute name="tileheight" type="integer">Inherited from Tiled map file. Unused by engine.</attribute>
-		  <attribute name="layer.type" type="string">Map layer type.</attribute>
-		  <attribute name="layer.format" type="string">Format for map layer, must be 'dec'</attribute>
-		  <attribute name="layer.data" type="raw">Raw map layer data</attribute>
-		  <attribute name="enemygroup.type" type="string">The category of enemies that will spawn in this group.</attribute>
-		  <attribute name="enemygroup.level" type="[min(integer), max(integer)]">Defines the level range of enemies in group. If only one number is given, it's the exact level.</attribute>
-		  <attribute name="enemygroup.location" type="[x(integer), y(integer), x2(integer), y2(integer)]">Location area for enemygroup</attribute>
-		  <attribute name="enemygroup.number" type="[min(integer), max(integer]">Defines the range of enemies in group. If only one number is given, it's the exact amount.</attribute>
-		  <attribute name="enemygroup.chance" type="integer">Percentage of chance</attribute>
-		  <attribute name="enemygroup.direction" type="direction">Direction that enemies will initially face.</attribute>
-		  <attribute name="enemygroup.waypoints" type="[x(integer), y(integer)]">Enemy waypoints; single enemy only; negates wander_radius</attribute>
-		  <attribute name="enemygroup.wander_radius" type="integer">The radius (in tiles) that an enemy will wander around randomly; negates waypoints</attribute>
-		  <attribute name="enemygroup.requires_status" type="string">Status required for loading enemies</attribute>
-		  <attribute name="enemygroup.requires_not_status" type="string">Status required to be missing for loading enemies</attribute>
-		  <attribute name="npc.type" type="string">Filename of an NPC definition.</attribute>
-		  <attribute name="npc.requires_status" type="string">Status required for NPC load. There can be multiple states, separated by comma</attribute>
-		  <attribute name="npc.requires_not_status" type="string">Status required to be missing for NPC load. There can be multiple states, separated by comma</attribute>
-		  <attribute name="npc.location" type="[x(integer), y(integer)]">Location of NPC</attribute>
+		  <attribute name="title" type="string" vars="">Title of map</attribute>
+		  <attribute name="width" type="int" vars="">Width of map</attribute>
+		  <attribute name="height" type="int" vars="">Height of map</attribute>
+		  <attribute name="tileset" type="filename" vars="">Filename of a tileset definition to use for map</attribute>
+		  <attribute name="music" type="filename" vars="">Filename of background music to use for map</attribute>
+		  <attribute name="location" type="int, int, direction" vars="X, Y, Direction">Spawn point location in map</attribute>
+		  <attribute name="tilewidth" type="int" vars="">Inherited from Tiled map file. Unused by engine.</attribute>
+		  <attribute name="tileheight" type="int" vars="">Inherited from Tiled map file. Unused by engine.</attribute>
+		  <attribute name="layer.type" type="string" vars="">Map layer type.</attribute>
+		  <attribute name="layer.format" type="string" vars="">Format for map layer, must be 'dec'</attribute>
+		  <attribute name="layer.data" type="raw" vars="">Raw map layer data</attribute>
+		  <attribute name="enemygroup.type" type="string" vars="">(IGNORED BY ENGINE) The &quot;type&quot; field, as used by Tiled and other mapping tools.</attribute>
+		  <attribute name="enemygroup.category" type="string" vars="">The category of enemies that will spawn in this group.</attribute>
+		  <attribute name="enemygroup.level" type="int, int" vars="Min, Max">Defines the level range of enemies in group. If only one number is given, it's the exact level.</attribute>
+		  <attribute name="enemygroup.location" type="rectangle" vars="">Location area for enemygroup</attribute>
+		  <attribute name="enemygroup.number" type="int, int" vars="Min, Max">Defines the range of enemies in group. If only one number is given, it's the exact amount.</attribute>
+		  <attribute name="enemygroup.chance" type="int" vars="">Percentage of chance</attribute>
+		  <attribute name="enemygroup.direction" type="direction" vars="">Direction that enemies will initially face.</attribute>
+		  <attribute name="enemygroup.waypoints" type="list(point)" vars="">Enemy waypoints; single enemy only; negates wander_radius</attribute>
+		  <attribute name="enemygroup.wander_radius" type="int" vars="">The radius (in tiles) that an enemy will wander around randomly; negates waypoints</attribute>
+		  <attribute name="enemygroup.requires_status" type="list(string)" vars="">Status required for loading enemies</attribute>
+		  <attribute name="enemygroup.requires_not_status" type="list(string)" vars="">Status required to be missing for loading enemies</attribute>
+		  <attribute name="npc.type" type="string" vars="">(IGNORED BY ENGINE) The &quot;type&quot; field, as used by Tiled and other mapping tools.</attribute>
+		  <attribute name="npc.filename" type="string" vars="">Filename of an NPC definition.</attribute>
+		  <attribute name="npc.requires_status" type="list(string)" vars="">Status required for NPC load. There can be multiple states, separated by comma</attribute>
+		  <attribute name="npc.requires_not_status" type="list(string)" vars="">Status required to be missing for NPC load. There can be multiple states, separated by comma</attribute>
+		  <attribute name="npc.location" type="point" vars="">Location of NPC</attribute>
 	  </attributes>
 	</class>
 	<class name="Menu">
 	  <description>Description of menus in menus/</description>
 	  <attributes>
-		  <attribute name="pos" type="x (integer), y (integer), w (integer), h (integer)">Menu position and dimensions</attribute>
-		  <attribute name="align" type="alignment">Position relative to screen edges</attribute>
-		  <attribute name="soundfx_open" type="string">Filename of a sound to play when opening this menu.</attribute>
-		  <attribute name="soundfx_close" type="string">Filename of a sound to play when closing this menu.</attribute>
+		  <attribute name="pos" type="rectangle" vars="">Menu position and dimensions</attribute>
+		  <attribute name="align" type="alignment" vars="">Position relative to screen edges</attribute>
+		  <attribute name="soundfx_open" type="filename" vars="">Filename of a sound to play when opening this menu.</attribute>
+		  <attribute name="soundfx_close" type="filename" vars="">Filename of a sound to play when closing this menu.</attribute>
 	  </attributes>
 	</class>
 	<class name="MenuActionBar">
 	  <description>Description of menus/actionbar.txt</description>
 	  <attributes>
-		  <attribute name="slot" type="index(integer), x (integer), y (integer)">Index (max 10) and position for power slot.</attribute>
-		  <attribute name="slot_M1" type="x (integer), y (integer)">Position for the primary action slot.</attribute>
-		  <attribute name="slot_M2" type="x (integer), y (integer)">Position for the secondary action slot.</attribute>
-		  <attribute name="char_menu" type="x (integer), y (integer)">Position for the Character menu button.</attribute>
-		  <attribute name="inv_menu" type="x (integer), y (integer)">Position for the Inventory menu button.</attribute>
-		  <attribute name="powers_menu" type="x (integer), y (integer)">Position for the Powers menu button.</attribute>
-		  <attribute name="log_menu" type="x (integer), y (integer)">Position for the Log menu button.</attribute>
+		  <attribute name="slot" type="repeatable(int, int, int)" vars="Index, X, Y">Index (max 10) and position for power slot.</attribute>
+		  <attribute name="slot_M1" type="point" vars="">Position for the primary action slot.</attribute>
+		  <attribute name="slot_M2" type="point" vars="">Position for the secondary action slot.</attribute>
+		  <attribute name="char_menu" type="point" vars="">Position for the Character menu button.</attribute>
+		  <attribute name="inv_menu" type="point" vars="">Position for the Inventory menu button.</attribute>
+		  <attribute name="powers_menu" type="point" vars="">Position for the Powers menu button.</attribute>
+		  <attribute name="log_menu" type="point" vars="">Position for the Log menu button.</attribute>
 	  </attributes>
 	</class>
 	<class name="MenuActiveEffects">
 	  <description>Description of menus/activeeffects.txt</description>
 	  <attributes>
-		  <attribute name="orientation" type="boolean">True is vertical orientation; False is horizontal orientation.</attribute>
+		  <attribute name="orientation" type="bool" vars="">True is vertical orientation; False is horizontal orientation.</attribute>
 	  </attributes>
 	</class>
 	<class name="MenuBook">
 	  <description>Description of books in books/</description>
 	  <attributes>
-		  <attribute name="close" type="x (integer), y (integer)">Position of the close button.</attribute>
-		  <attribute name="background" type="string">Filename for the background image.</attribute>
-		  <attribute name="image.image_pos" type="x (integer), y (integer)">Position of the image.</attribute>
-		  <attribute name="image.image" type="string">Filename of the image.</attribute>
-		  <attribute name="text.text_pos" type="x (integer), y (integer), w (integer), [left:center:right]">Position of the text.</attribute>
-		  <attribute name="text.text_font" type="r (integer), g (integer), b (integer), style (string)">Font color and style.</attribute>
-		  <attribute name="text.text" type="string">The text to be displayed.</attribute>
+		  <attribute name="close" type="point" vars="">Position of the close button.</attribute>
+		  <attribute name="background" type="filename" vars="">Filename for the background image.</attribute>
+		  <attribute name="image.image_pos" type="point" vars="">Position of the image.</attribute>
+		  <attribute name="image.image" type="filename" vars="">Filename of the image.</attribute>
+		  <attribute name="text.text_pos" type="int, int, int, [&quot;left&quot;, &quot;center&quot;, &quot;right&quot;]" vars="X, Y, Width, Text justify">Position of the text.</attribute>
+		  <attribute name="text.text_font" type="color, string" vars="Font color, Font style">Font color and style.</attribute>
+		  <attribute name="text.text" type="string" vars="">The text to be displayed.</attribute>
 	  </attributes>
 	</class>
 	<class name="MenuCharacter">
 	  <description>Description of menus/character.txt</description>
 	  <attributes>
-		  <attribute name="close" type="x (integer), y (integer)">Position of the close button.</attribute>
-		  <attribute name="label_title" type="label">Position of the "Character" text.</attribute>
-		  <attribute name="upgrade_physical" type="x (integer), y (integer)">Position of the button used to add a stat point to Physical.</attribute>
-		  <attribute name="upgrade_mental" type="x (integer), y (integer)">Position of the button used to add a stat point to Mental.</attribute>
-		  <attribute name="upgrade_offense" type="x (integer), y (integer)">Position of the button used to add a stat point to Offense.</attribute>
-		  <attribute name="upgrade_defense" type="x (integer), y (integer)">Position of the button used to add a stat point to Defense.</attribute>
-		  <attribute name="statlist" type="x (integer), y (integer)">Position of the scrollbox containing non-primary stats.</attribute>
-		  <attribute name="statlist_rows" type="integer">The height of the statlist in rows.</attribute>
-		  <attribute name="statlist_scrollbar_offset" type="integer">Right margin in pixels for the statlist's scrollbar.</attribute>
-		  <attribute name="label_name" type="label">Position of the "Name" text.</attribute>
-		  <attribute name="label_level" type="label">Position of the "Level" text.</attribute>
-		  <attribute name="label_physical" type="label">Position of the "Physical" text.</attribute>
-		  <attribute name="label_mental" type="label">Position of the "Mental" text.</attribute>
-		  <attribute name="label_offense" type="label">Position of the "Offense" text.</attribute>
-		  <attribute name="label_defense" type="label">Position of the "Defense" text.</attribute>
-		  <attribute name="name" type="x (integer), y (integer), w (integer), h (integer)">Position of the player's name and dimensions of the tooltip hotspot.</attribute>
-		  <attribute name="level" type="x (integer), y (integer), w (integer), h (integer)">Position of the player's level and dimensions of the tooltip hotspot.</attribute>
-		  <attribute name="physical" type="x (integer), y (integer), w (integer), h (integer)">Position of the player's physical stat and dimensions of the tooltip hotspot.</attribute>
-		  <attribute name="mental" type="x (integer), y (integer), w (integer), h (integer)">Position of the player's mental stat and dimensions of the tooltip hotspot.</attribute>
-		  <attribute name="offense" type="x (integer), y (integer), w (integer), h (integer)">Position of the player's offense stat and dimensions of the tooltip hotspot.</attribute>
-		  <attribute name="defense" type="x (integer), y (integer), w (integer), h (integer)">Position of the player's defense stat and dimensions of the tooltip hotspot.</attribute>
-		  <attribute name="unspent" type="label">Position of the label showing the number of unspent stat points.</attribute>
-		  <attribute name="show_upgrade_physical" type="boolean">Hide the Physical upgrade button if set to false.</attribute>
-		  <attribute name="show_upgrade_mental" type="boolean">Hide the Mental upgrade button if set to false.</attribute>
-		  <attribute name="show_upgrade_offense" type="boolean">Hide the Offense upgrade button if set to false.</attribute>
-		  <attribute name="show_upgrade_defense" type="boolean">Hide the Defense upgrade button if set to false.</attribute>
-		  <attribute name="show_resists" type="boolean">Hide the elemental "Resistance" stats in the statlist if set to false.</attribute>
-		  <attribute name="show_$STAT" type="boolean">Hide the matching stat in the statlist if set to false.</attribute>
+		  <attribute name="close" type="point" vars="">Position of the close button.</attribute>
+		  <attribute name="label_title" type="label" vars="">Position of the &quot;Character&quot; text.</attribute>
+		  <attribute name="upgrade_physical" type="point" vars="">Position of the button used to add a stat point to Physical.</attribute>
+		  <attribute name="upgrade_mental" type="point" vars="">Position of the button used to add a stat point to Mental.</attribute>
+		  <attribute name="upgrade_offense" type="point" vars="">Position of the button used to add a stat point to Offense.</attribute>
+		  <attribute name="upgrade_defense" type="point" vars="">Position of the button used to add a stat point to Defense.</attribute>
+		  <attribute name="statlist" type="point" vars="">Position of the scrollbox containing non-primary stats.</attribute>
+		  <attribute name="statlist_rows" type="int" vars="">The height of the statlist in rows.</attribute>
+		  <attribute name="statlist_scrollbar_offset" type="int" vars="">Right margin in pixels for the statlist's scrollbar.</attribute>
+		  <attribute name="label_name" type="label" vars="">Position of the &quot;Name&quot; text.</attribute>
+		  <attribute name="label_level" type="label" vars="">Position of the &quot;Level&quot; text.</attribute>
+		  <attribute name="label_physical" type="label" vars="">Position of the &quot;Physical&quot; text.</attribute>
+		  <attribute name="label_mental" type="label" vars="">Position of the &quot;Mental&quot; text.</attribute>
+		  <attribute name="label_offense" type="label" vars="">Position of the &quot;Offense&quot; text.</attribute>
+		  <attribute name="label_defense" type="label" vars="">Position of the &quot;Defense&quot; text.</attribute>
+		  <attribute name="name" type="rectangle" vars="">Position of the player's name and dimensions of the tooltip hotspot.</attribute>
+		  <attribute name="level" type="rectangle" vars="">Position of the player's level and dimensions of the tooltip hotspot.</attribute>
+		  <attribute name="physical" type="rectangle" vars="">Position of the player's physical stat and dimensions of the tooltip hotspot.</attribute>
+		  <attribute name="mental" type="rectangle" vars="">Position of the player's mental stat and dimensions of the tooltip hotspot.</attribute>
+		  <attribute name="offense" type="rectangle" vars="">Position of the player's offense stat and dimensions of the tooltip hotspot.</attribute>
+		  <attribute name="defense" type="rectangle" vars="">Position of the player's defense stat and dimensions of the tooltip hotspot.</attribute>
+		  <attribute name="unspent" type="label" vars="">Position of the label showing the number of unspent stat points.</attribute>
+		  <attribute name="show_upgrade_physical" type="bool" vars="">Hide the Physical upgrade button if set to false.</attribute>
+		  <attribute name="show_upgrade_mental" type="bool" vars="">Hide the Mental upgrade button if set to false.</attribute>
+		  <attribute name="show_upgrade_offense" type="bool" vars="">Hide the Offense upgrade button if set to false.</attribute>
+		  <attribute name="show_upgrade_defense" type="bool" vars="">Hide the Defense upgrade button if set to false.</attribute>
+		  <attribute name="show_resists" type="bool" vars="">Hide the elemental &quot;Resistance&quot; stats in the statlist if set to false.</attribute>
+		  <attribute name="show_stat" type="string, bool" vars="Stat name, Visible">Hide the matching stat in the statlist if set to false.</attribute>
 	  </attributes>
 	</class>
 	<class name="MenuDevConsole">
 	  <description>Description of menus/devconsole.txt</description>
 	  <attributes>
-		  <attribute name="close" type="x (integer), y (integer)">Position of the close button.</attribute>
-		  <attribute name="label_title" type="label">Position of the "Developer Console" label.</attribute>
-		  <attribute name="confirm" type="x (integer), y (integer)">Position of the "Execute" button.</attribute>
-		  <attribute name="input" type="x (integer), y (integer)">Position of the command entry widget.</attribute>
-		  <attribute name="history" type="x (integer), y (integer), w (integer), h (integer)">Position and dimensions of the command history.</attribute>
+		  <attribute name="close" type="point" vars="">Position of the close button.</attribute>
+		  <attribute name="label_title" type="label" vars="">Position of the &quot;Developer Console&quot; label.</attribute>
+		  <attribute name="confirm" type="point" vars="">Position of the &quot;Execute&quot; button.</attribute>
+		  <attribute name="input" type="point" vars="">Position of the command entry widget.</attribute>
+		  <attribute name="history" type="rectangle" vars="">Position and dimensions of the command history.</attribute>
 	  </attributes>
 	</class>
 	<class name="MenuDevHUD">
@@ -505,490 +507,499 @@
 	<class name="MenuEnemy">
 	  <description>Description of menus/enemy.txt</description>
 	  <attributes>
-		  <attribute name="bar_pos" type="x (integer), y (integer), w (integer), h (integer)">Position and dimensions of the health bar.</attribute>
-		  <attribute name="text_pos" type="label">Position of the "$ENEMY level $LEVEL" text. Optional.</attribute>
+		  <attribute name="bar_pos" type="rectangle" vars="">Position and dimensions of the health bar.</attribute>
+		  <attribute name="text_pos" type="label" vars="">Position of the text displaying the enemy's name and level.</attribute>
 	  </attributes>
 	</class>
 	<class name="MenuInventory">
 	  <description>Description of menus/inventory.txt</description>
 	  <attributes>
-		  <attribute name="close" type="x (integer), y (integer)">Position of the close button.</attribute>
-		  <attribute name="equipment_slot" type="x (integer), y (integer), size (integer), slot_type (string)">Position and item type of an equipment slot.</attribute>
-		  <attribute name="slot_name" type="string">The displayed name of the last defined equipment slot.</attribute>
-		  <attribute name="carried_area" type="x (integer), y (integer)">Position of the first normal inventory slot.</attribute>
-		  <attribute name="carried_cols" type="integer">The number of columns for the normal inventory.</attribute>
-		  <attribute name="carried_rows" type="integer">The number of rows for the normal inventory.</attribute>
-		  <attribute name="label_title" type="label">Position of the "Inventory" label.</attribute>
-		  <attribute name="currency" type="label">Position of the label that displays the total currency being carried.</attribute>
-		  <attribute name="help" type="x (integer), y (integer), w (integer), h (integer)">A mouse-over area that displays some help text for inventory shortcuts.</attribute>
+		  <attribute name="close" type="point" vars="">Position of the close button.</attribute>
+		  <attribute name="equipment_slot" type="repeatable(int, int, string)" vars="X, Y, Slot Type">Position and item type of an equipment slot.</attribute>
+		  <attribute name="carried_area" type="point" vars="">Position of the first normal inventory slot.</attribute>
+		  <attribute name="carried_cols" type="int" vars="">The number of columns for the normal inventory.</attribute>
+		  <attribute name="carried_rows" type="int" vars="">The number of rows for the normal inventory.</attribute>
+		  <attribute name="label_title" type="label" vars="">Position of the &quot;Inventory&quot; label.</attribute>
+		  <attribute name="currency" type="label" vars="">Position of the label that displays the total currency being carried.</attribute>
+		  <attribute name="help" type="rectangle" vars="">A mouse-over area that displays some help text for inventory shortcuts.</attribute>
 	  </attributes>
 	</class>
 	<class name="MenuLog">
 	  <description>Description of menus/log.txt</description>
 	  <attributes>
-		  <attribute name="label_title" type="label">Position of the "Log" text.</attribute>
-		  <attribute name="close" type="x (integer), y (integer)">Position of the close button.</attribute>
-		  <attribute name="tab_area" type="x (integer), y (integer), w (integer), h (integer)">The position of the row of tabs, followed by the dimensions of the log text area.</attribute>
+		  <attribute name="label_title" type="label" vars="">Position of the &quot;Log&quot; text.</attribute>
+		  <attribute name="close" type="point" vars="">Position of the close button.</attribute>
+		  <attribute name="tab_area" type="rectangle" vars="">The position of the row of tabs, followed by the dimensions of the log text area.</attribute>
 	  </attributes>
 	</class>
 	<class name="MenuMiniMap">
 	  <description>Description of menus/minimap.txt</description>
 	  <attributes>
-		  <attribute name="map_pos" type="x (integer), y (integer), w (integer), h (integer)">Position and dimensions of the map.</attribute>
-		  <attribute name="text_pos" type="label">Position of the text label with the map name.</attribute>
+		  <attribute name="map_pos" type="rectangle" vars="">Position and dimensions of the map.</attribute>
+		  <attribute name="text_pos" type="label" vars="">Position of the text label with the map name.</attribute>
 	  </attributes>
 	</class>
 	<class name="MenuNPCActions">
 	  <description>Description of menus/npc.txt</description>
 	  <attributes>
-		  <attribute name="background_color" type="r (integer), g (integer), b (integer), a (integer)">Color and alpha of the menu's background.</attribute>
-		  <attribute name="topic_normal_color" type="r (integer), g (integer), b (integer)">The normal color of a generic topic text.</attribute>
-		  <attribute name="topic_hilight_color" type="r (integer), g (integer), b (integer)">The color of generic topic text when it's hovered over or selected.</attribute>
-		  <attribute name="vendor_normal_color" type="r (integer), g (integer), b (integer)">The normal color of the vendor option text.</attribute>
-		  <attribute name="vendor_hilight_color" type="r (integer), g (integer), b (integer)">The color of vendor option text when it's hovered over or selected.</attribute>
-		  <attribute name="cancel_normal_color" type="r (integer), g (integer), b (integer)">The normal color of the option to close the menu.</attribute>
-		  <attribute name="cancel_hilight_color" type="r (integer), g (integer), b (integer)">The color of the option to close the menu when it's hovered over or selected.</attribute>
+		  <attribute name="background_color" type="color, int" vars="Color, Alpha">Color and alpha of the menu's background.</attribute>
+		  <attribute name="topic_normal_color" type="color" vars="">The normal color of a generic topic text.</attribute>
+		  <attribute name="topic_hilight_color" type="color" vars="">The color of generic topic text when it's hovered over or selected.</attribute>
+		  <attribute name="vendor_normal_color" type="color" vars="">The normal color of the vendor option text.</attribute>
+		  <attribute name="vendor_hilight_color" type="color" vars="">The color of vendor option text when it's hovered over or selected.</attribute>
+		  <attribute name="cancel_normal_color" type="color" vars="">The normal color of the option to close the menu.</attribute>
+		  <attribute name="cancel_hilight_color" type="color" vars="">The color of the option to close the menu when it's hovered over or selected.</attribute>
 	  </attributes>
 	</class>
 	<class name="MenuNumPicker">
 	  <description>Description of menus/num_picker.txt</description>
 	  <attributes>
-		  <attribute name="label_title" type="label">Position of the "Enter amount:" text.</attribute>
-		  <attribute name="confirm" type="x (integer), y (integer)">Position of the "OK" button.</attribute>
-		  <attribute name="increase" type="x (integer), y (integer)">Position of the button used to increase the value.</attribute>
-		  <attribute name="decrease" type="x (integer), y (integer)">Position of the button used to decrease the value.</attribute>
-		  <attribute name="input" type="x (integer), y (integer)">Position of the text input box.</attribute>
+		  <attribute name="label_title" type="label" vars="">Position of the &quot;Enter amount &quot; text.</attribute>
+		  <attribute name="confirm" type="point" vars="">Position of the &quot;OK&quot; button.</attribute>
+		  <attribute name="increase" type="point" vars="">Position of the button used to increase the value.</attribute>
+		  <attribute name="decrease" type="point" vars="">Position of the button used to decrease the value.</attribute>
+		  <attribute name="input" type="point" vars="">Position of the text input box.</attribute>
 	  </attributes>
 	</class>
 	<class name="MenuPowers: Menu layout">
 	  <description>Description of menus/powers.txt</description>
 	  <attributes>
-		  <attribute name="label_title" type="label">Position of the "Powers" text.</attribute>
-		  <attribute name="unspent_points" type="label">Position of the text that displays the amount of unused power points.</attribute>
-		  <attribute name="close" type="x (integer), y (integer)">Position of the close button.</attribute>
-		  <attribute name="tab_area" type="x (integer), y (integer), w (integer), h (integer)">Position and dimensions of the tree pages.</attribute>
+		  <attribute name="label_title" type="label" vars="">Position of the &quot;Powers&quot; text.</attribute>
+		  <attribute name="unspent_points" type="label" vars="">Position of the text that displays the amount of unused power points.</attribute>
+		  <attribute name="close" type="point" vars="">Position of the close button.</attribute>
+		  <attribute name="tab_area" type="rectangle" vars="">Position and dimensions of the tree pages.</attribute>
 	  </attributes>
 	</class>
 	<class name="MenuPowers: Power tree layout">
 	  <description>Description of powers/trees/</description>
 	  <attributes>
-		  <attribute name="background" type="string">Filename of the default background image</attribute>
-		  <attribute name="tab.title" type="string">The name of this power tree tab</attribute>
-		  <attribute name="tab.background" type="string">Filename of the background image for this tab's power tree</attribute>
-		  <attribute name="power.id" type="integer">A power id from powers/powers.txt for this slot.</attribute>
-		  <attribute name="power.tab" type="integer">Tab index to place this power on, starting from 0.</attribute>
-		  <attribute name="power.position" type="x (integer), y (integer)">Position of this power icon; relative to MenuPowers "pos".</attribute>
-		  <attribute name="power.requires_physoff" type="integer">Power requires Physical and Offense stat of this value.</attribute>
-		  <attribute name="power.requires_physdef" type="integer">Power requires Physical and Defense stat of this value.</attribute>
-		  <attribute name="power.requires_mentoff" type="integer">Power requires Mental and Offense stat of this value.</attribute>
-		  <attribute name="power.requires_mentdef" type="integer">Power requires Mental and Defense stat of this value.</attribute>
-		  <attribute name="power.requires_defense" type="integer">Power requires Defense stat of this value.</attribute>
-		  <attribute name="power.requires_offense" type="integer">Power requires Offense stat of this value.</attribute>
-		  <attribute name="power.requires_physical" type="integer">Power requires Physical stat of this value.</attribute>
-		  <attribute name="power.requires_mental" type="integer">Power requires Mental stat of this value.</attribute>
-		  <attribute name="power.requires_point" type="boolean">Power requires a power point to unlock.</attribute>
-		  <attribute name="power.requires_level" type="integer">Power requires at least this level for the hero.</attribute>
-		  <attribute name="power.requires_power" type="integer">Power requires another power id.</attribute>
-		  <attribute name="power.visible_requires_status" type="string">Hide the power if we don't have this campaign status.</attribute>
-		  <attribute name="power.visible_requires_not_status" type="string">Hide the power if we have this campaign status.</attribute>
-		  <attribute name="power.upgrades" type="id (integer), ...">A list of upgrade power ids that this power slot can upgrade to. Each of these powers should have a matching upgrade section.</attribute>
-		  <attribute name="upgrade.id" type="integer">A power id from powers/powers.txt for this upgrade.</attribute>
-		  <attribute name="upgrade.requires_physoff" type="integer">Upgrade requires Physical and Offense stat of this value.</attribute>
-		  <attribute name="upgrade.requires_physdef" type="integer">Upgrade requires Physical and Defense stat of this value.</attribute>
-		  <attribute name="upgrade.requires_mentoff" type="integer">Upgrade requires Mental and Offense stat of this value.</attribute>
-		  <attribute name="upgrade.requires_mentdef" type="integer">Upgrade requires Mental and Defense stat of this value.</attribute>
-		  <attribute name="upgrade.requires_defense" type="integer">Upgrade requires Defense stat of this value.</attribute>
-		  <attribute name="upgrade.requires_offense" type="integer">Upgrade requires Offense stat of this value.</attribute>
-		  <attribute name="upgrade.requires_physical" type="integer">Upgrade requires Physical stat of this value.</attribute>
-		  <attribute name="upgrade.requires_mental" type="integer">Upgrade requires Mental stat of this value.</attribute>
-		  <attribute name="upgrade.requires_point" type="boolean">Upgrade requires a power point to unlock.</attribute>
-		  <attribute name="upgrade.requires_level" type="integer">Upgrade requires at least this level for the hero.</attribute>
-		  <attribute name="upgrade.requires_power" type="integer">Upgrade requires another power id.</attribute>
-		  <attribute name="upgrade.visible_requires_status" type="string">Hide the upgrade if we don't have this campaign status.</attribute>
-		  <attribute name="upgrade.visible_requires_not_status" type="string">Hide the upgrade if we have this campaign status.</attribute>
+		  <attribute name="background" type="filename" vars="">Filename of the default background image</attribute>
+		  <attribute name="tab.title" type="string" vars="">The name of this power tree tab</attribute>
+		  <attribute name="tab.background" type="filename" vars="">Filename of the background image for this tab's power tree</attribute>
+		  <attribute name="power.id" type="int" vars="">A power id from powers/powers.txt for this slot.</attribute>
+		  <attribute name="power.tab" type="int" vars="">Tab index to place this power on, starting from 0.</attribute>
+		  <attribute name="power.position" type="point" vars="">Position of this power icon; relative to MenuPowers &quot;pos&quot;.</attribute>
+		  <attribute name="power.requires_physoff" type="int" vars="">Power requires Physical and Offense stat of this value.</attribute>
+		  <attribute name="power.requires_physdef" type="int" vars="">Power requires Physical and Defense stat of this value.</attribute>
+		  <attribute name="power.requires_mentoff" type="int" vars="">Power requires Mental and Offense stat of this value.</attribute>
+		  <attribute name="power.requires_mentdef" type="int" vars="">Power requires Mental and Defense stat of this value.</attribute>
+		  <attribute name="power.requires_defense" type="int" vars="">Power requires Defense stat of this value.</attribute>
+		  <attribute name="power.requires_offense" type="int" vars="">Power requires Offense stat of this value.</attribute>
+		  <attribute name="power.requires_physical" type="int" vars="">Power requires Physical stat of this value.</attribute>
+		  <attribute name="power.requires_mental" type="int" vars="">Power requires Mental stat of this value.</attribute>
+		  <attribute name="power.requires_point" type="bool" vars="">Power requires a power point to unlock.</attribute>
+		  <attribute name="power.requires_level" type="int" vars="">Power requires at least this level for the hero.</attribute>
+		  <attribute name="power.requires_power" type="power_id" vars="">Power requires another power id.</attribute>
+		  <attribute name="power.visible_requires_status" type="repeatable(string)" vars="">Hide the power if we don't have this campaign status.</attribute>
+		  <attribute name="power.visible_requires_not_status" type="repeatable(string)" vars="">Hide the power if we have this campaign status.</attribute>
+		  <attribute name="power.upgrades" type="list(power_id)" vars="">A list of upgrade power ids that this power slot can upgrade to. Each of these powers should have a matching upgrade section.</attribute>
+		  <attribute name="upgrade.id" type="int" vars="">A power id from powers/powers.txt for this upgrade.</attribute>
+		  <attribute name="upgrade.requires_physoff" type="int" vars="">Upgrade requires Physical and Offense stat of this value.</attribute>
+		  <attribute name="upgrade.requires_physdef" type="int" vars="">Upgrade requires Physical and Defense stat of this value.</attribute>
+		  <attribute name="upgrade.requires_mentoff" type="int" vars="">Upgrade requires Mental and Offense stat of this value.</attribute>
+		  <attribute name="upgrade.requires_mentdef" type="int" vars="">Upgrade requires Mental and Defense stat of this value.</attribute>
+		  <attribute name="upgrade.requires_defense" type="int" vars="">Upgrade requires Defense stat of this value.</attribute>
+		  <attribute name="upgrade.requires_offense" type="int" vars="">Upgrade requires Offense stat of this value.</attribute>
+		  <attribute name="upgrade.requires_physical" type="int" vars="">Upgrade requires Physical stat of this value.</attribute>
+		  <attribute name="upgrade.requires_mental" type="int" vars="">Upgrade requires Mental stat of this value.</attribute>
+		  <attribute name="upgrade.requires_point" type="bool" vars="">Upgrade requires a power point to unlock.</attribute>
+		  <attribute name="upgrade.requires_level" type="int" vars="">Upgrade requires at least this level for the hero.</attribute>
+		  <attribute name="upgrade.requires_power" type="int" vars="">Upgrade requires another power id.</attribute>
+		  <attribute name="upgrade.visible_requires_status" type="repeatable(string)" vars="">Hide the upgrade if we don't have this campaign status.</attribute>
+		  <attribute name="upgrade.visible_requires_not_status" type="repeatable(string)" vars="">Hide the upgrade if we have this campaign status.</attribute>
 	  </attributes>
 	</class>
 	<class name="MenuStash">
 	  <description>Description of menus/stash.txt</description>
 	  <attributes>
-		  <attribute name="close" type="x (integer), y (integer)">Position of the close button.</attribute>
-		  <attribute name="slots_area" type="x (integer), y (integer)">Position of the top-left slot.</attribute>
-		  <attribute name="stash_cols" type="integer">The number of columns for the grid of slots.</attribute>
-		  <attribute name="stash_rows" type="integer">The number of rows for the grid of slots.</attribute>
-		  <attribute name="label_title" type="label">Position of the "Stash" label.</attribute>
-		  <attribute name="currency" type="label">Position of the label displaying the amount of currency stored in the stash.</attribute>
+		  <attribute name="close" type="point" vars="">Position of the close button.</attribute>
+		  <attribute name="slots_area" type="point" vars="">Position of the top-left slot.</attribute>
+		  <attribute name="stash_cols" type="int" vars="">The number of columns for the grid of slots.</attribute>
+		  <attribute name="stash_rows" type="int" vars="">The number of rows for the grid of slots.</attribute>
+		  <attribute name="label_title" type="label" vars="">Position of the &quot;Stash&quot; label.</attribute>
+		  <attribute name="currency" type="label" vars="">Position of the label displaying the amount of currency stored in the stash.</attribute>
 	  </attributes>
 	</class>
 	<class name="MenuStatBar">
 	  <description>Description of menus/hp.txt, menus/mp.txt, menus/xp.txt</description>
 	  <attributes>
-		  <attribute name="bar_pos" type="x (integer), y (integer), w (integer), h (integer)">Position and dimensions of the bar graphics.</attribute>
-		  <attribute name="text_pos" type="label">Position of the "$CURRENT/$TOTAL" text.</attribute>
-		  <attribute name="orientation" type="boolean">True is vertical orientation; false is horizontal.</attribute>
-		  <attribute name="bar_gfx" type="string">Filename of the image to use for the "fill" of the bar.</attribute>
-		  <attribute name="bar_gfx_background" type="string">Filename of the image to use for the base of the bar.</attribute>
+		  <attribute name="bar_pos" type="rectangle" vars="">Position and dimensions of the bar graphics.</attribute>
+		  <attribute name="text_pos" type="label" vars="">Position of the text displaying the current value of the relevant stat.</attribute>
+		  <attribute name="orientation" type="bool" vars="">True is vertical orientation; false is horizontal.</attribute>
+		  <attribute name="bar_gfx" type="filename" vars="">Filename of the image to use for the &quot;fill&quot; of the bar.</attribute>
+		  <attribute name="bar_gfx_background" type="filename" vars="">Filename of the image to use for the base of the bar.</attribute>
 	  </attributes>
 	</class>
 	<class name="MenuTalker">
 	  <description>Description of menus/talker.txt</description>
 	  <attributes>
-		  <attribute name="close" type="x (integer), y (integer)">Position of the close button.</attribute>
-		  <attribute name="advance" type="x (integer), y (integer)">Position of the button to advance dialog.</attribute>
-		  <attribute name="dialogbox" type="x (integer), y (integer), w (integer), h (integer)">Position and dimensions of the text box graphics.</attribute>
-		  <attribute name="dialogtext" type="x (integer), y (integer), w (integer), h (integer)">Rectangle where the dialog text is placed.</attribute>
-		  <attribute name="text_offset" type="x (integer), y (integer)">Margins for the left/right and top/bottom of the dialog text.</attribute>
-		  <attribute name="portrait_he" type="x (integer), y (integer), w (integer), h (integer)">Position and dimensions of the NPC portrait graphics.</attribute>
-		  <attribute name="portrait_you" type="x (integer), y (integer), w (integer), h (integer)">Position and dimensions of the player's portrait graphics.</attribute>
-		  <attribute name="font_who" type="string">Font style to use for the name of the currently talking person.</attribute>
-		  <attribute name="font_dialog" type="string">Font style to use for the dialog text.</attribute>
+		  <attribute name="close" type="point" vars="">Position of the close button.</attribute>
+		  <attribute name="advance" type="point" vars="">Position of the button to advance dialog.</attribute>
+		  <attribute name="dialogbox" type="rectangle" vars="">Position and dimensions of the text box graphics.</attribute>
+		  <attribute name="dialogtext" type="rectangle" vars="">Rectangle where the dialog text is placed.</attribute>
+		  <attribute name="text_offset" type="point" vars="">Margins for the left/right and top/bottom of the dialog text.</attribute>
+		  <attribute name="portrait_he" type="rectangle" vars="">Position and dimensions of the NPC portrait graphics.</attribute>
+		  <attribute name="portrait_you" type="rectangle" vars="">Position and dimensions of the player's portrait graphics.</attribute>
+		  <attribute name="font_who" type="string" vars="">Font style to use for the name of the currently talking person.</attribute>
+		  <attribute name="font_dialog" type="string" vars="">Font style to use for the dialog text.</attribute>
 	  </attributes>
 	</class>
 	<class name="MenuVendor">
 	  <description>Description of menus/vendor.txt</description>
 	  <attributes>
-		  <attribute name="close" type="x (integer), y (integer)">Position of the close button.</attribute>
-		  <attribute name="slots_area" type="x (integer), y (integer)">Position of the top-left slot.</attribute>
-		  <attribute name="vendor_cols" type="integer">The number of columns in the grid of slots.</attribute>
-		  <attribute name="vendor_rows" type="integer">The number of rows in the grid of slots.</attribute>
-		  <attribute name="label_title" type="label">The position of the text that displays the NPC's name.</attribute>
+		  <attribute name="close" type="point" vars="">Position of the close button.</attribute>
+		  <attribute name="slots_area" type="point" vars="">Position of the top-left slot.</attribute>
+		  <attribute name="vendor_cols" type="int" vars="">The number of columns in the grid of slots.</attribute>
+		  <attribute name="vendor_rows" type="int" vars="">The number of rows in the grid of slots.</attribute>
+		  <attribute name="label_title" type="label" vars="">The position of the text that displays the NPC's name.</attribute>
 	  </attributes>
 	</class>
 	<class name="NPC">
 	  <description>Description of NPCs in npcs/</description>
 	  <attributes>
-		  <attribute name="dialog.him, dialog.her" type="string">A line of dialog from the NPC.</attribute>
-		  <attribute name="dialog.you" type="string">A line of dialog from the player.</attribute>
-		  <attribute name="dialog.voice" type="string">Filename of a voice sound file to play.</attribute>
-		  <attribute name="dialog.topic" type="string">The name of this dialog topic. Displayed when picking a dialog tree.</attribute>
-		  <attribute name="dialog.group" type="string">Dialog group.</attribute>
-		  <attribute name="dialog.allow_movement" type="boolean">Restrict the player's mvoement during dialog.</attribute>
-		  <attribute name="name" type="string">NPC's name.</attribute>
-		  <attribute name="gfx" type="string">Filename of an animation definition.</attribute>
-		  <attribute name="talker" type="boolean">Allows this NPC to be talked to.</attribute>
-		  <attribute name="portrait" type="string">Filename of a portrait image.</attribute>
-		  <attribute name="vendor" type="string">Allows this NPC to buy/sell items.</attribute>
-		  <attribute name="constant_stock" type="item (integer), ...">A list of items this vendor has for sale.</attribute>
-		  <attribute name="status_stock" type="status (string), item (integer), ...">A list of items this vendor will have for sale if the required status is met.</attribute>
-		  <attribute name="random_stock" type="[string,drop_chance([fixed:chance(integer)]),quantity_min(integer),quantity_max(integer)],...">Use a loot table to add random items to the stock; either a filename or an inline definition.</attribute>
-		  <attribute name="random_stock_count" type="min (integer), max (integer)">Sets the minimum (and optionally, the maximum) amount of random items this npc can have.</attribute>
-		  <attribute name="vox_intro" type="string">Filename of a sound file to play when initially interacting with the NPC.</attribute>
+		  <attribute name="dialog.him" type="repeatable(string)" vars="">A line of dialog from the NPC.</attribute>
+		  <attribute name="dialog.her" type="repeatable(string)" vars="">A line of dialog from the NPC.</attribute>
+		  <attribute name="dialog.you" type="repeatable(string)" vars="">A line of dialog from the player.</attribute>
+		  <attribute name="dialog.voice" type="repeatable(string)" vars="">Filename of a voice sound file to play.</attribute>
+		  <attribute name="dialog.topic" type="string" vars="">The name of this dialog topic. Displayed when picking a dialog tree.</attribute>
+		  <attribute name="dialog.group" type="string" vars="">Dialog group.</attribute>
+		  <attribute name="dialog.allow_movement" type="bool" vars="">Restrict the player's mvoement during dialog.</attribute>
+		  <attribute name="name" type="string" vars="">NPC's name.</attribute>
+		  <attribute name="gfx" type="filename" vars="">Filename of an animation definition.</attribute>
+		  <attribute name="talker" type="bool" vars="">Allows this NPC to be talked to.</attribute>
+		  <attribute name="portrait" type="filename" vars="">Filename of a portrait image.</attribute>
+		  <attribute name="vendor" type="bool" vars="">Allows this NPC to buy/sell items.</attribute>
+		  <attribute name="constant_stock" type="repeatable(list(item_id))" vars="">A list of items this vendor has for sale.</attribute>
+		  <attribute name="status_stock" type="repeatable(string, list(item_id))" vars="Required status, Item(s)">A list of items this vendor will have for sale if the required status is met.</attribute>
+		  <attribute name="random_stock" type="list(loot)" vars="">Use a loot table to add random items to the stock; either a filename or an inline definition.</attribute>
+		  <attribute name="random_stock_count" type="int, int" vars="Min, Max">Sets the minimum (and optionally, the maximum) amount of random items this npc can have.</attribute>
+		  <attribute name="vox_intro" type="repeatable(filename)" vars="">Filename of a sound file to play when initially interacting with the NPC.</attribute>
 	  </attributes>
 	</class>
 	<class name="Effects">
 	  <description>Description of powers/effects.txt</description>
 	  <attributes>
-		  <attribute name="effect.id" type="string">Unique identifier for the effect definition.</attribute>
-		  <attribute name="effect.type" type="string">Defines the type of effect</attribute>
-		  <attribute name="effect.icon" type="integer">The icon to visually represent the effect in the status area</attribute>
-		  <attribute name="effect.animation" type="string">The filename of effect animation.</attribute>
-		  <attribute name="effect.can_stack" type="bool">Allows multiple instances of this effect</attribute>
-		  <attribute name="effect.render_above" type="bool">Effect is rendered above</attribute>
+		  <attribute name="effect.id" type="string" vars="">Unique identifier for the effect definition.</attribute>
+		  <attribute name="effect.type" type="string" vars="">Defines the type of effect</attribute>
+		  <attribute name="effect.icon" type="icon_id" vars="">The icon to visually represent the effect in the status area</attribute>
+		  <attribute name="effect.animation" type="filename" vars="">The filename of effect animation.</attribute>
+		  <attribute name="effect.can_stack" type="bool" vars="">Allows multiple instances of this effect</attribute>
+		  <attribute name="effect.render_above" type="bool" vars="">Effect is rendered above</attribute>
 	  </attributes>
 	</class>
 	<class name="Powers">
 	  <description>Description of powers/powers.txt</description>
 	  <attributes>
-		  <attribute name="id" type="integer">Uniq identifier for the power definition.</attribute>
-		  <attribute name="type" type="[fixed:missile:repeater:spawn:transform:block]">Defines the type of power definiton</attribute>
-		  <attribute name="name" type="string">The name of the power</attribute>
-		  <attribute name="description" type="string">Description of the power</attribute>
-		  <attribute name="icon" type="string">The icon to visually represent the power eg. in skill tree or action bar.</attribute>
-		  <attribute name="new_state" type="string">When power is used, hero or enemy will change to this state. Must be one of the states [instant, user defined]</attribute>
-		  <attribute name="state_duration" type="duration">Sets the length of time the caster is in their state animation. A time longer than the animation length will cause the animation to pause on the last frame. Times shorter than the state animation length will have no effect.</attribute>
-		  <attribute name="face" type="bool">Power will make hero or enemy to face the target location.</attribute>
-		  <attribute name="source_type" type="[hero:neutral:enemy]">Determines which entities the power can effect.</attribute>
-		  <attribute name="beacon" type="bool">True if enemy is calling its allies.</attribute>
-		  <attribute name="count" type="integer">The count of hazards/effect or spawns to be created by this power.</attribute>
-		  <attribute name="passive" type="bool">If power is unlocked when the hero or enemy spawns it will be automatically activated.</attribute>
-		  <attribute name="passive_trigger" type="[on_block:on_hit:on_halfdeath:on_joincombat:on_death]">This will only activate a passive power under a certain condition.</attribute>
-		  <attribute name="meta_power" type="boolean">If true, this power can not be used on it's own. Instead, it should be replaced via an item with a replace_power entry.</attribute>
-		  <attribute name="requires_flags" type="flag (string), ...">A comma separated list of equip flags that are required to use this power. See engine/equip_flags.txt</attribute>
-		  <attribute name="requires_mp" type="integer">Restrict power usage to a specified MP level.</attribute>
-		  <attribute name="requires_hp" type="integer">Restrict power usage to a specified HP level.</attribute>
-		  <attribute name="sacrifice" type="bool">If the power has requires_hp, allow it to kill the caster.</attribute>
-		  <attribute name="requires_los" type="bool">Requires a line-of-sight to target.</attribute>
-		  <attribute name="requires_empty_target" type="bool">The power can only be cast when target tile is empty.</attribute>
-		  <attribute name="requires_item" type="item_id, quantity (integer)">Requires a specific item of a specific quantity in inventory.</attribute>
-		  <attribute name="requires_equipped_item" type="item_id, quantity (integer) ">Requires a specific item of a specific quantity to be equipped on hero.</attribute>
-		  <attribute name="requires_targeting" type="bool">Power is only used when targeting using click-to-target.</attribute>
-		  <attribute name="requires_spawns" type="integer">The caster must have at least this many summoned creatures to use this power.</attribute>
-		  <attribute name="cooldown" type="duration">Specify the duration for cooldown of the power in 'ms' or 's'.</attribute>
-		  <attribute name="animation" type="string">The filename of the power animation.</attribute>
-		  <attribute name="soundfx" type="string">Filename of a sound effect to play when the power is used.</attribute>
-		  <attribute name="soundfx_hit" type="string">Filename of a sound effect to play when the power's hazard hits a valid target.</attribute>
-		  <attribute name="directional" type="bool">The animation sprite sheet contains 8 directions, one per row.</attribute>
-		  <attribute name="visual_random" type="integer">The animation sprite sheet contains rows of random options</attribute>
-		  <attribute name="visual_option" type="integer">The animation sprite sheet containers rows of similar effects, use a specific option.</attribute>
-		  <attribute name="aim_assist" type="bool">Power is aim assisted.</attribute>
-		  <attribute name="speed" type="integer">The speed of missile hazard, the unit is defined as map units per frame.</attribute>
-		  <attribute name="lifespan" type="duration">How long the hazard/animation lasts in 'ms' or 's'.</attribute>
-		  <attribute name="floor" type="bool">The hazard is drawn between the background and the object layer.</attribute>
-		  <attribute name="complete_animation" type="bool">For hazards; Play the entire animation, even if the hazard has hit a target.</attribute>
-		  <attribute name="charge_speed" type="float">Moves the caster at this speed in the direction they are facing until the state animation is finished.</attribute>
-		  <attribute name="use_hazard" type="bool">Power uses hazard.</attribute>
-		  <attribute name="no_attack" type="bool">Hazard won't affect other entities.</attribute>
-		  <attribute name="radius" type="integer">Radius in pixels</attribute>
-		  <attribute name="base_damage" type="[melee:ranged:ment]"></attribute>
-		  <attribute name="starting_pos" type="[source, target, melee]">Start position for hazard</attribute>
-		  <attribute name="relative_pos" type="bool">Hazard will move relative to the caster's position.</attribute>
-		  <attribute name="multitarget" type="bool">Allows a hazard power to hit more than one entity.</attribute>
-		  <attribute name="multihit" type="bool">Allows a hazard power to hit the same entity more than once.</attribute>
-		  <attribute name="expire_with_caster" type="bool">If true, hazard will disappear when the caster dies.</attribute>
-		  <attribute name="trait_armor_penetration" type="bool">Ignores the target's Absorbtion stat</attribute>
-		  <attribute name="trait_avoidance_ignore" type="bool">Ignores the target's Avoidance stat</attribute>
-		  <attribute name="trait_crits_impaired" type="integer">Increases critical hit percentage for slowed/immobile targets</attribute>
-		  <attribute name="trait_elemental" type="string">Damage done is elemental. See engine/elements.txt</attribute>
-		  <attribute name="target_range" type="float">The distance from the caster that the power can be activated</attribute>
-		  <attribute name="hp_steal" type="integer">Percentage of damage to steal into HP</attribute>
-		  <attribute name="mp_steal" type="integer">Percentage of damage to steal into MP</attribute>
-		  <attribute name="missile_angle" type="integer">Angle of missile</attribute>
-		  <attribute name="angle_variance" type="integer">Percentage of variance added to missile angle</attribute>
-		  <attribute name="speed_variance" type="integer">Percentage of variance added to missile speed</attribute>
-		  <attribute name="delay" type="duration">Delay between repeats in 'ms' or 's'.</attribute>
-		  <attribute name="transform_duration" type="duration">Duration for transform in 'ms' or 's'.</attribute>
-		  <attribute name="manual_untransform" type="bool">Force manual untranform</attribute>
-		  <attribute name="keep_equipment" type="bool">Keep equipment while transformed</attribute>
-		  <attribute name="untransform_on_hit" type="bool">Force untransform when the player is hit</attribute>
-		  <attribute name="buff" type="bool">Power is cast upon the caster.</attribute>
-		  <attribute name="buff_teleport" type="bool">Power is a teleportation power.</attribute>
-		  <attribute name="buff_party" type="bool">Power is cast upon party members</attribute>
-		  <attribute name="buff_party_power_id" type="integer">Buffs a power id for all party members</attribute>
-		  <attribute name="post_effect" type="[effect_id, magnitude (integer), duration (duration)]">Post effect. Duration is in 'ms' or 's'.</attribute>
-		  <attribute name="post_power" type="power_id">Trigger a power if the hazard did damage.</attribute>
-		  <attribute name="wall_power" type="power_id">Trigger a power if the hazard hit a wall.</attribute>
-		  <attribute name="spawn_type" type="string">Type of spawn.</attribute>
-		  <attribute name="target_neighbor" type="integer">Target is changed to an adjacent tile within a radius.</attribute>
-		  <attribute name="spawn_limit" type="[fixed:stat:unlimited],stat[physical:mental:offense:defens]"></attribute>
-		  <attribute name="spawn_level" type="[default:fixed:stat:level],stat[physical:mental:offense:defens]"></attribute>
-		  <attribute name="target_party" type="bool">Hazard will only affect party members.</attribute>
-		  <attribute name="target_categories" type="string,...">Hazard will only affect enemies in these categories.</attribute>
-		  <attribute name="modifier_accuracy" type="[multiply:add:absolute], integer">Changes this power's accuracy.</attribute>
-		  <attribute name="modifier_damage" type="[multiply:add:absolute], min (integer), max (integer)">Changes this power's damage. The "max" value is ignored, except in the case of "absolute" modifiers.</attribute>
-		  <attribute name="modifier_critical" type="[multiply:add:absolute], integer">Changes the chance that this power will land a critical hit.</attribute>
-		  <attribute name="loot" type="[string,drop_chance([fixed:chance(integer)]),quantity_min(integer),quantity_max(integer)],...">Give the player this loot when the power is used</attribute>
-		  <attribute name="target_movement_normal" type="bool">Power can affect entities with normal movement (aka walking on ground)</attribute>
-		  <attribute name="target_movement_flying" type="bool">Power can affect flying entities</attribute>
-		  <attribute name="target_movement_intangible" type="bool">Power can affect intangible entities</attribute>
-		  <attribute name="walls_block_aoe" type="bool">When true, prevents hazard aoe from hitting targets that are behind walls/pits.</attribute>
+		  <attribute name="power.id" type="power_id" vars="">Uniq identifier for the power definition.</attribute>
+		  <attribute name="power.type" type="[&quot;fixed&quot;, &quot;missile&quot;, &quot;repeater&quot;, &quot;spawn&quot;, &quot;transform&quot;, &quot;block&quot;]" vars="">Defines the type of power definiton</attribute>
+		  <attribute name="power.name" type="string" vars="">The name of the power</attribute>
+		  <attribute name="power.description" type="string" vars="">Description of the power</attribute>
+		  <attribute name="power.icon" type="icon_id" vars="">The icon to visually represent the power eg. in skill tree or action bar.</attribute>
+		  <attribute name="power.new_state" type="string" vars="">When power is used, hero or enemy will change to this state. Must be one of the states [&quot;instant&quot;, user defined]</attribute>
+		  <attribute name="power.state_duration" type="duration" vars="">Sets the length of time the caster is in their state animation. A time longer than the animation length will cause the animation to pause on the last frame. Times shorter than the state animation length will have no effect.</attribute>
+		  <attribute name="power.face" type="bool" vars="">Power will make hero or enemy to face the target location.</attribute>
+		  <attribute name="power.source_type" type="[&quot;hero&quot;, &quot;neutral&quot;, &quot;enemy&quot;]" vars="">Determines which entities the power can effect.</attribute>
+		  <attribute name="power.beacon" type="bool" vars="">True if enemy is calling its allies.</attribute>
+		  <attribute name="power.count" type="int" vars="">The count of hazards/effect or spawns to be created by this power.</attribute>
+		  <attribute name="power.passive" type="bool" vars="">If power is unlocked when the hero or enemy spawns it will be automatically activated.</attribute>
+		  <attribute name="power.passive_trigger" type="[&quot;on_block&quot;, &quot;on_hit&quot;, &quot;on_halfdeath&quot;, &quot;on_joincombat&quot;, &quot;on_death&quot;]" vars="">This will only activate a passive power under a certain condition.</attribute>
+		  <attribute name="power.meta_power" type="bool" vars="">If true, this power can not be used on it's own. Instead, it should be replaced via an item with a replace_power entry.</attribute>
+		  <attribute name="power.requires_flags" type="list(string)" vars="">A comma separated list of equip flags that are required to use this power. See engine/equip_flags.txt</attribute>
+		  <attribute name="power.requires_mp" type="int" vars="">Restrict power usage to a specified MP level.</attribute>
+		  <attribute name="power.requires_hp" type="int" vars="">Restrict power usage to a specified HP level.</attribute>
+		  <attribute name="power.sacrifice" type="bool" vars="">If the power has requires_hp, allow it to kill the caster.</attribute>
+		  <attribute name="power.requires_los" type="bool" vars="">Requires a line-of-sight to target.</attribute>
+		  <attribute name="power.requires_empty_target" type="bool" vars="">The power can only be cast when target tile is empty.</attribute>
+		  <attribute name="power.requires_item" type="item_id, int" vars="Item, Quantity">Requires a specific item of a specific quantity in inventory.</attribute>
+		  <attribute name="power.requires_equipped_item" type="item_id, int" vars="Item, Quantity">Requires a specific item of a specific quantity to be equipped on hero.</attribute>
+		  <attribute name="power.requires_targeting" type="bool" vars="">Power is only used when targeting using click-to-target.</attribute>
+		  <attribute name="power.requires_spawns" type="int" vars="">The caster must have at least this many summoned creatures to use this power.</attribute>
+		  <attribute name="power.cooldown" type="duration" vars="">Specify the duration for cooldown of the power in 'ms' or 's'.</attribute>
+		  <attribute name="power.animation" type="filename" vars="">The filename of the power animation.</attribute>
+		  <attribute name="power.soundfx" type="filename" vars="">Filename of a sound effect to play when the power is used.</attribute>
+		  <attribute name="power.soundfx_hit" type="filename" vars="">Filename of a sound effect to play when the power's hazard hits a valid target.</attribute>
+		  <attribute name="power.directional" type="bool" vars="">The animation sprite sheet contains 8 directions, one per row.</attribute>
+		  <attribute name="power.visual_random" type="int" vars="">The animation sprite sheet contains rows of random options</attribute>
+		  <attribute name="power.visual_option" type="int" vars="">The animation sprite sheet containers rows of similar effects, use a specific option.</attribute>
+		  <attribute name="power.aim_assist" type="bool" vars="">Power is aim assisted.</attribute>
+		  <attribute name="power.speed" type="float" vars="">The speed of missile hazard, the unit is defined as map units per frame.</attribute>
+		  <attribute name="power.lifespan" type="duration" vars="">How long the hazard/animation lasts in 'ms' or 's'.</attribute>
+		  <attribute name="power.floor" type="bool" vars="">The hazard is drawn between the background and the object layer.</attribute>
+		  <attribute name="power.complete_animation" type="bool" vars="">For hazards; Play the entire animation, even if the hazard has hit a target.</attribute>
+		  <attribute name="power.charge_speed" type="float" vars="">Moves the caster at this speed in the direction they are facing until the state animation is finished.</attribute>
+		  <attribute name="power.use_hazard" type="bool" vars="">Power uses hazard.</attribute>
+		  <attribute name="power.no_attack" type="bool" vars="">Hazard won't affect other entities.</attribute>
+		  <attribute name="power.radius" type="float" vars="">Radius in pixels</attribute>
+		  <attribute name="power.base_damage" type="[&quot;melee&quot;, &quot;ranged&quot;, &quot;ment&quot;]" vars="">Determines which of the three primary damage stats will be used to calculate damage.</attribute>
+		  <attribute name="power.starting_pos" type="[&quot;source&quot;, &quot;target&quot;, &quot;melee&quot;]" vars="">Start position for hazard</attribute>
+		  <attribute name="power.relative_pos" type="bool" vars="">Hazard will move relative to the caster's position.</attribute>
+		  <attribute name="power.multitarget" type="bool" vars="">Allows a hazard power to hit more than one entity.</attribute>
+		  <attribute name="power.multihit" type="bool" vars="">Allows a hazard power to hit the same entity more than once.</attribute>
+		  <attribute name="power.expire_with_caster" type="bool" vars="">If true, hazard will disappear when the caster dies.</attribute>
+		  <attribute name="power.trait_armor_penetration" type="bool" vars="">Ignores the target's Absorbtion stat</attribute>
+		  <attribute name="power.trait_avoidance_ignore" type="bool" vars="">Ignores the target's Avoidance stat</attribute>
+		  <attribute name="power.trait_crits_impaired" type="integer" vars="">Increases critical hit percentage for slowed/immobile targets</attribute>
+		  <attribute name="power.trait_elemental" type="string" vars="">Damage done is elemental. See engine/elements.txt</attribute>
+		  <attribute name="power.target_range" type="float" vars="">The distance from the caster that the power can be activated</attribute>
+		  <attribute name="power.hp_steal" type="int" vars="">Percentage of damage to steal into HP</attribute>
+		  <attribute name="power.mp_steal" type="int" vars="">Percentage of damage to steal into MP</attribute>
+		  <attribute name="power.missile_angle" type="int" vars="">Angle of missile</attribute>
+		  <attribute name="power.angle_variance" type="int" vars="">Percentage of variance added to missile angle</attribute>
+		  <attribute name="power.speed_variance" type="float" vars="">Percentage of variance added to missile speed</attribute>
+		  <attribute name="power.delay" type="duration" vars="">Delay between repeats in 'ms' or 's'.</attribute>
+		  <attribute name="power.transform_duration" type="duration" vars="">Duration for transform in 'ms' or 's'.</attribute>
+		  <attribute name="power.manual_untransform" type="bool" vars="">Force manual untranform</attribute>
+		  <attribute name="power.keep_equipment" type="bool" vars="">Keep equipment while transformed</attribute>
+		  <attribute name="power.untransform_on_hit" type="bool" vars="">Force untransform when the player is hit</attribute>
+		  <attribute name="power.buff" type="bool" vars="">Power is cast upon the caster.</attribute>
+		  <attribute name="power.buff_teleport" type="bool" vars="">Power is a teleportation power.</attribute>
+		  <attribute name="power.buff_party" type="bool" vars="">Power is cast upon party members</attribute>
+		  <attribute name="power.buff_party_power_id" type="power_id" vars="">Buffs a power id for all party members</attribute>
+		  <attribute name="power.post_effect" type="string, int, duration" vars="Effect ID, Magnitude, Duration">Post effect. Duration is in 'ms' or 's'.</attribute>
+		  <attribute name="power.post_power" type="power_id" vars="">Trigger a power if the hazard did damage.</attribute>
+		  <attribute name="power.wall_power" type="power_id" vars="">Trigger a power if the hazard hit a wall.</attribute>
+		  <attribute name="power.spawn_type" type="string" vars="">For non-transform powers, an enemy is spawned from this category. For transform powers, the caster will transform into a creature from this category.</attribute>
+		  <attribute name="power.target_neighbor" type="int" vars="">Target is changed to an adjacent tile within a radius.</attribute>
+		  <attribute name="power.spawn_limit" type="[&quot;fixed&quot;, &quot;stat&quot;, &quot;unlimited&quot;], [int, string]" vars="Mode, Value">The maximum number of creatures that can be spawned and alive from this power. &quot;fixed&quot; takes an integer. &quot;stat&quot; takes a primary stat as a string (e.g. &quot;physical&quot;).</attribute>
+		  <attribute name="power.spawn_limit" type="[&quot;default&quot;, &quot;fixed&quot;, &quot;stat&quot;, &quot;level&quot;], [int, string]" vars="Mode, Value">The level of spawned creatures. &quot;fixed&quot; and &quot;level&quot; take an integer. &quot;stat&quot; takes a primary stat as a string (e.g. &quot;physical&quot;).</attribute>
+		  <attribute name="power.target_party" type="bool" vars="">Hazard will only affect party members.</attribute>
+		  <attribute name="power.target_categories" type="list(string)" vars="">Hazard will only affect enemies in these categories.</attribute>
+		  <attribute name="power.modifier_accuracy" type="[&quot;multiply&quot;, &quot;add&quot;, &quot;absolute&quot;], int" vars="Mode, Value">Changes this power's accuracy.</attribute>
+		  <attribute name="power.modifier_damage" type="[&quot;multiply&quot;, &quot;add&quot;, &quot;absolute&quot;], int, int" vars="Mode, Min, Max">Changes this power's damage. The &quot;Max&quot; value is ignored, except in the case of &quot;absolute&quot; modifiers.</attribute>
+		  <attribute name="power.modifier_critical" type="[&quot;multiply&quot;, &quot;add&quot;, &quot;absolute&quot;], int" vars="Mode, Value">Changes the chance that this power will land a critical hit.</attribute>
+		  <attribute name="power.loot" type="list(loot)" vars="">Give the player this loot when the power is used</attribute>
+		  <attribute name="power.target_movement_normal" type="bool" vars="">Power can affect entities with normal movement (aka walking on ground)</attribute>
+		  <attribute name="power.target_movement_flying" type="bool" vars="">Power can affect flying entities</attribute>
+		  <attribute name="power.target_movement_intangible" type="bool" vars="">Power can affect intangible entities</attribute>
+		  <attribute name="power.walls_block_aoe" type="bool" vars="">When true, prevents hazard aoe from hitting targets that are behind walls/pits.</attribute>
 	  </attributes>
 	</class>
 	<class name="QuestLog">
 	  <description>Description of quest files in quests/</description>
 	  <attributes>
-		  <attribute name="name" type="string">A displayed name for this quest.</attribute>
-		  <attribute name="quest.requires_status" type="string">Quest requires this campaign status</attribute>
-		  <attribute name="quest.requires_not_status" type="string">Quest requires not having this campaign status.</attribute>
-		  <attribute name="quest.requires_level" type="integer">Quest requires hero level</attribute>
-		  <attribute name="quest.requires_not_level" type="integer">Quest requires not hero level</attribute>
-		  <attribute name="quest.requires_currency" type="integer">Quest requires atleast this much currency</attribute>
-		  <attribute name="quest.requires_not_currency" type="integer">Quest requires no more than this much currency</attribute>
-		  <attribute name="quest.requires_item" type="integer,...">Quest requires specific item (not equipped)</attribute>
-		  <attribute name="quest.requires_not_item" type="integer,...">Quest requires not having a specific item (not equipped)</attribute>
-		  <attribute name="quest.requires_class" type="string">Quest requires this base class</attribute>
-		  <attribute name="quest.requires_not_class" type="string">Quest requires not this base class</attribute>
-		  <attribute name="quest.quest_text" type="string">Text that gets displayed in the Quest log when this quest is active.</attribute>
+		  <attribute name="name" type="string" vars="">A displayed name for this quest.</attribute>
+		  <attribute name="quest.requires_status" type="list(string)" vars="">Quest requires this campaign status</attribute>
+		  <attribute name="quest.requires_not_status" type="list(string)" vars="">Quest requires not having this campaign status.</attribute>
+		  <attribute name="quest.requires_level" type="int" vars="">Quest requires hero level</attribute>
+		  <attribute name="quest.requires_not_level" type="int" vars="">Quest requires not hero level</attribute>
+		  <attribute name="quest.requires_currency" type="int" vars="">Quest requires atleast this much currency</attribute>
+		  <attribute name="quest.requires_not_currency" type="int" vars="">Quest requires no more than this much currency</attribute>
+		  <attribute name="quest.requires_item" type="list(item_id)" vars="">Quest requires specific item (not equipped)</attribute>
+		  <attribute name="quest.requires_not_item" type="list(item_id)" vars="">Quest requires not having a specific item (not equipped)</attribute>
+		  <attribute name="quest.requires_class" type="string" vars="">Quest requires this base class</attribute>
+		  <attribute name="quest.requires_not_class" type="string" vars="">Quest requires not this base class</attribute>
+		  <attribute name="quest.quest_text" type="string" vars="">Text that gets displayed in the Quest log when this quest is active.</attribute>
 	  </attributes>
 	</class>
 	<class name="SDLFontEngine: Font settings">
 	  <description>Description of engine/font_settings.txt</description>
 	  <attributes>
-		  <attribute name="$STYLE.default, $STYLE.$LANGUAGE" type="filename (string), point size (integer), blending (boolean)">Filename, point size, and blend mode of the font to use for this language. $STYLE can be something like "font_normal" or "font_bold". $LANGUAGE can be a 2-letter region code.</attribute>
-		  <attribute name="menu_normal, menu_bonus, menu_penalty, widget_normal, widget_disabled" type="r (integer), g (integer), b (integer)">Colors for menus and widgets</attribute>
-		  <attribute name="combat_givedmg, combat_takedmg, combat_crit, combat_buff, combat_miss" type="r (integer), g (integer), b (integer)">Colors for combat text</attribute>
-		  <attribute name="requirements_not_met, item_bonus, item_penalty, item_flavor" type="r (integer), g (integer), b (integer)">Colors for tooltips</attribute>
-		  <attribute name="item_$QUALITY" type="r (integer), g (integer), b (integer)">Colors for item quality. $QUALITY should match qualities used in items/items.txt</attribute>
+		  <attribute name="font.id" type="string" vars="">An identifier used to reference this font.</attribute>
+		  <attribute name="font.style" type="repeatable([&quot;default&quot;, string], filename, int, bool)" vars="Language, Font file, Point size, Blending">Filename, point size, and blend mode of the font to use for this language. Language can be &quot;default&quot; or a 2-letter region code.</attribute>
+		  <attribute name="menu_normal" type="color" vars="">Basic menu text color. Recommended  white.</attribute>
+		  <attribute name="menu_bonus" type="color" vars="">Positive menu text color. Recommended  green.</attribute>
+		  <attribute name="menu_penalty" type="color" vars="">Negative menu text color. Recommended  red.</attribute>
+		  <attribute name="widget_normal" type="color" vars="">Basic widget text color. Recommended  white.</attribute>
+		  <attribute name="widget_disabled" type="color" vars="">Disabled widget text color. Recommended  grey.</attribute>
+		  <attribute name="combat_givedmg" type="color" vars="">Enemy damage text color. Recommended  white.</attribute>
+		  <attribute name="combat_takedmg" type="color" vars="">Player damage text color. Recommended  red.</attribute>
+		  <attribute name="combat_crit" type="color" vars="">Enemy critical damage text color. Recommended  yellow.</attribute>
+		  <attribute name="requirements_no_met" type="color" vars="">Unmet requirements text color. Recommended  red.</attribute>
+		  <attribute name="item_bonus" type="color" vars="">Item bonus text color. Recommended  green.</attribute>
+		  <attribute name="item_penalty" type="color" vars="">Item penalty text color. Recommended  red.</attribute>
+		  <attribute name="item_flavor" type="color" vars="">Item flavor text color. Recommended  grey.</attribute>
 	  </attributes>
 	</class>
 	<class name="Settings: Tileset config">
 	  <description>Description of engine/tileset_config.txt</description>
 	  <attributes>
-		  <attribute name="tile_size" type="w (integet), h (integer)">The width and height of a tile.</attribute>
-		  <attribute name="orientation" type="[isometric, orthogonal]">The perspective of tiles; isometric or orthogonal.</attribute>
+		  <attribute name="tile_size" type="int, int" vars="Width, Height">The width and height of a tile.</attribute>
+		  <attribute name="orientation" type="[&quot;isometric&quot;, &quot;orthogonal&quot;]" vars="">The perspective of tiles; isometric or orthogonal.</attribute>
 	  </attributes>
 	</class>
 	<class name="Settings: Misc">
 	  <description>Description of engine/misc.txt</description>
 	  <attributes>
-		  <attribute name="save_hpmp" type="boolean">When saving the game, keep the hero's current HP and MP.</attribute>
-		  <attribute name="corpse_timeout" type="duration">Duration that a corpse can exist on the map in 'ms' or 's'.</attribute>
-		  <attribute name="sell_without_vendor" type="boolean">Allows selling items when not at a vendor via CTRL-Click.</attribute>
-		  <attribute name="aim_assist" type="integer">The pixel offset for powers that use aim_assist.</attribute>
-		  <attribute name="window_title" type="string">Sets the text in the window's titlebar.</attribute>
-		  <attribute name="save_prefix" type="string">A string that's prepended to save filenames to prevent conflicts between mods.</attribute>
-		  <attribute name="sound_falloff" type="integer">The maximum radius in tiles that any single sound is audible.</attribute>
-		  <attribute name="party_exp_percentage" type="integer">The percentage of XP given to allies.</attribute>
-		  <attribute name="enable_ally_collision" type="boolean">Allows allies to block the player's path.</attribute>
-		  <attribute name="enable_ally_collision_ai" type="boolean">Allows allies to block the path of other AI creatures.</attribute>
-		  <attribute name="currency_id" type="integer">An item id that will be used as currency.</attribute>
-		  <attribute name="interact_range" type="float">Distance where the player can interact with objects and NPCs.</attribute>
-		  <attribute name="menus_pause" type="boolean">Opening any menu will pause the game.</attribute>
-		  <attribute name="save_onload" type="boolean">Save the game upon changing maps.</attribute>
-		  <attribute name="save_onexit" type="boolean">Save the game upon quitting to the title screen or desktop.</attribute>
+		  <attribute name="save_hpmp" type="bool" vars="">When saving the game, keep the hero's current HP and MP.</attribute>
+		  <attribute name="corpse_timeout" type="duration" vars="">Duration that a corpse can exist on the map in 'ms' or 's'.</attribute>
+		  <attribute name="sell_without_vendor" type="bool" vars="">Allows selling items when not at a vendor via CTRL-Click.</attribute>
+		  <attribute name="aim_assist" type="int" vars="">The pixel offset for powers that use aim_assist.</attribute>
+		  <attribute name="window_title" type="string" vars="">Sets the text in the window's titlebar.</attribute>
+		  <attribute name="save_prefix" type="string" vars="">A string that's prepended to save filenames to prevent conflicts between mods.</attribute>
+		  <attribute name="sound_falloff" type="int" vars="">The maximum radius in tiles that any single sound is audible.</attribute>
+		  <attribute name="party_exp_percentage" type="int" vars="">The percentage of XP given to allies.</attribute>
+		  <attribute name="enable_ally_collision" type="bool" vars="">Allows allies to block the player's path.</attribute>
+		  <attribute name="enable_ally_collision_ai" type="bool" vars="">Allows allies to block the path of other AI creatures.</attribute>
+		  <attribute name="currency_id" type="item_id" vars="">An item id that will be used as currency.</attribute>
+		  <attribute name="interact_range" type="float" vars="">Distance where the player can interact with objects and NPCs.</attribute>
+		  <attribute name="menus_pause" type="bool" vars="">Opening any menu will pause the game.</attribute>
+		  <attribute name="save_onload" type="bool" vars="">Save the game upon changing maps.</attribute>
+		  <attribute name="save_onexit" type="bool" vars="">Save the game upon quitting to the title screen or desktop.</attribute>
 	  </attributes>
 	</class>
 	<class name="Settings: Resolution">
 	  <description>Description of engine/resolutions.txt</description>
 	  <attributes>
-		  <attribute name="menu_frame_width" type="integer">Width of frame for New Game, Configuration, etc. menus.</attribute>
-		  <attribute name="menu_frame_height" type="integer">Height of frame for New Game, Configuration, etc. menus.</attribute>
-		  <attribute name="icon_size" type="integer">Size of icons.</attribute>
-		  <attribute name="required_width" type="integer">Minimum window/screen resolution width.</attribute>
-		  <attribute name="required_height" type="integer">Minimum window/screen resolution height.</attribute>
-		  <attribute name="virtual_height" type="integer">The height (in pixels) of the game's actual rendering area. The width will be resized to match the window's aspect ration, and everything will be scaled up to fill the window.</attribute>
-		  <attribute name="ignore_texture_filter" type="boolean">If true, this ignores the "Texture Filtering" video setting and uses only nearest-neighbor scaling. This is good for games that use pixel art assets.</attribute>
+		  <attribute name="menu_frame_width" type="int" vars="">Width of frame for New Game, Configuration, etc. menus.</attribute>
+		  <attribute name="menu_frame_height" type="int" vars="">Height of frame for New Game, Configuration, etc. menus.</attribute>
+		  <attribute name="icon_size" type="int" vars="">Size of icons.</attribute>
+		  <attribute name="required_width" type="int" vars="">Minimum window/screen resolution width.</attribute>
+		  <attribute name="required_height" type="int" vars="">Minimum window/screen resolution height.</attribute>
+		  <attribute name="virtual_height" type="int" vars="">The height (in pixels) of the game's actual rendering area. The width will be resized to match the window's aspect ration, and everything will be scaled up to fill the window.</attribute>
+		  <attribute name="ignore_texture_filter" type="bool" vars="">If true, this ignores the &quot;Texture Filtering&quot; video setting and uses only nearest-neighbor scaling. This is good for games that use pixel art assets.</attribute>
 	  </attributes>
 	</class>
 	<class name="Settings: Gameplay">
 	  <description>Description of engine/gameplay.txt</description>
 	  <attributes>
-		  <attribute name="enable_playgame" type="boolean">Enables the "Play Game" button on the main menu.</attribute>
+		  <attribute name="enable_playgame" type="bool" vars="">Enables the &quot;Play Game&quot; button on the main menu.</attribute>
 	  </attributes>
 	</class>
 	<class name="Settings: Combat">
 	  <description>Description of engine/combat.txt</description>
 	  <attributes>
-		  <attribute name="max_absorb_percent" type="integer">Maximum percentage of damage that can be absorbed.</attribute>
-		  <attribute name="max_resist_percent" type="integer">Maximum percentage of elemental damage that can be resisted.</attribute>
-		  <attribute name="max_block_percent" type="integer">Maximum percentage of damage that can be blocked.</attribute>
-		  <attribute name="max_avoidance_percent" type="integer">Maximum percentage chance that hazards can be avoided.</attribute>
-		  <attribute name="min_absorb_percent" type="integer">Minimum percentage of damage that can be absorbed.</attribute>
-		  <attribute name="min_resist_percent" type="integer">Minimum percentage of elemental damage that can be resisted.</attribute>
-		  <attribute name="min_block_percent" type="integer">Minimum percentage of damage that can be blocked.</attribute>
-		  <attribute name="min_avoidance_percent" type="integer">Minimum percentage chance that hazards can be avoided.</attribute>
+		  <attribute name="max_absorb_percent" type="int" vars="">Maximum percentage of damage that can be absorbed.</attribute>
+		  <attribute name="max_resist_percent" type="int" vars="">Maximum percentage of elemental damage that can be resisted.</attribute>
+		  <attribute name="max_block_percent" type="int" vars="">Maximum percentage of damage that can be blocked.</attribute>
+		  <attribute name="max_avoidance_percent" type="int" vars="">Maximum percentage chance that hazards can be avoided.</attribute>
+		  <attribute name="min_absorb_percent" type="int" vars="">Minimum percentage of damage that can be absorbed.</attribute>
+		  <attribute name="min_resist_percent" type="int" vars="">Minimum percentage of elemental damage that can be resisted.</attribute>
+		  <attribute name="min_block_percent" type="int" vars="">Minimum percentage of damage that can be blocked.</attribute>
+		  <attribute name="min_avoidance_percent" type="int" vars="">Minimum percentage chance that hazards can be avoided.</attribute>
 	  </attributes>
 	</class>
 	<class name="Settings: Elements">
 	  <description>Description of engine/elements.txt</description>
 	  <attributes>
-		  <attribute name="element.id" type="string">An identifier for this element.</attribute>
-		  <attribute name="element.name" type="string">The displayed name of this element.</attribute>
+		  <attribute name="element.id" type="string" vars="">An identifier for this element.</attribute>
+		  <attribute name="element.name" type="string" vars="">The displayed name of this element.</attribute>
 	  </attributes>
 	</class>
 	<class name="Settings: Equip flags">
 	  <description>Description of engine/equip_flags.txt</description>
 	  <attributes>
-		  <attribute name="flag.id" type="string">An identifier for this equip flag.</attribute>
-		  <attribute name="flag.name" type="string">The displayed name of this equip flag.</attribute>
+		  <attribute name="flag.id" type="string" vars="">An identifier for this equip flag.</attribute>
+		  <attribute name="flag.name" type="string" vars="">The displayed name of this equip flag.</attribute>
 	  </attributes>
 	</class>
 	<class name="Settings: Classes">
 	  <description>Description of engine/classes.txt</description>
 	  <attributes>
-		  <attribute name="name" type="string">The displayed name of this class.</attribute>
-		  <attribute name="description" type="string">A description of this class.</attribute>
-		  <attribute name="currency" type="integer">The amount of currency this class will start with.</attribute>
-		  <attribute name="equipment" type="item (integer), ...">A list of items that are equipped when starting with this class.</attribute>
-		  <attribute name="carried" type="item (integer), ...">A list of items that are placed in the normal inventorty when starting with this class.</attribute>
-		  <attribute name="physical" type="integer">Class starts with this physical stat.</attribute>
-		  <attribute name="mental" type="integer">Class starts with this mental stat.</attribute>
-		  <attribute name="offense" type="integer">Class starts with this offense stat.</attribute>
-		  <attribute name="defense" type="integer">Class starts with this defense stat.</attribute>
-		  <attribute name="actionbar" type="power (integer), ...">A list of powers to place in the action bar for the class.</attribute>
-		  <attribute name="powers" type="power (integer), ...">A list of powers that are unlocked when starting this class.</attribute>
-		  <attribute name="campaign" type="status (string), ...">A list of campaign statuses that are set when starting this class.</attribute>
-		  <attribute name="power_tree" type="string">Power tree that will be loaded by MenuPowers</attribute>
+		  <attribute name="name" type="string" vars="">The displayed name of this class.</attribute>
+		  <attribute name="description" type="string" vars="">A description of this class.</attribute>
+		  <attribute name="currency" type="int" vars="">The amount of currency this class will start with.</attribute>
+		  <attribute name="equipment" type="list(item_id)" vars="">A list of items that are equipped when starting with this class.</attribute>
+		  <attribute name="carried" type="list(item_id)" vars="">A list of items that are placed in the normal inventorty when starting with this class.</attribute>
+		  <attribute name="physical" type="int" vars="">Class starts with this physical stat.</attribute>
+		  <attribute name="mental" type="int" vars="">Class starts with this mental stat.</attribute>
+		  <attribute name="offense" type="int" vars="">Class starts with this offense stat.</attribute>
+		  <attribute name="defense" type="int" vars="">Class starts with this defense stat.</attribute>
+		  <attribute name="actionbar" type="list(power_id)" vars="">A list of powers to place in the action bar for the class.</attribute>
+		  <attribute name="powers" type="list(power_id)" vars="">A list of powers that are unlocked when starting this class.</attribute>
+		  <attribute name="campaign" type="list(string)" vars="">A list of campaign statuses that are set when starting this class.</attribute>
+		  <attribute name="power_tree" type="string" vars="">Power tree that will be loaded by MenuPowers</attribute>
 	  </attributes>
 	</class>
 	<class name="Settings: Death penalty">
 	  <description>Description of engine/death_penalty.txt</description>
 	  <attributes>
-		  <attribute name="enable" type="boolean">Enable the death penalty.</attribute>
-		  <attribute name="permadeath" type="boolean">Force permadeath for all new saves.</attribute>
-		  <attribute name="currency" type="integer">Remove this percentage of currency.</attribute>
-		  <attribute name="xp_total" type="integer">Remove this percentage of total XP.</attribute>
-		  <attribute name="xp_current_level" type="integer">Remove this percentage of the XP gained since the last level.</attribute>
-		  <attribute name="random_item" type="integer">Removes a random item from the player's inventory.</attribute>
+		  <attribute name="enable" type="bool" vars="">Enable the death penalty.</attribute>
+		  <attribute name="permadeath" type="bool" vars="">Force permadeath for all new saves.</attribute>
+		  <attribute name="currency" type="int" vars="">Remove this percentage of currency.</attribute>
+		  <attribute name="xp_total" type="int" vars="">Remove this percentage of total XP.</attribute>
+		  <attribute name="xp_current_level" type="int" vars="">Remove this percentage of the XP gained since the last level.</attribute>
+		  <attribute name="random_item" type="bool" vars="">Removes a random item from the player's inventory.</attribute>
 	  </attributes>
 	</class>
 	<class name="Settings: Tooltips">
 	  <description>Description of engine/tooltips.txt</description>
 	  <attributes>
-		  <attribute name="tooltip_offset" type="integer">Offset in pixels from the origin point (usually mouse cursor).</attribute>
-		  <attribute name="tooltip_width" type="integer">Maximum width of tooltip in pixels.</attribute>
-		  <attribute name="tooltip_margin" type="integer">Padding between the text and the tooltip borders.</attribute>
-		  <attribute name="npc_tooltip_margin" type="integer">Vertical offset for NPC labels.</attribute>
+		  <attribute name="tooltip_offset" type="int" vars="">Offset in pixels from the origin point (usually mouse cursor).</attribute>
+		  <attribute name="tooltip_width" type="int" vars="">Maximum width of tooltip in pixels.</attribute>
+		  <attribute name="tooltip_margin" type="int" vars="">Padding between the text and the tooltip borders.</attribute>
+		  <attribute name="npc_tooltip_margin" type="int" vars="">Vertical offset for NPC labels.</attribute>
 	  </attributes>
 	</class>
 	<class name="Settings: Loot">
 	  <description>Description of engine/loot.txt</description>
 	  <attributes>
-		  <attribute name="currency_name" type="string">Define the name of currency in game</attribute>
+		  <attribute name="currency_name" type="string" vars="">Define the name of currency in game</attribute>
 	  </attributes>
 	</class>
 	<class name="StatBlock: Core stats">
 	  <description>Description of engine/stats.txt and enemies in enemies/</description>
 	  <attributes>
-		  <attribute name="speed" type="float">Movement speed</attribute>
-		  <attribute name="cooldown" type="integer">Cooldown between attacks in 'ms' or 's'.</attribute>
-		  <attribute name="cooldown_hit" type="duration">Duration of cooldown after being hit in 'ms' or 's'.</attribute>
-		  <attribute name="$STATNAME" type="integer">The starting value for this stat.</attribute>
-		  <attribute name="$STATNAME_per_level" type="integer">The value for this stat added per level.</attribute>
-		  <attribute name="$STATNAME_per_physical" type="integer">The value for this stat added per Physical.</attribute>
-		  <attribute name="$STATNAME_per_mental" type="integer">The value for this stat added per Mental.</attribute>
-		  <attribute name="$STATNAME_per_offense" type="integer">The value for this stat added per Offense.</attribute>
-		  <attribute name="$STATNAME_per_defense" type="integer">The value for this stat added per Defense.</attribute>
-		  <attribute name="vulnerable_$ELEMENT" type="integer">Percentage weakness to this element.</attribute>
+		  <attribute name="speed" type="float" vars="">Movement speed</attribute>
+		  <attribute name="cooldown" type="int" vars="">Cooldown between attacks in 'ms' or 's'.</attribute>
+		  <attribute name="cooldown_hit" type="duration" vars="">Duration of cooldown after being hit in 'ms' or 's'.</attribute>
+		  <attribute name="stat" type="string, int" vars="Stat name, Value">The starting value for this stat.</attribute>
+		  <attribute name="stat_per_level" type="string, int" vars="Stat name, Value">The value for this stat added per level.</attribute>
+		  <attribute name="stat_per_physical" type="string, int" vars="Stat name, Value">The value for this stat added per Physical.</attribute>
+		  <attribute name="stat_per_mental" type="string, int" vars="Stat name, Value">The value for this stat added per Mental.</attribute>
+		  <attribute name="stat_per_offense" type="string, int" vars="Stat name, Value">The value for this stat added per Offense.</attribute>
+		  <attribute name="stat_per_defense" type="string, int" vars="Stat name, Value">The value for this stat added per Defense.</attribute>
+		  <attribute name="vulnerable" type="string, int" vars="Element, Value">Percentage weakness to this element.</attribute>
 	  </attributes>
 	</class>
 	<class name="StatBlock: Sound effects">
 	  <description>Description of heroes in engine/avatar/ and enemies in enemies/</description>
 	  <attributes>
-		  <attribute name="sfx_phys" type="string">Filename of sound effect for physical attack.</attribute>
-		  <attribute name="sfx_ment" type="string">Filename of sound effect for mental attack.</attribute>
-		  <attribute name="sfx_hit" type="string">Filename of sound effect for being hit.</attribute>
-		  <attribute name="sfx_die" type="string">Filename of sound effect for dying.</attribute>
-		  <attribute name="sfx_critdie" type="string">Filename of sound effect for dying to a critical hit.</attribute>
-		  <attribute name="sfx_block" type="string">Filename of sound effect for blocking an incoming hit.</attribute>
-		  <attribute name="sfx_levelup" type="string">Filename of sound effect for leveling up.</attribute>
+		  <attribute name="sfx_phys" type="filename" vars="">Filename of sound effect for physical attack.</attribute>
+		  <attribute name="sfx_ment" type="filename" vars="">Filename of sound effect for mental attack.</attribute>
+		  <attribute name="sfx_hit" type="filename" vars="">Filename of sound effect for being hit.</attribute>
+		  <attribute name="sfx_die" type="filename" vars="">Filename of sound effect for dying.</attribute>
+		  <attribute name="sfx_critdie" type="filename" vars="">Filename of sound effect for dying to a critical hit.</attribute>
+		  <attribute name="sfx_block" type="filename" vars="">Filename of sound effect for blocking an incoming hit.</attribute>
+		  <attribute name="sfx_levelup" type="filename" vars="">Filename of sound effect for leveling up.</attribute>
 	  </attributes>
 	</class>
 	<class name="StatBlock: Enemies">
 	  <description>Description of enemies in enemies/</description>
 	  <attributes>
-		  <attribute name="name" type="string">Name</attribute>
-		  <attribute name="humanoid" type="boolean">This creature gives human traits when transformed into, such as the ability to talk with NPCs.</attribute>
-		  <attribute name="level" type="integer">Level</attribute>
-		  <attribute name="xp" type="integer">XP awarded upon death.</attribute>
-		  <attribute name="loot" type="[currency:item (integer)], chance (integer), min (integer), max (integer)">Possible loot that can be dropped on death.</attribute>
-		  <attribute name="loot_count" type="min (integer), max (integer)">Sets the minimum (and optionally, the maximum) amount of loot this creature can drop. Overrides the global drop_max setting.</attribute>
-		  <attribute name="defeat_status" type="string">Campaign status to set upon death.</attribute>
-		  <attribute name="convert_status" type="string">Campaign status to set upon being converted to a player ally.</attribute>
-		  <attribute name="first_defeat_loot" type="integer">Drops this item upon first death.</attribute>
-		  <attribute name="quest_loot" type="[requires status (string), requires not status (string), item (integer)">Drops this item when campaign status is met.</attribute>
-		  <attribute name="flying" type="boolean">Creature can move over gaps/water.</attribute>
-		  <attribute name="intangible" type="boolean">Creature can move through walls.</attribute>
-		  <attribute name="facing" type="boolean">Creature can turn to face their target.</attribute>
-		  <attribute name="waypoint_pause" type="duration">Duration to wait at each waypoint in 'ms' or 's'.</attribute>
-		  <attribute name="turn_delay" type="duration">Duration it takes for this creature to turn and face their target in 'ms' or 's'.</attribute>
-		  <attribute name="chance_pursue" type="integer">Percentage change that the creature will chase their target.</attribute>
-		  <attribute name="chance_flee" type="integer">Percentage chance that the creature will run away from their target.</attribute>
-		  <attribute name="power" type="type (string), power id (integer), chance (integer)">A power that has a chance of being triggered in a certain state. States may be any of: melee, ranged, beacon, on_hit, on_death, on_half_dead, on_join_combat, on_debuff</attribute>
-		  <attribute name="passive_powers" type="power (integer), ...">A list of passive powers this creature has.</attribute>
-		  <attribute name="melee_range" type="float">Minimum distance from target required to use melee powers.</attribute>
-		  <attribute name="threat_range" type="float">Radius of the area this creature will be able to start chasing the hero.</attribute>
-		  <attribute name="combat_style" type="[default:aggressive:passive]">How the creature will enter combat. Default is within range of the hero; Aggressive is always in combat; Passive must be attacked to enter combat.</attribute>
-		  <attribute name="animations" type="string">Filename of an animation definition.</attribute>
-		  <attribute name="suppress_hp" type="boolean">Hides the enemy HP bar for this creature.</attribute>
-		  <attribute name="categories" type="category (string), ...">Categories that this enemy belongs to.</attribute>
+		  <attribute name="name" type="string" vars="">Name</attribute>
+		  <attribute name="humanoid" type="bool" vars="">This creature gives human traits when transformed into, such as the ability to talk with NPCs.</attribute>
+		  <attribute name="level" type="int" vars="">Level</attribute>
+		  <attribute name="xp" type="int" vars="">XP awarded upon death.</attribute>
+		  <attribute name="loot" type="repeatable(loot)" vars="">Possible loot that can be dropped on death.</attribute>
+		  <attribute name="loot_count" type="int, int" vars="Min, Max">Sets the minimum (and optionally, the maximum) amount of loot this creature can drop. Overrides the global drop_max setting.</attribute>
+		  <attribute name="defeat_status" type="string" vars="">Campaign status to set upon death.</attribute>
+		  <attribute name="convert_status" type="string" vars="">Campaign status to set upon being converted to a player ally.</attribute>
+		  <attribute name="first_defeat_loot" type="int" vars="">Drops this item upon first death.</attribute>
+		  <attribute name="quest_loot" type="string, string, item_id" vars="Required status, Required not status, Item">Drops this item when campaign status is met.</attribute>
+		  <attribute name="flying" type="bool" vars="">Creature can move over gaps/water.</attribute>
+		  <attribute name="intangible" type="bool" vars="">Creature can move through walls.</attribute>
+		  <attribute name="facing" type="bool" vars="">Creature can turn to face their target.</attribute>
+		  <attribute name="waypoint_pause" type="duration" vars="">Duration to wait at each waypoint in 'ms' or 's'.</attribute>
+		  <attribute name="turn_delay" type="duration" vars="">Duration it takes for this creature to turn and face their target in 'ms' or 's'.</attribute>
+		  <attribute name="chance_pursue" type="int" vars="">Percentage change that the creature will chase their target.</attribute>
+		  <attribute name="chance_flee" type="int" vars="">Percentage chance that the creature will run away from their target.</attribute>
+		  <attribute name="power" type="[&quot;melee&quot;, &quot;ranged&quot;, &quot;beacon&quot;, &quot;on_hit&quot;, &quot;on_death&quot;, &quot;on_half_dead&quot;, &quot;on_join_combat&quot;, &quot;on_debuff&quot;], power_id, int" vars="State, Power, Chance">A power that has a chance of being triggered in a certain state.</attribute>
+		  <attribute name="passive_powers" type="list(power_id)" vars="">A list of passive powers this creature has.</attribute>
+		  <attribute name="melee_range" type="float" vars="">Minimum distance from target required to use melee powers.</attribute>
+		  <attribute name="threat_range" type="float" vars="">Radius of the area this creature will be able to start chasing the hero.</attribute>
+		  <attribute name="combat_style" type="[&quot;default&quot;, &quot;aggressive&quot;, &quot;passive&quot;]" vars="">How the creature will enter combat. Default is within range of the hero; Aggressive is always in combat; Passive must be attacked to enter combat.</attribute>
+		  <attribute name="animations" type="filename" vars="">Filename of an animation definition.</attribute>
+		  <attribute name="suppress_hp" type="bool" vars="">Hides the enemy HP bar for this creature.</attribute>
+		  <attribute name="categories" type="list(string)" vars="">Categories that this enemy belongs to.</attribute>
 	  </attributes>
 	</class>
 	<class name="StatBlock: Hero stats">
 	  <description>Description of engine/stats.txt</description>
 	  <attributes>
-		  <attribute name="max_points_per_stat" type="integer">Maximum points for each primary stat.</attribute>
-		  <attribute name="sfx_step" type="string">An id for a set of step sound effects. See items/step_sounds.txt.</attribute>
-		  <attribute name="stat_points_per_level" type="integer">The amount of stat points awarded each level.</attribute>
-		  <attribute name="power_points_per_level" type="integer">The amount of power points awarded each level.</attribute>
+		  <attribute name="max_points_per_stat" type="int" vars="">Maximum points for each primary stat.</attribute>
+		  <attribute name="sfx_step" type="string" vars="">An id for a set of step sound effects. See items/step_sounds.txt.</attribute>
+		  <attribute name="stat_points_per_level" type="int" vars="">The amount of stat points awarded each level.</attribute>
+		  <attribute name="power_points_per_level" type="int" vars="">The amount of power points awarded each level.</attribute>
 	  </attributes>
 	</class>
 	<class name="StatBlock: XP table">
 	  <description>Description of engine/xp_table.txt</description>
 	  <attributes>
-		  <attribute name="$LEVEL" type="integer">The amount of XP required for this level.</attribute>
+		  <attribute name="level" type="int, int" vars="Level, XP">The amount of XP required for this level.</attribute>
 	  </attributes>
 	</class>
 	<class name="Stats">
-	  <description>Description of the base stats, aka $STATNAME</description>
+	  <description>Description of the base stats, aka &quot;stat name&quot; or ${STATNAME}</description>
 	  <attributes>
 		<type name="hp">Hit points</type>
 		<type name="hp_regen">HP restored per minute</type>
@@ -1009,7 +1020,7 @@
 		<type name="currency_find">Percentage boost to the amount of gold dropped per loot event.</type>
 		<type name="item_find">Increases the chance of finding items in loot.</type>
 		<type name="stealth">Decrease the distance required to alert enemies by %</type>
-		<type name="poise">Reduced % chance of entering "hit" animation when damaged</type>
+		<type name="poise">Reduced % chance of entering &quot;hit&quot; animation when damaged</type>
 		<type name="reflect_chance">Percentage chance to reflect missiles</type>
 		<type name="return_damage">Deals a percentage of the damage taken back to the attacker</type>
 		<type name="hp_percent">Base HP altered by percentage</type>
@@ -1019,10 +1030,10 @@
 	<class name="TileSet">
 	  <description>Description of tilesets in tilesets/</description>
 	  <attributes>
-		  <attribute name="img" type="string">Filename of a tile sheet image.</attribute>
-		  <attribute name="tile" type="index (integer), x (integer), y (integer), w (integer), h (integer), x offset (integer), y offset (integer)">A single tile definition.</attribute>
-		  <attribute name="transparency" type="r (integer), g (integer), b (integer)">An RGB color to key out and treat as transparent.</attribute>
-		  <attribute name="animation" type="tile index (integer), x (integer), y (integer), duration (duration), ...">An animation for a tile. Durations are in 'ms' or 's'.</attribute>
+		  <attribute name="img" type="filename" vars="">Filename of a tile sheet image.</attribute>
+		  <attribute name="tile" type="int, int, int, int, int, int, int" vars="Index, X, Y, Width, Height, X offset, Y offset">A single tile definition.</attribute>
+		  <attribute name="transparency" type="color" vars="">An RGB color to key out and treat as transparent.</attribute>
+		  <attribute name="animation" type="list(int, int, int, duration)" vars="Tile index, X, Y, duration">An animation for a tile. Durations are in 'ms' or 's'.</attribute>
 	  </attributes>
 	</class>
 </classes>
