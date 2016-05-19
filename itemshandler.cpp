@@ -22,7 +22,6 @@
 #include "twostringlists.h"
 
 #include "EditorItemManager.h"
-#include "API/Stats.h"
 #include "API/AnimationSet.h"
 #include "API/Animation.h"
 
@@ -87,7 +86,7 @@ void ItemsHandler::saveEntityList(const QString &path)
 
 void ItemsHandler::loadEntityList(const std::string &path)
 {
-    items = new EditorItemManager(path);
+    items = new EditorItemManager(path, mainWindow->getClassTypes("Stats"));
     for (int i = 0; i<items->items.size(); i++)
     {
         if (items->items[i]->name != "")
@@ -193,9 +192,9 @@ void ItemsHandler::loadEntityList(const std::string &path)
                 listWidget->comboBox()->addItem("mental");
                 listWidget->comboBox()->addItem("offense");
                 listWidget->comboBox()->addItem("defense");
-                for (unsigned i = 0; i<STAT_COUNT; i++)
+                for (unsigned i = 0; i < mainWindow->getClassTypes("Stats").size(); i++)
                 {
-                    listWidget->comboBox()->addItem(qString(STAT_KEY[i]));
+                    listWidget->comboBox()->addItem(mainWindow->getClassTypes("Stats").at(i).first);
                 }
                 checkComboBoxForError(listWidget->comboBox(),
                     "engine/elements.txt is missing or incorrect. Copy it from base mod.");
@@ -400,9 +399,9 @@ void ItemsHandler::pushBtn()
                         break;
                     }
                 }
-                for (unsigned k=0; k<STAT_COUNT; ++k) {
-                    if (bonus_str == qString(STAT_KEY[k])) {
-                        item->bonus.back().stat_index = (STAT)k;
+                for (unsigned k=0; k < mainWindow->getClassTypes("Stats").size(); ++k) {
+                    if (bonus_str == mainWindow->getClassTypes("Stats").at(k).first) {
+                        item->bonus.back().stat_index = k;
                         break;
                     }
                 }
@@ -564,7 +563,7 @@ void ItemsHandler::selectElementFromList(QListWidgetItem *_item)
 
                 if (stat_index != -1)
                 {
-                    listWidget->appendKey(qString(STAT_KEY[stat_index]));
+                    listWidget->appendKey(mainWindow->getClassTypes("Stats").at(stat_index).first);
                 }
                 else if (resist_index != -1)
                 {

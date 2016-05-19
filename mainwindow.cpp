@@ -132,36 +132,51 @@ void MainWindow::CloseAll()
 void MainWindow::ReadNameTypeElementAttributes(QString elementName)
 {
     bool skipElement = false;
+    bool typeElement = false;
 
     NameTypeElementAttributes elementAttributes;
+    NameElementAttributes elementTypes;
     while(xml.readNext())
     {
         if(xml.isEndElement() && xml.name() == "class")
         {
             if (!skipElement)
             {
-                m_nameTypeElements.insert(elementName, elementAttributes);
+                if (!typeElement)
+                {
+                    m_classAttributes.insert(elementName, elementAttributes);
+                }
+                else
+                {
+                    m_classTypes.insert(elementName, elementTypes);
+                }
             }
             break;
         }
         else if(xml.isStartElement() && xml.name() == "description" && !skipElement)
         {
-            m_nameTypeElementDescriptions[elementName] = xml.readElementText();
+            m_classDescriptions[elementName] = xml.readElementText();
         }
         else if(xml.isStartElement() && !skipElement)
         {
             QXmlStreamAttributes attributes = xml.attributes();
             if (!attributes.empty())
             {
-                if (xml.name() != "attribute")
+                if (xml.name() != "attribute" && xml.name() != "type")
                 {
                     skipElement = true;
                 }
-                else
+                else if (xml.name() == "attribute")
                 {
                     QString description = xml.readElementText();
                     elementAttributes.insert(attributes.value("name").toString(),
                         qMakePair(attributes.value("type").toString(), description));
+                }
+                else // xml.name() == "type"
+                {
+                    QString description = xml.readElementText();
+                    elementTypes.append(qMakePair(attributes.value("name").toString(), description));
+                    typeElement = true;
                 }
             }
         }
@@ -302,8 +317,8 @@ void MainWindow::selectWidgetWithPredefinedString(QGridLayout * layout, int row,
 
 void MainWindow::BuildUI()
 {
-    QMap<QString, NameTypeElementAttributes>::iterator end = m_nameTypeElements.end();
-    for (QMap<QString, NameTypeElementAttributes>::iterator it = m_nameTypeElements.begin(); it != end; ++it)
+    QMap<QString, NameTypeElementAttributes>::iterator end = m_classAttributes.end();
+    for (QMap<QString, NameTypeElementAttributes>::iterator it = m_classAttributes.begin(); it != end; ++it)
     {
         QString widgetTabName = it.key();
         int rowOnTab = 0;
@@ -419,7 +434,7 @@ void MainWindow::BuildUI()
         int tabIndex = -1;
         tabIndex = ui->tabWidget->addTab(tab, widgetTabName);
 
-        ui->tabWidget->setTabToolTip(tabIndex, m_nameTypeElementDescriptions[widgetTabName]);
+        ui->tabWidget->setTabToolTip(tabIndex, m_classDescriptions[widgetTabName]);
         if (widgetTabName == ITEMS)
         {
             itemsHandler = new ItemsHandler(this, tabIndex);
@@ -433,4 +448,9 @@ void MainWindow::BuildUI()
 
     connect(ui->tabWidget, SIGNAL(currentChanged(int)), SLOT(loadTab(int)));
 
+}
+
+const NameElementAttributes & MainWindow::getClassTypes(QString className)
+{
+    return m_classTypes[className];
 }

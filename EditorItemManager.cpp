@@ -21,14 +21,12 @@ FLARE.  If not, see http://www.gnu.org/licenses/
 
 #include "EditorItemManager.h"
 #include "API/UtilsParsing.h"
-#include "API/Stats.h"
 
 #include <QFile>
 
-EditorItemManager::EditorItemManager(const std::string& modpath)
+EditorItemManager::EditorItemManager(const std::string& modpath, NameElementAttributes _stats)
 {
     items = QVector<Item*>();
-    setStatNames();
     loadMiscTypes();
     loadItems(modpath + "items/items.txt", false);
     if (!items.empty())
@@ -36,6 +34,7 @@ EditorItemManager::EditorItemManager(const std::string& modpath)
 
     loadTypes(modpath + "items/types.txt", false);
     loadQualities(modpath + "items/qualities.txt", false);
+    stats = _stats;
 }
 
 EditorItemManager::~EditorItemManager()
@@ -314,7 +313,7 @@ void EditorItemManager::save(const std::string& filename) {
                 std::string bonus_str;
                 if (items[i]->bonus[k].stat_index != -1)
                 {
-                    bonus_str = STAT_KEY[items[i]->bonus[k].stat_index];
+                    bonus_str = stats[items[i]->bonus[k].stat_index].first.toStdString();
                 }
                 else if (items[i]->bonus[k].is_speed)
                 {

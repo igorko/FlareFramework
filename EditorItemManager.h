@@ -23,11 +23,12 @@ FLARE.  If not, see http://www.gnu.org/licenses/
 #define EDITOR_ITEM_MANAGER_H
 
 #include "API/ItemManager.h"
+#include "mainwindow.h"
 
 class EditorItemManager : public ItemManager {
 
 public:
-    EditorItemManager(const std::string& modpath);
+    EditorItemManager(const std::string& modpath, NameElementAttributes _stats);
     ~EditorItemManager();
     
     void shrinkItems();
@@ -39,6 +40,8 @@ public:
 
 private:
     void loadMiscTypes();
+
+    NameElementAttributes stats;
 };
 
 #endif

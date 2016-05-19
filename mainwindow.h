@@ -22,6 +22,8 @@ const int MENU_FILE = 0;
 
 //key is property name, value is pair<type, description>
 typedef QMap<QString, QPair<QString, QString> > NameTypeElementAttributes;
+//key is property name, value is description, vector used for ordering
+typedef QVector< QPair<QString, QString> > NameElementAttributes;
 
 namespace Ui {
 class MainWindow;
@@ -40,6 +42,8 @@ public:
     static QString modPath;
 
     Ui::MainWindow *ui;
+
+    const NameElementAttributes & getClassTypes(QString className);
 
 public slots:
     void enableSaving();
@@ -78,8 +82,12 @@ private:
 private:
     bool newMod;
     QXmlStreamReader xml;
-    QMap<QString, NameTypeElementAttributes> m_nameTypeElements;
-    QMap<QString, QString> m_nameTypeElementDescriptions;
+    //QMap<attribute_name, attribute_(type-description)>
+    QMap<QString, NameTypeElementAttributes> m_classAttributes;
+    //QMap<type_name, type_description>
+    QMap<QString, NameElementAttributes> m_classTypes;
+
+    QMap<QString, QString> m_classDescriptions;
     ItemsHandler * itemsHandler;
 
 };
