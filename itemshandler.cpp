@@ -232,6 +232,7 @@ void ItemsHandler::loadEntityList(const std::string &path)
 void ItemsHandler::clearItemsList()
 {
     EntityHandler::clearItemsList();
+    mainWindow->disableAllTabs();
     delete items;
     items = NULL;
 }

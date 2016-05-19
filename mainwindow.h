@@ -45,6 +45,8 @@ public:
 
     const NameElementAttributes & getClassTypes(QString className);
 
+    void disableAllTabs();
+
 public slots:
     void enableSaving();
     void disableSaving();
@@ -68,7 +70,6 @@ private slots:
     void New_Mod();
 
 private:
-    void disableAllTabs();
     void enableAllTabs();
     void setMenusEnabled(bool state);
     void setupConnections();
