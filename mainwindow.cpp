@@ -435,12 +435,12 @@ void MainWindow::BuildUI()
         tabIndex = ui->tabWidget->addTab(tab, widgetTabName);
 
         ui->tabWidget->setTabToolTip(tabIndex, m_classDescriptions[widgetTabName]);
+        layout->addWidget(new ControlFrame("controlframe"), rowOnTab, columnOntab, Qt::AlignLeft | Qt::AlignTop);
+
         if (widgetTabName == ITEMS)
         {
             itemsHandler = new ItemsHandler(this, tabIndex);
         }
-
-        layout->addWidget(new ControlFrame("controlframe"), rowOnTab, columnOntab, Qt::AlignLeft | Qt::AlignTop);
     }
 
     setupConnections();

@@ -11,7 +11,7 @@ class ItemsHandler : public EntityHandler
 public:
     explicit ItemsHandler(MainWindow * _mainWindow, int tabIndex, QObject *parent = 0);
     ~ItemsHandler();
-    virtual void saveEntityList(const QString& path);
+    virtual void saveEntityList(const QString& itemsFilePath);
     virtual void loadEntityList(const std::string& path);
     virtual void clearItemsList();
 

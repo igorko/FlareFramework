@@ -64,19 +64,20 @@ ItemsHandler::~ItemsHandler()
     delete items;
 }
 
-void ItemsHandler::saveEntityList(const QString &path)
+void ItemsHandler::saveEntityList(const QString &itemsFilePath)
 {
-    QString filename = path + QDir::separator() + "items" + QDir::separator() + "items.txt";
-    if (items != NULL) items->save(filename.toUtf8().constData());
+    if (items != NULL) items->save(itemsFilePath.toUtf8().constData());
 
-    filename = path + QDir::separator() + "images" + QDir::separator() + "icons" + QDir::separator() + "icons.png";
+    QString entityPath = "items/items.txt";
+    QString iconsFilePath = itemsFilePath.left(itemsFilePath.size() - entityPath.size())
+            + "images" + QDir::separator() + "icons" + QDir::separator() + "icons.png";
     for (int i = 0; i < entityLayout->count(); i++)
     {
         QWidget * widget = entityLayout->itemAt(i)->widget();
 
         if (widget && widget->accessibleName() == "icon")
         {
-            dynamic_cast<IconChooser*>(widget)->ui->iconsView->saveIcons(filename);
+            dynamic_cast<IconChooser*>(widget)->ui->iconsView->saveIcons(iconsFilePath);
             break;
         }
     }
