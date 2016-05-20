@@ -42,7 +42,14 @@ SOURCES += main.cpp\
     comboboxkeyvaluelist.cpp \
     entityhandler.cpp \
     fourspinbox.cpp \
-    threespinbox.cpp
+    threespinbox.cpp \
+
+win32 {
+    SOURCES += API/PlatformWin32.cpp
+}
+!win32 {
+    SOURCES += API/PlatformLinux.cpp
+}
 
 HEADERS  += mainwindow.h \
     iconview.h \
@@ -73,7 +80,8 @@ HEADERS  += mainwindow.h \
     API/UtilsParsing.h \
     entityhandler.h \
     fourspinbox.h \
-    threespinbox.h
+    threespinbox.h \
+    API/Platform.h
 
 FORMS    += mainwindow.ui \
     iconselector.ui \

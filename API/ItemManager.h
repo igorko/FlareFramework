@@ -3,6 +3,7 @@ Copyright © 2011-2012 Clint Bellanger
 Copyright © 2012 Igor Paliychuk
 Copyright © 2013 Henrik Andersson
 Copyright © 2013 Kurt Rinnert
+Copyright © 2012-2016 Justin Jacobs
 
 This file is part of FLARE.
 
@@ -139,18 +140,14 @@ class ItemQuality {
 public:
 	std::string id;
 	std::string name;
-#ifndef EDITOR
 	Color color;
-#endif
+
 	ItemQuality()
 		: id("")
 		, name("")
-#ifndef EDITOR
+
 		, color(255,255,255) {
 	}
-#else
-	{}
-#endif
 };
 
 #ifndef EDITOR
@@ -171,41 +168,45 @@ public:
 #endif
 
 public:
-    std::string flavor;   // optional flavor text describing the item
-    int level;            // rough estimate of quality, used in the loot algorithm
-    int set;              // item can be attached to item set
-    std::string quality;  // should match an id from items/qualities.txt
-    std::string type;     // equipment slot or base item type
-    std::vector<std::string> equip_flags;   // common values include: melee, ranged, mental, shield
-    int icon;             // icon index on small pixel sheet
-    std::string book;     // book file location
-    int dmg_melee_min;    // minimum damage amount (melee)
-    int dmg_melee_max;    // maximum damage amount (melee)
-    int dmg_ranged_min;   // minimum damage amount (ranged)
-    int dmg_ranged_max;   // maximum damage amount (ranged)
-    int dmg_ment_min;     // minimum damage amount (mental)
-    int dmg_ment_max;     // maximum damage amount (mental)
-    int abs_min;          // minimum absorb amount
-    int abs_max;          // maximum absorb amount
-    std::vector<int> req_stat;         // physical, mental, offense, defense
-    std::vector<int> req_val;          // 1-5 (used with req_stat)
-    std::string requires_class;
-    std::vector<BonusData> bonus;   // stat to increase/decrease e.g. hp, accuracy, speed
-    std::string sfx;           // the item sound when it hits the floor or inventory, etc
+	bool has_name;        // flag that is set when the item name is parsed
+	std::string flavor;   // optional flavor text describing the item
+	int level;            // rough estimate of quality, used in the loot algorithm
+	int set;              // item can be attached to item set
+	std::string quality;  // should match an id from items/qualities.txt
+	std::string type;     // equipment slot or base item type
+	std::vector<std::string> equip_flags;   // common values include: melee, ranged, mental, shield
+	int icon;             // icon index on small pixel sheet
+	std::string book;     // book file location
+	int dmg_melee_min;    // minimum damage amount (melee)
+	int dmg_melee_max;    // maximum damage amount (melee)
+	int dmg_ranged_min;   // minimum damage amount (ranged)
+	int dmg_ranged_max;   // maximum damage amount (ranged)
+	int dmg_ment_min;     // minimum damage amount (mental)
+	int dmg_ment_max;     // maximum damage amount (mental)
+	int abs_min;          // minimum absorb amount
+	int abs_max;          // maximum absorb amount
+	int requires_level;   // Player level must match or exceed this value to use item
+	std::vector<int> req_stat;         // physical, mental, offense, defense
+	std::vector<int> req_val;          // 1-5 (used with req_stat)
+	std::string requires_class;
+	std::vector<BonusData> bonus;   // stat to increase/decrease e.g. hp, accuracy, speed
+	std::string sfx;           // the item sound when it hits the floor or inventory, etc
 #ifndef EDITOR
 	SoundManager::SoundID sfx_id;
 #endif
-    std::string gfx;           // the sprite layer shown when this item is equipped
-    std::vector<LootAnimation> loot_animation;// the flying loot animation for this item
-    int power;            // this item can be dragged to the action bar and used as a power
-    std::vector<Point> replace_power;        // alter powers when this item is equipped. Power id 'x' is replaced with id 'y'
-    std::string power_desc;    // shows up in green text on the tooltip
-    int price;            // if price = 0 the item cannot be sold
-    int price_sell;       // if price_sell = 0, the sell price is price*vendor_ratio
-    int max_quantity;     // max count per stack
-    std::string pickup_status; // when this item is picked up, set a campaign state (usually for quest items)
-    std::string stepfx;        // sound effect played when walking (armors only)
-    std::vector<std::string> disable_slots; // if this item is equipped, it will disable slots that match the types in the list
+	std::string gfx;           // the sprite layer shown when this item is equipped
+	std::vector<LootAnimation> loot_animation;// the flying loot animation for this item
+	int power;            // this item can be dragged to the action bar and used as a power
+	std::vector<Point> replace_power;        // alter powers when this item is equipped. Power id 'x' is replaced with id 'y'
+	std::string power_desc;    // shows up in green text on the tooltip
+	int price;            // if price = 0 the item cannot be sold
+	int price_per_level;  // additional price for each character level above 1
+	int price_sell;       // if price_sell = 0, the sell price is price*vendor_ratio
+	int max_quantity;     // max count per stack
+	std::string pickup_status; // when this item is picked up, set a campaign state (usually for quest items)
+	std::string stepfx;        // sound effect played when walking (armors only)
+	std::vector<std::string> disable_slots; // if this item is equipped, it will disable slots that match the types in the list
+	bool quest_item;
 
 #if EDITOR
 
@@ -425,43 +426,48 @@ public:
 
 #endif
 
-public:
-	int getSellPrice();
 #ifndef EDITOR
-	Item()
+    int getPrice();
+    int getSellPrice();
+
+    Item()
 		: name("")
 #else
 	explicit Item(QObject * parent = NULL)
 		: QObject(parent)
         , name("")
 #endif
-        , flavor("")
-        , level(0)
-        , set(0)
-        , quality("")
-        , type("")
-        , icon(0)
-        , dmg_melee_min(0)
-        , dmg_melee_max(0)
-        , dmg_ranged_min(0)
-        , dmg_ranged_max(0)
-        , dmg_ment_min(0)
-        , dmg_ment_max(0)
-        , abs_min(0)
+		, has_name(false)
+		, flavor("")
+		, level(0)
+		, set(0)
+		, quality("")
+		, type("")
+		, icon(0)
+		, dmg_melee_min(0)
+		, dmg_melee_max(0)
+		, dmg_ranged_min(0)
+		, dmg_ranged_max(0)
+		, dmg_ment_min(0)
+		, dmg_ment_max(0)
+		, abs_min(0)
 		, abs_max(0)
-        , requires_class("")
-        , sfx("")
+		, requires_level(0)
+		, requires_class("")
+		, sfx("")
 #ifndef EDITOR
 		, sfx_id(0)
 #endif
-        , gfx("")
-        , power(0)
-        , power_desc("")
-        , price(0)
-        , price_sell(0)
-        , max_quantity(1)
-        , pickup_status("")
-        , stepfx("") {
+		, gfx("")
+		, power(0)
+		, power_desc("")
+		, price(0)
+		, price_per_level(0)
+		, price_sell(0)
+		, max_quantity(1)
+		, pickup_status("")
+		, stepfx("")
+		, quest_item(false) {
 	}
 
 	~Item() {
@@ -473,17 +479,13 @@ public:
 	std::string name;            // item set name displayed on long and short tool tips
 	std::vector<int> items;      // items, included into set
 	std::vector<Set_bonus> bonus;// vector with stats to increase/decrease
-#ifndef EDITOR
 	Color color;
-#endif
 
 	ItemSet()
 		: name("") {
-#ifndef EDITOR
 		color.r = 255;
 		color.g = 255;
 		color.b = 255;
-#endif
 	}
 
 	~ItemSet() {
@@ -527,7 +529,6 @@ private:
 	void parseBonus(BonusData& bdata, FileParser& infile);
 	void getBonusString(std::stringstream& ss, BonusData* bdata);
 
-#ifndef EDITOR
 	Color color_normal;
 	Color color_low;
 	Color color_high;
@@ -536,12 +537,11 @@ private:
 	Color color_penalty;
 	Color color_requirements_not_met;
 	Color color_flavor;
-#endif
 
 public:
 	ItemManager();
 	~ItemManager();
-	void playSound(int item, Point pos = Point(0,0));
+	void playSound(int item, const Point& pos = Point(0,0));
 #ifndef EDITOR
 	TooltipData getTooltip(ItemStack stack, StatBlock *stats, int context);
 	TooltipData getShortTooltip(ItemStack item);
@@ -551,7 +551,8 @@ public:
 	std::vector<HeroClass> HERO_CLASSES;
 #endif
 	std::string getItemName(unsigned id);
-	std::string getItemType(std::string _type);
+	std::string getItemType(const std::string& _type);
+	Color getItemColor(unsigned id);
 	void addUnknownItem(unsigned id);
 	bool requirementsMet(const StatBlock *stats, int item);
 
@@ -565,8 +566,11 @@ public:
 	std::vector<ItemQuality> item_qualities;
 };
 
-#include <QMetaType>
+bool compareItemStack(const ItemStack &stack1, const ItemStack &stack2);
 
+#ifdef EDITOR
+#include <QMetaType>
 Q_DECLARE_METATYPE(Item*)
+#endif
 
 #endif

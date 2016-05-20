@@ -1,6 +1,7 @@
 /*
 Copyright © 2011-2012 Clint Bellanger
 Copyright © 2013 Henrik Andersson
+Copyright © 2013-2015 Justin Jacobs
 
 This file is part of FLARE.
 
@@ -45,9 +46,7 @@ unsigned long toUnsignedLong(const std::string& s, unsigned long default_value =
 bool toBool(std::string value);
 Point toPoint(std::string value);
 Rect toRect(std::string value);
-#ifndef EDITOR
 Color toRGB(std::string value);
 Color toRGBA(std::string value);
-#endif
 
 #endif

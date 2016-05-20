@@ -2,6 +2,7 @@
 Copyright © 2011-2012 Clint Bellanger
 Copyright © 2012 Stefan Beller
 Copyright © 2013 Henrik Andersson
+Copyright © 2012-2015 Justin Jacobs
 
 This file is part of FLARE.
 
@@ -340,7 +341,6 @@ Rect toRect(std::string value) {
 	return r;
 }
 
-#ifndef EDITOR
 Color toRGB(std::string value) {
 	Color c;
 	c.r = static_cast<Uint8>(popFirstInt(value));
@@ -357,4 +357,3 @@ Color toRGBA(std::string value) {
 	c.a = static_cast<Uint8>(popFirstInt(value));
 	return c;
 }
-#endif

@@ -2,6 +2,7 @@
 Copyright © 2011-2012 kitano
 Copyright © 2012 Stefan Beller
 Copyright © 2014 Henrik Andersson
+Copyright © 2013-2016 Justin Jacobs
 
 This file is part of FLARE.
 
@@ -72,7 +73,7 @@ Animation::Animation(const Animation& a)
 	, frame_count(0) {
 }
 
-void Animation::setupUncompressed(Point _render_size, Point _render_offset, unsigned short _position, unsigned short _frames, unsigned short _duration, unsigned short _maxkinds) {
+void Animation::setupUncompressed(const Point& _render_size, const Point& _render_offset, unsigned short _position, unsigned short _frames, unsigned short _duration, unsigned short _maxkinds) {
 	setup(_frames, _duration, _maxkinds);
 
 	for (unsigned short i = 0 ; i < _frames; i++) {
@@ -110,14 +111,14 @@ void Animation::setup(unsigned short _frames, unsigned short _duration, unsigned
 	max_kinds = _maxkinds;
 	times_played = 0;
 
-	active_frames.push_back(number_frames/2);
+	active_frames.push_back(static_cast<unsigned short>(number_frames-1)/2);
 
 	unsigned i = max_kinds*_frames;
 	gfx.resize(i);
 	render_offset.resize(i);
 }
 
-void Animation::addFrame(unsigned short index, unsigned short kind, Rect rect, Point _render_offset) {
+void Animation::addFrame(unsigned short index, unsigned short kind, const Rect& rect, const Point& _render_offset) {
 
 	if (index >= gfx.size()/max_kinds) {
 		logError("Animation: Animation(%s) adding rect(%d, %d, %d, %d) to frame index(%u) out of bounds. must be in [0, %d]",
@@ -136,16 +137,11 @@ void Animation::addFrame(unsigned short index, unsigned short kind, Rect rect, P
 }
 
 void Animation::advanceFrame() {
-
-	if (!this)
-		return;
-
 	if (frames.empty()) {
 		cur_frame_index = 0;
 		times_played++;
 		return;
 	}
-
 
 	unsigned short last_base_index = static_cast<unsigned short>(frames.size()-1);
 	switch(type) {
@@ -196,7 +192,7 @@ void Animation::advanceFrame() {
 #ifndef EDITOR
 Renderable Animation::getCurrentFrame(int kind) {
 	Renderable r;
-	if (this && !frames.empty()) {
+	if (!frames.empty()) {
 		const int index = (max_kinds*frames[cur_frame_index]) + kind;
 		r.src.x = gfx[index].x;
 		r.src.y = gfx[index].y;
@@ -261,6 +257,7 @@ bool Animation::syncTo(const Animation *other) {
 
 void Animation::setActiveFrames(const std::vector<short> &_active_frames) {
 	if (_active_frames.size() == 1 && _active_frames[0] == -1) {
+		active_frames.clear();
 		for (unsigned short i = 0; i < number_frames; ++i)
 			active_frames.push_back(i);
 	}
