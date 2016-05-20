@@ -40,7 +40,9 @@ SOURCES += main.cpp\
     itemshandler.cpp \
     controlframe.cpp \
     comboboxkeyvaluelist.cpp \
-    entityhandler.cpp
+    entityhandler.cpp \
+    fourspinbox.cpp \
+    threespinbox.cpp
 
 HEADERS  += mainwindow.h \
     iconview.h \
@@ -69,7 +71,9 @@ HEADERS  += mainwindow.h \
     API/Utils.h \
     API/UtilsFileSystem.h \
     API/UtilsParsing.h \
-    entityhandler.h
+    entityhandler.h \
+    fourspinbox.h \
+    threespinbox.h
 
 FORMS    += mainwindow.ui \
     iconselector.ui \
@@ -85,6 +89,8 @@ FORMS    += mainwindow.ui \
     combobox.ui \
     elementslist.ui \
     controlframe.ui \
-    comboboxkeyvaluelist.ui
+    comboboxkeyvaluelist.ui \
+    fourspinbox.ui \
+    threespinbox.ui
 
 DEFINES  += EDITOR

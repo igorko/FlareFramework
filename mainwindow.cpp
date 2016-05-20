@@ -16,6 +16,8 @@
 #include "stringlistwidget.h"
 #include "lootanimationwidget.h"
 #include "twospinbox.h"
+#include "threespinbox.h"
+#include "fourspinbox.h"
 #include "twostringlists.h"
 #include "combobox.h"
 #include "elementslist.h"
@@ -369,9 +371,19 @@ void MainWindow::BuildUI()
                                                        QStringList()),
                                   rowOnTab, columnOntab, Qt::AlignLeft | Qt::AlignTop);
             }
-            else if (attrType == "int, int")
+            else if (attrType == "int, int" || attrType == "point")
             {
                 layout->addWidget(new TwoSpinBox(attribute, attributes[attribute].second),
+                                  rowOnTab, columnOntab, Qt::AlignLeft | Qt::AlignTop);
+            }
+            else if (attrType == "int, int, int" || attrType == "color")
+            {
+                layout->addWidget(new ThreeSpinBox(attribute, attributes[attribute].second),
+                                  rowOnTab, columnOntab, Qt::AlignLeft | Qt::AlignTop);
+            }
+            else if (attrType == "int, int, int, int" || attrType == "rectangle")
+            {
+                layout->addWidget(new FourSpinBox(attribute, attributes[attribute].second),
                                   rowOnTab, columnOntab, Qt::AlignLeft | Qt::AlignTop);
             }
             else if (attrType == "repeatable(int, int)")
@@ -425,7 +437,7 @@ void MainWindow::BuildUI()
             }
 
             columnOntab++;
-            if (columnOntab == 4)
+            if (columnOntab == 3)
             {
                 columnOntab = 0;
                 rowOnTab++;
