@@ -465,9 +465,21 @@ Color ItemManager::getItemColor(unsigned id) {
 void ItemManager::addUnknownItem(unsigned id) {
 	if (id > 0) {
 		size_t new_size = id+1;
+#ifndef EDITOR
 		if (items.size() <= new_size)
 			items.resize(new_size);
-	}
+#else
+        if (items.size() <= new_size)
+        {
+            int oldSize = items.size();
+            items.resize(new_size);
+            for (int i = oldSize; i < new_size; i++)
+            {
+                items[i] = new Item();
+            }
+        }
+#endif
+    }
 }
 
 /**
